@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Expert pharmaceutical GMP training built directly from FDA guidance documents. On-demand courses covering 21 CFR Parts 210 and 211, regulatory compliance, quality systems and inspection readiness. Completion certificates included.">
+<meta name="keywords" content="pharmaceutical GMP training, 21 CFR Part 211, 21 CFR Part 210, FDA compliance training, GMP online courses, pharma regulatory training, QA training, CGMP certification, pharmaceutical quality training">
+<meta property="og:title" content="GMPify — Pharmaceutical GMP Training">
+<meta property="og:description" content="Expert pharmaceutical GMP training built directly from FDA guidance documents. On-demand access. Completion certificates included.">
+<meta property="og:url" content="https://www.gmpify.com">
+<meta property="og:type" content="website">
+<title>GMPify — Pharmaceutical GMP Training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Reset & base ────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #0A1E2C;
+    color: #E8F4F8;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── Tokens ─────────────────────────────────────── */
+  :root {
+    --navy:      #0A1E2C;
+    --navy-mid:  #0D2B3E;
+    --navy-card: #132E42;
+    --navy-lift: #1A3A50;
+    --teal:      #00C2A8;
+    --teal-dim:  #008B8B;
+    --gold:      #F5A623;
+    --white:     #FFFFFF;
+    --light:     #CADCe8;
+    --mid:       #7A9FB5;
+    --faint:     #3A5A6E;
+    --radius:    8px;
+    --radius-lg: 16px;
+  }
+
+  /* ── Typography ─────────────────────────────────── */
+  h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; line-height: 1.15; }
+  h1 { font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 700; }
+  h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 600; }
+  h3 { font-size: 1.15rem; font-weight: 600; }
+  p  { color: var(--light); }
+
+  /* ── Layout helpers ─────────────────────────────── */
+  .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+  .section    { padding: 96px 0; }
+  .section-sm { padding: 64px 0; }
+
+  /* ── Nav ────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,30,44,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,194,168,0.15);
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px; max-width: 1140px; margin: 0 auto; padding: 0 24px;
+  }
+  .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem; font-weight: 700;
+    text-decoration: none;
+  }
+  .logo span:first-child { color: var(--teal); }
+  .logo span:last-child  { color: var(--white); }
+  .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--light); text-decoration: none; font-size: 0.9rem;
+    font-weight: 500; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--teal); }
+  .nav-cta {
+    background: var(--teal); color: var(--navy) !important;
+    padding: 10px 22px; border-radius: var(--radius);
+    font-weight: 600 !important; transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.88; color: var(--navy) !important; }
+
+  /* ── Hero ───────────────────────────────────────── */
+  .hero {
+    padding: 160px 0 96px;
+    background:
+      radial-gradient(ellipse 60% 50% at 90% 20%, rgba(0,194,168,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(0,139,139,0.08) 0%, transparent 70%),
+      var(--navy);
+  }
+  .hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,194,168,0.12); border: 1px solid rgba(0,194,168,0.3);
+    border-radius: 99px; padding: 6px 16px;
+    font-size: 0.78rem; font-weight: 600; color: var(--teal);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 24px;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal); flex-shrink: 0;
+  }
+  .hero h1 { margin-bottom: 20px; }
+  .hero h1 em { font-style: normal; color: var(--teal); }
+  .hero-sub { font-size: 1.1rem; color: var(--light); margin-bottom: 36px; max-width: 480px; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-block; background: var(--teal); color: var(--navy);
+    padding: 14px 28px; border-radius: var(--radius); font-weight: 700;
+    font-size: 0.95rem; text-decoration: none; transition: opacity 0.2s;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-secondary {
+    display: inline-block; border: 1.5px solid var(--faint); color: var(--light);
+    padding: 14px 28px; border-radius: var(--radius); font-weight: 500;
+    font-size: 0.95rem; text-decoration: none; transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--teal); color: var(--teal); }
+  .hero-trust {
+    display: flex; align-items: center; gap: 16px;
+    margin-top: 40px; padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .trust-item { font-size: 0.82rem; color: var(--mid); display: flex; align-items: center; gap: 6px; }
+  .trust-item::before { content: '✓'; color: var(--teal); font-weight: 700; }
+
+  /* Hero right — stat cards */
+  .hero-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .stat-card {
+    background: var(--navy-card);
+    border: 1px solid rgba(0,194,168,0.15);
+    border-radius: var(--radius-lg); padding: 24px;
+  }
+  .stat-card.accent { border-color: rgba(0,194,168,0.4); background: rgba(0,194,168,0.07); }
+  .stat-val {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.4rem; font-weight: 700; color: var(--teal); line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-val.gold { color: var(--gold); }
+  .stat-label { font-size: 0.85rem; color: var(--mid); }
+
+  /* ── Divider line ───────────────────────────────── */
+  .divider {
+    height: 1px; background: linear-gradient(90deg, transparent, rgba(0,194,168,0.2), transparent);
+    margin: 0;
+  }
+
+  /* ── Pillars ────────────────────────────────────── */
+  .pillars { background: var(--navy-mid); }
+  .section-label {
+    font-size: 0.75rem; font-weight: 600; color: var(--teal);
+    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;
+  }
+  .section-heading { margin-bottom: 16px; }
+  .section-sub { color: var(--mid); max-width: 560px; margin-bottom: 56px; }
+  .pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .pillar-card {
+    background: var(--navy-card); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius-lg); padding: 28px; position: relative; overflow: hidden;
+    transition: border-color 0.25s, transform 0.25s;
+  }
+  .pillar-card:hover { border-color: rgba(0,194,168,0.3); transform: translateY(-3px); }
+  .pillar-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--teal); opacity: 0.6;
+  }
+  .pillar-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: rgba(0,194,168,0.12); display: flex; align-items: center;
+    justify-content: center; font-size: 1.3rem; margin-bottom: 16px;
+  }
+  .pillar-card h3 { margin-bottom: 8px; font-size: 1rem; }
+  .pillar-card p { font-size: 0.88rem; color: var(--mid); }
+
+  /* ── Courses ────────────────────────────────────── */
+  .courses { background: var(--navy); }
+  .courses-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .course-card {
+    background: var(--navy-card); border: 1px solid rgba(255,255,255,0.06);
+    border-radius: var(--radius-lg); padding: 28px 28px 24px;
+    display: flex; flex-direction: column;
+    transition: border-color 0.25s;
+  }
+  .course-card:hover { border-color: rgba(0,194,168,0.25); }
+  .course-tag {
+    display: inline-block; font-size: 0.7rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--teal); background: rgba(0,194,168,0.1);
+    border: 1px solid rgba(0,194,168,0.2);
+    border-radius: 99px; padding: 3px 10px; margin-bottom: 14px; width: fit-content;
+  }
+  .course-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+  .course-card p { font-size: 0.85rem; color: var(--mid); flex: 1; margin-bottom: 20px; }
+  .course-meta {
+    display: flex; align-items: center; gap: 16px;
+    padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .meta-item { font-size: 0.8rem; color: var(--mid); display: flex; align-items: center; gap: 5px; }
+  .meta-item span { color: var(--light); }
+  .course-card.featured { border-color: rgba(0,194,168,0.25); grid-column: span 2; }
+  .course-card.featured .course-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center;
+  }
+  .cert-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(245,166,35,0.1); border: 1px solid rgba(245,166,35,0.25);
+    border-radius: 99px; padding: 4px 12px;
+    font-size: 0.75rem; font-weight: 600; color: var(--gold); margin-top: 12px;
+  }
+
+  /* ── Pricing ────────────────────────────────────── */
+  .pricing { background: var(--navy-mid); }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: start; }
+  .price-card {
+    background: var(--navy-card); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: var(--radius-lg); padding: 36px 28px; position: relative;
+  }
+  .price-card.recommended {
+    border-color: var(--teal); background: rgba(0,194,168,0.05);
+    transform: scale(1.03);
+  }
+  .rec-badge {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: var(--teal); color: var(--navy);
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; padding: 4px 14px; border-radius: 99px;
+    white-space: nowrap;
+  }
+  .price-name { font-size: 0.85rem; font-weight: 600; color: var(--mid); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px; }
+  .price-amount { font-family: 'Space Grotesk', sans-serif; font-size: 2.6rem; font-weight: 700; color: var(--white); line-height: 1; }
+  .price-amount sup { font-size: 1.2rem; vertical-align: top; margin-top: 6px; color: var(--mid); }
+  .price-amount sub { font-size: 0.9rem; color: var(--mid); }
+  .price-desc { font-size: 0.85rem; color: var(--mid); margin: 12px 0 24px; }
+  .price-features { list-style: none; margin-bottom: 32px; }
+  .price-features li {
+    font-size: 0.875rem; color: var(--light); padding: 7px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .price-features li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .btn-plan {
+    display: block; text-align: center; padding: 13px;
+    border-radius: var(--radius); font-weight: 600; font-size: 0.9rem;
+    text-decoration: none; transition: opacity 0.2s;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .btn-plan-primary { background: var(--teal); color: var(--navy); }
+  .btn-plan-primary:hover { opacity: 0.88; }
+  .btn-plan-outline { border: 1.5px solid var(--faint); color: var(--light); }
+  .btn-plan-outline:hover { border-color: var(--teal); color: var(--teal); }
+
+  /* ── Why GMPify ─────────────────────────────────── */
+  .why { background: var(--navy); }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .why-points { display: flex; flex-direction: column; gap: 28px; }
+  .why-point { display: flex; gap: 18px; align-items: flex-start; }
+  .why-num {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(0,194,168,0.12); border: 1px solid rgba(0,194,168,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+    font-size: 0.85rem; color: var(--teal); flex-shrink: 0;
+  }
+  .why-point h3 { margin-bottom: 4px; font-size: 0.98rem; }
+  .why-point p { font-size: 0.875rem; color: var(--mid); }
+  .why-visual {
+    background: var(--navy-card); border: 1px solid rgba(0,194,168,0.15);
+    border-radius: var(--radius-lg); padding: 36px; position: relative; overflow: hidden;
+  }
+  .why-visual::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--teal), transparent);
+  }
+  .reg-list { list-style: none; }
+  .reg-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.875rem;
+  }
+  .reg-item:last-child { border-bottom: none; }
+  .reg-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+  .reg-name { color: var(--white); font-weight: 500; flex: 1; }
+  .reg-tag {
+    font-size: 0.7rem; background: rgba(0,194,168,0.1);
+    color: var(--teal); padding: 2px 8px; border-radius: 4px; font-weight: 600;
+  }
+
+  /* ── CTA banner ─────────────────────────────────── */
+  .cta-banner {
+    background:
+      radial-gradient(ellipse 80% 100% at 50% 50%, rgba(0,194,168,0.1) 0%, transparent 70%),
+      var(--navy-mid);
+    border-top: 1px solid rgba(0,194,168,0.12);
+    border-bottom: 1px solid rgba(0,194,168,0.12);
+    padding: 80px 0; text-align: center;
+  }
+  .cta-banner h2 { margin-bottom: 16px; }
+  .cta-banner p { color: var(--mid); margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .cta-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+
+  /* ── Footer ─────────────────────────────────────── */
+  footer {
+    background: #060F17; padding: 48px 0 32px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  .footer-inner {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 32px; margin-bottom: 40px;
+  }
+  .footer-brand p { font-size: 0.85rem; color: var(--mid); max-width: 260px; margin-top: 10px; }
+  .footer-links h4 { font-size: 0.8rem; font-weight: 600; color: var(--mid); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+  .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .footer-links a { font-size: 0.875rem; color: var(--light); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--teal); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.8rem; color: var(--mid); flex-wrap: wrap; gap: 8px;
+  }
+  .footer-bottom a { color: var(--mid); text-decoration: none; }
+  .footer-bottom a:hover { color: var(--teal); }
+
+  /* ── Responsive ─────────────────────────────────── */
+  @media (max-width: 900px) {
+    .hero-inner, .why-grid { grid-template-columns: 1fr; gap: 48px; }
+    .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+    .courses-grid { grid-template-columns: 1fr; }
+    .course-card.featured { grid-column: span 1; }
+    .course-card.featured .course-inner { grid-template-columns: 1fr; gap: 20px; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .price-card.recommended { transform: none; }
+    .hero-stats { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+  }
+  @media (max-width: 560px) {
+    .pillars-grid { grid-template-columns: 1fr; }
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+    .hero-actions { flex-direction: column; }
+    .btn-primary, .btn-secondary { text-align: center; }
+    .footer-inner { flex-direction: column; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Navigation ─────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo"><span>GMP</span><span>ify</span></a>
+    <ul class="nav-links">
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#why">Why GMPify</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="https://learn.gmpify.com" class="nav-cta">Start learning →</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow">Pharmaceutical GMP Training</div>
+        <h1>Expert training built from <em>FDA guidance</em></h1>
+        <p class="hero-sub">On-demand GMP, regulatory and quality systems training for pharmaceutical professionals — sourced directly from FDA regulations and ICH guidelines.</p>
+        <div class="hero-actions">
+          <a href="https://learn.gmpify.com" class="btn-primary">Browse courses →</a>
+          <a href="#courses" class="btn-secondary">See what's covered</a>
+        </div>
+        <div class="hero-trust">
+          <div class="trust-item">FDA-sourced content</div>
+          <div class="trust-item">Completion certificates</div>
+          <div class="trust-item">On-demand access</div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card accent">
+          <div class="stat-val">17</div>
+          <div class="stat-label">Years of pharmaceutical training expertise</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val gold">7+</div>
+          <div class="stat-label">Courses covering Parts 210 &amp; 211</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val">30</div>
+          <div class="stat-label">Minutes per module — fits any schedule</div>
+        </div>
+        <div class="stat-card accent">
+          <div class="stat-val">80%</div>
+          <div class="stat-label">Pass mark required to earn your certificate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Training pillars ────────────────────────────── -->
+<section class="pillars section" id="pillars">
+  <div class="container">
+    <div class="section-label">What we cover</div>
+    <h2 class="section-heading">Enterprise-grade training across every GMP discipline</h2>
+    <p class="section-sub">From foundational regulations to inspection readiness — GMPify covers the full scope of pharmaceutical quality training your team needs.</p>
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-icon">📋</div>
+        <h3>GMP Foundations</h3>
+        <p>21 CFR Parts 210 and 211 — the core US pharmaceutical GMP regulations, section by section.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">⚖️</div>
+        <h3>Regulatory Compliance</h3>
+        <p>FDA guidance documents, ICH guidelines, and global standards interpreted for practical application.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🔬</div>
+        <h3>Quality Systems</h3>
+        <p>QMS, deviation management, CAPA, change control — the operational backbone of GMP compliance.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🧪</div>
+        <h3>Laboratory Controls</h3>
+        <p>OOS investigations, stability testing, release testing and laboratory record requirements.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🏭</div>
+        <h3>Production &amp; Operations</h3>
+        <p>Process controls, component management, packaging, labeling and batch record documentation.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🔍</div>
+        <h3>Inspection Readiness</h3>
+        <p>Real FDA 483 observation examples, warning letter patterns and audit preparation strategy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Courses ─────────────────────────────────────── -->
+<section class="courses section" id="courses">
+  <div class="container">
+    <div class="section-label">Course catalog</div>
+    <h2 class="section-heading">Start with the regulations that matter most</h2>
+    <p class="section-sub">Every course is built directly from live FDA source documents — cited to the exact CFR section, updated when regulations change.</p>
+
+    <div class="courses-grid">
+
+      <!-- Featured: Part 211 series -->
+      <div class="course-card featured">
+        <div class="course-inner">
+          <div>
+            <div class="course-tag">Certification series</div>
+            <h3 style="font-size:1.3rem; margin-bottom:10px;">21 CFR Part 211 — CGMP for Finished Pharmaceuticals</h3>
+            <p>The complete 6-module certification series covering all 11 subparts of Part 211 — from organisation and personnel through to records, reports, and returned products. The most comprehensive GMP training series available for US pharmaceutical manufacturers.</p>
+            <div class="cert-badge">✓ Part 211 Certification Series certificate on completion</div>
+          </div>
+          <div>
+            <div style="background:rgba(0,194,168,0.06); border:1px solid rgba(0,194,168,0.15); border-radius:12px; padding:24px;">
+              <div style="font-size:0.75rem; font-weight:600; color:var(--mid); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:14px;">6 modules included</div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div style="font-size:0.85rem; color:var(--light); display:flex; align-items:center; gap:8px;"><span style="color:var(--teal);">✓</span> Scope, Definitions &amp; Personnel</div>
+                <div style="font-size:0.85rem; color:var(--light); display:flex; align-items:center; gap:8px;"><span style="color:var(--teal);">✓</span> Buildings, Facilities &amp; Equipment</div>
+                <div style="font-size:0.85rem; color:var(--light); display:flex; align-items:center; gap:8px;"><span style="color:var(--teal);">✓</span> Components, Containers &amp; Closures</div>
+                <div style="font-size:0.85rem; color:var(--light); display:flex; align-items:center; gap:8px;"><span style="color:var(--teal);">✓</span> Production, Process Controls &amp; Packaging</div>
+                <div style="font-size:0.85rem; color:var(--light); display:flex; align-items:center; gap:8px;"><span style="color:var(--teal);">✓</span> Holding, Distribution &amp; Lab Controls</div>
+                <div style="font-size:0.85rem; color:var(--light); display:flex; align-items:center; gap:8px;"><span style="color:var(--teal);">✓</span> Records, Reports &amp; Returned Products</div>
+              </div>
+              <div style="margin-top:16px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.06); font-size:0.8rem; color:var(--mid);">~3 hours total · 30 min per module · 5 questions each</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 210 -->
+      <div class="course-card">
+        <div class="course-tag">Foundation</div>
+        <h3>21 CFR Part 210 — CGMP Foundations</h3>
+        <p>The legal foundation of all US drug GMP regulations. Covers legal status, applicability, scope, and the critical definitions that underpin every GMP record in your facility.</p>
+        <div class="course-meta">
+          <div class="meta-item">⏱ <span>~30 min</span></div>
+          <div class="meta-item">📝 <span>5 questions</span></div>
+          <div class="meta-item">🏆 <span>Certificate</span></div>
+        </div>
+      </div>
+
+      <!-- Coming soon -->
+      <div class="course-card" style="opacity:0.65;">
+        <div class="course-tag" style="color:var(--gold); background:rgba(245,166,35,0.1); border-color:rgba(245,166,35,0.2);">Coming soon</div>
+        <h3>ICH Q10 — Pharmaceutical Quality System</h3>
+        <p>The internationally harmonised pharmaceutical quality system framework — adopted by FDA and regulators worldwide. Covers quality policy, process performance, and continual improvement.</p>
+        <div class="course-meta">
+          <div class="meta-item">⏱ <span>~30 min</span></div>
+          <div class="meta-item">📝 <span>5 questions</span></div>
+          <div class="meta-item">🏆 <span>Certificate</span></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center; margin-top:40px;">
+      <a href="https://learn.gmpify.com" class="btn-primary">View full course catalog →</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Why GMPify ──────────────────────────────────── -->
+<section class="why section" id="why">
+  <div class="container">
+    <div class="why-grid">
+      <div>
+        <div class="section-label">Why GMPify</div>
+        <h2 class="section-heading" style="margin-bottom:16px;">17 years of expertise. Always current.</h2>
+        <p style="color:var(--mid); margin-bottom:48px;">Built by the team behind one of North America's most trusted live pharmaceutical training programmes — now available on-demand, 24/7.</p>
+        <div class="why-points">
+          <div class="why-point">
+            <div class="why-num">1</div>
+            <div>
+              <h3>Built from live FDA source documents</h3>
+              <p>Every course is generated directly from the eCFR and FDA guidance documents — not paraphrased from third-party summaries. Every slide cites the exact CFR section.</p>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-num">2</div>
+            <div>
+              <h3>Updated when regulations change</h3>
+              <p>When FDA issues new guidance or amends a regulation, our courses are updated to reflect it. Your team always trains on current requirements — never outdated content.</p>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-num">3</div>
+            <div>
+              <h3>Inspection-ready focus throughout</h3>
+              <p>Every module includes real FDA 483 observation examples showing exactly what inspectors look for. Not just what the regulation says — what it means in practice.</p>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-num">4</div>
+            <div>
+              <h3>Certificates that satisfy QMS records</h3>
+              <p>Every completion generates a dated, attributable certificate with a unique ID — suitable for training qualification records and FDA inspection documentation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="why-visual">
+          <div style="font-size:0.75rem; font-weight:600; color:var(--teal); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:20px;">Regulations covered</div>
+          <ul class="reg-list">
+            <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">21 CFR Part 210</div><div class="reg-tag">Live</div></li>
+            <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">21 CFR Part 211 — all 11 subparts</div><div class="reg-tag">Live</div></li>
+            <li class="reg-item"><div class="reg-dot" style="background:var(--gold)"></div><div class="reg-name">ICH Q10 — Pharmaceutical Quality System</div><div class="reg-tag" style="color:var(--gold); background:rgba(245,166,35,0.1)">Soon</div></li>
+            <li class="reg-item"><div class="reg-dot" style="background:var(--gold)"></div><div class="reg-name">ICH Q9 — Quality Risk Management</div><div class="reg-tag" style="color:var(--gold); background:rgba(245,166,35,0.1)">Soon</div></li>
+            <li class="reg-item"><div class="reg-dot" style="background:var(--gold)"></div><div class="reg-name">21 CFR Part 11 — Electronic Records</div><div class="reg-tag" style="color:var(--gold); background:rgba(245,166,35,0.1)">Soon</div></li>
+            <li class="reg-item"><div class="reg-dot" style="background:var(--gold)"></div><div class="reg-name">FDA Process Validation Guidance</div><div class="reg-tag" style="color:var(--gold); background:rgba(245,166,35,0.1)">Soon</div></li>
+            <li class="reg-item"><div class="reg-dot" style="background:var(--gold)"></div><div class="reg-name">Data Integrity Guidance</div><div class="reg-tag" style="color:var(--gold); background:rgba(245,166,35,0.1)">Soon</div></li>
+          </ul>
+          <div style="margin-top:24px; padding:16px; background:rgba(0,194,168,0.06); border-radius:8px; border:1px solid rgba(0,194,168,0.15);">
+            <div style="font-size:0.8rem; color:var(--teal); font-weight:600; margin-bottom:4px;">Always current</div>
+            <div style="font-size:0.8rem; color:var(--mid);">Courses are reviewed and updated whenever FDA issues new guidance or amends the CFR.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Pricing ─────────────────────────────────────── -->
+<section class="pricing section" id="pricing">
+  <div class="container">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-heading">Simple subscription pricing</h2>
+    <p class="section-sub" style="margin-bottom:56px;">Full catalog access from day one. No per-course fees. Cancel anytime.</p>
+    <div class="pricing-grid">
+
+      <div class="price-card">
+        <div class="price-name">Individual</div>
+        <div class="price-amount"><sup>$</sup>69<sub>/mo</sub></div>
+        <div class="price-desc">For solo pharmaceutical professionals</div>
+        <ul class="price-features">
+          <li>Full course catalog access</li>
+          <li>Completion certificates</li>
+          <li>PDF slide downloads</li>
+          <li>Progress tracking</li>
+          <li>1 user seat</li>
+        </ul>
+        <a href="https://learn.gmpify.com" class="btn-plan btn-plan-outline">Get started →</a>
+      </div>
+
+      <div class="price-card recommended">
+        <div class="rec-badge">Most popular</div>
+        <div class="price-name">Team</div>
+        <div class="price-amount"><sup>$</sup>349<sub>/mo</sub></div>
+        <div class="price-desc">For pharmaceutical teams and sites</div>
+        <ul class="price-features">
+          <li>Everything in Individual</li>
+          <li>Up to 10 user seats</li>
+          <li>Manager dashboard</li>
+          <li>Team completion reports</li>
+          <li>Exportable training records</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="https://learn.gmpify.com" class="btn-plan btn-plan-primary">Get started →</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-name">Enterprise</div>
+        <div class="price-amount" style="font-size:2rem; padding-top:6px;">Custom</div>
+        <div class="price-desc">For large manufacturers and multi-site organisations</div>
+        <ul class="price-features">
+          <li>Everything in Team</li>
+          <li>Unlimited user seats</li>
+          <li>SSO / Active Directory</li>
+          <li>Compliance reporting</li>
+          <li>Dedicated onboarding</li>
+          <li>Custom course development</li>
+        </ul>
+        <a href="mailto:training@gmpify.com" class="btn-plan btn-plan-outline">Contact us →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA Banner ──────────────────────────────────── -->
+<section class="cta-banner">
+  <div class="container">
+    <h2>Ready to train your team?</h2>
+    <p>Join pharmaceutical professionals across the industry who train with GMPify. On-demand, FDA-sourced, always current.</p>
+    <div class="cta-actions">
+      <a href="https://learn.gmpify.com" class="btn-primary">Browse courses →</a>
+      <a href="mailto:training@gmpify.com" class="btn-secondary">Talk to us</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="logo" style="font-size:1.3rem;"><span>GMP</span><span>ify</span></a>
+        <p>Expert pharmaceutical GMP training built directly from FDA guidance documents. On-demand. Always current.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Training</h4>
+        <ul>
+          <li><a href="https://learn.gmpify.com">Course catalog</a></li>
+          <li><a href="https://learn.gmpify.com">21 CFR Part 210</a></li>
+          <li><a href="https://learn.gmpify.com">21 CFR Part 211 Series</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#why">Why GMPify</a></li>
+          <li><a href="mailto:training@gmpify.com">Contact us</a></li>
+          <li><a href="https://learn.gmpify.com">Sign in</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:training@gmpify.com">training@gmpify.com</a></li>
+          <li><a href="https://learn.gmpify.com">learn.gmpify.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 GMPify. All rights reserved.</span>
+      <span>Built from FDA guidance documents · <a href="https://learn.gmpify.com">learn.gmpify.com</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
