@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="gmpify_favicon.png">
+<meta name="description" content="Pharmaceutical GMP regulatory analysis, FDA enforcement trends and practical compliance guidance from GMPify Training.">
+<meta property="og:title" content="GMPify Blog - Pharmaceutical GMP Insights">
+<meta property="og:description" content="Current pharmaceutical GMP regulatory analysis, FDA enforcement trends and practical compliance guidance.">
+<meta property="og:url" content="https://www.gmpify.com/blog.html">
+<meta property="og:type" content="website">
+<title>GMPify Blog - Pharmaceutical GMP Insights</title>
+<link rel="canonical" href="https://www.gmpify.com/blog.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "GMPify Blog - Pharmaceutical GMP Insights",
+  "url": "https://www.gmpify.com/blog.html",
+  "description": "Current pharmaceutical GMP regulatory analysis, FDA enforcement trends and practical compliance guidance.",
+  "publisher": {
+    "@type": "EducationalOrganization",
+    "name": "GMPify",
+    "url": "https://www.gmpify.com"
+  }
+}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2B3E;--navy-card:#112d41;--teal:#00C2A8;--gold:#F5A623;
+  --light:#CAD8E8;--mid:#6E90A0;--white:#fff;--orange:#B84A00;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif
+}
+body{font-family:var(--font);background:var(--navy);color:var(--light);line-height:1.6}
+a{color:var(--teal);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+nav{background:rgba(13,43,62,0.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,194,168,0.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-size:1.4rem;font-weight:800;letter-spacing:-0.5px;color:var(--white)}
+.logo span:first-child{color:var(--teal)}
+.logo span:last-child{color:var(--white)}
+.nav-links{display:flex;gap:24px;list-style:none;align-items:center}
+.nav-links a{font-size:0.88rem;font-weight:500;color:var(--light);transition:color .2s}
+.nav-links a:hover{color:var(--teal)}
+.nav-cta{background:var(--teal);color:var(--navy)!important;padding:7px 18px;border-radius:6px;font-weight:700!important}
+.blog-hero{padding:60px 0 40px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.blog-hero-label{font-size:0.75rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.blog-hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:var(--white);margin-bottom:12px}
+.blog-hero p{font-size:1rem;color:var(--mid);max-width:580px}
+.blog-grid{display:grid;grid-template-columns:2fr 1fr;gap:48px;padding:48px 0;align-items:start}
+.post-list{display:flex;flex-direction:column;gap:32px}
+.post-card{border-bottom:1px solid rgba(255,255,255,0.07);padding-bottom:32px}
+.post-card:last-child{border-bottom:none}
+.post-tag{font-size:0.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.post-card h2{font-size:1.25rem;font-weight:800;color:var(--white);margin-bottom:10px;line-height:1.35}
+.post-card h2 a{color:var(--white);transition:color .2s}
+.post-card h2 a:hover{color:var(--teal)}
+.post-card p{font-size:0.9rem;color:var(--mid);line-height:1.65;margin-bottom:14px}
+.post-meta{font-size:0.78rem;color:var(--mid);display:flex;gap:16px;align-items:center}
+.post-read{color:var(--teal);font-weight:600;font-size:0.85rem}
+.coming-soon-tag{display:inline-block;background:rgba(245,166,35,0.12);color:var(--gold);font-size:0.72rem;font-weight:700;padding:2px 10px;border-radius:10px;margin-left:8px;vertical-align:middle}
+.sidebar{position:sticky;top:80px;display:flex;flex-direction:column;gap:24px}
+.sidebar-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:20px}
+.sidebar-card h3{font-size:0.9rem;font-weight:700;color:var(--white);margin-bottom:12px}
+.sidebar-card p{font-size:0.82rem;color:var(--mid);line-height:1.55;margin-bottom:14px}
+.btn-small{display:inline-block;background:var(--teal);color:var(--navy);font-weight:700;padding:8px 18px;border-radius:6px;font-size:0.82rem}
+.btn-small:hover{background:#00a892;color:var(--navy)}
+.btn-small-outline{display:inline-block;border:1.5px solid var(--orange);color:var(--orange);font-weight:700;padding:8px 18px;border-radius:6px;font-size:0.82rem}
+.topic-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.topic-list li a{font-size:0.85rem;color:var(--light);display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);transition:color .2s}
+.topic-list li a:hover{color:var(--teal)}
+.topic-count{font-size:0.78rem;color:var(--mid)}
+footer{padding:40px 0 28px;border-top:1px solid rgba(255,255,255,0.07);margin-top:48px}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.8rem;color:var(--mid)}
+@media(max-width:768px){
+  .blog-grid{grid-template-columns:1fr}
+  .sidebar{position:static}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="logo"><span>GMP</span><span>ify</span></a>
+      <ul class="nav-links">
+        <li><a href="/#courses">Courses</a></li>
+        <li><a href="/#why">Why GMPify</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="blog.html" style="color:var(--teal);">Blog</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="https://learn.gmpify.com" class="nav-cta">Start learning</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="blog-hero">
+  <div class="container">
+    <div class="blog-hero-label">GMPify Blog</div>
+    <h1>Pharmaceutical GMP Insights</h1>
+    <p>Current regulatory analysis, FDA enforcement trends and practical GMP compliance guidance. Written from primary regulatory sources - the same approach we bring to every course.</p>
+  </div>
+</div>
+
+<div class="container">
+  <div class="blog-grid">
+
+    <!-- POSTS -->
+    <div class="post-list">
+
+      <article class="post-card">
+        <div class="post-tag">FDA Enforcement</div>
+        <h2><a href="blog/fda-ai-warning-letter-2026.html">What the FDA AI Warning Letter Means for Your Quality System <span class="coming-soon-tag">Coming soon</span></a></h2>
+        <p>On April 2, 2026, FDA issued the first warning letter in history containing a section explicitly titled "Inappropriate Use of Artificial Intelligence in Pharmaceutical Manufacturing." The manufacturer used AI agents to create drug product specifications, SOPs and master production records without quality unit review. The company subsequently ceased drug production. Here is what every QA team needs to understand.</p>
+        <div class="post-meta">
+          <span>June 2026</span>
+          <span>&middot; 5 min read</span>
+          <a href="blog/fda-ai-warning-letter-2026.html" class="post-read">Read article &rarr;</a>
+        </div>
+      </article>
+
+      <article class="post-card">
+        <div class="post-tag">Inspection Readiness</div>
+        <h2><a href="blog/fda-483-top-observations-2025.html">FDA's Top Four 483 Observations - Four Years Running <span class="coming-soon-tag">Coming soon</span></a></h2>
+        <p>FDA sent 303 drug warning letters in FY2025 - a 59% increase from FY2024. The same four CFR sections have held the top four positions in every inspection year from 2021 through 2024. Understanding why sites keep failing these same requirements - and what to do about it - is one of the most commercially valuable things a QA professional can know.</p>
+        <div class="post-meta">
+          <span>June 2026</span>
+          <span>&middot; 6 min read</span>
+          <a href="blog/fda-483-top-observations-2025.html" class="post-read">Read article &rarr;</a>
+        </div>
+      </article>
+
+      <article class="post-card">
+        <div class="post-tag">EU GMP</div>
+        <h2><a href="blog/annex1-ccs-inspection-findings-2024-2025.html">EU GMP Annex 1 CCS - What Inspectors Are Finding Two Years In <span class="coming-soon-tag">Coming soon</span></a></h2>
+        <p>Since August 2023 the Contamination Control Strategy has been mandatory for every sterile manufacturing site supplying the EU market. Two years of post-implementation inspections have revealed consistent patterns - the most common CCS gaps being found by EMA and national competent authorities, and how to build a CCS that genuinely de-risks the inspection.</p>
+        <div class="post-meta">
+          <span>June 2026</span>
+          <span>&middot; 7 min read</span>
+          <a href="blog/annex1-ccs-inspection-findings-2024-2025.html" class="post-read">Read article &rarr;</a>
+        </div>
+      </article>
+
+      <article class="post-card">
+        <div class="post-tag">Computer System Validation</div>
+        <h2><a href="blog/fda-csa-guidance-final-2025.html">FDA Finalised CSA Guidance September 2025 - What Changed from the Draft <span class="coming-soon-tag">Coming soon</span></a></h2>
+        <p>Three years after the 2022 draft, FDA finalised the Computer Software Assurance guidance on September 24, 2025 - with a further update in February 2026 aligning it with the QMSR and ISO 13485:2016. An industry survey in early 2024 found that 31% of pharmaceutical professionals had never heard of CSA. Here is everything you need to know.</p>
+        <div class="post-meta">
+          <span>June 2026</span>
+          <span>&middot; 6 min read</span>
+          <a href="blog/fda-csa-guidance-final-2025.html" class="post-read">Read article &rarr;</a>
+        </div>
+      </article>
+
+      <article class="post-card">
+        <div class="post-tag">Microbiology</div>
+        <h2><a href="blog/human-error-never-root-cause.html">Why Human Error is Never an Acceptable Root Cause Under 21 CFR 211.192 <span class="coming-soon-tag">Coming soon</span></a></h2>
+        <p>Human errors account for approximately 50% of all quality incidents in pharmaceutical manufacturing. Yet "human error" remains the most over-used and least useful root cause conclusion in the industry. FDA has made its position clear in warning letters: attributing a deviation to human error without identifying the underlying systemic cause is not a thorough investigation. It is the beginning of one.</p>
+        <div class="post-meta">
+          <span>June 2026</span>
+          <span>&middot; 5 min read</span>
+          <a href="blog/human-error-never-root-cause.html" class="post-read">Read article &rarr;</a>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="sidebar-card">
+        <h3>Try a free module</h3>
+        <p>No login required. Start with our GMP Fundamentals for Manufacturing Operators preview - covering what GMP is, ALCOA+ and deviation reporting.</p>
+        <a href="https://learn.gmpify.com/course/gmp-fundamentals-free-preview" class="btn-small-outline">Start free preview &rarr;</a>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Subscribe for full access</h3>
+        <p>30 on-demand GMP courses built from primary regulatory sources. Certificate on completion of every course.</p>
+        <p style="margin-top:10px; font-size:0.9rem; color:var(--white); font-weight:700;">From $69/month</p>
+        <a href="https://learn.gmpify.com" class="btn-small" style="margin-top:10px;">Browse courses &rarr;</a>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Topics covered</h3>
+        <ul class="topic-list">
+          <li><a href="#">FDA Enforcement &amp; 483s <span class="topic-count">3 articles</span></a></li>
+          <li><a href="#">EU GMP Annex 1 <span class="topic-count">2 articles</span></a></li>
+          <li><a href="#">Data Integrity <span class="topic-count">2 articles</span></a></li>
+          <li><a href="#">Microbiology <span class="topic-count">2 articles</span></a></li>
+          <li><a href="#">Computer System Validation <span class="topic-count">1 article</span></a></li>
+          <li><a href="#">Quality Culture <span class="topic-count">1 article</span></a></li>
+          <li><a href="#">ICH Guidelines <span class="topic-count">1 article</span></a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Enterprise training</h3>
+        <p>Site licensing for 10 to 1,000+ learners. SCORM compliant. Integrates with your existing LMS.</p>
+        <a href="mailto:training@gmpify.com" class="btn-small" style="margin-top:4px;">Contact us &rarr;</a>
+      </div>
+
+    </aside>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>&copy; 2026 GMPify. All rights reserved. &nbsp;&middot;&nbsp; <a href="/privacy.html" style="color:var(--mid);">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="/terms.html" style="color:var(--mid);">Terms of Service</a></span>
+      <span><a href="/" style="color:var(--mid);">gmpify.com</a> &middot; <a href="https://learn.gmpify.com" style="color:var(--mid);">learn.gmpify.com</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
