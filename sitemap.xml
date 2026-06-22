@@ -1,27 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Main pages -->
   <url>
     <loc>https://www.gmpify.com/</loc>
-    <lastmod>2026-06-10</lastmod>
+    <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/#courses</loc>
-    <lastmod>2026-06-10</lastmod>
+    <loc>https://www.gmpify.com/blog.html</loc>
+    <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/#pricing</loc>
-    <lastmod>2026-06-10</lastmod>
+    <loc>https://www.gmpify.com/privacy.html</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.gmpify.com/terms.html</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Blog posts -->
+  <url>
+    <loc>https://www.gmpify.com/blog/fda-ai-warning-letter-2026.html</loc>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/#why</loc>
-    <lastmod>2026-06-10</lastmod>
+    <loc>https://www.gmpify.com/blog/fda-483-top-observations-2025.html</loc>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://www.gmpify.com/blog/annex1-ccs-inspection-findings-2024-2025.html</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.gmpify.com/blog/fda-csa-guidance-final-2025.html</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.gmpify.com/blog/human-error-never-root-cause.html</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>
