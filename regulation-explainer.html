@@ -77,10 +77,11 @@ footer{padding:36px 0 24px;border-top:1px solid rgba(255,255,255,0.07);max-width
 <body>
 
 <nav><div class="nav-inner">
-  <a href="/" class="logo"><span>GMP</span><span>ify</span></a>
+  <a href="https://www.gmpify.com" class="logo"><span>GMP</span><span>ify</span></a>
   <ul class="nav-links">
-    <li><a href="/#courses">Courses</a></li>
-    <li><a href="/blog.html">Blog</a></li>
+    <li><a href="https://www.gmpify.com/#courses">Courses</a></li>
+    <li><a href="https://www.gmpify.com/blog.html">Blog</a></li>
+    <li><a href="https://www.gmpify.com" style="color:var(--teal);">&larr; Back to GMPify</a></li>
     <li><a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="nav-cta">Subscribe</a></li>
   </ul>
 </div></nav>
@@ -97,14 +98,19 @@ footer{padding:36px 0 24px;border-top:1px solid rgba(255,255,255,0.07);max-width
     <strong>GMPify subscriber tool.</strong> Built from 27 years of pharmaceutical GMP training experience. Every explanation reflects current FDA enforcement data and inspection expectations.
   </div>
 
-  <div id="keySection" style="background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.25);border-radius:10px;padding:16px 18px;margin-bottom:24px;">
-    <div style="font-size:0.78rem;font-weight:700;color:#F5A623;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Session API key required</div>
-    <p style="font-size:0.85rem;color:var(--mid);margin-bottom:12px;">Paste your Anthropic API key below to activate the tool. The key is used only in your browser this session and is never stored.</p>
+  <div id="keySection" style="display:none;background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.25);border-radius:10px;padding:16px 18px;margin-bottom:24px;">
+    <div style="font-size:0.78rem;font-weight:700;color:#F5A623;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Enter your API key once</div>
+    <p style="font-size:0.85rem;color:var(--mid);margin-bottom:12px;">Your key is saved in this browser so you only need to enter it once. It is never sent to GMPify servers.</p>
     <div style="display:flex;gap:10px;align-items:center;">
       <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." style="flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(202,216,232,0.2);border-radius:8px;padding:10px 14px;color:#fff;font-family:var(--font);font-size:0.88rem;" />
-      <button onclick="activateKey()" style="background:#F5A623;color:#0D2B3E;border:none;padding:10px 20px;border-radius:8px;font-size:0.88rem;font-weight:700;cursor:pointer;white-space:nowrap;">Activate</button>
+      <button onclick="activateKey()" style="background:#F5A623;color:#0D2B3E;border:none;padding:10px 20px;border-radius:8px;font-size:0.88rem;font-weight:700;cursor:pointer;white-space:nowrap;">Save key</button>
     </div>
     <p id="keyStatus" style="font-size:0.78rem;margin-top:8px;color:var(--mid);display:none;"></p>
+  </div>
+
+  <div id="keyActive" style="display:none;background:rgba(0,194,168,0.06);border:1px solid rgba(0,194,168,0.2);border-radius:10px;padding:12px 18px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;">
+    <span style="font-size:0.85rem;color:var(--teal);">API key saved in this browser. Tool is ready.</span>
+    <button onclick="clearKey()" style="background:transparent;border:1px solid rgba(202,216,232,0.2);color:var(--mid);padding:4px 12px;border-radius:6px;font-size:0.78rem;cursor:pointer;">Reset key</button>
   </div>
 
   <div class="example-label">Try an example</div>
@@ -174,12 +180,12 @@ footer{padding:36px 0 24px;border-top:1px solid rgba(255,255,255,0.07);max-width
 </div>
 
 <footer><div class="footer-inner">
-  <span>&copy; 2026 GMPify. <a href="/privacy.html">Privacy</a> &middot; <a href="/terms.html">Terms</a></span>
-  <span><a href="/">gmpify.com</a> &middot; <a href="/blog.html">Blog</a> &middot; <a href="https://learn.gmpify.com">learn.gmpify.com</a></span>
+  <span>&copy; 2026 GMPify. <a href="https://www.gmpify.com/privacy.html">Privacy</a> &middot; <a href="https://www.gmpify.com/terms.html">Terms</a></span>
+  <span><a href="https://www.gmpify.com">gmpify.com</a> &middot; <a href="https://www.gmpify.com/blog.html">Blog</a> &middot; <a href="https://learn.gmpify.com">learn.gmpify.com</a></span>
 </div></footer>
 
 <script>
-let API_KEY = "";
+let API_KEY = localStorage.getItem("gmpify_api_key") || "";
 
 const SYSTEM = `You are a senior pharmaceutical GMP regulatory expert with 27 years of live pharmaceutical training experience across FDA-regulated manufacturing sites in North America and internationally. You work for GMPify - a pharmaceutical GMP training platform built directly from primary regulatory sources.
 
@@ -200,19 +206,34 @@ function activateKey() {
   const input = document.getElementById('apiKeyInput');
   const key = input.value.trim();
   if (!key.startsWith('sk-ant-')) {
-    document.getElementById('keyStatus').textContent = 'That does not look like a valid Anthropic API key. It should start with sk-ant-';
+    document.getElementById('keyStatus').textContent = 'That does not look like a valid key. It should start with sk-ant-';
     document.getElementById('keyStatus').style.color = '#f87171';
     document.getElementById('keyStatus').style.display = 'block';
     return;
   }
   API_KEY = key;
-  document.getElementById('keySection').style.background = 'rgba(0,194,168,0.06)';
-  document.getElementById('keySection').style.borderColor = 'rgba(0,194,168,0.25)';
-  document.getElementById('keyStatus').textContent = 'API key activated. The tool is ready to use.';
-  document.getElementById('keyStatus').style.color = '#00C2A8';
-  document.getElementById('keyStatus').style.display = 'block';
+  localStorage.setItem('gmpify_api_key', key);
   input.value = '';
+  showKeyState();
 }
+
+function clearKey() {
+  API_KEY = '';
+  localStorage.removeItem('gmpify_api_key');
+  showKeyState();
+}
+
+function showKeyState() {
+  const hasKey = !!API_KEY;
+  document.getElementById('keySection').style.display = hasKey ? 'none' : 'block';
+  const activeEl = document.getElementById('keyActive');
+  activeEl.style.display = hasKey ? 'flex' : 'none';
+}
+
+// Run on page load
+document.addEventListener('DOMContentLoaded', function() {
+  showKeyState();
+});
 
 function setExample(el) {
   document.getElementById('query').value = el.textContent;
@@ -232,11 +253,6 @@ function clearResult() {
 async function explain() {
   const query = document.getElementById('query').value.trim();
   if (!query) return;
-
-  if (API_KEY === "YOUR_ANTHROPIC_API_KEY_HERE") {
-    showError("API key not configured. Please add your Anthropic API key to this file.");
-    return;
-  }
 
   const btn = document.getElementById('askBtn');
   const loading = document.getElementById('loading');
