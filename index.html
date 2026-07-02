@@ -167,6 +167,7 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
 @media(max-width:768px){
   .footer-inner{grid-template-columns:1fr 1fr}
   .nav-links{display:none}
+  .tool-grid{grid-template-columns:1fr!important}
   .free-strip{flex-direction:column}
   .hero-stats{gap:20px}
 }
@@ -193,6 +194,7 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="#about">About</a></li>
+        <li><a href="https://gmpify-tools.netlify.app/training-assessment.html" target="_blank" style="color:var(--gold)">GMP Assessment</a></li>
         <li><a href="https://gmpify-tools.netlify.app" target="_blank" style="color:var(--gold)">Reg Explainer</a></li>
         <li><a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="nav-cta">Start learning</a></li>
       </ul>
@@ -302,21 +304,37 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
 <!-- REGULATION EXPLAINER TOOL -->
 <section class="section" id="tool" style="background:linear-gradient(135deg,rgba(0,194,168,0.06),rgba(0,194,168,0.02));border-top:1px solid rgba(0,194,168,0.15);border-bottom:1px solid rgba(0,194,168,0.15);">
   <div class="container">
-    <div class="section-label" style="color:var(--gold)">Subscriber tool</div>
-    <h2 class="section-heading">Regulation Explainer</h2>
-    <p style="font-size:1rem;color:var(--mid);max-width:640px;margin:0 auto 32px;text-align:center;line-height:1.7;">Paste any 21 CFR section, USP chapter, EU GMP clause or ICH guideline. Get an expert plain-language explanation with inspection context, the most common violation and related requirements. Instantly.</p>
-    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:32px;">
-      <span style="font-size:0.8rem;padding:5px 14px;border-radius:20px;border:1px solid rgba(202,216,232,0.2);color:var(--light);background:rgba(255,255,255,0.04);">21 CFR 211.192</span>
-      <span style="font-size:0.8rem;padding:5px 14px;border-radius:20px;border:1px solid rgba(202,216,232,0.2);color:var(--light);background:rgba(255,255,255,0.04);">EU GMP Annex 1 Section 4.3</span>
-      <span style="font-size:0.8rem;padding:5px 14px;border-radius:20px;border:1px solid rgba(202,216,232,0.2);color:var(--light);background:rgba(255,255,255,0.04);">USP 85 method suitability</span>
-      <span style="font-size:0.8rem;padding:5px 14px;border-radius:20px;border:1px solid rgba(202,216,232,0.2);color:var(--light);background:rgba(255,255,255,0.04);">ICH Q9(R1) bias</span>
-      <span style="font-size:0.8rem;padding:5px 14px;border-radius:20px;border:1px solid rgba(202,216,232,0.2);color:var(--light);background:rgba(255,255,255,0.04);">USP 60 Burkholderia cepacia</span>
-      <span style="font-size:0.8rem;padding:5px 14px;border-radius:20px;border:1px solid rgba(202,216,232,0.2);color:var(--light);background:rgba(255,255,255,0.04);">21 CFR 211.68</span>
+    <div class="section-label" style="color:var(--gold)">Free AI-powered tools</div>
+    <h2 class="section-heading">Built for pharmaceutical professionals</h2>
+    <p style="text-align:center;color:var(--mid);max-width:580px;margin:0 auto 36px;font-size:0.97rem;line-height:1.7;">Two tools built from 27 years of pharmaceutical GMP training experience. No login required to try.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:820px;margin:0 auto;">
+
+      <div style="background:var(--navy-card);border:1px solid rgba(0,194,168,0.2);border-radius:14px;padding:28px 24px;display:flex;flex-direction:column;">
+        <div style="font-size:0.7rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Training Assessment</div>
+        <h3 style="font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:10px;line-height:1.3;">Find your GMP training priorities</h3>
+        <p style="font-size:0.88rem;color:var(--mid);line-height:1.65;margin-bottom:20px;flex:1;">Answer 10 questions about your role, site type and regulatory focus. Get a personalised list of the courses you need most and why.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
+          <span style="font-size:0.75rem;padding:3px 10px;border-radius:20px;border:1px solid rgba(202,216,232,0.15);color:var(--mid);">Role-specific</span>
+          <span style="font-size:0.75rem;padding:3px 10px;border-radius:20px;border:1px solid rgba(202,216,232,0.15);color:var(--mid);">Inspection timeline</span>
+          <span style="font-size:0.75rem;padding:3px 10px;border-radius:20px;border:1px solid rgba(202,216,232,0.15);color:var(--mid);">5 priority courses</span>
+        </div>
+        <a href="https://gmpify-tools.netlify.app/training-assessment.html" target="_blank" class="btn-primary" style="text-align:center;padding:12px 20px;font-size:0.9rem;">Start assessment &rarr;</a>
+      </div>
+
+      <div style="background:var(--navy-card);border:1px solid rgba(0,194,168,0.2);border-radius:14px;padding:28px 24px;display:flex;flex-direction:column;">
+        <div style="font-size:0.7rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Regulation Explainer</div>
+        <h3 style="font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:10px;line-height:1.3;">Explain any GMP regulation instantly</h3>
+        <p style="font-size:0.88rem;color:var(--mid);line-height:1.65;margin-bottom:20px;flex:1;">Paste any 21 CFR section, USP chapter, EU GMP clause or ICH guideline. Get a plain-language expert explanation with inspection context and common violations.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;">
+          <span style="font-size:0.75rem;padding:3px 10px;border-radius:20px;border:1px solid rgba(202,216,232,0.15);color:var(--mid);">21 CFR</span>
+          <span style="font-size:0.75rem;padding:3px 10px;border-radius:20px;border:1px solid rgba(202,216,232,0.15);color:var(--mid);">EU GMP</span>
+          <span style="font-size:0.75rem;padding:3px 10px;border-radius:20px;border:1px solid rgba(202,216,232,0.15);color:var(--mid);">USP chapters</span>
+          <span style="font-size:0.75rem;padding:3px 10px;border-radius:20px;border:1px solid rgba(202,216,232,0.15);color:var(--mid);">ICH guidelines</span>
+        </div>
+        <a href="https://gmpify-tools.netlify.app" target="_blank" class="btn-primary" style="text-align:center;padding:12px 20px;font-size:0.9rem;">Try Reg Explainer &rarr;</a>
+      </div>
+
     </div>
-    <div style="text-align:center;margin-bottom:16px;">
-      <a href="https://gmpify-tools.netlify.app" target="_blank" class="btn-primary" style="font-size:1rem;padding:14px 36px;">Try the Regulation Explainer &rarr;</a>
-    </div>
-    <p style="text-align:center;font-size:0.82rem;color:var(--mid);">Opens in a new tab. Built from 27 years of pharmaceutical GMP training experience.</p>
   </div>
 </section>
 
