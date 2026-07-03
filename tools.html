@@ -1,1 +1,328 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="gmpify_favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
+<title>GMPify Tools - AI-Powered Pharmaceutical GMP Tools</title>
+<meta name="description" content="Three free AI-powered tools for pharmaceutical GMP professionals. Training Assessment, Regulation Explainer and 483 Response Drafter. Built from 27 years of pharmaceutical GMP training experience.">
+<meta property="og:title" content="GMPify Tools - AI-Powered Pharmaceutical GMP Tools">
+<meta property="og:description" content="Three free AI-powered tools for pharmaceutical GMP professionals. Built from 27 years of experience and current FDA enforcement data.">
+<meta property="og:url" content="https://www.gmpify.com/tools.html">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://www.gmpify.com/tools.html">
+<!-- Google Analytics GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S5X9XQYNPG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-S5X9XQYNPG');
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2B3E;--navy-card:#112d41;--teal:#00C2A8;--gold:#F5A623;
+  --light:#CAD8E8;--mid:#6E90A0;--white:#fff;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --radius:10px;
+}
+body{font-family:var(--font);background:var(--navy);color:var(--light);line-height:1.6;min-height:100vh}
+a{color:var(--teal);text-decoration:none}
+
+/* NAV */
+nav{background:rgba(13,43,62,0.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,194,168,0.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;max-width:1100px;margin:0 auto;padding:0 24px}
+.logo{font-size:1.4rem;font-weight:800;color:#fff}
+.logo span:first-child{color:var(--teal)}
+.nav-links{display:flex;gap:24px;list-style:none;align-items:center}
+.nav-links a{font-size:0.88rem;font-weight:500;color:var(--light);transition:color .2s}
+.nav-links a:hover{color:var(--teal)}
+.nav-active{color:var(--teal)!important}
+.nav-cta{background:var(--teal);color:var(--navy)!important;padding:7px 18px;border-radius:6px;font-weight:700!important}
+
+/* HERO */
+.tools-hero{padding:64px 24px 48px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.06)}
+.tools-hero .tag{font-size:0.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px}
+.tools-hero h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;color:#fff;line-height:1.2;margin-bottom:16px}
+.tools-hero h1 span{color:var(--teal)}
+.tools-hero p{font-size:1.05rem;color:var(--mid);max-width:600px;margin:0 auto 28px;line-height:1.75}
+.hero-stats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat-val{font-size:1.6rem;font-weight:800;color:var(--gold)}
+.hero-stat-lbl{font-size:0.78rem;color:var(--mid);margin-top:2px}
+
+/* TOOLS GRID */
+.tools-section{max-width:1100px;margin:0 auto;padding:56px 24px 80px}
+.tools-grid{display:grid;grid-template-columns:1fr;gap:24px}
+
+/* TOOL CARD */
+.tool-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:16px;overflow:hidden;display:grid;grid-template-columns:1fr 340px;transition:border-color 0.2s}
+.tool-card:hover{border-color:rgba(0,194,168,0.25)}
+.tool-card.featured{border-color:rgba(245,166,35,0.3)}
+.tool-card-body{padding:32px 36px}
+.tool-card-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.tool-number{width:32px;height:32px;border-radius:50%;background:rgba(0,194,168,0.12);border:1px solid rgba(0,194,168,0.3);display:flex;align-items:center;justify-content:center;font-size:0.88rem;font-weight:700;color:var(--teal);flex-shrink:0}
+.tool-category{font-size:0.72rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.5px}
+.new-badge{font-size:0.65rem;font-weight:700;background:var(--gold);color:var(--navy);padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:0.3px}
+.tool-card h2{font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:10px;line-height:1.3}
+.tool-card .tool-desc{font-size:0.95rem;color:var(--mid);line-height:1.75;margin-bottom:20px}
+.tool-features{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.tool-feature{display:flex;align-items:flex-start;gap:10px;font-size:0.88rem;color:var(--light);line-height:1.5}
+.tool-feature::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:7px}
+.tool-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:28px}
+.tool-tag{font-size:0.75rem;padding:4px 11px;border-radius:20px;border:1px solid rgba(202,216,232,0.15);color:var(--mid)}
+.btn-try{display:inline-block;padding:12px 28px;border-radius:var(--radius);font-size:0.92rem;font-weight:700;transition:all 0.15s}
+.btn-try-teal{background:var(--teal);color:var(--navy)}
+.btn-try-teal:hover{background:#00a892;color:var(--navy)}
+.btn-try-gold{background:var(--gold);color:var(--navy)}
+.btn-try-gold:hover{background:#e8950f;color:var(--navy)}
+.btn-try-outline{border:1.5px solid var(--teal);color:var(--teal)}
+.btn-try-outline:hover{background:rgba(0,194,168,0.08)}
+
+/* TOOL CARD PANEL */
+.tool-card-panel{background:rgba(0,0,0,0.15);border-left:1px solid rgba(255,255,255,0.06);padding:32px 28px;display:flex;flex-direction:column;justify-content:space-between}
+.panel-label{font-size:0.72rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px}
+.panel-steps{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.panel-step{display:flex;align-items:flex-start;gap:10px}
+.step-num{width:22px;height:22px;border-radius:50%;background:rgba(0,194,168,0.12);border:1px solid rgba(0,194,168,0.25);display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:var(--teal);flex-shrink:0;margin-top:1px}
+.step-text{font-size:0.85rem;color:var(--light);line-height:1.5}
+.panel-who{background:rgba(255,255,255,0.03);border-radius:var(--radius);padding:14px}
+.panel-who-label{font-size:0.7rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px}
+.panel-who-text{font-size:0.83rem;color:var(--light);line-height:1.55}
+
+/* COMING SOON */
+.coming-soon-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.coming-card{background:rgba(255,255,255,0.02);border:1px dashed rgba(202,216,232,0.12);border-radius:12px;padding:20px;text-align:center}
+.coming-icon{font-size:1.6rem;margin-bottom:10px}
+.coming-title{font-size:0.92rem;font-weight:700;color:var(--light);margin-bottom:6px}
+.coming-desc{font-size:0.82rem;color:var(--mid);line-height:1.55}
+.coming-label{font-size:0.68rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:0.4px;margin-top:10px}
+
+/* SUBSCRIBE CTA */
+.tools-cta{background:linear-gradient(135deg,rgba(0,194,168,0.08),rgba(0,194,168,0.02));border:1px solid rgba(0,194,168,0.18);border-radius:16px;padding:40px 36px;text-align:center;margin-top:48px}
+.tools-cta h2{font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:10px}
+.tools-cta p{font-size:0.95rem;color:var(--mid);max-width:520px;margin:0 auto 24px;line-height:1.7}
+.btn-subscribe{display:inline-block;background:var(--teal);color:var(--navy);font-weight:700;padding:13px 32px;border-radius:var(--radius);font-size:0.95rem;transition:background 0.15s}
+.btn-subscribe:hover{background:#00a892;color:var(--navy)}
+.cta-note{font-size:0.8rem;color:var(--mid);margin-top:12px}
+
+footer{padding:24px;border-top:1px solid rgba(255,255,255,0.07)}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.8rem;color:var(--mid);max-width:1100px;margin:0 auto}
+
+@media(max-width:860px){
+  .tool-card{grid-template-columns:1fr}
+  .tool-card-panel{border-left:none;border-top:1px solid rgba(255,255,255,0.06)}
+  .coming-soon-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .hero-stats{gap:20px}
+}
+</style>
+</head>
+<body>
+
+<nav><div class="nav-inner">
+  <a href="/" class="logo"><span>GMP</span><span>ify</span></a>
+  <ul class="nav-links">
+    <li><a href="/#courses">Courses</a></li>
+    <li><a href="/#why">Why GMPify</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/tools.html" class="nav-active">Tools</a></li>
+    <li><a href="/blog.html">Blog</a></li>
+    <li><a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="nav-cta">Start learning</a></li>
+  </ul>
+</div></nav>
+
+<!-- HERO -->
+<div class="tools-hero">
+  <div class="tag">Free AI-powered tools</div>
+  <h1>Built for <span>pharmaceutical</span> professionals</h1>
+  <p>Three AI-powered tools built from 27 years of pharmaceutical GMP training experience and current FDA enforcement data. Free to try. No login required.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-val">3</div><div class="hero-stat-lbl">Tools available now</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">Free</div><div class="hero-stat-lbl">No login required</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">27 yrs</div><div class="hero-stat-lbl">Training experience</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">More</div><div class="hero-stat-lbl">Tools coming soon</div></div>
+  </div>
+</div>
+
+<!-- TOOLS -->
+<div class="tools-section">
+  <div class="tools-grid">
+
+    <!-- TOOL 1: TRAINING ASSESSMENT -->
+    <div class="tool-card">
+      <div class="tool-card-body">
+        <div class="tool-card-meta">
+          <div class="tool-number">1</div>
+          <div class="tool-category">Training Assessment</div>
+        </div>
+        <h2>Find your GMP training priorities</h2>
+        <p class="tool-desc">Not sure where to start in the GMPify catalog? Answer 10 questions about your role, site type, regulatory markets and inspection timeline. Get back a personalised list of the 5 courses you need most - in order - with a specific explanation of why each one matters for your exact situation.</p>
+        <div class="tool-features">
+          <div class="tool-feature">Role-specific recommendations - QA, QC, validation, microbiology, regulatory affairs and more</div>
+          <div class="tool-feature">Inspection timeline aware - courses prioritised differently for sites with imminent inspections</div>
+          <div class="tool-feature">Specific reasoning for each course - not a generic list, a plan built around your answers</div>
+          <div class="tool-feature">Direct subscribe link on results page - go from assessment to training in one step</div>
+        </div>
+        <div class="tool-tags">
+          <span class="tool-tag">10 questions</span>
+          <span class="tool-tag">2 minutes</span>
+          <span class="tool-tag">5 priority courses</span>
+          <span class="tool-tag">Personalised</span>
+          <span class="tool-tag">Free</span>
+        </div>
+        <a href="https://gmpify-tools.netlify.app/training-assessment.html" target="_blank" class="btn-try btn-try-teal">Start the assessment &rarr;</a>
+      </div>
+      <div class="tool-card-panel">
+        <div>
+          <div class="panel-label">How it works</div>
+          <div class="panel-steps">
+            <div class="panel-step"><div class="step-num">1</div><div class="step-text">Answer 10 questions about your role, site, markets and inspection situation</div></div>
+            <div class="panel-step"><div class="step-num">2</div><div class="step-text">Claude analyses your profile against current FDA and EU GMP enforcement data</div></div>
+            <div class="panel-step"><div class="step-num">3</div><div class="step-text">Receive your personalised 5-course priority list with specific explanations</div></div>
+            <div class="panel-step"><div class="step-num">4</div><div class="step-text">Subscribe and start your first priority course immediately</div></div>
+          </div>
+        </div>
+        <div class="panel-who">
+          <div class="panel-who-label">Who this is for</div>
+          <div class="panel-who-text">Anyone new to GMPify or looking to identify their highest-priority training gaps. Particularly useful for professionals preparing for an FDA or EU GMP inspection.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOL 2: REGULATION EXPLAINER -->
+    <div class="tool-card">
+      <div class="tool-card-body">
+        <div class="tool-card-meta">
+          <div class="tool-number">2</div>
+          <div class="tool-category">Regulation Explainer</div>
+        </div>
+        <h2>Explain any GMP regulation instantly</h2>
+        <p class="tool-desc">Paste any pharmaceutical regulation reference and get back an expert plain-language explanation in seconds. No searching through 40 pages of guidance. No ambiguity about what it means in practice. Built from 27 years of pharmaceutical GMP training experience and current FDA 483 observation and warning letter data.</p>
+        <div class="tool-features">
+          <div class="tool-feature">Covers 21 CFR Parts 210 and 211, EU GMP Annex 1, all ICH guidelines and USP chapters</div>
+          <div class="tool-feature">What it says, what it means in practice, what inspectors look for and the most common violation</div>
+          <div class="tool-feature">Related regulations listed so you can explore connected requirements</div>
+          <div class="tool-feature">Current FDA enforcement data - reflects FY2024 and 2025 inspection priorities</div>
+        </div>
+        <div class="tool-tags">
+          <span class="tool-tag">21 CFR</span>
+          <span class="tool-tag">EU GMP</span>
+          <span class="tool-tag">USP chapters</span>
+          <span class="tool-tag">ICH guidelines</span>
+          <span class="tool-tag">Instant</span>
+          <span class="tool-tag">Free</span>
+        </div>
+        <a href="https://gmpify-tools.netlify.app" target="_blank" class="btn-try btn-try-outline">Try the Regulation Explainer &rarr;</a>
+      </div>
+      <div class="tool-card-panel">
+        <div>
+          <div class="panel-label">Example queries</div>
+          <div class="panel-steps">
+            <div class="panel-step"><div class="step-num">?</div><div class="step-text">21 CFR 211.192 - deviation investigation requirements</div></div>
+            <div class="panel-step"><div class="step-num">?</div><div class="step-text">EU GMP Annex 1 Section 4.3 - RABS and isolator requirements</div></div>
+            <div class="panel-step"><div class="step-num">?</div><div class="step-text">USP 85 method suitability - what is required</div></div>
+            <div class="panel-step"><div class="step-num">?</div><div class="step-text">ICH Q9(R1) - what changed in the 2023 revision</div></div>
+          </div>
+        </div>
+        <div class="panel-who">
+          <div class="panel-who-label">Who this is for</div>
+          <div class="panel-who-text">Any pharmaceutical professional who needs to quickly understand what a regulation requires, what inspectors look for and where sites most commonly fail.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOL 3: 483 RESPONSE DRAFTER -->
+    <div class="tool-card featured">
+      <div class="tool-card-body">
+        <div class="tool-card-meta">
+          <div class="tool-number" style="background:rgba(245,166,35,0.15);border-color:rgba(245,166,35,0.4);color:var(--gold);">3</div>
+          <div class="tool-category">483 Response Drafter</div>
+          <span class="new-badge">New</span>
+        </div>
+        <h2>Draft a compliant 483 response in minutes</h2>
+        <p class="tool-desc">Enter your observation details and get a fully structured draft response built from the March 2026 FDA draft guidance - the first document FDA has published consolidating its 483 response content requirements. All six required sections, ready to adapt and submit within your 15-business-day deadline.</p>
+        <div class="tool-features">
+          <div class="tool-feature">All six required sections per the March 2026 guidance - executive summary, patient risk assessment, investigation report, CAPA plan, effectiveness evaluation and administrative elements</div>
+          <div class="tool-feature">Bias-aware root cause analysis framework built in - meets the March 2026 guidance requirement</div>
+          <div class="tool-feature">Effectiveness check criteria that go beyond routine testing - as required by the March 2026 guidance</div>
+          <div class="tool-feature">Copy all button - paste the entire structured draft into Word immediately</div>
+          <div class="tool-feature">Placeholder checklist - every item you need to complete before submitting</div>
+        </div>
+        <div class="tool-tags">
+          <span class="tool-tag">March 2026 FDA guidance</span>
+          <span class="tool-tag">6 required sections</span>
+          <span class="tool-tag">15-day deadline</span>
+          <span class="tool-tag">Copy to Word</span>
+          <span class="tool-tag">Free</span>
+        </div>
+        <a href="https://gmpify-tools.netlify.app/483-response-drafter.html" target="_blank" class="btn-try btn-try-gold">Draft my 483 response &rarr;</a>
+      </div>
+      <div class="tool-card-panel">
+        <div>
+          <div class="panel-label">What you need to start</div>
+          <div class="panel-steps">
+            <div class="panel-step"><div class="step-num">1</div><div class="step-text">Your site name and FEI number</div></div>
+            <div class="panel-step"><div class="step-num">2</div><div class="step-text">The exact observation text from your Form 483</div></div>
+            <div class="panel-step"><div class="step-num">3</div><div class="step-text">Your product type and CFR section cited</div></div>
+            <div class="panel-step"><div class="step-num">4</div><div class="step-text">Any immediate actions already taken (optional)</div></div>
+          </div>
+        </div>
+        <div class="panel-who">
+          <div class="panel-who-label">Who this is for</div>
+          <div class="panel-who-text">QA managers, regulatory affairs professionals and site directors who need to draft or review a 483 response quickly and ensure it meets current FDA expectations.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- COMING SOON -->
+  <div style="margin-top:56px">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="font-size:0.72rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Coming soon</div>
+      <h2 style="font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:8px">More tools in development</h2>
+      <p style="font-size:0.92rem;color:var(--mid);max-width:500px;margin:0 auto">New tools added regularly as GMPify grows. Subscribe to be notified when each one launches.</p>
+    </div>
+    <div class="coming-soon-grid">
+      <div class="coming-card">
+        <div class="coming-icon">&#x1F4C4;</div>
+        <div class="coming-title">SOP Gap Analyser</div>
+        <div class="coming-desc">Upload your SOP and get a structured gap analysis against the relevant CFR section or EU GMP requirement. Identify what is missing before an inspector does.</div>
+        <div class="coming-label">In development</div>
+      </div>
+      <div class="coming-card">
+        <div class="coming-icon">&#x1F4F0;</div>
+        <div class="coming-title">Regulatory Change Monitor</div>
+        <div class="coming-desc">Weekly AI-powered summary of new FDA guidance, USP chapter updates, ICH revisions and warning letters. Current regulatory intelligence in your inbox every week.</div>
+        <div class="coming-label">In development</div>
+      </div>
+      <div class="coming-card">
+        <div class="coming-icon">&#x1F50D;</div>
+        <div class="coming-title">Inspection Readiness Checker</div>
+        <div class="coming-desc">Answer questions about your quality system. Get a prioritised risk report identifying your highest-probability 483 findings before the investigator arrives.</div>
+        <div class="coming-label">Planned</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBSCRIBE CTA -->
+  <div class="tools-cta">
+    <h2>Get full access to GMPify courses</h2>
+    <p>All three tools are free to use. For the full catalog of on-demand pharmaceutical GMP courses with certificates, subscribe from $69 per month.</p>
+    <a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="btn-subscribe">Subscribe - from $69/month</a>
+    <div class="cta-note">Full catalog access from day one. Certificate on every course. Cancel anytime.</div>
+  </div>
+
+</div>
+
+<footer><div class="footer-inner">
+  <span>&copy; 2026 GMPify. <a href="/privacy.html" style="color:var(--mid)">Privacy</a> &middot; <a href="/terms.html" style="color:var(--mid)">Terms</a></span>
+  <span><a href="/" style="color:var(--mid)">gmpify.com</a> &middot; <a href="/blog.html" style="color:var(--mid)">Blog</a> &middot; <a href="https://learn.gmpify.com" style="color:var(--mid)">learn.gmpify.com</a></span>
+</div></footer>
+
+</body>
+</html>
