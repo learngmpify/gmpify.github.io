@@ -3,25 +3,25 @@
 
   <!-- Main pages -->
   <url>
-    <loc>https://www.gmpify.com/</loc>
+    <loc>https://gmpify.com/</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/blog.html</loc>
+    <loc>https://gmpify.com/blog.html</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/privacy.html</loc>
+    <loc>https://gmpify.com/privacy.html</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/terms.html</loc>
+    <loc>https://gmpify.com/terms.html</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
@@ -29,38 +29,38 @@
 
   <!-- Blog posts -->
   <url>
-    <loc>https://www.gmpify.com/blog/fda-ai-warning-letter-2026.html</loc>
+    <loc>https://gmpify.com/blog/fda-ai-warning-letter-2026.html</loc>
     <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/blog/fda-483-top-observations-2025.html</loc>
+    <loc>https://gmpify.com/blog/fda-483-top-observations-2025.html</loc>
     <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/blog/annex1-ccs-inspection-findings-2024-2025.html</loc>
+    <loc>https://gmpify.com/blog/annex1-ccs-inspection-findings-2024-2025.html</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/blog/fda-csa-guidance-final-2025.html</loc>
+    <loc>https://gmpify.com/blog/fda-csa-guidance-final-2025.html</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/blog/human-error-never-root-cause.html</loc>
+    <loc>https://gmpify.com/blog/human-error-never-root-cause.html</loc>
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://www.gmpify.com/blog/fda-enforcement-2026-what-every-pharmaceutical-professional-needs-to-know.html</loc>
+    <loc>https://gmpify.com/blog/fda-enforcement-2026-what-every-pharmaceutical-professional-needs-to-know.html</loc>
     <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -68,37 +68,37 @@
 
   <!-- SEO training guide posts -->
   <url>
-    <loc>https://www.gmpify.com/blog/21-cfr-part-211-training-online.html</loc>
+    <loc>https://gmpify.com/blog/21-cfr-part-211-training-online.html</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/blog/eu-gmp-annex-1-training-online.html</loc>
-    <lastmod>2026-06-26</lastmod> 
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://www.gmpify.com/blog/pharmaceutical-gmp-training-certificate.html</loc>
+    <loc>https://gmpify.com/blog/eu-gmp-annex-1-training-online.html</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/blog/fda-data-integrity-training-online.html</loc>
+    <loc>https://gmpify.com/blog/pharmaceutical-gmp-training-certificate.html</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/blog/ich-q9-quality-risk-management-training.html</loc>
+    <loc>https://gmpify.com/blog/fda-data-integrity-training-online.html</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.gmpify.com/blog/fda-computer-software-assurance-csa-training.html</loc>
+    <loc>https://gmpify.com/blog/ich-q9-quality-risk-management-training.html</loc>
+    <lastmod>2026-06-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://gmpify.com/blog/fda-computer-software-assurance-csa-training.html</loc>
     <lastmod>2026-06-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
