@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="../gmpify_favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon_32x32.png">
+<meta name="description" content="Failure to thoroughly investigate OOS results under 21 CFR 211.192 has been the top or second-ranked FDA cGMP citation for four consecutive years. Two 2026 warning letters make this urgent. Here is what a compliant OOS investigation looks like and where most sites go wrong.">
+<meta property="og:title" content="Out-of-Specification (OOS) Investigations: FDA Requirements and What Inspectors Actually Find">
+<meta property="og:description" content="21 CFR 211.192 is the most cited FDA cGMP observation. Two 2026 warning letters confirm the stakes. Here is the complete two-phase OOS investigation framework and the four citation patterns FDA consistently documents.">
+<meta property="og:url" content="https://gmpify.com/blog/oos-investigations-fda-requirements-best-practice.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://gmpify.com/gmpify_social_banner.png">
+<title>Out-of-Specification (OOS) Investigations: FDA Requirements and What Inspectors Find | GMPify</title>
+<link rel="canonical" href="https://gmpify.com/blog/oos-investigations-fda-requirements-best-practice.html">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","headline":"Out-of-Specification (OOS) Investigations: FDA Requirements and What Inspectors Actually Find","datePublished":"2026-07-11","dateModified":"2026-07-11","author":{"@type":"Organization","name":"GMPify Training","url":"https://gmpify.com"},"publisher":{"@type":"Organization","name":"GMPify","url":"https://gmpify.com"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://gmpify.com/blog/oos-investigations-fda-requirements-best-practice.html"},"keywords":"OOS investigation, out of specification, 21 CFR 211.192, pharmaceutical laboratory, FDA 483, cGMP compliance, Phase I Phase II investigation"}
+</script>
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2B3E;--navy-card:#112d41;--teal:#00C2A8;--gold:#F5A623;
+  --light:#CAD8E8;--mid:#6E90A0;--white:#fff;--orange:#B84A00;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif
+}
+body{font-family:var(--font);background:var(--navy);color:var(--light);line-height:1.6}
+a{color:var(--teal);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+nav{background:rgba(13,43,62,0.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,194,168,0.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-size:1.4rem;font-weight:800;letter-spacing:-0.5px;color:var(--white)}
+.logo span:first-child{color:var(--teal)}
+.logo span:last-child{color:var(--white)}
+.nav-links{display:flex;gap:24px;list-style:none;align-items:center}
+.nav-links a{font-size:0.88rem;font-weight:500;color:var(--light);transition:color .2s}
+.nav-links a:hover{color:var(--teal)}
+.nav-cta{background:var(--teal);color:var(--navy)!important;padding:7px 18px;border-radius:6px;font-weight:700!important}
+.post-layout{display:grid;grid-template-columns:1fr 320px;gap:56px;padding:56px 0 80px;align-items:start}
+.breadcrumb{padding:20px 0 0;font-size:0.82rem;color:var(--mid)}
+.breadcrumb a{color:var(--mid)}
+.breadcrumb a:hover{color:var(--teal)}
+.post-header{margin-bottom:36px}
+.post-tag{font-size:0.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
+.post-header h1{font-size:clamp(1.7rem,3.5vw,2.4rem);font-weight:800;color:var(--white);line-height:1.25;margin-bottom:14px}
+.post-meta{font-size:0.82rem;color:var(--mid);display:flex;gap:16px;flex-wrap:wrap;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.post-body{font-size:0.97rem;color:var(--light);line-height:1.75}
+.post-body h2{font-size:1.3rem;font-weight:800;color:var(--white);margin:36px 0 14px;line-height:1.3}
+.post-body h3{font-size:1.05rem;font-weight:700;color:var(--white);margin:28px 0 10px}
+.post-body p{margin-bottom:18px}
+.post-body ul,.post-body ol{margin:0 0 18px 20px;display:flex;flex-direction:column;gap:8px}
+.post-body li{font-size:0.97rem;color:var(--light);line-height:1.65}
+.post-body strong{color:var(--white);font-weight:700}
+.post-body a{color:var(--teal);text-decoration:underline}
+.callout{border-radius:10px;padding:20px 24px;margin:28px 0}
+.callout-warning{background:rgba(192,57,43,0.12);border:1px solid rgba(192,57,43,0.4)}
+.callout-warning .callout-label{color:#e74c3c;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.callout-info{background:rgba(0,194,168,0.08);border:1px solid rgba(0,194,168,0.25)}
+.callout-info .callout-label{color:var(--teal);font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.callout-gold{background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.3)}
+.callout-gold .callout-label{color:var(--gold);font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.callout p{margin-bottom:0;font-size:0.93rem}
+.reg-quote{background:rgba(255,255,255,0.04);border-left:4px solid var(--teal);padding:18px 22px;margin:24px 0;border-radius:0 8px 8px 0}
+.reg-quote p{font-size:0.95rem;color:var(--white);font-style:italic;margin-bottom:6px}
+.reg-quote cite{font-size:0.78rem;color:var(--mid);font-style:normal}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:28px 0}
+.stat-card{background:var(--navy-card);border:1px solid rgba(0,194,168,0.2);border-radius:10px;padding:20px;text-align:center}
+.stat-number{font-size:2.2rem;font-weight:800;color:var(--teal);line-height:1;margin-bottom:6px}
+.stat-label{font-size:0.82rem;color:var(--mid);line-height:1.4}
+.trend-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:0.88rem}
+.trend-table th{background:rgba(0,194,168,0.12);color:var(--white);font-weight:700;padding:10px 14px;text-align:left;border-bottom:1px solid rgba(0,194,168,0.2)}
+.trend-table td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.05);color:var(--light)}
+.trend-table tr:hover td{background:rgba(255,255,255,0.02)}
+.trend-table .highlight{color:var(--gold);font-weight:700}
+.sidebar{position:sticky;top:80px;display:flex;flex-direction:column;gap:24px}
+.sidebar-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:20px}
+.sidebar-card h3{font-size:0.9rem;font-weight:700;color:var(--white);margin-bottom:10px}
+.sidebar-card p{font-size:0.82rem;color:var(--mid);line-height:1.55;margin-bottom:14px}
+.btn-sidebar{display:block;text-align:center;background:var(--teal);color:var(--navy);font-weight:700;padding:10px 18px;border-radius:6px;font-size:0.85rem;transition:background .2s}
+.btn-sidebar:hover{background:#00a892;color:var(--navy)}
+.btn-sidebar-outline{display:block;text-align:center;border:1.5px solid var(--orange);color:var(--orange);font-weight:700;padding:9px 18px;border-radius:6px;font-size:0.85rem;transition:all .2s}
+.btn-sidebar-outline:hover{background:rgba(184,74,0,0.08)}
+.related-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.related-list li a{font-size:0.83rem;color:var(--light);line-height:1.4;display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);transition:color .2s}
+.related-list li a:hover{color:var(--teal)}
+.post-cta{background:linear-gradient(135deg,rgba(0,194,168,0.1),rgba(0,194,168,0.04));border:1px solid rgba(0,194,168,0.2);border-radius:12px;padding:28px 32px;margin:48px 0 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.post-cta-text h3{font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:6px}
+.post-cta-text p{font-size:0.88rem;color:var(--mid);max-width:480px;margin-bottom:0}
+.btn-cta{background:var(--teal);color:var(--navy);font-weight:700;padding:11px 24px;border-radius:8px;font-size:0.9rem;white-space:nowrap;flex-shrink:0}
+.btn-cta:hover{background:#00a892;color:var(--navy)}
+footer{padding:36px 0 24px;border-top:1px solid rgba(255,255,255,0.07);margin-top:0}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.8rem;color:var(--mid)}
+@media(max-width:860px){
+  .post-layout{grid-template-columns:1fr}
+  .sidebar{position:static}
+  .nav-links{display:none}
+  .post-cta{flex-direction:column}
+  .stat-grid{grid-template-columns:1fr 1fr}
+}
+
+</style>
+</head>
+<body>
+
+<nav><div class="container"><div class="nav-inner">
+  <a href="/" class="logo"><span>GMP</span><span>ify</span></a>
+  <ul class="nav-links">
+    <li><a href="/#courses">Courses</a></li>
+    <li><a href="/#why">Why GMPify</a></li>
+    <li><a href="/#pricing">Pricing</a></li>
+    <li><a href="/blog.html">Blog</a></li>
+    <li><a href="/tools.html">Tools</a></li>
+    <li><a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="nav-cta">Start learning</a></li>
+  </ul>
+</div></div></nav>
+
+<div class="container">
+  <div class="breadcrumb">
+    <a href="../blog.html">&larr; Blog</a> &middot; FDA Regulations and Compliance
+  </div>
+
+  <div class="post-layout">
+    <main>
+      <div class="post-header">
+        <div class="post-tag">FDA Regulations and Compliance</div>
+        <h1>Out-of-Specification (OOS) Investigations: FDA Requirements and What Inspectors Actually Find</h1>
+        <div class="post-meta">
+          <span>July 2026</span>
+          <span>&middot; 9 min read</span>
+          <span>&middot; GMPify Training</span>
+        </div>
+      </div>
+
+      <div class="post-body">
+
+        <p>Failure to thoroughly investigate unexplained discrepancies under <strong>21 CFR 211.192</strong> has been the top or second-ranked FDA cGMP citation category for four consecutive years. It appeared in more 483 observations than any other single regulation in 2024 and 2025. It is not a new problem. It is a persistent one.</p>
+
+        <p>Two 2026 warning letters confirm the stakes are not declining. The January 2026 warning letter to Cohance Lifesciences cited failure to thoroughly investigate unexplained discrepancies and failures. The March 2026 warning letter to Intas Pharmaceuticals cited inadequate OOS investigations and non-robust CAPAs to address persistent OOS assay results. In both cases the citation was not isolated to a single event - it reflected a systemic failure in how investigations were being conducted.</p>
+
+        <p>This article explains what a compliant OOS investigation looks like, where most pharmaceutical sites go wrong and the four citation patterns FDA inspectors document most frequently when they review OOS investigation files.</p>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-number">#1</div>
+            <div class="stat-label">FDA 483 citation category four years running</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">2</div>
+            <div class="stat-label">Warning letters in 2026 citing OOS investigation failures</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">15</div>
+            <div class="stat-label">Business days to respond to a 483 observation</div>
+          </div>
+        </div>
+
+        <h2>What is an OOS result and when is an investigation mandatory</h2>
+
+        <p>An out-of-specification result is any test result that falls outside the specifications or acceptance criteria established in drug applications, drug master files, official compendia or by the manufacturer. The definition is straightforward. What is less straightforward is when 21 CFR 211.192 is triggered and what that investigation must look like.</p>
+
+        <p>21 CFR 211.192 requires a thorough investigation of any unexplained discrepancy or failure of a batch to meet any of its specifications - whether or not the batch has already been distributed. This is important. The investigation obligation does not disappear once a batch has left the facility. If a distributed batch is later found to have an OOS result the investigation requirement still applies and may trigger a recall assessment.</p>
+
+        <div class="reg-quote">
+          <p>"There shall be a written record of any investigation, and shall include the conclusions and follow-up."</p>
+          <cite>21 CFR 211.192</cite>
+        </div>
+
+        <p>The investigation must begin immediately upon identification of the OOS result. FDA expects documented inquiry to begin within one working day. Any retesting that occurs before Phase I is completed is itself a violation of 21 CFR 211.192 - and it is one of the most common findings inspectors document.</p>
+
+        <h2>The two-phase investigation structure</h2>
+
+        <p>FDA requires a structured two-phase approach. This is not industry convention - it is FDA's documented expectation from the OOS guidance document, most recently revised at Level 2 in August 2024.</p>
+
+        <h3>Phase I - The laboratory investigation</h3>
+
+        <p>Phase I must be completed before any retesting. Its sole objective is to determine whether the OOS result was caused by an identifiable and assignable laboratory error. Phase I requires a documented review of all steps that could have contributed to the result.</p>
+
+        <p>The review must cover:</p>
+        <ul>
+          <li>Calculation check - verify all calculations from raw instrument data through to the reported result</li>
+          <li>Reagent and standard review - confirm standard preparation, concentration, expiry date and reference standard status</li>
+          <li>Instrument review - confirm calibration status, maintenance records, system suitability results and any instrument flags at the time of testing</li>
+          <li>Analyst review - confirm the analyst was trained and qualified on the method and review analyst technique for the specific test</li>
+        </ul>
+
+        <p>Phase I can only conclude in one of two ways. Either laboratory error is confirmed with a specific documented assignable cause - in which case the OOS result can be invalidated and retesting may proceed. Or no laboratory error is found - in which case the OOS result stands and the investigation must proceed to Phase II.</p>
+
+        <div class="callout callout-warning">
+          <div class="callout-label">Critical point</div>
+          <p>Passing results on retesting do not constitute an assignable cause for invalidating an OOS result. FDA is explicit on this point. The March 2026 Intas Pharmaceuticals warning letter specifically cited invalidation of an OOS assay result due to solution preparation error without conclusive supporting evidence. An assignable cause must be specific, documented and confirmed - not inferred from the fact that subsequent tests passed.</p>
+        </div>
+
+        <h3>Phase II - The manufacturing investigation</h3>
+
+        <p>Phase II is triggered when Phase I finds no laboratory error. It expands the investigation to all plausible manufacturing causes and must assess the impact on all potentially affected batches.</p>
+
+        <p>Phase II must investigate:</p>
+        <ul>
+          <li>Process review - examine batch manufacturing records for deviations, out-of-range in-process results and equipment performance at the time of manufacture</li>
+          <li>Raw material assessment - evaluate the lot and supplier of each component used in the batch</li>
+          <li>Batch history - review previous batches from the same process and product for trends</li>
+          <li>Scope determination - identify all other batches manufactured under the same conditions, with the same materials or on the same equipment that could be affected by the same root cause</li>
+        </ul>
+
+        <p>The scope determination is where most investigations fail. FDA consistently cites the failure to assess impact on other batches as one of the four most common OOS investigation deficiencies. An investigation that is scoped only to the OOS batch without evaluating whether the same root cause could have affected other products or batches does not satisfy the 21 CFR 211.192 requirement.</p>
+
+        <h2>The retesting rules - what FDA permits and what it prohibits</h2>
+
+        <p>Retesting is permitted only under specific conditions and only under a documented protocol approved before retesting begins. The retesting rules are among the most frequently misunderstood and most frequently cited OOS deficiencies.</p>
+
+        <p><strong>When Phase I finds laboratory error:</strong> retesting of the original sample to obtain a valid result is permitted once the assignable cause is documented and corrected.</p>
+
+        <p><strong>When Phase II identifies a root cause:</strong> targeted retesting to confirm the cause and assess batch impact may be conducted under a pre-defined protocol.</p>
+
+        <p><strong>What is not permitted:</strong></p>
+        <ul>
+          <li>Retesting before Phase I is completed and documented</li>
+          <li>Retesting without a documented pre-approved protocol</li>
+          <li>Retesting until a passing result is obtained without scientific rationale - this is testing into compliance</li>
+          <li>Averaging a passing retest result with the original OOS result to obtain a composite passing result</li>
+        </ul>
+
+        <div class="callout callout-warning">
+          <div class="callout-label">Data integrity violation</div>
+          <p>Averaging an OOS result with passing retests to generate a composite passing number is not an acceptable investigation technique. It is treated as testing into compliance - a data integrity violation under 21 CFR 211.192 and FDA's data integrity guidance. All results generated during the investigation, including the original OOS, must be reported and considered in the batch disposition decision.</p>
+        </div>
+
+        <h2>The four most common FDA OOS citation patterns in 2024 to 2026</h2>
+
+        <p>These four patterns account for the majority of OOS-related 483 observations in recent FDA inspections. Understanding them is the fastest way to identify where your own programme may be vulnerable.</p>
+
+        <h3>Citation 1 - Retesting before Phase I is complete</h3>
+
+        <p>The manufacturer conducted retesting before Phase I documentation was completed and approved by the Quality Unit. This constitutes an investigation failure under 21 CFR 211.192 regardless of the retest results. The mandatory sequence is: OOS identified, Phase I initiated, Phase I documentation completed and approved, then retesting if warranted. Skipping or compressing Phase I before retesting is a direct violation regardless of outcome.</p>
+
+        <h3>Citation 2 - Invalidating OOS without a confirmed assignable cause</h3>
+
+        <p>The manufacturer invalidated an OOS result without identifying a specific documented assignable laboratory cause. Relying on the fact that retests gave passing results is not sufficient justification for invalidation. The March 2026 Intas warning letter is the most recent example of this pattern - invalidation of an OOS assay result due to a claimed solution preparation error without conclusive supporting evidence was cited as inadequate.</p>
+
+        <h3>Citation 3 - Human error as root cause without systemic investigation</h3>
+
+        <p>The investigation concluded with human error as root cause and analyst retraining as the only CAPA. FDA's position is that human error is almost never a root cause - it is an effect. The investigation must identify the specific systemic failure that enabled the error to occur. Why was the error possible in the system? What procedural, training or oversight gap allowed it? CAPA consisting only of retraining without a specific identified training gap is consistently cited as inadequate.</p>
+
+        <p>This becomes more serious when the same root cause appears repeatedly across multiple investigations. Twelve OOS investigations on the same product all closed with analyst retraining as the only CAPA - without trend analysis or systemic corrective action - is a finding that goes beyond individual investigation quality to the quality system itself.</p>
+
+        <h3>Citation 4 - Failure to assess scope and impact on other batches</h3>
+
+        <p>The investigation was completed without assessing whether other batches manufactured under the same conditions, with the same materials or on the same equipment could be affected by the same root cause. 21 CFR 211.192 requires investigation of any failure to meet specifications. FDA interprets this to include an obligation to assess whether the identified root cause could have produced the same failure elsewhere.</p>
+
+        <p>This scope assessment must be documented. A conclusion that no other batches are affected is acceptable - but that conclusion must be supported by documented reasoning, not assumed by default.</p>
+
+        <h2>Documentation requirements - what the investigation file must contain</h2>
+
+        <p>The OOS investigation report is an FDA inspection target. Inspectors read it in detail, looking for scientific soundness, complete documentation and evidence that the Quality Unit exercised genuine oversight rather than just signing off. A complete OOS investigation file must contain:</p>
+
+        <ul>
+          <li>A clear statement of the OOS result, specification and the date it was identified</li>
+          <li>Phase I documentation: all steps reviewed, findings for each check, name and qualification of the investigator and Quality Unit reviewer with date and signature</li>
+          <li>Phase II documentation where applicable: manufacturing review scope, findings and root cause conclusion</li>
+          <li>All retesting data if conducted, including any additional OOS results generated during the investigation</li>
+          <li>A final conclusion stating root cause or acknowledged unknown cause with justification</li>
+          <li>Batch disposition decision with Quality Unit approval signature and date before any product release or distribution</li>
+          <li>CAPA plan with owner, timeline and effectiveness check criteria</li>
+        </ul>
+
+        <div class="callout callout-info">
+          <div class="callout-label">Documentation principle</div>
+          <p>All documentation must be contemporaneous - recorded at the time, not reconstructed after the fact. An investigation file that shows all Phase I checks completed on the same date, all ticked at once, raises data integrity concerns. FDA inspectors look for the progressive, sequential documentation that reflects an investigation that actually happened in real time.</p>
+        </div>
+
+        <h2>Contract laboratory OOS investigations</h2>
+
+        <p>If a contract testing laboratory generates an OOS result, the batch owner retains full investigation responsibility under 21 CFR 211.192. The quality agreement must define who initiates Phase I, what records the contract lab must provide and the timeline for reporting OOS results to the sponsor.</p>
+
+        <p>The five Q1 2026 warning letters that cited contract labs for data integrity failures all involved OOS investigation failures - results altered or destroyed rather than investigated. In each case FDA held the sponsor accountable for relying on that data for product release. The sponsor's accountability does not end with the certificate of analysis.</p>
+
+        <h2>What to do right now</h2>
+
+        <p>If you are responsible for OOS investigations at your site, these are the three highest-value actions you can take before the next inspection:</p>
+
+        <p><strong>Review your last six months of OOS closures.</strong> Count how many were closed with analyst retraining as the only CAPA. Count how many were closed without a documented scope assessment of other potentially affected batches. If either number is above zero, you have the same exposure the Cohance and Intas warning letters document.</p>
+
+        <p><strong>Confirm your SOP requires Phase I completion before retesting.</strong> The SOP must make the sequence mandatory and the investigation record must show it was followed. Retesting before Phase I is the most mechanically simple violation to cite and one of the most common.</p>
+
+        <p><strong>Review how assignable cause is defined in your SOP.</strong> The SOP should specify that passing retests do not constitute an assignable cause, that human error requires identification of the systemic failure that enabled it and that invalidation requires documented evidence not inference.</p>
+
+        <div class="callout callout-gold">
+          <div class="callout-label">GMPify course</div>
+          <p>The GMPify course Out-of-Specification (OOS) Investigations: FDA Requirements and Best Practice covers the complete two-phase framework, all retesting rules and the four most common 483 citation patterns in detail. Certificate on completion. Available now in the full catalog at learn.gmpify.com.</p>
+        </div>
+
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="sidebar-card">
+        <h3>Courses covering this topic</h3>
+        <ul class="related-list">
+          <li><a href="https://learn.gmpify.com/plus/catalog">Contract Manufacturing Oversight: Quality Agreements, Audits and cGMP Accountability &rarr;</a></li>
+          <li><a href="https://learn.gmpify.com/plus/catalog">Out-of-Specification (OOS) Investigations: FDA Requirements and Best Practice &rarr;</a></li>
+          <li><a href="https://learn.gmpify.com/plus/catalog">FDA Data Integrity and cGMP Compliance &rarr;</a></li>
+          <li><a href="https://learn.gmpify.com/plus/catalog">Responding to FDA Form 483 Observations &rarr;</a></li>
+          <li><a href="https://learn.gmpify.com/plus/catalog">Inspection Readiness and FDA Observations &rarr;</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Free tools</h3>
+        <p>Use the GMPify SOP Gap Analyser to check your quality agreement against FDA requirements before your next inspection.</p>
+        <a href="https://gmpify-tools.netlify.app/sop-gap-analyser.html" class="btn-sidebar">Try SOP Gap Analyser &rarr;</a>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Start learning today</h3>
+        <p>Full catalog access from day one. Every course built from primary regulatory sources. Certificate on completion.</p>
+        <a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="btn-sidebar">Subscribe from $69/month &rarr;</a>
+        <br>
+        <a href="https://gmpify.talentlms.com/plus/courses/shared/start/LSSIDNHR" class="btn-sidebar-outline" style="margin-top:10px">Try a free module &rarr;</a>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Related articles</h3>
+        <ul class="related-list">
+          <li><a href="/blog/fda-enforcement-2026-what-every-pharmaceutical-professional-needs-to-know.html">FDA Enforcement in 2026: What the Data Tells Every Pharmaceutical Professional &rarr;</a></li>
+          <li><a href="/blog/fda-ai-warning-letter-2026.html">FDA Issues First AI Warning Letter: What Pharmaceutical Manufacturers Need to Know &rarr;</a></li>
+          <li><a href="/blog/fda-483-top-observations-2025.html">FDA 483 Top Observations 2025: The Four Sections That Keep Appearing &rarr;</a></li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<footer><div class="container"><div class="footer-bottom">
+<span>&copy; 2026 GMPify. <a href="/privacy.html" style="color:var(--mid)">Privacy</a> &middot; <a href="/terms.html" style="color:var(--mid)">Terms</a></span>
+<span><a href="/" style="color:var(--mid)">gmpify.com</a> &middot; <a href="/blog.html" style="color:var(--mid)">Blog</a> &middot; <a href="https://learn.gmpify.com" style="color:var(--mid)">learn.gmpify.com</a></span>
+</div></div></footer>
+
+</body>
+</html>
