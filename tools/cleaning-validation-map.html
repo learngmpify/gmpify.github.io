@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cleaning Validation Lifecycle Map | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1A14;
+    --navy2:   #0E2018;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #061C10;
+    --c2:      #1A1806;
+    --c3:      #060C1C;
+    --c4:      #1A0610;
+    --c1acc:   #34D399;
+    --c2acc:   #FCD34D;
+    --c3acc:   #60A5FA;
+    --c4acc:   #F472B6;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#040E08 0%,#0A1A14 60%,#061410 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .warn-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(52,211,153,0.07),rgba(52,211,153,0.02));
+    border:1.5px solid rgba(52,211,153,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-right{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .t-chip{border-radius:8px;padding:3px 10px;font-size:0.68rem;font-weight:700;font-family:var(--mono);white-space:nowrap}
+  .chip-g{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c1acc)}
+  .chip-y{background:rgba(252,211,77,0.12);border:1px solid rgba(252,211,77,0.28);color:var(--c2acc)}
+  .chip-b{background:rgba(96,165,250,0.12);border:1px solid rgba(96,165,250,0.28);color:var(--c3acc)}
+  .chip-r{background:rgba(229,62,62,0.12);border:1px solid rgba(229,62,62,0.28);color:#FC8181}
+
+  /* MACO BANNER */
+  .maco-bar{
+    background:rgba(0,0,0,0.2);border:1.5px solid rgba(52,211,153,0.18);
+    border-radius:10px;padding:14px 20px;margin-bottom:18px;
+  }
+  .maco-bar h3{font-size:0.74rem;font-weight:700;color:var(--c1acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .maco-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .maco-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:6px;padding:9px 12px}
+  .maco-item h4{font-size:0.72rem;font-weight:700;color:var(--c1acc);margin-bottom:4px}
+  .maco-item p{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .maco-formula{font-family:var(--mono);font-size:0.68rem;color:var(--c2acc);margin-top:4px;background:rgba(252,211,77,0.08);padding:4px 8px;border-radius:4px}
+
+  /* MAIN LAYOUT */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  /* FOUR PHASE GRID */
+  .phases-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#031208;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#141204;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#030816;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#14030C;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(52,211,153,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(252,211,77,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(96,165,250,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(244,114,182,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  /* RIGHT COLUMN BOXES */
+  .right-col{display:flex;flex-direction:column;gap:12px}
+
+  .worst-box{background:rgba(252,211,77,0.05);border:1.5px solid rgba(252,211,77,0.2);border-radius:10px;padding:14px 16px}
+  .worst-box h3{font-size:0.74rem;font-weight:700;color:var(--c2acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .worst-items{display:flex;flex-direction:column;gap:7px}
+  .worst-item{background:rgba(252,211,77,0.06);border:1px solid rgba(252,211,77,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .worst-item strong{color:var(--c2acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  .method-box{background:rgba(96,165,250,0.05);border:1.5px solid rgba(96,165,250,0.2);border-radius:10px;padding:14px 16px}
+  .method-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .method-items{display:flex;flex-direction:column;gap:7px}
+  .method-item{background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .method-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  .fail-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.2);border-radius:10px;padding:14px 16px}
+  .fail-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .fail-items{display:flex;flex-direction:column;gap:6px}
+  .fail-item{background:rgba(229,62,62,0.06);border:1px solid rgba(229,62,62,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .fail-item strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* DOCUMENT TYPES */
+  .docs-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .doc-card{border-radius:8px;padding:10px 13px;border:1px solid rgba(52,211,153,0.2);background:rgba(52,211,153,0.05)}
+  .doc-card h4{font-size:0.72rem;font-weight:800;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.7px}
+  .doc-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+
+  .rules-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Cleaning Validation <em>Lifecycle Map</em></h1>
+    <div class="header-sub">21 CFR 211.67 &nbsp;|&nbsp; EU GMP Annex 15 &nbsp;|&nbsp; EMA HBEL Guideline &nbsp;|&nbsp; ISPE Lifecycle Guide 2020 &nbsp;|&nbsp; MACO &nbsp;|&nbsp; ADE/PDE &nbsp;|&nbsp; PDA TR 29</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      21 CFR 211.67 &nbsp;·&nbsp; EU GMP Annex 15 Section 10<br>
+      EMA HBEL Guideline 2014 &nbsp;·&nbsp; ICH Q7<br>
+      ISPE Cleaning Validation Lifecycle Guide 2020
+    </div>
+    <div class="warn-badge">
+      2024 WL: cease all manufacturing<br>
+      for absent cleaning validation studies
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Stage 1 - Process Design</div>
+  <div class="legend-item"><div class="ls" style="background:#FCD34D"></div>Stage 2 - Process Qualification</div>
+  <div class="legend-item"><div class="ls" style="background:#60A5FA"></div>Stage 3 - Continued Verification</div>
+  <div class="legend-item"><div class="ls" style="background:#F472B6"></div>Programme Maintenance</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(229,62,62,0.3);border:1px solid #E53E3E"></div>Critical warning</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#129514;</div>
+    <div class="trigger-text">
+      <h3>Cleaning Validation Required - Shared Manufacturing Equipment Producing Multiple Products</h3>
+      <p>21 CFR 211.67 requires validated written cleaning procedures for all manufacturing equipment. A 2024 FDA warning letter ordered a manufacturer to cease all manufacturing for failure to conduct cleaning validation studies for multipurpose equipment. EU GMP Annex 15 Section 10 requires a three-stage lifecycle approach. EMA replaced the legacy 10 ppm and 1/1000th dose thresholds with health-based exposure limits in 2014. FDA inspectors in 2025 and 2026 actively challenge sites still using legacy limits without HBEL justification.</p>
+      <div class="reg">21 CFR 211.67 &nbsp;·&nbsp; EU GMP Annex 15 Section 10 &nbsp;·&nbsp; EMA HBEL Guideline EMA/CHMP/CVMP/SWP/169430/2012 &nbsp;·&nbsp; ISPE Cleaning Validation Lifecycle Guide 2020 &nbsp;·&nbsp; PDA TR 29</div>
+    </div>
+    <div class="trigger-right">
+      <div class="t-chip chip-r">2024 WL: cease manufacturing</div>
+      <div class="t-chip chip-g">3-stage lifecycle required</div>
+      <div class="t-chip chip-y">HBEL replaced 10 ppm 2014</div>
+      <div class="t-chip chip-b">PDA TR 29 and ISPE guide</div>
+    </div>
+  </div>
+
+  <!-- MACO SECTION -->
+  <div class="maco-bar">
+    <h3>MACO Calculation Framework - Maximum Allowable Carryover</h3>
+    <div class="maco-grid">
+      <div class="maco-item">
+        <h4>Step 1 - Derive ADE or PDE for each product</h4>
+        <p>Acceptable Daily Exposure derived from toxicological assessment by a qualified toxicologist. Assessment follows EMA HBEL guideline methodology: NOAEL from non-clinical studies, human clinical data where available, adjustment factors for species, intra-species variability and duration. HBEL assessments reviewed when new toxicological data becomes available.</p>
+        <div class="maco-formula">ADE = NOAEL / (adjustment factors)</div>
+      </div>
+      <div class="maco-item">
+        <h4>Step 2 - Calculate MACO for worst-case product pair</h4>
+        <p>MACO defines the maximum residue from product A that can remain on equipment and be carried into product B without patient safety risk. Calculated using the ADE of the previous product and the minimum batch size and maximum daily dose of the next product.</p>
+        <div class="maco-formula">MACO = (ADE x min batch size) / max daily dose</div>
+      </div>
+      <div class="maco-item">
+        <h4>Step 3 - Convert MACO to swab acceptance limit</h4>
+        <p>Surface residue limit = MACO divided by total equipment surface area. Swab acceptance criterion corrected for swab recovery factor determined experimentally for each API, surface material and swab type combination. LOQ of analytical method must be at or below the acceptance limit.</p>
+        <div class="maco-formula">Swab limit = (SRL x swab area) / recovery factor</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: THREE STAGES -->
+    <div class="phases-grid">
+
+      <!-- STAGE 1 -->
+      <div class="phase-col ph1">
+        <div class="phase-header">
+          <div class="phase-num">Stage 1 - EU GMP Annex 15</div>
+          Cleaning Process Design
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">1</span>Establish worst-case product selection</div>
+            <div class="node-body">Select worst-case product based on documented scientific criteria. Lowest ADE/PDE: most toxic product produces most stringent MACO limit. Lowest solubility in cleaning agent: hardest to remove from equipment surfaces. Most challenging to clean: equipment geometry and product physical form. Rationale documented and must withstand direct inspector challenge. Selection based on production volume or manufacturing convenience is not acceptable.</div>
+            <div class="node-reg">EMA HBEL Guideline &nbsp;·&nbsp; ISPE Lifecycle Guide 2020 &nbsp;·&nbsp; PDA TR 29</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">2</span>Define cleaning procedure parameters</div>
+            <div class="node-body">Define all cleaning procedure parameters with scientific rationale: cleaning agent identity and concentration, temperature, contact time, mechanical action, rinse procedure and final rinse specification. Parameters must be fixed at values demonstrated to remove the worst-case residue to below the MACO-derived acceptance limit. Document the scientific basis for each parameter selection - not just the operational procedure.</div>
+            <div class="node-reg">21 CFR 211.67 &nbsp;·&nbsp; EU GMP Annex 15 Section 10.1</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">3</span>Calculate MACO and set acceptance limits</div>
+            <div class="node-body">Calculate MACO using HBEL-derived ADE values. Sites still using 10 ppm or 1/1000th dose thresholds must demonstrate these are more stringent than the HBEL-derived MACO or revalidate to HBEL limits. Convert MACO to surface residue limit and to swab acceptance criterion corrected for experimentally-determined swab recovery factor. Determine LOQ requirement for analytical method - must be at or below the acceptance limit.</div>
+            <div class="node-reg">EMA HBEL Guideline 2014 &nbsp;·&nbsp; FDA 483s 2020-2026</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">4</span>Select and validate analytical methods</div>
+            <div class="node-body">Select analytical method with LOQ at or below the acceptance limit. HPLC or LC-MS for specific API detection. TOC for broad-spectrum screening where sensitivity is sufficient. Visual inspection as supplementary check only - cannot substitute for analytical testing. Validate method for specificity, linearity, accuracy including swab recovery, precision, LOD and LOQ. Method with LOQ above the acceptance limit cannot confirm compliance - the most frequently cited analytical deficiency in cleaning 483s.</div>
+            <div class="node-reg">21 CFR 211.67 &nbsp;·&nbsp; FDA 483 database 2020-2026 &nbsp;·&nbsp; ISPE Guide</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">5</span>Develop Cleaning Validation Master Plan</div>
+            <div class="node-body">CVMP is the site-level governing document for the entire cleaning validation programme. Must document: scope of products and equipment covered, worst-case selection approach, HBEL acceptance limit methodology, sampling strategy and locations, analytical methods, criteria for when revalidation is required and the continued verification programme design. CVMP is the first document FDA inspectors request. A site without a CVMP has no documented governance framework.</div>
+            <div class="node-reg">EU GMP Annex 15 &nbsp;·&nbsp; ISPE Lifecycle Guide 2020 &nbsp;·&nbsp; 21 CFR 211.67</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE 2 -->
+      <div class="phase-col ph2">
+        <div class="phase-header">
+          <div class="phase-num">Stage 2 - EU GMP Annex 15</div>
+          Cleaning Process Qualification
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">6</span>Develop prospective validation protocol</div>
+            <div class="node-body">Prospective protocol must be approved by QA before any validation study begins. Protocol must specify: equipment and products in scope, worst-case product and location selection rationale, cleaning procedure being validated with all parameters, acceptance criteria with MACO calculation shown, sampling locations including worst-case not representative locations, analytical methods with LOQ demonstration, number of validation runs required and criteria for study completion. No protocol, no validation.</div>
+            <div class="node-reg">EU GMP Annex 15 Section 10 &nbsp;·&nbsp; ISPE Lifecycle Guide 2020</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">7</span>Execute minimum three consecutive validation runs</div>
+            <div class="node-body">Conduct a minimum of three consecutive cleaning cycles under worst-case conditions - maximum soil load, most difficult product, worst-case equipment locations. Each run must meet the acceptance criteria independently. Swab sampling at worst-case locations including dead legs, welds, joints and areas of difficult access. All results documented including any results approaching but within limits. Three consecutive compliant runs is the industry standard - fewer runs require additional scientific justification.</div>
+            <div class="node-reg">EU GMP Annex 15 &nbsp;·&nbsp; ISPE Lifecycle Guide 2020 &nbsp;·&nbsp; PDA TR 29</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-decision">
+            <div class="decision-q">Do all three consecutive runs meet acceptance criteria?</div>
+            <div class="d-opts">
+              <span class="opt-y">YES &#8594; Step 9</span>
+              <span class="opt-n">NO &#8594; Step 8</span>
+            </div>
+          </div>
+          <div class="arrow">&#8595; NO</div>
+          <div class="node node-critical">
+            <div class="node-title" style="color:#FC8181"><span class="step-num" style="background:rgba(229,62,62,0.2);color:#FC8181">8</span>Validation failure - investigate root cause</div>
+            <div class="node-body">A failed validation run is a quality signal. Investigate the root cause: inadequate cleaning procedure parameters, wrong cleaning agent, equipment design deficiency such as a dead leg, acceptance limit set incorrectly, analytical method issue. Do not simply re-run until three consecutive passes are obtained. Testing into compliance in cleaning validation is the same failure mode as in OOS investigations. Fix the root cause then revalidate.</div>
+            <div class="node-reg">21 CFR 211.67 &nbsp;·&nbsp; 21 CFR 211.192 &nbsp;·&nbsp; ISPE Lifecycle Guide</div>
+          </div>
+          <div class="arrow">&#8595; YES</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">9</span>Prepare validation report and approve</div>
+            <div class="node-body">Validation report documents execution and results: confirmation protocol was followed or deviations documented and assessed, all analytical results compared to acceptance criteria, swab recovery factor data, statistical analysis of results if required, conclusion on whether cleaning procedure is validated and any recommendations for continued verification. Report reviewed and approved by QA before validated procedure is put into routine use. Cleaning procedure not validated until report is approved.</div>
+            <div class="node-reg">EU GMP Annex 15 &nbsp;·&nbsp; 21 CFR 211.67 &nbsp;·&nbsp; ISPE Lifecycle Guide</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE 3 -->
+      <div class="phase-col ph3">
+        <div class="phase-header">
+          <div class="phase-num">Stage 3 - EU GMP Annex 15</div>
+          Continued Cleaning Verification
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">10</span>Implement ongoing verification programme</div>
+            <div class="node-body">Continued cleaning verification is not optional - it is Stage 3 of the lifecycle. FDA treats its absence as an incomplete validation. The programme must define: testing frequency at periodic intervals after initial validation, alert and action levels defined below the acceptance limit, a trigger for investigation when results trend toward limits and a trigger for revalidation when results exceed action levels. Absence of a continued verification programme is treated as an incomplete validation status.</div>
+            <div class="node-reg">EU GMP Annex 15 Section 10 &nbsp;·&nbsp; ISPE Lifecycle Guide 2020</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">11</span>Monitor trending against alert and action levels</div>
+            <div class="node-body">Results trending from 15% to 81% of the acceptance limit over 12 months is an adverse trend requiring investigation before a limit is exceeded. Alert levels trigger increased monitoring frequency and investigation. Action level exceedances trigger immediate investigation, potential production hold and CAPA. Do not wait for a result above the acceptance limit before acting - continued verification is designed to detect problems before they become failures.</div>
+            <div class="node-reg">ISPE Lifecycle Guide 2020 &nbsp;·&nbsp; EU GMP Annex 15 &nbsp;·&nbsp; PDA TR 29</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-decision">
+            <div class="decision-q">Does any result exceed the action level or show adverse trend?</div>
+            <div class="d-opts">
+              <span class="opt-y">YES &#8594; Investigate and CAPA</span>
+              <span class="opt-n">NO &#8594; Continue and trend</span>
+            </div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">12</span>APQR inclusion and annual review</div>
+            <div class="node-body">Cleaning validation continued verification data must be included in the Annual Product Quality Review per 21 CFR 211.180(e) and EU GMP Chapter 1 Section 1.10. APQR must review: trend data for all validated equipment, number and outcome of verification exceedances, CAPA effectiveness for any remediation actions, review of whether acceptance limits remain appropriate and any revalidation activities completed in the period.</div>
+            <div class="node-reg">21 CFR 211.180(e) &nbsp;·&nbsp; EU GMP Chapter 1 Section 1.10 &nbsp;·&nbsp; ICH Q10</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE 4 - MAINTENANCE -->
+      <div class="phase-col ph4">
+        <div class="phase-header">
+          <div class="phase-num">Programme Maintenance</div>
+          Revalidation Triggers and Change Control
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">13</span>Change control integration</div>
+            <div class="node-body">Every change that could affect cleaning validation must be assessed through change control before implementation. Key revalidation triggers: new product introduced on validated equipment, change to cleaning agent or concentration, change to cleaning procedure parameters, equipment modification affecting surface area or geometry, changes to analytical methods and changes to product formulation affecting residue properties. Risk assessment documents whether full or partial revalidation is required.</div>
+            <div class="node-reg">21 CFR 211.100 &nbsp;·&nbsp; EU GMP Annex 15 &nbsp;·&nbsp; ICH Q10 Section 3.2.3</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-critical">
+            <div class="node-title" style="color:#FC8181">&#9888; New highly potent API changes worst-case</div>
+            <div class="node-body" style="font-size:0.67rem">Introducing a new product with an ADE significantly lower than any product currently in the validation programme changes the worst-case product designation and produces more stringent acceptance criteria. The existing validation was designed around the previous acceptance criteria and cannot demonstrate compliance with tighter limits. New validation runs at the new MACO-derived acceptance criteria are required.</div>
+            <div class="node-reg">EMA HBEL Guideline &nbsp;·&nbsp; ISPE Lifecycle Guide 2020</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">14</span>Legacy limit reassessment</div>
+            <div class="node-body">Sites using 10 ppm and 1/1000th dose criteria established before 2014 must conduct toxicological HBEL assessments for all products. If legacy limits are more stringent than HBEL-derived MACO limits a documented comparison supports the existing validation. If HBEL limits are more stringent revalidation to tighter limits is required. The c in cGMP requires current compliance. Legacy thresholds without HBEL comparison are challenged by FDA inspectors in 2025 and 2026.</div>
+            <div class="node-reg">EMA HBEL Guideline 2014 &nbsp;·&nbsp; FDA 483 database 2025-2026</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">15</span>Equipment design review</div>
+            <div class="node-body">Equipment design deficiencies are a cleaning validation failure mode identified during protocol development but found by FDA inspectors during review. Dead legs where cleaning solution cannot reach must be eliminated by design or addressed by specific cleaning procedures. Non-drainable lines retain residue. Gasket crevices and unsealed joints cannot be adequately cleaned. Equipment design review must be documented in the validation protocol with how each design challenge is addressed.</div>
+            <div class="node-reg">21 CFR 211.67 &nbsp;·&nbsp; EU GMP Annex 15 &nbsp;·&nbsp; ISPE Lifecycle Guide</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-col">
+
+      <!-- WORST CASE SELECTION -->
+      <div class="worst-box">
+        <h3>Worst-Case Product and Location Selection</h3>
+        <div class="worst-items">
+          <div class="worst-item">
+            <strong>Most toxic product - lowest ADE/PDE</strong>
+            The product with the lowest ADE produces the most stringent MACO limit of any product on the equipment. A cleaning procedure validated to meet this MACO mathematically satisfies all other products. Toxicological risk must be prioritised over cleaning difficulty as the primary worst-case selection criterion.
+          </div>
+          <div class="worst-item">
+            <strong>Least soluble product</strong>
+            The product with the lowest solubility in the cleaning agent is hardest to remove from equipment surfaces. Solubility data in the cleaning agent - not in water - is the relevant criterion. Where the most toxic and least soluble products differ a matrix or bracketing approach may be used with documented scientific rationale.
+          </div>
+          <div class="worst-item">
+            <strong>Most challenging to clean</strong>
+            Physical form considerations including sticky or adhesive products, products with high API concentration, products requiring high-temperature cleaning or products with known cleaning challenges. Equipment geometry interaction must be assessed.
+          </div>
+          <div class="worst-item">
+            <strong>Worst-case sampling locations</strong>
+            Sampling must be from worst-case locations not representative locations. Worst-case locations: dead legs and non-draining areas, product contact areas farthest from cleaning agent contact, welds and joints, gasket interfaces, product inlet and outlet points. Sampling from representative accessible surfaces understates actual residue risk and produces validation data that does not reflect the real cleaning challenge.
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALYTICAL METHODS -->
+      <div class="method-box">
+        <h3>Analytical Methods for Cleaning Verification</h3>
+        <div class="method-items">
+          <div class="method-item">
+            <strong>Swab sampling - primary method</strong>
+            Direct assessment of surface residue. Defined surface area - typically 25 cm2 or 100 cm2. Standardised technique per SOP. Swab recovery factor determined experimentally for each API, surface material and swab type combination. Critical: recovery factor must be applied to calculate the actual acceptance criterion for swab results. A 70% recovery factor means the swab LOQ must be 70% of the surface residue limit.
+          </div>
+          <div class="method-item">
+            <strong>Rinse sampling - complex geometry</strong>
+            Useful for equipment with geometry that cannot be adequately swabbed. Final rinse volume collected and analysed. Rinse sample result must be mathematically related back to surface residue level accounting for dilution. Rinse sampling alone is not sufficient for equipment where swabbing is feasible.
+          </div>
+          <div class="method-item">
+            <strong>TOC analysis</strong>
+            Non-specific method measuring all organic carbon. Useful for broad-spectrum screening. Must be demonstrated to have sufficient sensitivity to detect the worst-case API residue at the acceptance limit. For highly potent APIs with tight acceptance limits TOC may not have sufficient sensitivity - specific analytical methods required.
+          </div>
+          <div class="method-item">
+            <strong>Visual inspection</strong>
+            First check after cleaning. Minimum 1000 lux illumination. Inspector visual acuity documented. Inspection distance standardised. Visual inspection cannot substitute for analytical testing. Can only detect visible residue - cannot confirm absence of invisible residue at the MACO-derived limit. Supplementary to not instead of analytical methods.
+          </div>
+        </div>
+      </div>
+
+      <!-- COMMON FAILURES -->
+      <div class="fail-box">
+        <h3>Common FDA Failures 2020-2026</h3>
+        <div class="fail-items">
+          <div class="fail-item">
+            <strong>Absent validation for multipurpose equipment</strong>
+            2024 FDA warning letter ordered cease of all manufacturing. Most serious cleaning validation deficiency - a complete absence of validation studies for shared equipment.
+          </div>
+          <div class="fail-item">
+            <strong>Legacy limits without HBEL comparison</strong>
+            Sites using 10 ppm or 1/1000th dose limits without demonstrating equivalence or greater stringency versus HBEL-derived MACO. Actively challenged by FDA inspectors in 2025 and 2026.
+          </div>
+          <div class="fail-item">
+            <strong>Analytical method LOQ above acceptance limit</strong>
+            Most frequently cited analytical deficiency. If the LOQ is above the acceptance limit the method cannot detect a failing result. The method cannot confirm what it is required to confirm.
+          </div>
+          <div class="fail-item">
+            <strong>Swab recovery factor not determined</strong>
+            Swab acceptance criteria not corrected for actual recovery from equipment surfaces. Recovery must be determined experimentally - not assumed to be 100%.
+          </div>
+          <div class="fail-item">
+            <strong>Absent continued verification programme</strong>
+            Cleaning validation completed as a one-time event with no ongoing monitoring. FDA treats this as an incomplete validation status not an area for improvement.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOUR DOCUMENT TYPES -->
+  <div class="docs-bar">
+    <div class="doc-card">
+      <h4>Cleaning Validation Master Plan</h4>
+      <p>Site-level governing document. Scope, approach, worst-case methodology, HBEL acceptance limit basis, sampling strategy, analytical methods, revalidation criteria, continued verification programme design. First document FDA inspectors request. A site without a CVMP has no documented governance framework for its cleaning validation programme.</p>
+    </div>
+    <div class="doc-card">
+      <h4>Validation Protocol</h4>
+      <p>Prospective plan for each validation study. Approved by QA before execution begins. Specifies: products and equipment in scope, worst-case selection rationale, cleaning procedure, acceptance criteria with MACO calculation, sampling locations, analytical methods with LOQ, number of runs and acceptance criteria for completion. No protocol - no valid validation.</p>
+    </div>
+    <div class="doc-card">
+      <h4>Validation Report</h4>
+      <p>Post-execution summary. Protocol adherence confirmation or deviation documentation, all analytical results versus acceptance criteria, swab recovery factor data, conclusion on validation status, recommendations for continued verification. Reviewed and approved by QA before validated procedure enters routine use.</p>
+    </div>
+    <div class="doc-card">
+      <h4>Continued Verification Records</h4>
+      <p>Ongoing monitoring results database. Alert and action levels defined below acceptance limit. Trending data by location. CAPA records for any exceedances. Annual review conclusions. APQR submission data. Evidence of programme currency. The continued verification record package demonstrates that the validated state is being maintained over time.</p>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="rules-row">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Use 10 ppm or 1/1000th dose limits without HBEL comparison. Sample representative locations instead of worst-case locations. Use an analytical method with LOQ above the acceptance limit. Treat cleaning validation as a one-time event with no continued verification. Repeat validation runs until three consecutive passes without investigating why earlier runs failed.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Three-stage lifecycle</h4>
+      <p>Stage 1 process design: cleaning procedure parameters, worst-case selection, MACO calculation, method validation, CVMP. Stage 2 process qualification: prospective protocol, minimum three consecutive compliant runs under worst-case conditions, validation report with QA approval. Stage 3 continued verification: periodic testing, trend monitoring, alert and action levels, APQR integration.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Revalidation triggers</h4>
+      <p>New product on validated equipment. Change to cleaning agent or concentration. Change to cleaning parameters. Equipment modification. Changes to analytical methods. Changes to product formulation affecting residue. New highly potent API changing worst-case product designation. Legacy limits found to be less stringent than HBEL-derived MACO on reassessment.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR 211.67 - equipment cleaning requirement. EU GMP Annex 15 Section 10 - cleaning validation lifecycle. EMA HBEL Guideline 2014 - replaced legacy thresholds. ISPE Cleaning Validation Lifecycle Guide 2020. PDA TR 29. ICH Q7 Section 12 - API cleaning requirements. FDA Warning Letter 2024 - cease manufacturing case.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Cleaning Validation Lifecycle Map &nbsp;&#183;&nbsp;
+    Built from 21 CFR 211.67, EU GMP Annex 15, EMA HBEL Guideline 2014, ISPE Lifecycle Guide 2020, PDA TR 29 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
