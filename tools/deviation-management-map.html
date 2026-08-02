@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deviation Management and Root Cause Analysis Map | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0E1A28;
+    --navy2:   #122030;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --emerald: #10B981;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #0A2818;
+    --c2:      #1A2808;
+    --c3:      #281408;
+    --c4:      #0A1828;
+    --c1acc:   #34D399;
+    --c2acc:   #A3E635;
+    --c3acc:   #FB923C;
+    --c4acc:   #38BDF8;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  /* HEADER */
+  .header{
+    background:linear-gradient(135deg,#071018 0%,#0E1A28 60%,#0A2018 100%);
+    border-bottom:2px solid var(--emerald);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{
+    background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);
+    border-radius:6px;padding:6px 12px;
+    font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);
+    letter-spacing:0.5px;text-align:right;line-height:1.6;
+  }
+  .case-badge{
+    background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);
+    border-radius:6px;padding:5px 12px;
+    font-size:0.72rem;font-family:var(--mono);color:#FC8181;
+    letter-spacing:0.3px;text-align:right;
+  }
+
+  /* LEGEND */
+  .legend{
+    display:flex;gap:20px;padding:12px 40px;
+    background:rgba(0,0,0,0.2);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    flex-wrap:wrap;align-items:center;
+  }
+  .legend-item{display:flex;align-items:center;gap:7px;font-size:0.75rem;color:var(--mid)}
+  .ls{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+
+  /* MAIN */
+  .map-wrap{padding:28px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(16,185,129,0.07),rgba(16,185,129,0.02));
+    border:1.5px solid rgba(16,185,129,0.22);
+    border-radius:12px;padding:18px 24px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:20px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.95rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.78rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.7rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-types{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .type-chip{
+    border-radius:10px;padding:2px 10px;
+    font-size:0.68rem;font-family:var(--mono);white-space:nowrap;
+  }
+  .chip-crit{background:rgba(229,62,62,0.15);border:1px solid rgba(229,62,62,0.3);color:#FC8181}
+  .chip-maj{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.3);color:var(--gold)}
+  .chip-min{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);color:var(--c1acc)}
+  .chip-plan{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.25);color:var(--c4acc)}
+
+  /* CLASSIFICATION BANNER */
+  .class-bar{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;
+  }
+  .class-card{border-radius:8px;padding:12px 14px;border:1px solid}
+  .class-crit{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .class-maj{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .class-min{background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.25)}
+  .class-plan{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .class-card h4{font-size:0.74rem;font-weight:800;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.8px}
+  .class-crit h4{color:#FC8181}
+  .class-maj h4{color:var(--gold)}
+  .class-min h4{color:var(--c1acc)}
+  .class-plan h4{color:var(--c4acc)}
+  .class-card p{font-size:0.7rem;color:var(--light);line-height:1.5}
+
+  /* FOUR PHASE GRID */
+  .phases-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    gap:14px;margin-bottom:20px;
+  }
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{
+    padding:11px 14px;font-size:0.71rem;font-weight:700;
+    letter-spacing:1.4px;text-transform:uppercase;
+    display:flex;flex-direction:column;gap:2px;
+  }
+  .phase-header .phase-num{font-size:0.64rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#052012;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#101A04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#200A02;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#041020;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:14px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:7px;padding:9px 11px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:7px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.09);border:1.5px solid rgba(229,62,62,0.35);border-radius:7px}
+  .node-title{font-size:0.74rem;font-weight:700;color:var(--white);margin-bottom:3px;display:flex;align-items:center;gap:5px}
+  .step-num{
+    border-radius:50%;width:16px;height:16px;
+    font-size:0.61rem;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;font-family:var(--mono);
+  }
+  .ph1 .step-num{background:rgba(52,211,153,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(163,230,53,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(251,146,60,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(56,189,248,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.7rem;color:var(--light);line-height:1.48}
+  .node-reg{font-size:0.63rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.82rem;padding:2px 0;line-height:1;flex-shrink:0}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.74rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+  .d-opts{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.67rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.67rem;font-weight:700;font-family:var(--mono)}
+
+  /* BOTTOM GRID */
+  .bottom-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
+
+  /* RCA METHODS BOX */
+  .rca-box{
+    background:rgba(163,230,53,0.05);
+    border:1.5px solid rgba(163,230,53,0.2);
+    border-radius:10px;padding:16px 18px;
+  }
+  .rca-box h3{font-size:0.76rem;font-weight:700;color:var(--c2acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .rca-methods{display:flex;flex-direction:column;gap:7px}
+  .rca-method{
+    background:rgba(163,230,53,0.06);border:1px solid rgba(163,230,53,0.14);
+    border-radius:5px;padding:7px 10px;
+    font-size:0.7rem;color:var(--light);line-height:1.45;
+  }
+  .rca-method strong{color:var(--c2acc);display:block;font-size:0.68rem;margin-bottom:1px}
+
+  /* APOTEX BOX */
+  .apotex-box{
+    background:rgba(229,62,62,0.06);
+    border:1.5px solid rgba(229,62,62,0.25);
+    border-radius:10px;padding:16px 18px;
+  }
+  .apotex-box h3{font-size:0.76rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .apotex-steps{display:flex;flex-direction:column;gap:7px}
+  .apotex-step{
+    background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.14);
+    border-radius:5px;padding:7px 10px;
+    font-size:0.7rem;color:var(--light);line-height:1.45;
+  }
+  .apotex-step strong{color:#FC8181;display:block;font-size:0.68rem;margin-bottom:1px}
+
+  /* TRENDING BOX */
+  .trend-box{
+    background:rgba(56,189,248,0.05);
+    border:1.5px solid rgba(56,189,248,0.2);
+    border-radius:10px;padding:16px 18px;
+  }
+  .trend-box h3{font-size:0.76rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{
+    background:rgba(56,189,248,0.06);border:1px solid rgba(56,189,248,0.14);
+    border-radius:5px;padding:7px 10px;
+    font-size:0.7rem;color:var(--light);line-height:1.45;
+  }
+  .trend-item strong{color:var(--c4acc);display:block;font-size:0.68rem;margin-bottom:1px}
+
+  /* RULES */
+  .rules-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:0}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--emerald);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.69rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.68rem;color:var(--light);line-height:1.48}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  /* FOOTER */
+  .footer{
+    border-top:1px solid rgba(255,255,255,0.08);
+    padding:13px 40px;margin-top:20px;
+    display:flex;align-items:center;justify-content:space-between;
+    font-size:0.69rem;color:var(--mid);flex-wrap:wrap;gap:8px;
+  }
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.65rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Deviation Management and <em>Root Cause Analysis</em></h1>
+    <div class="header-sub">21 CFR 211.192 &nbsp;|&nbsp; ICH Q10 &nbsp;|&nbsp; ICH Q9(R1) 2023 &nbsp;|&nbsp; EU GMP Chapter 1 &nbsp;|&nbsp; 5 Why &nbsp;|&nbsp; Ishikawa &nbsp;|&nbsp; FMEA &nbsp;|&nbsp; Fault Tree</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.100(b)<br>
+      ICH Q10 Section 3.2 &nbsp;·&nbsp; ICH Q9(R1) 2023<br>
+      EU GMP Chapter 1 &nbsp;·&nbsp; EU GMP Annex 15
+    </div>
+    <div class="case-badge">
+      Apotex 2025 WL: leak tests repeated<br>
+      until passing - 19 months, no investigation
+    </div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 1 - Notification and Classification</div>
+  <div class="legend-item"><div class="ls" style="background:#A3E635"></div>Phase 2 - Investigation and RCA</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 3 - CAPA and Documentation</div>
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 4 - Closure and Trending</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(229,62,62,0.3);border:1px solid #E53E3E"></div>Critical warning</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:12px;height:12px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.69rem;color:var(--c1acc)">GMPify Procedural Map Series - Issue 3</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#9889;</div>
+    <div class="trigger-text">
+      <h3>Deviation Detected - Any Departure from Approved Procedure or Specification</h3>
+      <p>A deviation is any departure from an approved manufacturing procedure, approved specification, standard operating procedure or established manufacturing practice. Every deviation must be documented and assessed. The Apotex 2025 warning letter described the definitive failure: leak tests on critical aseptic equipment repeated until passing results were obtained over 19 months instead of investigating why the equipment was failing. Signals must be investigated - not managed by repetition.</p>
+      <div class="reg">21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.100(b) &nbsp;·&nbsp; EU GMP Chapter 1 Section 1.8 &nbsp;·&nbsp; ICH Q10 Section 3.2 &nbsp;·&nbsp; FDA Warning Letter Apotex 2025</div>
+    </div>
+    <div class="trigger-types">
+      <div class="type-chip chip-crit">Critical deviation</div>
+      <div class="type-chip chip-maj">Major deviation</div>
+      <div class="type-chip chip-min">Minor deviation</div>
+      <div class="type-chip chip-plan">Planned deviation</div>
+    </div>
+  </div>
+
+  <!-- CLASSIFICATION BANNER -->
+  <div class="class-bar">
+    <div class="class-card class-crit">
+      <h4>Critical deviation</h4>
+      <p>Actual or potential impact on product quality, safety or patient health. Immediate containment required. Full investigation mandatory. QA notification within one shift. Potential recall or field alert assessment required.</p>
+    </div>
+    <div class="class-card class-maj">
+      <h4>Major deviation</h4>
+      <p>Significant quality system implications. No direct patient safety impact but departure from an important requirement. Full investigation required. QA notification within 24 hours. CAPA required.</p>
+    </div>
+    <div class="class-card class-min">
+      <h4>Minor deviation</h4>
+      <p>Isolated event with no product quality impact and no recurrence pattern. Simplified assessment acceptable. Documentation required. QA notification within 48 hours. Trending at APQR required.</p>
+    </div>
+    <div class="class-card class-plan">
+      <h4>Planned deviation</h4>
+      <p>Pre-approved temporary departure from a procedure. Approved by QA before occurrence. Time-limited. Documented with quality risk assessment. Additional monitoring defined. Not an unplanned deviation.</p>
+    </div>
+  </div>
+
+  <!-- FOUR PHASES -->
+  <div class="phases-grid">
+
+    <!-- PHASE 1 -->
+    <div class="phase-col ph1">
+      <div class="phase-header">
+        <div class="phase-num">Phase 1</div>
+        Notification and Classification
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">1</span>Document the deviation immediately</div>
+          <div class="node-body">Record what occurred, when, where, who was involved and what product or process is affected. Contemporaneous documentation required at point of discovery. Do not attempt to correct the deviation before documenting it. Assign deviation reference number. Original data preserved with audit trail intact.</div>
+          <div class="node-reg">21 CFR 211.100(b) &nbsp;·&nbsp; ALCOA+ &nbsp;·&nbsp; 21 CFR 211.194</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">2</span>Notify QA unit and supervisor</div>
+          <div class="node-body">QA unit notified immediately for critical deviations - within one shift. Within 24 hours for major deviations. Within 48 hours for minor. QA assesses whether manufacturing can continue or must be halted. Do not continue the manufacturing process until QA assessment is complete for critical deviations.</div>
+          <div class="node-reg">21 CFR 211.22 &nbsp;·&nbsp; EU GMP Chapter 1 Section 1.8</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-decision">
+          <div class="decision-q">What is the deviation classification?</div>
+          <div class="d-opts">
+            <span class="opt-y" style="color:var(--red)">Critical</span>
+            <span class="opt-y" style="color:var(--gold)">Major</span>
+            <span class="opt-y" style="color:var(--c1acc)">Minor</span>
+          </div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-critical">
+          <div class="node-title" style="color:#FC8181">&#9888; Classification is not a downgrade tool</div>
+          <div class="node-body" style="font-size:0.69rem">Classifying a critical deviation as minor to avoid a full investigation is one of the most serious quality system failures FDA documents. A batch released based on inadequately investigated critical deviation is a potential recall trigger. If in doubt classify higher and investigate.</div>
+          <div class="node-reg">FDA warning letters 2025-2026 &nbsp;·&nbsp; 21 CFR 211.192</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">3</span>Implement immediate containment</div>
+          <div class="node-body">Quarantine all potentially affected product. Halt manufacturing if required by QA assessment. Document containment actions with timestamps. Containment is not investigation. Do not proceed to investigation during an active containment event - stabilise first.</div>
+          <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; ICH Q10 Section 3.2</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">4</span>Initial impact assessment</div>
+          <div class="node-body">Assess which batches and products are potentially affected. Document scope extension conclusion per 21 CFR 211.192 - other batches of same product and other products associated with the failure. Include distributed batches in the assessment. Document rationale even when conclusion is no other products affected.</div>
+          <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; FDA OOS Guidance 2022</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase-col ph2">
+      <div class="phase-header">
+        <div class="phase-num">Phase 2</div>
+        Investigation and Root Cause Analysis
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">5</span>Review batch and process records</div>
+          <div class="node-body">Complete batch record review. Raw material COAs and test results. Equipment calibration and cleaning records. In-process results. Environmental monitoring data for the manufacturing period. Personnel training records. Any prior deviations on same equipment or process. Identify all data relevant to the event before beginning RCA.</div>
+          <div class="node-reg">21 CFR 211.188 &nbsp;·&nbsp; 21 CFR 211.192</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">6</span>Select RCA methodology</div>
+          <div class="node-body">Select the methodology appropriate to the problem complexity. Document the selection rationale. 5 Why for simple single-factor events. Ishikawa fishbone for complex multi-factor events where same methodology has failed before. FMEA for preventive action assessment. Fault tree for safety-critical events with multiple causal pathways. ICH Q9(R1) 2023 requires subjectivity reduction.</div>
+          <div class="node-reg">ICH Q9(R1) 2023 &nbsp;·&nbsp; FDA QSIT Guide</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">7</span>Conduct root cause analysis</div>
+          <div class="node-body">Apply methodology with full documentation of the analytical pathway from the observed event to the identified root cause. Distinguish immediate cause from contributing causes from root cause. The full analytical chain must be documented. Each Why in 5 Why or each branch in Ishikawa must show the evidence assessed and the conclusion reached for that causal pathway.</div>
+          <div class="node-reg">ICH Q9(R1) 2023 &nbsp;·&nbsp; 21 CFR 211.192 &nbsp;·&nbsp; FDA QSIT</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-critical">
+          <div class="node-title" style="color:#FC8181">&#9888; These are NOT root causes</div>
+          <div class="node-body" style="font-size:0.69rem">Human error &nbsp;&#183;&nbsp; Operator did not follow procedure &nbsp;&#183;&nbsp; Equipment malfunction &nbsp;&#183;&nbsp; Training gap &nbsp;&#183;&nbsp; Unknown. These are immediate causes. The investigation must explain why the system allowed the error to occur and why it could occur again. Recurring deviations with the same root cause confirm the true root cause was never identified.</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-decision">
+          <div class="decision-q">Is the root cause identified with objective evidence?</div>
+          <div class="d-opts">
+            <span class="opt-y">YES &#8594; Step 8</span>
+            <span class="opt-n">NO &#8594; Deeper investigation</span>
+          </div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">8</span>Assess preventive action scope</div>
+          <div class="node-body">Assess whether the identified root cause exists in other processes, products or equipment that have not yet experienced the deviation. Preventive actions address potential recurrence in areas not yet affected. Document the preventive action conclusion with rationale even when no additional preventive actions are identified.</div>
+          <div class="node-reg">21 CFR 820.100(a)(3) &nbsp;·&nbsp; ICH Q10 Section 3.2.2</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase-col ph3">
+      <div class="phase-header">
+        <div class="phase-num">Phase 3</div>
+        CAPA and Batch Disposition
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">9</span>Develop CAPA addressing root cause</div>
+          <div class="node-body">Define specific corrective actions that address the identified root cause - not the immediate cause. If the root cause is a procedure design gap the corrective action must close that gap - not retrain the operator who did not follow the existing procedure. Preventive actions for other at-risk processes defined separately. Named owners and realistic timelines for each action.</div>
+          <div class="node-reg">ICH Q10 Section 3.2.2 &nbsp;·&nbsp; 21 CFR 820.100</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">10</span>Define VOE criterion before implementation</div>
+          <div class="node-body">Define the effectiveness criterion before CAPA implementation. The criterion must be measurable with a specific threshold and a scheduled check date. A criterion defined after closure confirms the action was taken - not that the problem was solved. The March 2026 FDA warning letter VOE case applies equally to deviation CAPAs as to standalone CAPAs.</div>
+          <div class="node-reg">ICH Q10 Section 3.2.2 &nbsp;·&nbsp; FDA March 2026 Warning Letter</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">11</span>QA review and batch disposition decision</div>
+          <div class="node-body">Quality unit reviews the complete investigation package before batch disposition decision. No batch may be released or rejected before the investigation is complete and QA-approved. QA assesses whether the deviation affected product quality and whether release is appropriate based on the investigation conclusions. Document disposition decision with full rationale.</div>
+          <div class="node-reg">21 CFR 211.165 &nbsp;·&nbsp; 21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.22</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-decision">
+          <div class="decision-q">Does investigation support batch release?</div>
+          <div class="d-opts">
+            <span class="opt-y">YES &#8594; Release with docs</span>
+            <span class="opt-n">NO &#8594; Reject batch</span>
+          </div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">12</span>Implement CAPA actions</div>
+          <div class="node-body">Execute approved corrective actions per plan. Collect objective implementation evidence for each action: updated SOP with approval date, training record with competency assessment result, equipment qualification data, process change validation evidence. Implementation evidence must be specific and objective - not a general note that retraining occurred.</div>
+          <div class="node-reg">21 CFR 820.100(a)(5) &nbsp;·&nbsp; ICH Q10 Section 3.2.2</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">13</span>Check for repeat deviation pattern</div>
+          <div class="node-body">Before closing this investigation check whether the same event type has occurred previously on this equipment, process or product. A repeat deviation is prima facie evidence that a previous CAPA was ineffective. If this is a repeat deviation the investigation must also address the adequacy of the previous CAPA and document why it did not prevent recurrence.</div>
+          <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; FDA QSIT Guide &nbsp;·&nbsp; Apotex 2025 WL</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase-col ph4">
+      <div class="phase-header">
+        <div class="phase-num">Phase 4</div>
+        Closure, VOE and Trending
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">14</span>Conduct effectiveness check at scheduled date</div>
+          <div class="node-body">At the pre-defined scheduled date conduct the effectiveness check against the pre-defined criterion and threshold. Collect objective performance data. Do not close the deviation record before the scheduled effectiveness check date. For process deviations collect process performance data showing the root cause condition has been eliminated.</div>
+          <div class="node-reg">ICH Q10 Section 3.2.2 &nbsp;·&nbsp; 21 CFR 820.100(a)(7)</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-decision">
+          <div class="decision-q">Does VOE meet the pre-defined criterion?</div>
+          <div class="d-opts">
+            <span class="opt-y">YES &#8594; Step 16</span>
+            <span class="opt-n">NO &#8594; Step 15</span>
+          </div>
+        </div>
+        <div class="arrow">&#8595; NO</div>
+
+        <div class="node node-critical">
+          <div class="node-title" style="color:#FC8181"><span class="step-num" style="background:rgba(229,62,62,0.2);color:#FC8181">15</span>VOE failure - mandatory escalation</div>
+          <div class="node-body">Route deviation CAPA back to RCA phase if original root cause was likely incorrect. Open an additional CAPA if VOE reveals a new failure mode. Implement supplementary containment. Do not close the record with a failed effectiveness check. Document the VOE failure with data and the escalation decision with rationale.</div>
+          <div class="node-reg">ICH Q10 &nbsp;·&nbsp; FDA March 2026 Warning Letter case</div>
+        </div>
+        <div class="arrow">&#8595; YES</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">16</span>Prepare closure documentation</div>
+          <div class="node-body">Closure package: classification and rationale, impact assessment and scope extension conclusion, root cause analysis with methodology and full analytical pathway, CAPA actions with implementation evidence, effectiveness criterion and verification result with data, batch disposition decision and rationale, preventive action conclusion. QA approval required for closure.</div>
+          <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; ICH Q10 &nbsp;·&nbsp; 21 CFR 211.22</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">17</span>Submit to trending - APQR and management review</div>
+          <div class="node-body">Add closed deviation to deviation trending dataset. Trending must be reviewed at APQR and management review per ICH Q10 Section 3.2.1. Three analyses: root cause category trending across products and processes, equipment-specific deviation clustering and period-specific clustering. A 156% increase in deviations in one suite over one year is a systemic signal - not normal variation.</div>
+          <div class="node-reg">ICH Q10 Sections 3.2.1 and 3.2.4 &nbsp;·&nbsp; 21 CFR 211.180(e)</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node" style="background:rgba(52,211,153,0.09);border:1.5px solid rgba(52,211,153,0.28);border-radius:7px;padding:9px 11px;text-align:center;">
+          <div style="font-size:0.8rem;font-weight:800;color:var(--c1acc);margin-bottom:2px">DEVIATION CLOSED</div>
+          <div style="font-size:0.67rem;color:var(--light)">In trending dataset &nbsp;&#183;&nbsp; CAPA monitored &nbsp;&#183;&nbsp; APQR and management review</div>
+          <div style="font-size:0.63rem;font-family:var(--mono);color:var(--mid);margin-top:2px">ICH Q10 Section 3.2.1 &nbsp;·&nbsp; 21 CFR 211.180(e)</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM GRID -->
+  <div class="bottom-grid">
+
+    <!-- RCA METHODS -->
+    <div class="rca-box">
+      <h3>RCA Methodology Selection Guide</h3>
+      <div class="rca-methods">
+        <div class="rca-method">
+          <strong>5 Why Analysis - use for simple single-factor events</strong>
+          Ask Why five times in sequence. Each answer forms the basis of the next question. Stop when you reach a system failure that could not be further prevented. Best for: documentation failures, single-operator errors, isolated equipment events. Limitation: does not work for complex multi-factor problems. Seven recurrences of the same event across multiple operators is not a 5 Why problem.
+        </div>
+        <div class="rca-method">
+          <strong>Ishikawa Fishbone - use for complex multi-factor events</strong>
+          Organise potential causes into six categories: Man, Machine, Method, Material, Measurement, Environment. Forces evaluation of all cause categories simultaneously. Best for: recurring events where 5 Why has failed, events involving multiple operators or multiple products, complex process interactions. If the same methodology failed to prevent six previous recurrences it will not succeed on the seventh.
+        </div>
+        <div class="rca-method">
+          <strong>FMEA - use for preventive action assessment</strong>
+          Prospective tool identifying potential failure modes and their risk. Use after corrective action RCA to assess what else could fail based on the same root cause. Risk Priority Number: Severity x Occurrence x Detectability. ICH Q9(R1) 2023 cautions against over-reliance on RPN - individual S, O and D scores matter as much as the composite RPN.
+        </div>
+        <div class="rca-method">
+          <strong>Fault Tree Analysis - use for safety-critical complex events</strong>
+          Top-down mapping of all possible causal pathways using logic gates. AND gates require multiple simultaneous conditions. OR gates require any one condition. Use when investigation must demonstrate all possible causes have been assessed. Best for: sterility failures, critical contamination events, any event where a single linear causal chain is insufficient.
+        </div>
+      </div>
+    </div>
+
+    <!-- APOTEX CASE -->
+    <div class="apotex-box">
+      <h3>Apotex 2025 Warning Letter - The Definitive Investigation Failure</h3>
+      <div class="apotex-steps">
+        <div class="apotex-step">
+          <strong>September 2023 - First leak test failure</strong>
+          Critical aseptic filling equipment fails a leak test. Production personnel repeat the leak test until a passing result is obtained. The equipment is used for production. No investigation opened into why the equipment failed.
+        </div>
+        <div class="apotex-step">
+          <strong>September 2023 to April 2025 - Pattern continues</strong>
+          Repeated leak test failures on the same critical aseptic equipment. Each time: repeat testing until passing. Each time: production continues. Each time: no investigation into why the equipment is failing the leak test. 19 months of signals. No investigation.
+        </div>
+        <div class="apotex-step">
+          <strong>FDA finding - testing into compliance</strong>
+          FDA describes the failure precisely: performing tests until a passing result is obtained is not an investigation. It is testing into compliance. The leak test failures were signals that equipment integrity was compromised. Each failure was an opportunity to investigate the root cause and correct the equipment. Each was instead treated as an anomaly to be managed by retesting.
+        </div>
+        <div class="apotex-step">
+          <strong>The lesson for deviation management</strong>
+          A pattern of repeated events that are individually documented and individually closed without systemic investigation is not a compliant deviation management programme. It is an accumulation of unresolved quality system failures. Every deviation that recurs after a previous investigation is evidence that the previous investigation did not identify the true root cause.
+        </div>
+      </div>
+    </div>
+
+    <!-- TRENDING -->
+    <div class="trend-box">
+      <h3>Deviation Trending - APQR and Management Review Requirements</h3>
+      <div class="trend-items">
+        <div class="trend-item">
+          <strong>Root cause category trending</strong>
+          Are the same root cause categories appearing across different products, processes and areas? Multiple deviations with training-related root causes across different departments indicate a training programme system failure - not multiple isolated training events. ICH Q10 Section 3.2.1 requires this analysis.
+        </div>
+        <div class="trend-item">
+          <strong>Equipment-specific deviation clustering</strong>
+          Are deviations clustering around specific equipment or instrument assets? A single piece of equipment generating 48% of deviations in a filling suite over 12 months is a systemic equipment management signal. Equipment age, maintenance history and qualification status should be reviewed against the deviation pattern.
+        </div>
+        <div class="trend-item">
+          <strong>Period-specific clustering</strong>
+          Are deviations clustering in specific time periods - specific shifts, post-holiday return periods, following personnel changes or raw material change periods? Clustering indicates systemic rather than random causes. Shift-specific clustering may indicate supervision or training gaps that individual deviation investigations will not surface.
+        </div>
+        <div class="trend-item">
+          <strong>Repeat deviation rate</strong>
+          What percentage of closed deviations have the same event type recurring within 12 months of CAPA closure? A repeat rate above 10% signals a systematic investigation programme failure - CAPAs that close records rather than solve problems. This metric must be presented at management review with specific cases identified.
+        </div>
+        <div class="trend-item">
+          <strong>Volume trend year on year</strong>
+          A 156% increase in deviations in one process area year on year is a systemic trend signal requiring investigation beyond individual deviation closure. Management review that acknowledges volume increases without investigating their cause fails the ICH Q10 Section 3.2.4 management review standard.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RULES -->
+  <div class="rules-row">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Repeat a test until a passing result is obtained instead of investigating why it failed. Classify a critical deviation as minor to avoid a full investigation. Assign human error as the root cause without explaining the system failure that enabled it. Close deviations with the same root cause repeatedly without systemic investigation.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Documentation required</h4>
+      <p>Contemporaneous description at point of discovery. Classification with rationale. Containment actions with timestamps. Impact assessment with scope extension conclusion. RCA with methodology and full analytical pathway. CAPA plan with VOE criterion. Batch disposition with rationale. Closure with QA approval.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Timelines - FDA expectations</h4>
+      <p>Critical: QA notification within one shift, preliminary assessment within 48 hours. Full investigation: 30 days for critical, 45 days for major. Extensions require documented QA justification. Open deviations beyond 30 days without justification are a standard FDA 483 finding. Minor deviations: assess within 10 business days.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR 211.192 - investigation and scope extension requirement. 21 CFR 211.100(b) - written procedures and documentation. ICH Q10 Section 3.2 - deviation management as PQS element. ICH Q9(R1) 2023 - subjectivity reduction in RCA. Apotex 2025 FDA Warning Letter - testing into compliance failure.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Deviation Management and Root Cause Analysis Map &nbsp;&#183;&nbsp;
+    Built from 21 CFR 211.192, ICH Q10, ICH Q9(R1) 2023, EU GMP Chapter 1, Apotex 2025 FDA Warning Letter &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Issue 3 of 10</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
