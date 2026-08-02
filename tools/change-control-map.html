@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Change Control Decision Map | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0F1520;
+    --navy2:   #141C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --violet:  #8B5CF6;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #0A1830;
+    --c2:      #1A1030;
+    --c3:      #201808;
+    --c4:      #082018;
+    --c1acc:   #60A5FA;
+    --c2acc:   #C084FC;
+    --c3acc:   #FCD34D;
+    --c4acc:   #6EE7B7;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  /* HEADER */
+  .header{
+    background:linear-gradient(135deg,#080E1C 0%,#0F1520 60%,#0A1028 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{
+    background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.3);
+    border-radius:6px;padding:6px 12px;
+    font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);
+    letter-spacing:0.5px;text-align:right;line-height:1.6;
+  }
+  .warn-badge{
+    background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);
+    border-radius:6px;padding:5px 12px;
+    font-size:0.72rem;font-family:var(--mono);color:#FC8181;
+    text-align:right;
+  }
+
+  /* LEGEND */
+  .legend{
+    display:flex;gap:18px;padding:12px 40px;
+    background:rgba(0,0,0,0.2);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    flex-wrap:wrap;align-items:center;
+  }
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  /* MAIN */
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(96,165,250,0.07),rgba(96,165,250,0.02));
+    border:1.5px solid rgba(96,165,250,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+
+  /* FIVE CATEGORIES */
+  .categories-bar{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px;
+  }
+  .cat-card{border-radius:8px;padding:10px 12px;border:1px solid}
+  .cat-mat{background:rgba(96,165,250,0.07);border-color:rgba(96,165,250,0.25)}
+  .cat-equip{background:rgba(192,132,252,0.07);border-color:rgba(192,132,252,0.25)}
+  .cat-fac{background:rgba(252,211,77,0.07);border-color:rgba(252,211,77,0.25)}
+  .cat-proc{background:rgba(110,231,183,0.07);border-color:rgba(110,231,183,0.25)}
+  .cat-qs{background:rgba(249,115,22,0.07);border-color:rgba(249,115,22,0.25)}
+  .cat-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .cat-mat h4{color:var(--c1acc)}
+  .cat-equip h4{color:var(--c2acc)}
+  .cat-fac h4{color:var(--c3acc)}
+  .cat-proc h4{color:var(--c4acc)}
+  .cat-qs h4{color:var(--amber)}
+  .cat-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+
+  /* MAIN DECISION FLOW - left column lifecycle + right column regulatory matrix */
+  .main-grid{
+    display:grid;
+    grid-template-columns:1.2fr 0.8fr;
+    gap:16px;margin-bottom:18px;
+  }
+
+  /* LIFECYCLE PHASES */
+  .lifecycle-col{display:flex;flex-direction:column;gap:12px}
+  .phase-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{
+    padding:10px 14px;font-size:0.7rem;font-weight:700;
+    letter-spacing:1.4px;text-transform:uppercase;
+    display:flex;flex-direction:column;gap:1px;
+  }
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#05102A;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140A28;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#181004;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#041A10;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{
+    border-radius:50%;width:15px;height:15px;
+    font-size:0.59rem;font-weight:800;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;font-family:var(--mono);
+  }
+  .ph1 .step-num{background:rgba(96,165,250,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(192,132,252,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(252,211,77,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(110,231,183,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  /* REGULATORY MATRIX - right column */
+  .reg-col{display:flex;flex-direction:column;gap:12px}
+
+  /* REPORTING CATEGORIES */
+  .reporting-box{
+    background:rgba(0,0,0,0.2);
+    border:1.5px solid rgba(255,255,255,0.1);
+    border-radius:10px;overflow:hidden;
+  }
+  .reporting-header{
+    background:rgba(255,255,255,0.05);
+    padding:10px 16px;
+    font-size:0.72rem;font-weight:700;color:var(--white);
+    text-transform:uppercase;letter-spacing:1.2px;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .rep-cards{display:flex;flex-direction:column;gap:0}
+  .rep-card{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .rep-card:last-child{border-bottom:none}
+  .rep-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+  .rep-label{font-size:0.75rem;font-weight:800}
+  .rep-timeline{font-size:0.67rem;font-family:var(--mono);padding:2px 8px;border-radius:10px;font-weight:600}
+  .rep-pas .rep-label{color:#FC8181}
+  .rep-pas .rep-timeline{background:rgba(229,62,62,0.15);color:#FC8181;border:1px solid rgba(229,62,62,0.3)}
+  .rep-cbe30 .rep-label{color:var(--gold)}
+  .rep-cbe30 .rep-timeline{background:rgba(245,166,35,0.15);color:var(--gold);border:1px solid rgba(245,166,35,0.3)}
+  .rep-cbe0 .rep-label{color:var(--c4acc)}
+  .rep-cbe0 .rep-timeline{background:rgba(110,231,183,0.12);color:var(--c4acc);border:1px solid rgba(110,231,183,0.3)}
+  .rep-ar .rep-label{color:var(--c1acc)}
+  .rep-ar .rep-timeline{background:rgba(96,165,250,0.12);color:var(--c1acc);border:1px solid rgba(96,165,250,0.3)}
+  .rep-card p{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .rep-examples{margin-top:5px}
+  .rep-examples span{font-size:0.65rem;color:var(--mid);font-style:italic}
+
+  /* ICH Q12 BOX */
+  .ich-box{
+    background:rgba(192,132,252,0.06);
+    border:1.5px solid rgba(192,132,252,0.22);
+    border-radius:10px;padding:14px 16px;
+  }
+  .ich-box h3{font-size:0.74rem;font-weight:700;color:var(--c2acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ich-items{display:flex;flex-direction:column;gap:7px}
+  .ich-item{
+    background:rgba(192,132,252,0.06);border:1px solid rgba(192,132,252,0.14);
+    border-radius:5px;padding:7px 10px;
+    font-size:0.69rem;color:var(--light);line-height:1.45;
+  }
+  .ich-item strong{color:var(--c2acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* COMMON FAILURES BOX */
+  .fail-box{
+    background:rgba(229,62,62,0.05);
+    border:1.5px solid rgba(229,62,62,0.22);
+    border-radius:10px;padding:14px 16px;
+  }
+  .fail-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .fail-items{display:flex;flex-direction:column;gap:6px}
+  .fail-item{
+    background:rgba(229,62,62,0.06);border:1px solid rgba(229,62,62,0.14);
+    border-radius:5px;padding:7px 10px;
+    font-size:0.69rem;color:var(--light);line-height:1.45;
+  }
+  .fail-item strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* RULES */
+  .rules-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  /* FOOTER */
+  .footer{
+    border-top:1px solid rgba(255,255,255,0.08);
+    padding:12px 40px;margin-top:18px;
+    display:flex;align-items:center;justify-content:space-between;
+    font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px;
+  }
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Change Control <em>Decision Map</em></h1>
+    <div class="header-sub">21 CFR 211.100 &nbsp;|&nbsp; 21 CFR 314.70 &nbsp;|&nbsp; ICH Q10 S3.2.3 &nbsp;|&nbsp; ICH Q12 &nbsp;|&nbsp; PAS &nbsp;|&nbsp; CBE-30 &nbsp;|&nbsp; CBE-0 &nbsp;|&nbsp; Annual Report &nbsp;|&nbsp; PACMP &nbsp;|&nbsp; EU Annex 15</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      21 CFR 211.100 &nbsp;·&nbsp; 21 CFR 314.70<br>
+      ICH Q10 Section 3.2.3 &nbsp;·&nbsp; ICH Q12 2020<br>
+      EU GMP Annex 15 &nbsp;·&nbsp; SUPAC guidance series
+    </div>
+    <div class="warn-badge">
+      2024 WL: poor change management system<br>
+      for blend size, formulation and manufacture
+    </div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#60A5FA"></div>Phase 1 - Proposal and Assessment</div>
+  <div class="legend-item"><div class="ls" style="background:#C084FC"></div>Phase 2 - Classification and Regulatory</div>
+  <div class="legend-item"><div class="ls" style="background:#FCD34D"></div>Phase 3 - Validation and Implementation</div>
+  <div class="legend-item"><div class="ls" style="background:#6EE7B7"></div>Phase 4 - Verification and Closure</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(229,62,62,0.3);border:1px solid #E53E3E"></div>Critical warning</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series - Issue 4</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#9881;</div>
+    <div class="trigger-text">
+      <h3>Change Identified - Any Modification to Approved Manufacturing Operations Requiring Assessment</h3>
+      <p>Change control is required for any change to a pharmaceutical manufacturing operation that could affect product quality. 21 CFR 211.100(a) has ranked in the top ten FDA 483 citation areas every year since 2018. A 2024 FDA warning letter cited a manufacturer for a poor change management system regarding changes in blend size, formulation and manufacture. Implementing a change that requires a Prior Approval Supplement without FDA approval is an adulteration violation under 21 CFR 211.1. Changes and deviations are different - a change modifies an approved procedure. A deviation departs from it without modification.</p>
+      <div class="reg">21 CFR 211.100(a) and (b) &nbsp;·&nbsp; 21 CFR 314.70 &nbsp;·&nbsp; ICH Q10 Section 3.2.3 &nbsp;·&nbsp; ICH Q12 2020 &nbsp;·&nbsp; EU GMP Annex 15 &nbsp;·&nbsp; FDA 2024 Warning Letter</div>
+    </div>
+  </div>
+
+  <!-- FIVE CATEGORIES -->
+  <div class="categories-bar">
+    <div class="cat-card cat-mat">
+      <h4>Materials</h4>
+      <p>New suppliers, specification changes, container closure changes, new excipient grades or sources, raw material alternatives.</p>
+    </div>
+    <div class="cat-card cat-equip">
+      <h4>Equipment</h4>
+      <p>Replacement with different model or capacity, modifications to existing equipment, new equipment types, cleaning procedure changes.</p>
+    </div>
+    <div class="cat-card cat-fac">
+      <h4>Facilities</h4>
+      <p>HVAC modifications, cleanroom reclassification, utility system changes, facility expansion, relocation of manufacturing operations.</p>
+    </div>
+    <div class="cat-card cat-proc">
+      <h4>Processes</h4>
+      <p>Batch size changes, processing parameter changes, process sequence changes, in-process control changes, new manufacturing technologies.</p>
+    </div>
+    <div class="cat-card cat-qs">
+      <h4>Quality System</h4>
+      <p>Batch record format changes, analytical method changes, release specification changes, stability programme changes, SOP revisions.</p>
+    </div>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="main-grid">
+
+    <!-- LIFECYCLE PHASES -->
+    <div class="lifecycle-col">
+      <div class="phase-row">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Proposal and Initial Assessment
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Submit formal change proposal</div>
+              <div class="node-body">Document what is being changed, why the change is proposed, anticipated benefits and preliminary quality impact assessment. Identify all SOPs, batch records, specifications and validated parameters affected. Change proposal approved by QA before any further activities begin. No change activities may begin before QA approval of the proposal.</div>
+              <div class="node-reg">21 CFR 211.100 &nbsp;·&nbsp; ICH Q10 Section 3.2.3</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Risk assessment - quality impact</div>
+              <div class="node-body">Assess whether the change could affect any critical quality attribute. Assess probability of adverse effect, severity and detectability using ICH Q9(R1) 2023 structured methodology. Document the risk assessment rationale. Risk assessment determines the depth of validation required and informs regulatory classification. A risk assessment without documented methodology does not satisfy ICH Q9(R1) subjectivity reduction requirements.</div>
+              <div class="node-reg">ICH Q9(R1) 2023 &nbsp;·&nbsp; ICH Q10 Section 3.2.3</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Does the change fall within an approved PACMP or design space?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Reduced notification</span>
+                <span class="opt-n">NO &#8594; Phase 2</span>
+              </div>
+            </div>
+            <div class="arrow">&#8595; NO</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Identify all affected documents and systems</div>
+              <div class="node-body">List every document, procedure, specification, analytical method and system that requires updating if the change is approved. Identify whether any change elements fall within the approved regulatory dossier or outside it. Changes within the dossier require regulatory notification assessment. Changes outside the dossier require notification. This assessment determines the regulatory classification path.</div>
+              <div class="node-reg">21 CFR 314.70 &nbsp;·&nbsp; ICH Q12 Established Conditions</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Regulatory Classification
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Reference applicable FDA guidance</div>
+              <div class="node-body">Identify the applicable FDA guidance for the specific change type. FDA CMC Changes to Approved NDA or ANDA. SUPAC guidance for immediate release, modified release or semisolid products. Changes to Approved Applications for Biological Products. ICH Q12 for post-approval lifecycle. Classification must reference the applicable guidance - generic classifications without regulatory basis are a 483 citation risk.</div>
+              <div class="node-reg">21 CFR 314.70 &nbsp;·&nbsp; SUPAC series &nbsp;·&nbsp; ICH Q12 2020</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">What is the regulatory reporting classification?</div>
+              <div class="d-opts">
+                <span class="opt-y" style="color:#FC8181">PAS</span>
+                <span class="opt-y" style="color:var(--gold)">CBE-30</span>
+                <span class="opt-y" style="color:var(--c4acc)">CBE-0</span>
+                <span class="opt-y" style="color:var(--c1acc)">AR</span>
+              </div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title" style="color:#FC8181">&#9888; Under-classification is an adulteration risk</div>
+              <div class="node-body" style="font-size:0.67rem">Classifying a PAS-required change as CBE-30 or minor to avoid regulatory timelines and implementing without FDA approval distributes a product manufactured under an unapproved change - an adulteration violation under 21 CFR 211.1. The consequence is product recall not a delayed filing. When in doubt classify higher.</div>
+              <div class="node-reg">21 CFR 211.1 &nbsp;·&nbsp; 21 CFR 314.70 &nbsp;·&nbsp; FDA 2024 WL</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Submit regulatory notification if required</div>
+              <div class="node-body">PAS: submit and await FDA approval before any implementation. CBE-30: submit and wait 30 days. If FDA objects within 30 days implementation must stop. CBE-0: submit and implement immediately. Annual Report: document for next annual report filing. EU equivalent: Type II variation for major changes, Type IB or IA for minor changes per EU variation regulation.</div>
+              <div class="node-reg">21 CFR 314.70 &nbsp;·&nbsp; ICH Q12 &nbsp;·&nbsp; EU Variation Regulation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-row">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Validation and Implementation
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Develop validation and qualification plan</div>
+              <div class="node-body">Define what validation or qualification studies are required before implementation. Equipment changes: IQ OQ PQ scope based on risk assessment. Process changes: process validation studies demonstrating CQA equivalence. Analytical method changes: method comparison or bridging study. Material changes: equivalency data package per FDA SUPAC guidance. Validation plan approved before any study begins.</div>
+              <div class="node-reg">EU GMP Annex 15 &nbsp;·&nbsp; FDA Process Validation Guidance 2011</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Execute validation studies</div>
+              <div class="node-body">Conduct validation studies per approved plan. Document all results including failures. Assess whether results meet acceptance criteria before proceeding to implementation. For PAS changes validation data must be included in the supplement and approved by FDA before commercial implementation. Do not implement based on validation data that is still under review.</div>
+              <div class="node-reg">FDA CMC Changes Guidance &nbsp;·&nbsp; EU GMP Annex 15 &nbsp;·&nbsp; ICH Q12</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Do validation results confirm change does not adversely affect CQAs?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Implement</span>
+                <span class="opt-n">NO &#8594; Reassess or abandon</span>
+              </div>
+            </div>
+            <div class="arrow">&#8595; YES - and PAS approved if applicable</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Update all affected documents</div>
+              <div class="node-body">Update every document identified in Step 3: SOPs, batch records, specifications, analytical methods, validation protocols and reports, stability protocols, regulatory submissions. All document updates approved before implementation of the physical change. Train all personnel who will work under the changed conditions. Training records completed before first production run under changed conditions.</div>
+              <div class="node-reg">21 CFR 211.100 &nbsp;·&nbsp; 21 CFR 211.68 &nbsp;·&nbsp; ICH Q10</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Implement the change</div>
+              <div class="node-body">Execute the change per the approved change control plan. Document all implementation steps. For major changes the first commercial batch produced under the changed conditions must not be released until validation data has been reviewed and approved by QA. Deviations from the implementation plan must be documented and assessed before proceeding.</div>
+              <div class="node-reg">21 CFR 211.100(b) &nbsp;·&nbsp; ICH Q10 Section 3.2.3</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Verification and Closure
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Post-implementation verification</div>
+              <div class="node-body">Confirm the change achieved its intended outcome without adverse effects on product quality. Collect process performance data from the first production batches under changed conditions. Compare against pre-change baseline and against acceptance criteria defined in the change control record. Verification activities must be defined before implementation - not designed retrospectively to confirm what happened.</div>
+              <div class="node-reg">EU GMP Annex 15 &nbsp;·&nbsp; ICH Q10 Section 3.2.3</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Does post-implementation data confirm the change achieved intended outcome?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Step 11</span>
+                <span class="opt-n">NO &#8594; Investigate and reassess</span>
+              </div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Update dossier and regulatory submissions</div>
+              <div class="node-body">Update all regulatory submissions to reflect the implemented change. For ICH Q12 Established Conditions changes update the PLCM document. For changes within an approved PACMP file the required notification with the comparability data package. Ensure that batch genealogy, investigation records and recall capability are maintained for the physical location where the change was implemented.</div>
+              <div class="node-reg">ICH Q12 &nbsp;·&nbsp; 21 CFR 314.70 &nbsp;·&nbsp; EU Variation Regulation</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>QA review and formal closure</div>
+              <div class="node-body">QA reviews complete change control package: proposal and risk assessment, regulatory classification and notification, validation data, document updates, personnel training, implementation evidence and post-implementation verification. All elements confirmed complete. Open change controls monitored for on-time closure. Changes open beyond 60 days without documented justification are a standard FDA 483 finding.</div>
+              <div class="node-reg">21 CFR 211.22 &nbsp;·&nbsp; ICH Q10 Section 3.2.3</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node" style="background:rgba(110,231,183,0.08);border:1.5px solid rgba(110,231,183,0.25);border-radius:6px;padding:8px 10px;text-align:center;">
+              <div style="font-size:0.78rem;font-weight:800;color:var(--c4acc);margin-bottom:2px">CHANGE CLOSED</div>
+              <div style="font-size:0.66rem;color:var(--light)">APQR trending &nbsp;&#183;&nbsp; Dossier current &nbsp;&#183;&nbsp; Misclassification audit complete</div>
+              <div style="font-size:0.61rem;font-family:var(--mono);color:var(--mid);margin-top:2px">ICH Q10 Section 3.2.3 &nbsp;·&nbsp; 21 CFR 211.180(e)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- REGULATORY MATRIX COLUMN -->
+    <div class="reg-col">
+
+      <!-- REPORTING CATEGORIES -->
+      <div class="reporting-box">
+        <div class="reporting-header">FDA Regulatory Reporting Categories - 21 CFR 314.70</div>
+        <div class="rep-cards">
+
+          <div class="rep-card rep-pas">
+            <div class="rep-card-header">
+              <div class="rep-label">Prior Approval Supplement (PAS)</div>
+              <div class="rep-timeline">FDA approval required</div>
+            </div>
+            <p>Major changes with substantial potential to adversely affect product quality. FDA must approve the PAS before any implementation. Typical review: 6 to 12 months standard, 2 months priority. Implementing before approval is an adulteration violation.</p>
+            <div class="rep-examples"><span>Examples: new drug substance synthetic route, formulation changes altering inactive ingredients, new sterile manufacturing site, container closure change for sterile products, scale changes beyond validated range, specifications relaxed below approved limits.</span></div>
+          </div>
+
+          <div class="rep-card rep-cbe30">
+            <div class="rep-card-header">
+              <div class="rep-label">Changes Being Effected - 30 Days (CBE-30)</div>
+              <div class="rep-timeline">Implement after 30 days if no FDA objection</div>
+            </div>
+            <p>Moderate changes with moderate potential to affect quality. Submit to FDA and implement 30 days later if FDA does not object. If FDA objects within 30 days implementation must stop immediately.</p>
+            <div class="rep-examples"><span>Examples: new manufacturing site for non-sterile products, equipment changes to different design same operating principle with equivalency data, certain packaging material changes.</span></div>
+          </div>
+
+          <div class="rep-card rep-cbe0">
+            <div class="rep-card-header">
+              <div class="rep-label">Changes Being Effected (CBE-0)</div>
+              <div class="rep-timeline">Implement immediately on submission</div>
+            </div>
+            <p>Changes within approved design space or PACMP scope. Submit and implement immediately. Changes covered by an approved PACMP under ICH Q12 can be implemented as CBE-0 even when they would normally require CBE-30 - the core PACMP efficiency benefit.</p>
+            <div class="rep-examples"><span>Examples: changes within ICH Q12 design space, changes within approved PACMP scope with required comparability data, certain site transfers for non-sterile products with demonstrated equivalency.</span></div>
+          </div>
+
+          <div class="rep-card rep-ar">
+            <div class="rep-card-header">
+              <div class="rep-label">Annual Report (AR)</div>
+              <div class="rep-timeline">Report in next annual submission</div>
+            </div>
+            <p>Minor changes with minimal potential to adversely affect quality. No prior notification required. Report in the next annual report. EU equivalent: Type IA variation notified within 12 months of implementation.</p>
+            <div class="rep-examples"><span>Examples: editorial corrections to batch record text not altering steps or parameters, minor label corrections, certain analytical laboratory changes not affecting methods or specifications.</span></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ICH Q12 BOX -->
+      <div class="ich-box">
+        <h3>ICH Q12 Post-Approval Lifecycle Tools</h3>
+        <div class="ich-items">
+          <div class="ich-item">
+            <strong>Established Conditions (ECs)</strong>
+            ECs define which dossier elements require regulatory notification when changed. Non-EC elements can be managed through the internal quality system without notification. EC list is maintained in the PLCM document. Changes within design space are not changes to ECs.
+          </div>
+          <div class="ich-item">
+            <strong>Post-Approval Change Management Protocol (PACMP)</strong>
+            Pre-agreed plan for managing a defined future change within agreed boundaries. Once approved, qualifying changes use the reduced notification category in the PACMP. A change normally requiring CBE-30 can be implemented as CBE-0 within an approved PACMP. A change normally requiring PAS may be implementable as CBE-30 with pre-specified data.
+          </div>
+          <div class="ich-item">
+            <strong>Product Lifecycle Management (PLCM) Document</strong>
+            Living document capturing the current EC list, approved PACMPs and EC designation rationales. Updated when ECs change or new PACMPs are approved. Single reference for current regulatory status of all manufacturing elements. Reduces complexity of managing post-approval changes across multiple products and jurisdictions.
+          </div>
+          <div class="ich-item">
+            <strong>Who benefits most from ICH Q12</strong>
+            Manufacturers who invested in Quality by Design development approaches and have approved design spaces. Manufacturers with demonstrated quality system maturity. FDA has indicated that PACMP applicants with QMM programme participation may receive more flexible PACMP terms - directly linking quality culture to regulatory efficiency.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COMMON FAILURES -->
+  <div class="fail-box" style="margin-bottom:16px">
+    <h3>Common Change Control Failures in FDA Warning Letters 2020-2026</h3>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+      <div class="fail-item">
+        <strong>Failure 1 - No formal change control</strong>
+        Change implemented without opening a change control record or completing a risk assessment. Even beneficial changes implemented without formal assessment create an unapproved change situation. FDAGuidelines cited a manufacturer for substantive process changes without documentation or review.
+      </div>
+      <div class="fail-item">
+        <strong>Failure 2 - Under-classification</strong>
+        Classifying a CBE-30 or PAS-required change as minor to avoid regulatory timelines. 2024 FDA warning letter cited poor change management regarding blend size, formulation and manufacture changes - all requiring regulatory notification. Distributed product manufactured under unapproved change may require recall.
+      </div>
+      <div class="fail-item">
+        <strong>Failure 3 - Implementation before validation</strong>
+        Beginning commercial production under changed conditions before validation data confirms CQA equivalence. Batches manufactured before validation completion must be held until data is reviewed. If validation subsequently fails all held batches are rejected.
+      </div>
+      <div class="fail-item">
+        <strong>Failure 4 - No post-implementation review</strong>
+        Change controls opened and implemented but never formally closed with documented post-implementation review. Large numbers of open changes without justified timelines is a programme-level 483 finding separate from individual change deficiencies. Close changes on time or document the justification for extension.
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="rules-row">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Implement a PAS-required change before FDA approval. Under-classify a moderate or major change to avoid regulatory timelines. Begin commercial production before validation is complete. Close a change without post-implementation verification. Implement any change without a formal change control record.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Classification criteria</h4>
+      <p>Classification must reference the applicable FDA guidance by name. SUPAC IR, MR, SS as applicable. FDA CMC Changes guidance. Biological products changes guidance. ICH Q12 for changes within design space or PACMP. Generic classifications without regulatory basis are a direct 483 citation risk.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Timelines</h4>
+      <p>Change proposal to QA approval: before any activities begin. PAS FDA review: 6 to 12 months. CBE-30 implementation wait: 30 days from submission. Open change controls: monitor against 60-day target. Extensions require documented QA justification. Misclassification audit: at APQR.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR 211.100(a) - top ten 483 citation every year since 2018. 21 CFR 314.70 - reporting categories. 21 CFR 211.1 - adulteration from unapproved changes. ICH Q10 Section 3.2.3 - change management as PQS enabler. ICH Q12 - PACMP and EC framework. EU Annex 15 - qualification and validation lifecycle.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Change Control Decision Map &nbsp;&#183;&nbsp;
+    Built from 21 CFR 211.100, 21 CFR 314.70, ICH Q10, ICH Q12, EU GMP Annex 15, SUPAC guidance series &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Issue 4 of 10</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
