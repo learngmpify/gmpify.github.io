@@ -1,1 +1,563 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OOS Investigation Procedural Map | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0D2B3E;
+    --navy2:   #112d41;
+    --teal:    #00C2A8;
+    --teal2:   #00A890;
+    --gold:    #F5A623;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --amber:   #F59E0B;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --phase1:  #0E3A52;
+    --phase2:  #0E3526;
+    --p1acc:   #38BDF8;
+    --p2acc:   #4ADE80;
+    --warn:    #FEF3C7;
+    --warnbdr: #F59E0B;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: var(--navy);
+    color: var(--light);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #091E2E 0%, #0D2B3E 60%, #0A3040 100%);
+    border-bottom: 2px solid var(--teal);
+    padding: 28px 40px 24px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .header-left { flex: 1; }
+  .logo { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 10px; }
+  .logo span:first-child { color: var(--teal); }
+  .logo span:last-child { color: var(--white); }
+  .header h1 {
+    font-size: 1.75rem; font-weight: 800; color: var(--white);
+    line-height: 1.15; letter-spacing: -0.5px; margin-bottom: 6px;
+  }
+  .header h1 em { color: var(--teal); font-style: normal; }
+  .header-sub {
+    font-size: 0.82rem; color: var(--mid); font-family: var(--mono);
+    letter-spacing: 0.5px;
+  }
+  .header-right {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
+    flex-shrink: 0;
+  }
+  .reg-badge {
+    background: rgba(0,194,168,0.12); border: 1px solid rgba(0,194,168,0.3);
+    border-radius: 6px; padding: 6px 12px;
+    font-size: 0.72rem; font-family: var(--mono);
+    color: var(--teal); letter-spacing: 0.5px;
+    text-align: right; line-height: 1.6;
+  }
+  .timer-row {
+    display: flex; gap: 8px;
+  }
+  .timer-chip {
+    background: var(--navy2); border: 1px solid rgba(245,166,35,0.3);
+    border-radius: 20px; padding: 4px 12px;
+    font-size: 0.72rem; font-weight: 600; color: var(--gold);
+    font-family: var(--mono);
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex; gap: 20px; padding: 12px 40px;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    flex-wrap: wrap; align-items: center;
+  }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 0.75rem; color: var(--mid); }
+  .legend-swatch { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+  .ls-start   { background: var(--teal); }
+  .ls-action  { background: var(--navy2); border: 1px solid var(--p1acc); }
+  .ls-decision{ background: transparent; border: 2px solid var(--gold); transform: rotate(45deg); width: 12px; height: 12px; }
+  .ls-end-rel { background: var(--green); }
+  .ls-end-rej { background: var(--red); }
+  .ls-phase1  { background: var(--phase1); border-left: 3px solid var(--p1acc); }
+  .ls-phase2  { background: var(--phase2); border-left: 3px solid var(--p2acc); }
+
+  /* ── MAIN GRID ── */
+  .map-wrap {
+    padding: 32px 40px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  /* ── PHASE COLUMNS ── */
+  .phase-col {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .phase-header {
+    padding: 14px 20px;
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .phase1 .phase-header { background: #083248; color: var(--p1acc); border-bottom: 2px solid var(--p1acc); }
+  .phase2 .phase-header { background: #082820; color: var(--p2acc); border-bottom: 2px solid var(--p2acc); }
+  .phase-body { padding: 20px; display: flex; flex-direction: column; gap: 0; }
+  .phase1 .phase-body { background: var(--phase1); }
+  .phase2 .phase-body { background: var(--phase2); }
+
+  /* ── FLOW NODES ── */
+  .node {
+    border-radius: 8px;
+    padding: 12px 14px;
+    position: relative;
+    margin-bottom: 0;
+  }
+  .node-start {
+    background: var(--teal); color: var(--navy);
+    font-weight: 800; font-size: 0.9rem;
+    text-align: center; border-radius: 24px;
+    padding: 10px 20px;
+    box-shadow: 0 0 20px rgba(0,194,168,0.3);
+  }
+  .node-action {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-left: 3px solid var(--p1acc);
+  }
+  .phase2 .node-action { border-left-color: var(--p2acc); }
+  .node-decision {
+    background: rgba(245,166,35,0.08);
+    border: 1.5px solid var(--gold);
+    border-radius: 8px;
+    text-align: center;
+  }
+  .node-warn {
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 6px;
+    font-size: 0.72rem; color: var(--gold);
+    padding: 8px 12px;
+    font-style: italic;
+  }
+  .node-end-release {
+    background: rgba(34,197,94,0.15);
+    border: 2px solid var(--green);
+    border-radius: 24px;
+    text-align: center; font-weight: 700;
+    color: var(--green);
+    padding: 10px;
+  }
+  .node-end-reject {
+    background: rgba(229,62,62,0.15);
+    border: 2px solid var(--red);
+    border-radius: 24px;
+    text-align: center; font-weight: 700;
+    color: var(--red);
+    padding: 10px;
+  }
+  .node-capa {
+    background: rgba(139,92,246,0.12);
+    border: 1.5px solid rgba(139,92,246,0.4);
+    border-radius: 8px;
+  }
+
+  .node-title {
+    font-size: 0.8rem; font-weight: 700;
+    color: var(--white); margin-bottom: 4px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .node-title .step-num {
+    background: rgba(0,194,168,0.2); color: var(--teal);
+    border-radius: 50%; width: 18px; height: 18px;
+    font-size: 0.65rem; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-family: var(--mono);
+  }
+  .phase2 .node-title .step-num { background: rgba(74,222,128,0.2); color: var(--p2acc); }
+  .node-body { font-size: 0.73rem; color: var(--light); line-height: 1.5; }
+  .node-reg  { font-size: 0.67rem; font-family: var(--mono); color: var(--mid); margin-top: 5px; }
+
+  .decision-q {
+    font-size: 0.8rem; font-weight: 700; color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .decision-opts {
+    display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 6px;
+  }
+  .opt-yes { color: var(--green); font-size: 0.72rem; font-weight: 700; font-family: var(--mono); }
+  .opt-no  { color: var(--red);   font-size: 0.72rem; font-weight: 700; font-family: var(--mono); }
+
+  /* ── CONNECTORS ── */
+  .arrow {
+    text-align: center; font-size: 0.9rem; color: var(--mid);
+    padding: 3px 0; line-height: 1;
+    flex-shrink: 0;
+  }
+  .arrow-p1 { color: var(--p1acc); }
+  .arrow-p2 { color: var(--p2acc); }
+  .arrow-gold { color: var(--gold); }
+
+  /* ── TRIGGER BOX ── */
+  .trigger-box {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(0,194,168,0.08), rgba(0,194,168,0.03));
+    border: 1.5px solid rgba(0,194,168,0.25);
+    border-radius: 12px;
+    padding: 18px 24px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+  .trigger-icon { font-size: 2rem; }
+  .trigger-text h3 { font-size: 0.95rem; font-weight: 800; color: var(--white); margin-bottom: 4px; }
+  .trigger-text p  { font-size: 0.78rem; color: var(--light); line-height: 1.5; }
+  .trigger-text .reg { font-size: 0.7rem; font-family: var(--mono); color: var(--teal); margin-top: 4px; }
+
+  /* ── SCOPE EXTENSION BOX ── */
+  .scope-box {
+    grid-column: 1 / -1;
+    background: rgba(245,166,35,0.07);
+    border: 1.5px solid rgba(245,166,35,0.25);
+    border-radius: 12px;
+    padding: 16px 24px;
+  }
+  .scope-box h3 { font-size: 0.82rem; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .scope-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .scope-item { font-size: 0.73rem; color: var(--light); line-height: 1.5; }
+  .scope-item strong { color: var(--white); display: block; margin-bottom: 2px; font-size: 0.72rem; }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 16px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 0.72rem; color: var(--mid);
+    flex-wrap: wrap; gap: 8px;
+  }
+  .footer a { color: var(--teal); text-decoration: none; }
+  .footer-badge {
+    background: rgba(0,194,168,0.1); border: 1px solid rgba(0,194,168,0.2);
+    border-radius: 4px; padding: 3px 8px;
+    font-family: var(--mono); font-size: 0.68rem; color: var(--teal);
+  }
+
+  /* ── CRITICAL RULES BOX ── */
+  .rules-box {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .rule-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-top: 2px solid var(--teal);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .rule-card h4 { font-size: 0.72rem; font-weight: 700; color: var(--teal); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.8px; }
+  .rule-card p  { font-size: 0.71rem; color: var(--light); line-height: 1.5; }
+  .rule-card.warn-card { border-top-color: var(--red); }
+  .rule-card.warn-card h4 { color: var(--red); }
+
+  @media print {
+    body { background: white; color: #111; }
+    .header { background: #0D2B3E; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>OOS Investigation <em>Procedural Map</em></h1>
+    <div class="header-sub">21 CFR 211.192 &nbsp;|&nbsp; FDA OOS Guidance 2022 &nbsp;|&nbsp; ICH Q10 &nbsp;|&nbsp; Two-Phase Framework</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.165(f)<br>
+      21 CFR 211.160 &nbsp;·&nbsp; 21 CFR 211.194<br>
+      FDA OOS Guidance 2022
+    </div>
+    <div class="timer-row">
+      <div class="timer-chip">Phase I: 3–10 days</div>
+      <div class="timer-chip">Total: max 45 days</div>
+    </div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch ls-start"></div>Start / End point</div>
+  <div class="legend-item"><div class="legend-swatch ls-action"></div>Action step</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:transparent;border:2px solid #F5A623;width:12px;height:12px;transform:rotate(45deg)"></div>Decision point</div>
+  <div class="legend-item"><div class="legend-swatch ls-phase1"></div>Phase I — Laboratory</div>
+  <div class="legend-item"><div class="legend-swatch ls-phase2"></div>Phase II — Full Investigation</div>
+  <div class="legend-item"><div class="legend-swatch ls-end-rel"></div>Release</div>
+  <div class="legend-item"><div class="legend-swatch ls-end-rej"></div>Reject</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.7rem;color:var(--teal)">GMPify Procedural Map Series — Issue 1</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">⚗️</div>
+    <div class="trigger-text">
+      <h3>OOS Result Obtained — Investigation Triggered Immediately</h3>
+      <p>Any analytical result that falls outside established acceptance criteria in the specification, pharmacopeial standard, drug application or regulatory filing triggers a mandatory investigation under 21 CFR 211.192. This includes in-process tests, raw material testing and finished product release testing. No retesting may occur before investigation initiation.</p>
+      <div class="reg">21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.165(f) &nbsp;·&nbsp; FDA OOS Guidance 2022 Section III</div>
+    </div>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="phase-col phase1">
+    <div class="phase-header">
+      <span>Phase I — Laboratory Investigation</span>
+      <span style="font-size:0.68rem;font-weight:500;opacity:0.7">Complete within 3–10 business days</span>
+    </div>
+    <div class="phase-body">
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">1</span>Notify supervisor and QA unit immediately</div>
+        <div class="node-body">Analyst reports OOS result to laboratory supervisor before any further action. QA unit is notified. Original result is preserved in raw data with no alterations. Documentation timestamped at point of discovery.</div>
+        <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.194</div>
+      </div>
+      <div class="arrow arrow-p1">↓</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">2</span>Preserve original sample and reference standards</div>
+        <div class="node-body">Do not discard the original test sample, reference standards, reagents or solutions. All materials used in the original analysis must be retained for investigation review. Instrument raw data files preserved with audit trail intact.</div>
+        <div class="node-reg">21 CFR 211.194 &nbsp;·&nbsp; ALCOA+ data integrity</div>
+      </div>
+      <div class="arrow arrow-p1">↓</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">3</span>Review original analytical procedure and execution</div>
+        <div class="node-body">Laboratory supervisor reviews: calculation errors, instrument calibration status, standard preparation, reagent expiry, column condition, sample preparation technique, environmental conditions during analysis and analyst training records for this method.</div>
+        <div class="node-reg">21 CFR 211.160(b) &nbsp;·&nbsp; FDA OOS Guidance Section IV.A</div>
+      </div>
+      <div class="arrow arrow-p1">↓</div>
+
+      <div class="node node-decision">
+        <div class="decision-q">Is an assignable laboratory cause identified with objective evidence?</div>
+        <div class="node-body" style="font-size:0.72rem;color:var(--light);margin-top:4px">"Analyst error" alone is NOT sufficient. Cause must be specific, documented and reproducible.</div>
+        <div class="decision-opts">
+          <span class="opt-yes">YES → Step 4</span>
+          <span class="opt-no">NO → Step 5</span>
+        </div>
+      </div>
+      <div class="arrow arrow-p1">↓ YES</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">4</span>Document laboratory error with objective evidence</div>
+        <div class="node-body">Assignable cause must be documented with specific objective evidence — not vague attribution. Examples: wrong diluent volume confirmed by balance printout, expired reference standard confirmed by certificate date. Supervisor and QA must approve invalidation before any retest.</div>
+        <div class="node-reg">FDA OOS Guidance Section IV.A.2 &nbsp;·&nbsp; Barr Laboratories precedent</div>
+      </div>
+      <div class="arrow arrow-p1">↓</div>
+
+      <div class="node node-decision">
+        <div class="decision-q">QA unit approves laboratory error invalidation?</div>
+        <div class="decision-opts">
+          <span class="opt-yes">YES → Retest</span>
+          <span class="opt-no">NO → Step 5</span>
+        </div>
+      </div>
+      <div class="arrow arrow-p1">↓ YES — QA approved invalidation</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">4a</span>Conduct single retest — fresh sample preparation</div>
+        <div class="node-body">One retest by a second qualified analyst. Fresh sample preparation. Same validated method. Result used for batch disposition. If retest also OOS, proceed to Phase II regardless of laboratory error conclusion. Retesting to obtain a passing result is prohibited.</div>
+        <div class="node-reg">FDA OOS Guidance Section V &nbsp;·&nbsp; 21 CFR 211.192</div>
+      </div>
+      <div class="arrow arrow-p1">↓</div>
+
+      <div class="node node-decision">
+        <div class="decision-q">Retest result within specification?</div>
+        <div class="decision-opts">
+          <span class="opt-yes">YES → Document and proceed to disposition</span>
+          <span class="opt-no">NO → Phase II</span>
+        </div>
+      </div>
+      <div class="arrow arrow-p1">↓ NO assignable cause found</div>
+
+      <div class="node" style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.25);border-radius:8px;padding:10px 14px;">
+        <div class="node-title" style="color:var(--p1acc)"><span class="step-num">5</span>No laboratory cause found — escalate to Phase II</div>
+        <div class="node-body">Phase I complete. No assignable laboratory error identified with objective evidence. Manufacturing investigation required. QA unit formally opens Phase II. Batch remains on hold.</div>
+        <div class="node-reg">FDA OOS Guidance Section IV.B &nbsp;·&nbsp; 21 CFR 211.192</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase-col phase2">
+    <div class="phase-header">
+      <span>Phase II — Full Manufacturing Investigation</span>
+      <span style="font-size:0.68rem;font-weight:500;opacity:0.7">Total investigation max 45 days</span>
+    </div>
+    <div class="phase-body">
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">6</span>QA formally opens Phase II investigation</div>
+        <div class="node-body">Quality unit opens formal investigation record. Assigns investigation lead. Batch placed on quarantine hold. Manufacturing batch record retrieved and reviewed. All relevant personnel identified for interview. Investigation timeline documented.</div>
+        <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; ICH Q10 Section 3.2</div>
+      </div>
+      <div class="arrow arrow-p2">↓</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">7</span>Review batch production records in full</div>
+        <div class="node-body">Complete batch record review: raw material COAs and test results, equipment calibration and cleaning records, in-process test results, deviation records, environmental monitoring data for manufacturing period, personnel training records and any batch-specific observations or events.</div>
+        <div class="node-reg">21 CFR 211.188 &nbsp;·&nbsp; 21 CFR 211.192</div>
+      </div>
+      <div class="arrow arrow-p2">↓</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">8</span>Conduct root cause investigation with documented methodology</div>
+        <div class="node-body">Apply documented RCA methodology: 5 Why for single-factor events, Ishikawa fishbone for multi-factor events, FMEA for risk assessment. Human error is NOT an acceptable root cause — investigate why the system allowed the error. Full analytical pathway must be documented.</div>
+        <div class="node-reg">ICH Q9(R1) 2023 &nbsp;·&nbsp; FDA OOS Guidance Section IV.B</div>
+      </div>
+      <div class="arrow arrow-p2">↓</div>
+
+      <div class="node node-decision">
+        <div class="decision-q">Is a manufacturing root cause identified?</div>
+        <div class="decision-opts">
+          <span class="opt-yes">YES → Step 9</span>
+          <span class="opt-no">NO → Step 10</span>
+        </div>
+      </div>
+      <div class="arrow arrow-p2">↓</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">9</span>Additional testing if scientifically justified</div>
+        <div class="node-body">If additional testing is needed to characterise the failure, the number of additional tests must be pre-defined before testing begins. Cannot retest until passing result obtained. All results — passing and failing — must be reported and included in the investigation. Average of passing results only is prohibited.</div>
+        <div class="node-reg">FDA OOS Guidance Section V.B &nbsp;·&nbsp; Barr Laboratories decision</div>
+      </div>
+      <div class="arrow arrow-p2">↓</div>
+
+      <div class="node node-decision">
+        <div class="decision-q">Do additional test results confirm OOS?</div>
+        <div class="decision-opts">
+          <span class="opt-yes">YES → Reject batch</span>
+          <span class="opt-no">NO → Document and assess</span>
+        </div>
+      </div>
+      <div class="arrow arrow-p2">↓</div>
+
+      <div class="node node-capa">
+        <div class="node-title" style="color:#A78BFA"><span class="step-num" style="background:rgba(139,92,246,0.2);color:#A78BFA">10</span>Implement CAPA with pre-defined effectiveness criteria</div>
+        <div class="node-body">CAPA must address identified root cause — not symptom. Effectiveness criterion defined before implementation. Scheduled effectiveness check with measurable threshold. Scope extension to other batches documented. CAPA closure requires QA approval and verified effectiveness.</div>
+        <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; ICH Q10 Section 3.2.2 &nbsp;·&nbsp; FDA CAPA guidance</div>
+      </div>
+      <div class="arrow arrow-p2">↓</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">11</span>QA review and batch disposition decision</div>
+        <div class="node-body">Quality unit reviews complete investigation package: Phase I findings, Phase II root cause, all test results, CAPA plan, scope extension conclusion. QA approves or rejects the investigation before batch disposition. No batch may be released or rejected before investigation completion.</div>
+        <div class="node-reg">21 CFR 211.165(f) &nbsp;·&nbsp; 21 CFR 211.192</div>
+      </div>
+      <div class="arrow arrow-p2">↓</div>
+
+      <div class="node node-decision">
+        <div class="decision-q">Does investigation support batch release?</div>
+        <div class="decision-opts">
+          <span class="opt-yes">YES → Release</span>
+          <span class="opt-no">NO → Reject</span>
+        </div>
+      </div>
+      <div class="arrow" style="display:flex;gap:40px;justify-content:center;">
+        <span class="opt-yes">↙ YES</span>
+        <span class="opt-no">↘ NO</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;">
+        <div class="node node-end-release">✓ BATCH RELEASED<br><span style="font-size:0.68rem;font-weight:400">Full documentation retained<br>CAPA monitoring active</span></div>
+        <div class="node node-end-reject">✕ BATCH REJECTED<br><span style="font-size:0.68rem;font-weight:400">Quarantine confirmed<br>CAPA required</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCOPE EXTENSION -->
+  <div class="scope-box">
+    <h3>⚠ Mandatory Scope Extension — 21 CFR 211.192</h3>
+    <div class="scope-grid">
+      <div class="scope-item">
+        <strong>Other batches — same product</strong>
+        Every other batch of the same drug product manufactured in the same period or using the same materials must be assessed. Conclusion must be documented even if no impact is identified.
+      </div>
+      <div class="scope-item">
+        <strong>Other products — same failure mode</strong>
+        Other drug products associated with the same specific failure or discrepancy must be assessed. Equipment, raw material supplier and process step commonality are the primary assessment criteria.
+      </div>
+      <div class="scope-item">
+        <strong>Distributed batches</strong>
+        21 CFR 211.192 requires investigation whether or not the batch has already been distributed. A released batch associated with the OOS failure must be assessed for recall or field alert requirements.
+      </div>
+    </div>
+  </div>
+
+  <!-- CRITICAL RULES -->
+  <div class="rules-box">
+    <div class="rule-card warn-card">
+      <h4>Never do this</h4>
+      <p>Retest until a passing result is obtained. Average passing results while discarding OOS results. Attribute root cause to "analyst error" without objective documented evidence. Begin retesting before investigation is initiated.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Documentation required</h4>
+      <p>All raw data preserved with audit trail. Every decision point documented with rationale. All test results reported — passing and failing. Timestamps contemporaneous. QA approval at each phase transition.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Timelines</h4>
+      <p>Phase I: 3–10 business days. Total investigation: 45 days maximum. Extensions require documented QA justification. Open OOS investigations beyond 30 days are a standard FDA 483 finding.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR 211.192 — primary investigation requirement. 21 CFR 211.165(f) — batch disposition. 21 CFR 211.194 — laboratory records. FDA OOS Guidance 2022. Barr Laboratories court decision.</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;·&nbsp;
+    OOS Investigation Procedural Map &nbsp;·&nbsp;
+    Built from 21 CFR 211.192, FDA OOS Guidance 2022, ICH Q10, Barr Laboratories decision &nbsp;·&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Issue 1 of 10</div>
+    <div class="footer-badge">© 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
