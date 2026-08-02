@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="gmpify_favicon.ico">
+<meta name="description" content="Free pharmaceutical GMP procedural maps built from primary regulatory sources. OOS investigations, CAPA lifecycle, deviation management, change control and more. Built by GMPify Training.">
+<meta property="og:title" content="GMP Maps  -  Pharmaceutical Procedural Maps | GMPify Training">
+<meta property="og:description" content="Free pharmaceutical GMP procedural maps built from 21 CFR, EU GMP, ICH guidelines. OOS investigations, CAPA, deviation management and more.">
+<meta property="og:url" content="https://gmpify.com/gmp-maps.html">
+<meta property="og:type" content="website">
+<title>GMP Maps  -  Pharmaceutical Procedural Maps | GMPify Training</title>
+<link rel="canonical" href="https://gmpify.com/gmp-maps.html">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2B3E;--navy-card:#112d41;--teal:#00C2A8;--gold:#F5A623;
+  --amber:#F97316;--light:#CAD8E8;--mid:#6E90A0;--white:#fff;
+  --green:#22C55E;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif
+}
+body{font-family:var(--font);background:var(--navy);color:var(--light);line-height:1.6}
+a{color:var(--teal);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+
+nav{background:rgba(13,43,62,0.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,194,168,0.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-size:1.4rem;font-weight:800;letter-spacing:-0.5px;color:var(--white)}
+.logo span:first-child{color:var(--teal)}
+.logo span:last-child{color:var(--white)}
+.nav-links{display:flex;gap:24px;list-style:none;align-items:center}
+.nav-links a{font-size:0.88rem;font-weight:500;color:var(--light);transition:color .2s}
+.nav-links a:hover{color:var(--teal)}
+.nav-cta{background:var(--teal);color:var(--navy)!important;padding:7px 18px;border-radius:6px;font-weight:700!important}
+.nav-active{color:var(--amber)!important;font-weight:700!important}
+
+/* HERO */
+.hero{padding:64px 0 48px;text-align:center}
+.hero-tag{display:inline-block;background:rgba(249,115,22,0.12);border:1px solid rgba(249,115,22,0.3);color:var(--amber);font-size:0.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:20px}
+.hero h1{font-size:2.6rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:16px}
+.hero h1 em{color:var(--amber);font-style:normal}
+.hero p{font-size:1.05rem;color:var(--light);max-width:640px;margin:0 auto 32px;line-height:1.7}
+.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-num{font-size:1.6rem;font-weight:800;color:var(--amber);display:block}
+.stat-lbl{font-size:0.78rem;color:var(--mid)}
+
+/* SERIES INFO */
+.series-bar{background:rgba(249,115,22,0.06);border-top:1px solid rgba(249,115,22,0.15);border-bottom:1px solid rgba(249,115,22,0.15);padding:14px 0;margin-bottom:48px}
+.series-inner{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;font-size:0.8rem;color:var(--mid)}
+.series-inner span{display:flex;align-items:center;gap:6px}
+.series-inner strong{color:var(--white)}
+
+/* MAP GRID */
+.maps-section{padding:0 0 64px}
+.section-label{font-size:0.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--amber);margin-bottom:20px}
+.maps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;margin-bottom:40px}
+
+/* MAP CARD */
+.map-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.08);border-radius:12px;overflow:hidden;transition:transform .2s,border-color .2s}
+.map-card:hover{transform:translateY(-2px);border-color:rgba(249,115,22,0.3)}
+.map-card-top{padding:20px 20px 0}
+.map-card-badge{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.badge-num{background:rgba(249,115,22,0.15);color:var(--amber);border-radius:50%;width:28px;height:28px;font-size:0.78rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.badge-tag{font-size:0.72rem;font-weight:600;color:var(--mid);letter-spacing:0.5px;text-transform:uppercase}
+.map-card h3{font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.25}
+.map-card p{font-size:0.82rem;color:var(--light);line-height:1.6;margin-bottom:12px}
+.map-card-regs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}
+.reg-chip{background:rgba(0,194,168,0.08);border:1px solid rgba(0,194,168,0.15);color:var(--teal);font-size:0.67rem;font-weight:600;padding:2px 8px;border-radius:10px;font-family:monospace}
+.map-card-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between}
+.map-card-footer a{font-size:0.82rem;font-weight:700;color:var(--amber);display:flex;align-items:center;gap:4px;transition:gap .2s}
+.map-card-footer a:hover{gap:8px}
+.status-live{font-size:0.7rem;font-weight:700;color:var(--green);background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);padding:2px 8px;border-radius:10px}
+.status-soon{font-size:0.7rem;font-weight:700;color:var(--mid);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:2px 8px;border-radius:10px}
+
+/* COMING SOON CARD */
+.map-card.coming-soon{opacity:0.55}
+.map-card.coming-soon:hover{transform:none;border-color:rgba(255,255,255,0.08)}
+
+/* CTA SECTION */
+.cta-section{background:linear-gradient(135deg,rgba(249,115,22,0.08),rgba(0,194,168,0.06));border:1px solid rgba(249,115,22,0.2);border-radius:16px;padding:40px;text-align:center;margin-bottom:64px}
+.cta-section h2{font-size:1.5rem;font-weight:800;color:var(--white);margin-bottom:10px}
+.cta-section p{font-size:0.92rem;color:var(--light);margin-bottom:24px;max-width:540px;margin-left:auto;margin-right:auto;line-height:1.65}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--teal);color:var(--navy);font-weight:700;padding:12px 24px;border-radius:8px;font-size:0.92rem;transition:opacity .2s}
+.btn-primary:hover{opacity:0.88}
+.btn-secondary{background:transparent;color:var(--amber);font-weight:700;padding:12px 24px;border-radius:8px;font-size:0.92rem;border:1.5px solid var(--amber);transition:background .2s}
+.btn-secondary:hover{background:rgba(249,115,22,0.1)}
+
+/* HOW TO USE */
+.how-section{margin-bottom:64px}
+.how-section h2{font-size:1.3rem;font-weight:700;color:var(--white);margin-bottom:20px}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:600px){.how-grid{grid-template-columns:1fr}}
+.how-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:18px}
+.how-card h4{font-size:0.85rem;font-weight:700;color:var(--white);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.how-num{color:var(--amber);font-size:1rem;font-weight:800}
+.how-card p{font-size:0.78rem;color:var(--light);line-height:1.55}
+
+footer{background:rgba(0,0,0,0.3);border-top:1px solid rgba(255,255,255,0.06);padding:32px 0;text-align:center;font-size:0.83rem;color:var(--mid)}
+footer a{color:var(--teal)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="logo"><span>GMP</span><span>ify</span></a>
+      <ul class="nav-links">
+        <li><a href="/#courses">Courses</a></li>
+        <li><a href="/#why">Why GMPify</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/blog.html">Blog</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/tools.html" style="color:var(--gold);font-weight:600">Tools</a></li>
+        <li><a href="/gmp-maps.html" class="nav-active">GMP Maps</a></li>
+        <li><a href="/cannabis.html" style="color:#4ade80;font-weight:600">Cannabis</a></li>
+        <li><a href="https://learn.gmpify.com" class="nav-cta">Start learning</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="container">
+  <div class="hero">
+    <div class="hero-tag">GMPify Procedural Map Series</div>
+    <h1>GMP <em>Maps</em></h1>
+    <p>Free pharmaceutical procedural maps built from primary regulatory sources. Every decision point. Every regulatory citation. Designed to be used  -  in training sessions, at your desk and on the manufacturing floor.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">1</span><span class="stat-lbl">Live now</span></div>
+      <div class="stat"><span class="stat-num">9</span><span class="stat-lbl">Coming soon</span></div>
+      <div class="stat"><span class="stat-num">Free</span><span class="stat-lbl">Always</span></div>
+      <div class="stat"><span class="stat-num">Primary</span><span class="stat-lbl">Regulatory sources</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="series-bar">
+  <div class="container">
+    <div class="series-inner">
+      <span>Built from <strong>21 CFR Parts 210 and 211</strong></span>
+      <span>Built from <strong>EU GMP EudraLex Volume 4</strong></span>
+      <span>Built from <strong>ICH Q10, Q9(R1) 2023</strong></span>
+      <span>Built from <strong>FDA Guidance Documents</strong></span>
+      <span>Updated to reflect <strong>2025 and 2026 enforcement data</strong></span>
+    </div>
+  </div>
+</div>
+
+<!-- MAPS -->
+<div class="container">
+  <div class="maps-section">
+
+    <div class="section-label">Available now</div>
+    <div class="maps-grid">
+
+      <!-- MAP 1  -  LIVE -->
+      <div class="map-card">
+        <div class="map-card-top">
+          <div class="map-card-badge">
+            <div class="badge-num">1</div>
+            <div class="badge-tag">Laboratory Quality</div>
+          </div>
+          <h3>OOS Investigation Procedural Map</h3>
+          <p>The complete two-phase FDA OOS investigation framework. Phase I laboratory investigation through Phase II full manufacturing investigation. Every decision point, timeline and scope extension requirement from 21 CFR 211.192 and FDA OOS Guidance 2022.</p>
+          <div class="map-card-regs">
+            <span class="reg-chip">21 CFR 211.192</span>
+            <span class="reg-chip">21 CFR 211.165(f)</span>
+            <span class="reg-chip">FDA OOS Guidance 2022</span>
+            <span class="reg-chip">ICH Q10</span>
+            <span class="reg-chip">Barr Laboratories</span>
+          </div>
+        </div>
+        <div class="map-card-footer">
+          <a href="/tools/oos-investigation-map.html">View map &rarr;</a>
+          <span class="status-live">Live</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-label">Coming soon</div>
+    <div class="maps-grid">
+
+      <!-- MAP 2 -->
+      <div class="map-card coming-soon">
+        <div class="map-card-top">
+          <div class="map-card-badge">
+            <div class="badge-num">2</div>
+            <div class="badge-tag">Quality Systems</div>
+          </div>
+          <h3>CAPA Lifecycle Map</h3>
+          <p>From problem identification through root cause analysis, corrective action implementation and effectiveness verification to closure. Includes VOE design requirements and the 2026 warning letter case patterns.</p>
+          <div class="map-card-regs">
+            <span class="reg-chip">21 CFR 211.192</span>
+            <span class="reg-chip">ICH Q10 S3.2.2</span>
+            <span class="reg-chip">21 CFR 820.100</span>
+          </div>
+        </div>
+        <div class="map-card-footer">
+          <span style="font-size:0.82rem;color:var(--mid)">Coming soon</span>
+          <span class="status-soon">In development</span>
+        </div>
+      </div>
+
+      <!-- MAP 3 -->
+      <div class="map-card coming-soon">
+        <div class="map-card-top">
+          <div class="map-card-badge">
+            <div class="badge-num">3</div>
+            <div class="badge-tag">Quality Systems</div>
+          </div>
+          <h3>Deviation Management and Root Cause Analysis Map</h3>
+          <p>Deviation classification, impact assessment, root cause methodology selection and CAPA integration. Includes the Apotex 2025 warning letter pattern and 5 Why versus Ishikawa selection criteria.</p>
+          <div class="map-card-regs">
+            <span class="reg-chip">21 CFR 211.192</span>
+            <span class="reg-chip">EU GMP Chapter 1</span>
+            <span class="reg-chip">ICH Q9(R1)</span>
+          </div>
+        </div>
+        <div class="map-card-footer">
+          <span style="font-size:0.82rem;color:var(--mid)">Coming soon</span>
+          <span class="status-soon">In development</span>
+        </div>
+      </div>
+
+      <!-- MAP 4 -->
+      <div class="map-card coming-soon">
+        <div class="map-card-top">
+          <div class="map-card-badge">
+            <div class="badge-num">4</div>
+            <div class="badge-tag">Regulatory Compliance</div>
+          </div>
+          <h3>Change Control Decision Map</h3>
+          <p>From change proposal through risk assessment, regulatory classification and implementation to post-implementation review. Includes PAS, CBE-30 and CBE-0 decision logic and ICH Q12 PACMP pathway.</p>
+          <div class="map-card-regs">
+            <span class="reg-chip">21 CFR 211.100</span>
+            <span class="reg-chip">21 CFR 314.70</span>
+            <span class="reg-chip">ICH Q12</span>
+          </div>
+        </div>
+        <div class="map-card-footer">
+          <span style="font-size:0.82rem;color:var(--mid)">Coming soon</span>
+          <span class="status-soon">In development</span>
+        </div>
+      </div>
+
+      <!-- MAP 5 -->
+      <div class="map-card coming-soon">
+        <div class="map-card-top">
+          <div class="map-card-badge">
+            <div class="badge-num">5</div>
+            <div class="badge-tag">Sterile Manufacturing</div>
+          </div>
+          <h3>Environmental Monitoring Programme Workflow</h3>
+          <p>Cleanroom monitoring programme design, alert and action level setting, exceedance investigation and trend analysis. Built from EU GMP Annex 1 2022 and FDA aseptic processing guidance.</p>
+          <div class="map-card-regs">
+            <span class="reg-chip">EU GMP Annex 1</span>
+            <span class="reg-chip">FDA Aseptic Guide</span>
+            <span class="reg-chip">USP 1116</span>
+          </div>
+        </div>
+        <div class="map-card-footer">
+          <span style="font-size:0.82rem;color:var(--mid)">Coming soon</span>
+          <span class="status-soon">In development</span>
+        </div>
+      </div>
+
+      <!-- MAP 6 -->
+      <div class="map-card coming-soon">
+        <div class="map-card-top">
+          <div class="map-card-badge">
+            <div class="badge-num">6</div>
+            <div class="badge-tag">Regulatory Compliance</div>
+          </div>
+          <h3>FDA 483 Response Workflow</h3>
+          <p>From 483 receipt through observation assessment, response drafting, CAPA commitment and follow-up. Includes the March 2026 FDA Draft Guidance requirements and warning letter escalation risk factors.</p>
+          <div class="map-card-regs">
+            <span class="reg-chip">FDA 483 Guidance 2026</span>
+            <span class="reg-chip">21 CFR 211.192</span>
+            <span class="reg-chip">ICH Q10</span>
+          </div>
+        </div>
+        <div class="map-card-footer">
+          <span style="font-size:0.82rem;color:var(--mid)">Coming soon</span>
+          <span class="status-soon">In development</span>
+        </div>
+      </div>
+
+      <!-- MAP 7 -->
+      <div class="map-card coming-soon">
+        <div class="map-card-top">
+          <div class="map-card-badge">
+            <div class="badge-num">7</div>
+            <div class="badge-tag">Validation</div>
+          </div>
+          <h3>Cleaning Validation Lifecycle Map</h3>
+          <p>Three-stage cleaning validation lifecycle from cleaning process design through qualification and continued verification. Includes MACO calculation pathway and HBEL versus legacy limit decision logic.</p>
+          <div class="map-card-regs">
+            <span class="reg-chip">21 CFR 211.67</span>
+            <span class="reg-chip">EU Annex 15</span>
+            <span class="reg-chip">EMA HBEL Guideline</span>
+          </div>
+        </div>
+        <div class="map-card-footer">
+          <span style="font-size:0.82rem;color:var(--mid)">Coming soon</span>
+          <span class="status-soon">In development</span>
+        </div>
+      </div>
+
+      <!-- MAP 8 -->
+      <div class="map-card coming-soon">
+        <div class="map-card-top">
+          <div class="map-card-badge">
+            <div class="badge-num">8</div>
+            <div class="badge-tag">Laboratory Quality</div>
+          </div>
+          <h3>Batch Release Decision Flowchart</h3>
+          <p>From batch completion through quality unit review, specification assessment, deviation and OOS status review to release or rejection decision. Covers both FDA and EU GMP qualified person release frameworks.</p>
+          <div class="map-card-regs">
+            <span class="reg-chip">21 CFR 211.22</span>
+            <span class="reg-chip">21 CFR 211.165</span>
+            <span class="reg-chip">EU GMP Chapter 2</span>
+          </div>
+        </div>
+        <div class="map-card-footer">
+          <span style="font-size:0.82rem;color:var(--mid)">Coming soon</span>
+          <span class="status-soon">In development</span>
+        </div>
+      </div>
+
+      <!-- MAP 9 -->
+      <div class="map-card coming-soon">
+        <div class="map-card-top">
+          <div class="map-card-badge">
+            <div class="badge-num">9</div>
+            <div class="badge-tag">Supplier Management</div>
+          </div>
+          <h3>Supplier Qualification Workflow</h3>
+          <p>From supplier identification through qualification assessment, approval, quality agreement and ongoing monitoring. Includes the 2026 contract manufacturing enforcement framework and audit programme requirements.</p>
+          <div class="map-card-regs">
+            <span class="reg-chip">21 CFR 211.84</span>
+            <span class="reg-chip">ICH Q10</span>
+            <span class="reg-chip">EU GMP Chapter 7</span>
+          </div>
+        </div>
+        <div class="map-card-footer">
+          <span style="font-size:0.82rem;color:var(--mid)">Coming soon</span>
+          <span class="status-soon">In development</span>
+        </div>
+      </div>
+
+      <!-- MAP 10 -->
+      <div class="map-card coming-soon">
+        <div class="map-card-top">
+          <div class="map-card-badge">
+            <div class="badge-num">10</div>
+            <div class="badge-tag">Stability</div>
+          </div>
+          <h3>Stability Study Design Map</h3>
+          <p>From product classification through study design, storage condition selection, time point planning and shelf life determination. Built from ICH Q1A(R2) and the 2025 Draft ICH Q1 revision.</p>
+          <div class="map-card-regs">
+            <span class="reg-chip">ICH Q1A(R2)</span>
+            <span class="reg-chip">ICH Q1E</span>
+            <span class="reg-chip">21 CFR 211.166</span>
+          </div>
+        </div>
+        <div class="map-card-footer">
+          <span style="font-size:0.82rem;color:var(--mid)">Coming soon</span>
+          <span class="status-soon">In development</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HOW TO USE -->
+  <div class="how-section">
+    <h2>How to use GMP Maps</h2>
+    <div class="how-grid">
+      <div class="how-card">
+        <h4><span class="how-num">01</span> Use in training sessions</h4>
+        <p>Print or display any map during team training to walk through the correct procedural sequence step by step. Every decision point references the applicable regulation so your team understands the why not just the what.</p>
+      </div>
+      <div class="how-card">
+        <h4><span class="how-num">02</span> Use for inspection preparation</h4>
+        <p>Review the relevant map before an FDA or EU GMP inspection to confirm your procedures align with the regulatory expectations shown at each decision point. Identify gaps before the investigator does.</p>
+      </div>
+      <div class="how-card">
+        <h4><span class="how-num">03</span> Use alongside GMPify courses</h4>
+        <p>Each map corresponds to a GMPify course that covers the regulatory content in depth. The map gives you the procedural framework. The course gives you the understanding behind every step.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>Go deeper with GMPify courses</h2>
+    <p>Each procedural map is built from the same primary regulatory sources as the corresponding GMPify course. The map gives you the framework. The course gives you the regulatory depth, case examples and knowledge checks that prepare you for inspection.</p>
+    <div class="cta-btns">
+      <a href="https://learn.gmpify.com" class="btn-primary">Browse the full catalog &rarr;</a>
+      <a href="/blog.html" class="btn-secondary">Read the GMPify blog</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 GMPify Training &middot; <a href="/privacy.html">Privacy</a> &middot; <a href="/terms.html">Terms</a> &middot; <a href="mailto:training@gmpify.com">training@gmpify.com</a> &middot; <a href="https://gmpify.com">gmpify.com</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
