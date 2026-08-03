@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supplier Qualification Workflow | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0C1820;
+    --navy2:   #102030;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #061428;
+    --c2:      #141C06;
+    --c3:      #200A06;
+    --c4:      #061820;
+    --c1acc:   #7DD3FC;
+    --c2acc:   #BEF264;
+    --c3acc:   #FCA5A5;
+    --c4acc:   #67E8F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#040C14 0%,#0C1820 60%,#081018 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(125,211,252,0.1);border:1px solid rgba(125,211,252,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .warn-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(125,211,252,0.07),rgba(125,211,252,0.02));
+    border:1.5px solid rgba(125,211,252,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-right{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .t-chip{border-radius:8px;padding:3px 10px;font-size:0.68rem;font-weight:700;font-family:var(--mono);white-space:nowrap}
+  .chip-h{background:rgba(229,62,62,0.15);border:1px solid rgba(229,62,62,0.3);color:#FC8181}
+  .chip-m{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.3);color:var(--gold)}
+  .chip-l{background:rgba(125,211,252,0.12);border:1px solid rgba(125,211,252,0.3);color:var(--c1acc)}
+
+  /* RISK TIERS */
+  .tiers-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+  .tier-card{border-radius:9px;padding:12px 15px;border:1.5px solid}
+  .tier-h{background:rgba(229,62,62,0.07);border-color:rgba(229,62,62,0.3)}
+  .tier-m{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .tier-l{background:rgba(125,211,252,0.06);border-color:rgba(125,211,252,0.25)}
+  .tier-card h4{font-size:0.74rem;font-weight:800;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.8px}
+  .tier-h h4{color:#FC8181}
+  .tier-m h4{color:var(--gold)}
+  .tier-l h4{color:var(--c1acc)}
+  .tier-card p{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .tier-examples{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:5px}
+
+  /* MAIN LAYOUT */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  /* FOUR PHASE GRID */
+  .phases-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#040E1E;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#0E1404;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#180604;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#041218;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-approved{background:rgba(34,197,94,0.08);border:1.5px solid rgba(34,197,94,0.28);border-radius:6px;text-align:center}
+  .node-rejected{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.28);border-radius:6px;text-align:center}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(125,211,252,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(190,242,100,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(252,165,165,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(103,232,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  /* RIGHT COLUMN */
+  .right-col{display:flex;flex-direction:column;gap:12px}
+
+  .qa-box{background:rgba(190,242,100,0.05);border:1.5px solid rgba(190,242,100,0.2);border-radius:10px;padding:14px 16px}
+  .qa-box h3{font-size:0.74rem;font-weight:700;color:var(--c2acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .qa-items{display:flex;flex-direction:column;gap:7px}
+  .qa-item{background:rgba(190,242,100,0.06);border:1px solid rgba(190,242,100,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .qa-item strong{color:var(--c2acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  .audit-box{background:rgba(125,211,252,0.05);border:1.5px solid rgba(125,211,252,0.2);border-radius:10px;padding:14px 16px}
+  .audit-box h3{font-size:0.74rem;font-weight:700;color:var(--c1acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .audit-items{display:flex;flex-direction:column;gap:7px}
+  .audit-item{background:rgba(125,211,252,0.06);border:1px solid rgba(125,211,252,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .audit-item strong{color:var(--c1acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  .fail-box{background:rgba(252,165,165,0.05);border:1.5px solid rgba(252,165,165,0.2);border-radius:10px;padding:14px 16px}
+  .fail-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .fail-items{display:flex;flex-direction:column;gap:6px}
+  .fail-item{background:rgba(252,165,165,0.06);border:1px solid rgba(252,165,165,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .fail-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* ASL SECTION */
+  .asl-section{margin-bottom:18px}
+  .asl-section h3{font-size:0.76rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .asl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .asl-card{background:rgba(103,232,249,0.05);border:1px solid rgba(103,232,249,0.18);border-radius:8px;padding:10px 13px}
+  .asl-card h4{font-size:0.71rem;font-weight:700;color:var(--c4acc);margin-bottom:4px}
+  .asl-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+
+  .rules-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(125,211,252,0.1);border:1px solid rgba(125,211,252,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Supplier Qualification <em>Workflow</em></h1>
+    <div class="header-sub">21 CFR 211.84 &nbsp;|&nbsp; EU GMP Chapter 5 and 7 &nbsp;|&nbsp; ICH Q10 S3.2.3 &nbsp;|&nbsp; USP 1083 &nbsp;|&nbsp; Quality Agreements &nbsp;|&nbsp; Risk-Based Audit Programme &nbsp;|&nbsp; ASL</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      21 CFR 211.84 &nbsp;·&nbsp; EU GMP Chapter 5.27 and 5.29<br>
+      EU GMP Chapter 7 &nbsp;·&nbsp; ICH Q10 Section 3.2.3<br>
+      USP 1083 &nbsp;·&nbsp; FDA Contract Manufacturing Guidance 2016
+    </div>
+    <div class="warn-badge">
+      Missing quality agreements cited in<br>
+      FDA warning letters and EMA inspections 2025-2026
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#7DD3FC"></div>Phase 1 - Identification and Risk Assessment</div>
+  <div class="legend-item"><div class="ls" style="background:#BEF264"></div>Phase 2 - Qualification Assessment</div>
+  <div class="legend-item"><div class="ls" style="background:#FCA5A5"></div>Phase 3 - Approval and Quality Agreement</div>
+  <div class="legend-item"><div class="ls" style="background:#67E8F9"></div>Phase 4 - Ongoing Monitoring</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(229,62,62,0.3);border:1px solid #E53E3E"></div>Critical warning</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128230;</div>
+    <div class="trigger-text">
+      <h3>New Supplier Identified - Formal Qualification Required Before Use in GMP Manufacturing</h3>
+      <p>21 CFR 211.84 permits reliance on a supplier's Certificate of Analysis only if the manufacturer periodically validates the supplier's testing. EU GMP Chapter 5.27 and 5.29 require documented qualification of all starting material suppliers and mandatory audits of active substance manufacturers. Missing or incomplete quality agreements are a frequent finding in FDA warning letters and EMA inspections in 2025 and 2026. Using an unqualified supplier for GMP materials is a direct 21 CFR 211.84 violation regardless of the analytical quality of the material received. Supplier qualification is not a purchasing process - it is a patient safety process.</p>
+      <div class="reg">21 CFR 211.84 &nbsp;·&nbsp; EU GMP Chapter 5.27, 5.29 and Chapter 7 &nbsp;·&nbsp; ICH Q10 Section 3.2.3 &nbsp;·&nbsp; USP 1083 &nbsp;·&nbsp; FDA Contract Manufacturing Guidance 2016</div>
+    </div>
+    <div class="trigger-right">
+      <div class="t-chip chip-h">High risk - on-site audit required</div>
+      <div class="t-chip chip-m">Medium risk - desk assessment</div>
+      <div class="t-chip chip-l">Low risk - questionnaire only</div>
+    </div>
+  </div>
+
+  <!-- RISK TIERS -->
+  <div class="tiers-bar">
+    <div class="tier-card tier-h">
+      <h4>High Risk Suppliers</h4>
+      <p>On-site audit required before approval. Annual re-audit cycle. Full quality agreement with all elements mandatory. Intensive incoming material testing programme. Any FDA warning letter, import alert or EU GMP non-compliance certificate in the last three years requires enhanced assessment before qualification.</p>
+      <div class="tier-examples">API manufacturers &nbsp;·&nbsp; Critical excipient suppliers &nbsp;·&nbsp; Contract manufacturers &nbsp;·&nbsp; Contract testing laboratories &nbsp;·&nbsp; Primary packaging material suppliers</div>
+    </div>
+    <div class="tier-card tier-m">
+      <h4>Medium Risk Suppliers</h4>
+      <p>Desk-based assessment with documented review of quality system documentation, regulatory status and COA history. On-site audit may be required based on risk assessment conclusion. Quality agreement required. Periodic re-qualification at defined intervals. Remote assessment acceptable for established suppliers with strong performance history.</p>
+      <div class="tier-examples">Secondary excipient suppliers &nbsp;·&nbsp; Indirect contact packaging &nbsp;·&nbsp; Cleaning agent suppliers &nbsp;·&nbsp; Reference standard suppliers</div>
+    </div>
+    <div class="tier-card tier-l">
+      <h4>Low Risk Suppliers</h4>
+      <p>Qualification questionnaire and documentation review. No on-site audit required unless risk assessment indicates otherwise. Simplified quality agreement or technical agreement acceptable. Annual COA review. Re-qualification at extended intervals. Risk tier assignment must be documented with rationale and must be reviewed when supplier performance changes.</p>
+      <div class="tier-examples">Non-contact consumable suppliers &nbsp;·&nbsp; Laboratory consumables &nbsp;·&nbsp; Non-critical utilities &nbsp;·&nbsp; Office and administrative supplies for GMP areas</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- FOUR PHASES -->
+    <div class="phases-grid">
+
+      <!-- PHASE 1 -->
+      <div class="phase-col ph1">
+        <div class="phase-header">
+          <div class="phase-num">Phase 1</div>
+          Identification and Risk Assessment
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">1</span>Identify supplier and material scope</div>
+            <div class="node-body">Document the proposed supplier, the materials or services to be supplied, and the intended use in GMP manufacturing. Identify all products and batches that would rely on this supplier. Confirm the supplier holds a current Manufacturing Authorisation, registration or licence appropriate to the material type and jurisdiction. Check FDA warning letter database, import alert list and EU GMP non-compliance database for any current or recent regulatory actions against this supplier before proceeding.</div>
+            <div class="node-reg">21 CFR 211.84(a) &nbsp;·&nbsp; EU GMP Chapter 5.27 &nbsp;·&nbsp; FDA Warning Letter database</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">2</span>Risk assessment and tier assignment</div>
+            <div class="node-body">Conduct formal risk assessment using ICH Q9(R1) 2023 methodology. Assess: material criticality to product quality and patient safety, supplier GMP status and regulatory history, supply chain complexity and whether the supplier is a manufacturer or broker, availability of alternative qualified suppliers and consequence of supply failure. Assign the supplier to High, Medium or Low risk tier with documented rationale. The tier assignment determines the qualification pathway and ongoing monitoring intensity.</div>
+            <div class="node-reg">ICH Q9(R1) 2023 &nbsp;·&nbsp; USP 1083 &nbsp;·&nbsp; ICH Q10 Section 3.2.3</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-decision">
+            <div class="decision-q">Does the supplier have any current FDA warning letters, import alerts or EU non-compliance certificates?</div>
+            <div class="d-opts">
+              <span class="opt-y">YES &#8594; Enhanced assessment required</span>
+              <span class="opt-n">NO &#8594; Phase 2</span>
+            </div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-critical">
+            <div class="node-title" style="color:#FC8181">&#9888; Active regulatory action - do not approve without QA director sign-off</div>
+            <div class="node-body" style="font-size:0.67rem">A supplier with a current FDA warning letter, active import alert or EU GMP non-compliance certificate presents elevated risk to your supply chain and regulatory standing. Enhanced assessment including senior QA and regulatory affairs review is required. Approval of such a supplier must include documented risk acceptance at QA director or higher level with a defined monitoring and exit strategy.</div>
+            <div class="node-reg">ICH Q10 &nbsp;·&nbsp; FDA supplier oversight expectations 2026</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 2 -->
+      <div class="phase-col ph2">
+        <div class="phase-header">
+          <div class="phase-num">Phase 2</div>
+          Qualification Assessment
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">3</span>Send qualification questionnaire</div>
+            <div class="node-body">Issue a structured qualification questionnaire covering: quality system certification and status, GMP compliance history and recent inspection outcomes, manufacturing controls and facilities, material specifications and testing capabilities, change control procedures and change notification commitments, deviation and CAPA systems, complaint handling procedures and recall capability. Questionnaire responses must be reviewed and assessed - not just collected and filed. Inadequate or evasive responses are disqualifying signals.</div>
+            <div class="node-reg">21 CFR 211.84(d) &nbsp;·&nbsp; EU GMP Chapter 5.29 &nbsp;·&nbsp; USP 1083</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">4</span>Review quality system documentation</div>
+            <div class="node-body">Request and review: current GMP certificate or ISO 9001 certification, Site Master File or equivalent quality documentation, recent internal or third-party audit reports, regulatory inspection outcomes from the last three years, product-specific technical data sheets and specifications, COA examples for the proposed materials, and analytical method summaries. EU GMP Chapter 5.29 requires documented review of the active substance manufacturer's GMP compliance status before approval as a supplier.</div>
+            <div class="node-reg">EU GMP Chapter 5.29 &nbsp;·&nbsp; 21 CFR 211.84 &nbsp;·&nbsp; ICH Q7</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-decision">
+            <div class="decision-q">Does risk tier require on-site audit?</div>
+            <div class="d-opts">
+              <span class="opt-y">YES - High risk &#8594; Step 5</span>
+              <span class="opt-n">NO - Med/Low &#8594; Step 6</span>
+            </div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">5</span>Conduct on-site GMP audit</div>
+            <div class="node-body">On-site audit by a qualified GMP auditor covering: facility condition and housekeeping, manufacturing controls and equipment qualification, quality management system and record keeping, laboratory controls including OOS and analytical method validation, personnel training and qualification, deviation and CAPA programme effectiveness, change control system and notification procedures, and cleaning validation for shared equipment. Audit report prepared with findings classified by severity. Critical findings prevent approval until resolved.</div>
+            <div class="node-reg">EU GMP Chapter 5.27 &nbsp;·&nbsp; 21 CFR 211.84 &nbsp;·&nbsp; ICH Q10 Section 3.2.3</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">6</span>Incoming material qualification testing</div>
+            <div class="node-body">Conduct incoming qualification testing of the proposed material against all release specifications. For API suppliers this must include full identity, assay, purity and impurity testing regardless of the supplier COA. 21 CFR 211.84 permits reduced testing against the COA only after the supplier's testing reliability has been validated through appropriate means at appropriate intervals. Initial qualification requires full testing. Reduced testing requires documented validation of the supplier's analytical reliability over a defined period.</div>
+            <div class="node-reg">21 CFR 211.84(d)(1) and (d)(2) &nbsp;·&nbsp; EU GMP Chapter 5.31</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 3 -->
+      <div class="phase-col ph3">
+        <div class="phase-header">
+          <div class="phase-num">Phase 3</div>
+          Approval and Quality Agreement
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">7</span>Prepare supplier qualification report</div>
+            <div class="node-body">Document the complete qualification outcome: risk assessment and tier assignment with rationale, questionnaire assessment conclusions, documentation review findings, audit report summary and CAPA status for any audit findings, incoming qualification testing results versus specifications, and overall qualification conclusion. The qualification report is the evidence package that supports the supplier approval decision. QA review and approval of the report is required before the supplier can be added to the Approved Supplier List.</div>
+            <div class="node-reg">21 CFR 211.84 &nbsp;·&nbsp; ICH Q10 Section 3.2.3 &nbsp;·&nbsp; EU GMP Chapter 5</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-decision">
+            <div class="decision-q">Does the qualification assessment support supplier approval?</div>
+            <div class="d-opts">
+              <span class="opt-y">YES &#8594; Step 8</span>
+              <span class="opt-n">NO &#8594; Do not approve</span>
+            </div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">8</span>Negotiate and execute quality agreement</div>
+            <div class="node-body">A quality agreement is required for all high and medium risk suppliers under EU GMP Chapter 7 and expected by FDA per the 2016 contract manufacturing guidance. The quality agreement must cover: material specifications and release criteria, change control and change notification obligations, deviation handling and CAPA responsibilities, complaint handling procedures, audit rights and audit frequency, recall procedures and regulatory authority notification, GMP compliance maintenance obligations and what happens when GMP status changes. Missing or incomplete quality agreements are a frequent FDA and EMA inspection finding in 2025 and 2026.</div>
+            <div class="node-reg">EU GMP Chapter 7 &nbsp;·&nbsp; FDA Contract Manufacturing Guidance 2016 &nbsp;·&nbsp; 21 CFR 211.84</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">9</span>Add to Approved Supplier List</div>
+            <div class="node-body">Add the approved supplier to the site Approved Supplier List with: supplier name and address, materials approved for supply, risk tier designation, qualification date, next re-qualification date, quality agreement reference, approved contact details, and any specific conditions of approval such as mandatory audit rights or enhanced testing requirements. The ASL is a controlled document requiring QA approval for all additions, modifications and deletions. Materials from suppliers not on the ASL cannot be used in GMP manufacturing.</div>
+            <div class="node-reg">21 CFR 211.84(a) &nbsp;·&nbsp; EU GMP Chapter 5.27 &nbsp;·&nbsp; ICH Q10</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div class="node node-approved">
+              <div style="font-size:0.74rem;font-weight:800;color:#4ADE80;margin-bottom:2px">&#10003; APPROVED</div>
+              <div style="font-size:0.64rem;color:var(--light)">Added to ASL. Quality agreement executed. Ongoing monitoring programme initiated.</div>
+            </div>
+            <div class="node node-rejected">
+              <div style="font-size:0.74rem;font-weight:800;color:#FC8181;margin-bottom:2px">&#10007; NOT APPROVED</div>
+              <div style="font-size:0.64rem;color:var(--light)">Findings not resolved. Not added to ASL. Alternative supplier required.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 4 -->
+      <div class="phase-col ph4">
+        <div class="phase-header">
+          <div class="phase-num">Phase 4</div>
+          Ongoing Monitoring and Re-qualification
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">10</span>Incoming material testing programme</div>
+            <div class="node-body">Implement risk-based incoming testing programme. For API suppliers: full identity testing on every lot received per 21 CFR 211.84(d)(1). Reduced testing against supplier COA requires documented validation of the supplier's testing reliability - typically three years of results comparison without unexplained discrepancies. EU GMP Chapter 5.31 requires at least one identity test per container of active substance received. Never release a GMP material to manufacturing based solely on a supplier COA without at minimum identity verification.</div>
+            <div class="node-reg">21 CFR 211.84(d) &nbsp;·&nbsp; EU GMP Chapter 5.31 &nbsp;·&nbsp; USP 1083</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">11</span>Performance monitoring and KPIs</div>
+            <div class="node-body">Monitor supplier performance against defined KPIs at defined intervals: COA compliance rate versus in-house testing, delivery performance and supply reliability, complaint and deviation rate attributable to this supplier, change notification timeliness, and audit finding closure rates. Performance data reviewed quarterly for high-risk suppliers and annually for medium and low risk. Deteriorating performance triggers escalation to enhanced monitoring or re-qualification. EU GMP Chapter 8.14 requires continuous assessment of supplier performance.</div>
+            <div class="node-reg">EU GMP Chapter 8.14 &nbsp;·&nbsp; ICH Q10 Section 3.2.3 &nbsp;·&nbsp; USP 1083</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">12</span>Periodic re-qualification and re-audit</div>
+            <div class="node-body">Re-qualify suppliers at risk-tier-appropriate intervals: High risk suppliers annually or bi-annually with on-site re-audit. Medium risk every two to three years. Low risk every three to five years or when performance data indicates risk tier change. Re-qualification triggered additionally by: supplier change notification received, FDA warning letter or import alert issued against the supplier, significant quality event attributable to the supplier, quality agreement expiry or renegotiation, and supply chain changes such as new manufacturing site for existing materials.</div>
+            <div class="node-reg">EU GMP Chapter 5.27 &nbsp;·&nbsp; ICH Q10 Section 3.2.3 &nbsp;·&nbsp; 21 CFR 211.84</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-decision">
+            <div class="decision-q">Does re-qualification confirm continued GMP compliance?</div>
+            <div class="d-opts">
+              <span class="opt-y">YES &#8594; Renew on ASL</span>
+              <span class="opt-n">NO &#8594; Suspend and investigate</span>
+            </div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">13</span>Change notification management</div>
+            <div class="node-body">The quality agreement must require the supplier to notify the manufacturer of all changes that could affect the approved material's quality, specifications or GMP status. Change notifications must be assessed through the manufacturer's change control system. A change to the API synthetic route, manufacturing site or specification requires regulatory assessment and may require a Prior Approval Supplement or equivalent regulatory submission before the changed material can be used. Do not accept changed material without formal change assessment regardless of the supplier's assurance that quality is unaffected.</div>
+            <div class="node-reg">21 CFR 314.70 &nbsp;·&nbsp; EU GMP Chapter 7 &nbsp;·&nbsp; ICH Q12</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-col">
+
+      <!-- QUALITY AGREEMENT ELEMENTS -->
+      <div class="qa-box">
+        <h3>Quality Agreement - Required Elements (EU GMP Chapter 7 and FDA 2016 Guidance)</h3>
+        <div class="qa-items">
+          <div class="qa-item">
+            <strong>Material specifications and release criteria</strong>
+            Approved specifications for each material supplied. Testing requirements and analytical methods. COA format and content requirements. Retained sample requirements. Shelf life and storage conditions.
+          </div>
+          <div class="qa-item">
+            <strong>Change control and notification</strong>
+            Supplier obligation to notify the manufacturer before implementing changes to manufacturing processes, raw materials, equipment, specifications or analytical methods. Notification timelines defined - typically 30 to 90 days for changes requiring regulatory assessment. Emergency change notification procedure.
+          </div>
+          <div class="qa-item">
+            <strong>Deviation and CAPA responsibilities</strong>
+            Who is responsible for investigating deviations in supplied materials. Timelines for investigation and CAPA completion. Right to review supplier investigation reports. Escalation procedure for critical deviations.
+          </div>
+          <div class="qa-item">
+            <strong>Complaint handling</strong>
+            Procedure for raising material complaints with the supplier. Response timelines. Root cause investigation requirements. Replacement material provision. Credit or return procedure.
+          </div>
+          <div class="qa-item">
+            <strong>Audit rights</strong>
+            Right to conduct on-site audits of the supplier's manufacturing and testing facilities at agreed notice period. Frequency of routine audits by risk tier. Right to conduct for-cause audits with short notice in the event of a significant quality event. Supplier obligation to address audit findings within agreed timelines.
+          </div>
+          <div class="qa-item">
+            <strong>GMP compliance maintenance and regulatory notification</strong>
+            Supplier obligation to maintain GMP certification and to notify the manufacturer immediately if GMP status changes, if a regulatory authority takes action against the facility, or if the supplier receives a warning letter or import alert. Obligation to provide inspection reports from regulatory authority inspections on request.
+          </div>
+          <div class="qa-item">
+            <strong>Recall and field alert procedures</strong>
+            Procedure for supplier to notify manufacturer of any recall or field alert affecting supplied materials. Traceability requirements enabling identification of all manufacturer batches that used affected supplier lots. Cooperation obligations during recall investigations.
+          </div>
+        </div>
+      </div>
+
+      <!-- AUDIT PROGRAMME -->
+      <div class="audit-box">
+        <h3>GMP Supplier Audit Programme - What Inspectors Look For</h3>
+        <div class="audit-items">
+          <div class="audit-item">
+            <strong>Facility and manufacturing controls</strong>
+            Facility cleanliness and maintenance. Equipment qualification status. Pest control programme. Environmental controls appropriate to the material. Cross-contamination controls for multi-product facilities. Cleaning validation for shared equipment.
+          </div>
+          <div class="audit-item">
+            <strong>Quality management system</strong>
+            Document control system. Deviation and CAPA programme effectiveness - particularly repeat deviation rates. Change control system including how changes are communicated to customers. Management review evidence.
+          </div>
+          <div class="audit-item">
+            <strong>Laboratory controls</strong>
+            OOS investigation programme. Analytical method validation status. Reference standard management. Data integrity - audit trails, raw data accessibility, no evidence of data manipulation. Analyst training and qualification records.
+          </div>
+          <div class="audit-item">
+            <strong>Supply chain transparency</strong>
+            Whether the supplier is a manufacturer or a broker or distributor. If a broker: who manufactures the material and is that manufacturer qualified? GDP compliance for storage and transport. Temperature excursion management. Chain of custody documentation.
+          </div>
+        </div>
+      </div>
+
+      <!-- COMMON FAILURES -->
+      <div class="fail-box">
+        <h3>Common Supplier Qualification Failures - FDA and EMA 2025-2026</h3>
+        <div class="fail-items">
+          <div class="fail-item">
+            <strong>Missing or incomplete quality agreements</strong>
+            The most frequently cited supplier qualification deficiency in FDA warning letters and EMA inspections. Quality agreements must exist for all contract manufacturers, contract testing laboratories and critical material suppliers. A general purchase agreement is not a quality agreement.
+          </div>
+          <div class="fail-item">
+            <strong>No on-site audit of API manufacturers</strong>
+            EU GMP Chapter 5.27 requires that active substance manufacturers be audited. Remote or desk-based assessment alone is not sufficient for API suppliers under EU GMP. The audit must have been conducted and documented.
+          </div>
+          <div class="fail-item">
+            <strong>Relying on supplier COA without identity testing</strong>
+            21 CFR 211.84(d)(1) requires at least one identity test on each shipment of each component. EU GMP Chapter 5.31 requires at least one identity test per container of active substance. Accepting a COA and releasing the material to manufacturing without identity testing is a direct regulatory violation.
+          </div>
+          <div class="fail-item">
+            <strong>Change notifications not assessed through change control</strong>
+            Supplier change notifications received and acknowledged but not formally assessed through the manufacturer's change control system. Material from a changed manufacturing process used in GMP production without regulatory impact assessment.
+          </div>
+          <div class="fail-item">
+            <strong>ASL not maintained as a controlled document</strong>
+            Approved Supplier List not kept current, not QA-controlled, or not used in purchasing - materials ordered from suppliers not on the ASL. The ASL is the primary evidence of supplier qualification programme operation.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ASL SECTION -->
+  <div class="asl-section">
+    <h3>Approved Supplier List - Required Data Fields and Governance</h3>
+    <div class="asl-grid">
+      <div class="asl-card">
+        <h4>Supplier Identity</h4>
+        <p>Supplier legal name and trading name if different. Manufacturing site address distinct from registered office address. Supplier contact for quality matters. GMP certificate or registration number and issuing authority. Date of last GMP inspection by a regulatory authority and outcome.</p>
+      </div>
+      <div class="asl-card">
+        <h4>Approved Materials and Scope</h4>
+        <p>List of materials approved for supply from this supplier. Grade or specification designation for each material. Any specific conditions of approval - for example approval limited to one manufacturing site or one product line. Materials not listed are not approved regardless of supplier ASL status.</p>
+      </div>
+      <div class="asl-card">
+        <h4>Qualification Status and Dates</h4>
+        <p>Initial qualification date. Risk tier assignment with review date. Date of last on-site audit for high-risk suppliers. Date of last re-qualification. Next scheduled re-qualification date. Quality agreement reference number and expiry date. Status: Active, Under Review, Suspended or Disqualified.</p>
+      </div>
+      <div class="asl-card">
+        <h4>ASL Governance Requirements</h4>
+        <p>ASL is a QA-controlled document - changes require QA approval. Purchasing must reference the current approved version before placing orders. Materials from suppliers not on the ASL must not enter GMP manufacturing regardless of analytical quality. ASL reviewed at APQR. Disqualified suppliers documented with reason and date.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="rules-row">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Use materials from an unqualified supplier in GMP manufacturing. Release API to manufacturing without identity testing. Accept a supplier COA as the sole basis for material release without any in-house testing. Allow change notifications to be filed without formal change control assessment. Use a supplier with an active FDA warning letter or import alert without enhanced QA director-level risk acceptance.</p>
+    </div>
+    <div class="rule-card">
+      <h4>EU API mandatory audit</h4>
+      <p>EU GMP Chapter 5.27 requires that active substance manufacturers be audited before approval and periodically thereafter. The audit must be conducted by the manufacturer or by a qualified third party on their behalf. A desk-based assessment without an on-site audit component does not satisfy Chapter 5.27 for API suppliers. This is one of the most frequently exploited gaps in EU GMP supplier qualification programmes.</p>
+    </div>
+    <div class="rule-card">
+      <h4>21 CFR 211.84 - reduced testing conditions</h4>
+      <p>Reduced incoming testing against supplier COA is permitted only after the manufacturer has established the reliability of the supplier's analyses through appropriate validation at appropriate intervals. This validation requires a documented comparative testing programme over a defined period - typically two to three years. The validation must be documented and must be specific to the material, site and analytical methods in use.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR 211.84 - component testing and supplier approval. EU GMP Chapter 5.27 and 5.29 - starting material and API supplier qualification. EU GMP Chapter 7 - outsourced activities and quality agreements. ICH Q10 Section 3.2.3 - management of outsourced activities. USP 1083 - risk-based supplier qualification. FDA Contract Manufacturing Guidance 2016.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Supplier Qualification Workflow &nbsp;&#183;&nbsp;
+    Built from 21 CFR 211.84, EU GMP Chapters 5 and 7, ICH Q10, USP 1083, FDA Contract Manufacturing Guidance 2016 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
