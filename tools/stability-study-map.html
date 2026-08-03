@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stability Study Design Map | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1428;
+    --navy2:   #0E1C38;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #060A20;
+    --c2:      #06180A;
+    --c3:      #201406;
+    --c4:      #180620;
+    --c1acc:   #A5B4FC;
+    --c2acc:   #86EFAC;
+    --c3acc:   #FDE68A;
+    --c4acc:   #F9A8D4;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#040820 0%,#0A1428 60%,#060E24 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(165,180,252,0.1);border:1px solid rgba(165,180,252,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .info-badge{background:rgba(134,239,172,0.1);border:1px solid rgba(134,239,172,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c2acc);text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(165,180,252,0.07),rgba(165,180,252,0.02));
+    border:1.5px solid rgba(165,180,252,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+
+  /* STORAGE CONDITIONS TABLE */
+  .conditions-bar{
+    background:rgba(0,0,0,0.2);border:1.5px solid rgba(165,180,252,0.18);
+    border-radius:10px;overflow:hidden;margin-bottom:18px;
+  }
+  .conditions-header{background:rgba(165,180,252,0.08);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--c1acc);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(165,180,252,0.15)}
+  .conditions-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  .cond-card{padding:12px 15px;border-right:1px solid rgba(255,255,255,0.06)}
+  .cond-card:last-child{border-right:none}
+  .cond-card h4{font-size:0.73rem;font-weight:800;margin-bottom:6px}
+  .cond-lt h4{color:var(--c2acc)}
+  .cond-int h4{color:var(--c3acc)}
+  .cond-acc h4{color:#FC8181}
+  .cond-ref h4{color:var(--c4acc)}
+  .cond-row{font-size:0.67rem;color:var(--light);line-height:1.5;margin-bottom:2px}
+  .cond-row strong{font-family:var(--mono);color:var(--white)}
+  .cond-tp{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:5px;line-height:1.4}
+
+  /* MAIN LAYOUT */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  /* PHASES */
+  .phases-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#040618;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#041206;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#180E04;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#120418;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-success{background:rgba(34,197,94,0.08);border:1.5px solid rgba(34,197,94,0.28);border-radius:6px;text-align:center}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(165,180,252,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(134,239,172,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(253,230,138,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(249,168,212,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  /* RIGHT COLUMN */
+  .right-col{display:flex;flex-direction:column;gap:12px}
+
+  .sig-change-box{background:rgba(252,165,165,0.05);border:1.5px solid rgba(252,165,165,0.22);border-radius:10px;padding:14px 16px}
+  .sig-change-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .sc-items{display:flex;flex-direction:column;gap:7px}
+  .sc-item{background:rgba(252,165,165,0.06);border:1px solid rgba(252,165,165,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .sc-item strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  .ich-suite-box{background:rgba(165,180,252,0.05);border:1.5px solid rgba(165,180,252,0.2);border-radius:10px;padding:14px 16px}
+  .ich-suite-box h3{font-size:0.74rem;font-weight:700;color:var(--c1acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ich-items{display:flex;flex-direction:column;gap:7px}
+  .ich-item{background:rgba(165,180,252,0.06);border:1px solid rgba(165,180,252,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .ich-item strong{color:var(--c1acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  .shelf-life-box{background:rgba(134,239,172,0.05);border:1.5px solid rgba(134,239,172,0.2);border-radius:10px;padding:14px 16px}
+  .shelf-life-box h3{font-size:0.74rem;font-weight:700;color:var(--c2acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .sl-items{display:flex;flex-direction:column;gap:7px}
+  .sl-item{background:rgba(134,239,172,0.06);border:1px solid rgba(134,239,172,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .sl-item strong{color:var(--c2acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* DOSAGE FORM GRID */
+  .dosage-section{margin-bottom:18px}
+  .dosage-section h3{font-size:0.76rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .dosage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .dosage-card{background:rgba(253,230,138,0.05);border:1px solid rgba(253,230,138,0.18);border-radius:8px;padding:10px 13px}
+  .dosage-card h4{font-size:0.71rem;font-weight:700;color:var(--c3acc);margin-bottom:4px}
+  .dosage-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+
+  .rules-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+  .rule-card.gold-card{border-top-color:var(--gold)}
+  .rule-card.gold-card h4{color:var(--gold)}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(165,180,252,0.1);border:1px solid rgba(165,180,252,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Stability Study <em>Design Map</em></h1>
+    <div class="header-sub">ICH Q1A(R2) &nbsp;|&nbsp; ICH Q1B &nbsp;|&nbsp; ICH Q1E &nbsp;|&nbsp; 21 CFR 211.166 &nbsp;|&nbsp; EU GMP Chapter 6 &nbsp;|&nbsp; Long-Term &nbsp;|&nbsp; Intermediate &nbsp;|&nbsp; Accelerated &nbsp;|&nbsp; Shelf Life Determination</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      ICH Q1A(R2) &nbsp;·&nbsp; ICH Q1B &nbsp;·&nbsp; ICH Q1C &nbsp;·&nbsp; ICH Q1E<br>
+      21 CFR 211.166 &nbsp;·&nbsp; EU GMP Chapter 6<br>
+      WHO Stability Guidelines &nbsp;·&nbsp; USP 1150
+    </div>
+    <div class="info-badge">
+      ICH Q1A(R2): long-term minimum 12 months<br>
+      at submission. Accelerated 6 months minimum.
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#A5B4FC"></div>Phase 1 - Protocol Design</div>
+  <div class="legend-item"><div class="ls" style="background:#86EFAC"></div>Phase 2 - Study Execution</div>
+  <div class="legend-item"><div class="ls" style="background:#FDE68A"></div>Phase 3 - Data Analysis and Shelf Life</div>
+  <div class="legend-item"><div class="ls" style="background:#F9A8D4"></div>Phase 4 - Ongoing Stability Programme</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(134,239,172,0.3);border:1px solid #86EFAC"></div>Long-term</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(253,230,138,0.3);border:1px solid #FDE68A"></div>Intermediate</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(229,62,62,0.3);border:1px solid #E53E3E"></div>Accelerated / Sig change</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#129514;</div>
+    <div class="trigger-text">
+      <h3>Stability Programme Required - Every Drug Substance and Drug Product Placed on the Market</h3>
+      <p>21 CFR 211.166 requires written testing programmes designed to assess the stability characteristics of drug products. ICH Q1A(R2) establishes the harmonised stability study requirements accepted by FDA, EMA and PMDA for registration. A stability protocol must be prospectively approved before the study begins. Retrospective stability data cannot be used to justify a shelf life for a registered product. The stability programme must cover the commercial product in its final container-closure system at commercial manufacturing scale from batches representative of the commercial manufacturing process. Development or pilot-scale stability data used to support registration requires bridging data from commercial-scale batches within a defined timeframe after approval.</p>
+      <div class="reg">ICH Q1A(R2) &nbsp;·&nbsp; 21 CFR 211.166 &nbsp;·&nbsp; EU GMP Chapter 6 &nbsp;·&nbsp; ICH Q1E &nbsp;·&nbsp; WHO Stability Guidelines &nbsp;·&nbsp; USP 1150</div>
+    </div>
+  </div>
+
+  <!-- STORAGE CONDITIONS -->
+  <div class="conditions-bar">
+    <div class="conditions-header">ICH Q1A(R2) Standard Storage Conditions and Time Points - Zone I and II (Temperate and Mediterranean)</div>
+    <div class="conditions-grid">
+      <div class="cond-card cond-lt">
+        <h4>Long-Term</h4>
+        <div class="cond-row">Temp: <strong>25°C ± 2°C</strong></div>
+        <div class="cond-row">Humidity: <strong>60% RH ± 5% RH</strong></div>
+        <div class="cond-row">Duration: <strong>Proposed shelf life</strong></div>
+        <div class="cond-row">Minimum at submission: <strong>12 months</strong></div>
+        <div class="cond-tp">Time points: 0, 3, 6, 9, 12 months<br>then 6-monthly to 24 months<br>then annually to proposed shelf life</div>
+      </div>
+      <div class="cond-card cond-int">
+        <h4>Intermediate</h4>
+        <div class="cond-row">Temp: <strong>30°C ± 2°C</strong></div>
+        <div class="cond-row">Humidity: <strong>65% RH ± 5% RH</strong></div>
+        <div class="cond-row">Duration: <strong>Minimum 6 months</strong></div>
+        <div class="cond-row">Required when: <strong>Significant change at 40°C</strong></div>
+        <div class="cond-tp">Time points: 0, 6, 9, 12 months<br>minimum four time points<br>including initial and final</div>
+      </div>
+      <div class="cond-card cond-acc">
+        <h4>Accelerated</h4>
+        <div class="cond-row">Temp: <strong>40°C ± 2°C</strong></div>
+        <div class="cond-row">Humidity: <strong>75% RH ± 5% RH</strong></div>
+        <div class="cond-row">Duration: <strong>Minimum 6 months</strong></div>
+        <div class="cond-row">Minimum time points: <strong>3 (0, 3, 6 months)</strong></div>
+        <div class="cond-tp">Significant change at 40°C<br>triggers intermediate study<br>Cannot extrapolate shelf life<br>from accelerated data alone</div>
+      </div>
+      <div class="cond-card cond-ref">
+        <h4>Refrigerated Products</h4>
+        <div class="cond-row">Long-term: <strong>5°C ± 3°C</strong></div>
+        <div class="cond-row">Accelerated: <strong>25°C ± 2°C / 60% RH</strong></div>
+        <div class="cond-row">Zone IV (tropical): <strong>30°C / 65% RH</strong></div>
+        <div class="cond-row">Frozen products: <strong>-20°C ± 5°C</strong></div>
+        <div class="cond-tp">Accelerated for refrigerated:<br>6 months at 25°C/60% RH<br>Significant change definition<br>differs from room temp products</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- FOUR PHASES -->
+    <div class="phases-grid">
+
+      <!-- PHASE 1 -->
+      <div class="phase-col ph1">
+        <div class="phase-header">
+          <div class="phase-num">Phase 1</div>
+          Protocol Design and Approval
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">1</span>Define study objective and product scope</div>
+            <div class="node-body">Define whether the study is a registration stability study, a post-approval commitment study, a supportive study for a product change or an ongoing stability programme study for commercial batches. Identify the drug product and drug substance being studied. Confirm the batches to be placed on stability are from the commercial manufacturing process at commercial scale - or document the bridging strategy if scale-up batches are used. ICH Q1A(R2) requires a minimum of three batches from the proposed commercial manufacturing process for registration studies.</div>
+            <div class="node-reg">ICH Q1A(R2) Section 2.1 &nbsp;·&nbsp; 21 CFR 211.166 &nbsp;·&nbsp; FDA Q1A guidance</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">2</span>Select container-closure system and storage conditions</div>
+            <div class="node-body">Stability must be conducted in the final commercial container-closure system. Testing in a different or larger container without bridging data does not support commercial product shelf life. Select storage conditions based on the proposed storage labelling for the product. Products intended for room temperature storage use ICH Q1A(R2) long-term and accelerated conditions. Products for refrigerated storage use the refrigerated product conditions. Confirm the intended distribution zones and whether additional Zone IV tropical conditions are required for international registrations.</div>
+            <div class="node-reg">ICH Q1A(R2) Section 2.2 &nbsp;·&nbsp; ICH Q1F (tropical) &nbsp;·&nbsp; 21 CFR 211.166</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">3</span>Define test parameters and specifications</div>
+            <div class="node-body">The stability protocol must specify all test parameters and the acceptance criteria for each. Test parameters must include all attributes that are susceptible to change during storage and likely to affect quality, safety or efficacy. For solid oral dosage forms: assay, related substances and degradation products, dissolution, moisture content, appearance and microbial limits if applicable. For sterile products: assay, related substances, particulate matter, pH, sterility, container closure integrity, appearance. Acceptance criteria must be predefined and scientifically justified.</div>
+            <div class="node-reg">ICH Q1A(R2) Section 2.7 &nbsp;·&nbsp; ICH Q6A &nbsp;·&nbsp; ICH Q6B for biologics</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">4</span>Define time points and statistical approach</div>
+            <div class="node-body">Time points must be sufficient to allow characterisation of the stability profile and support statistical shelf life determination under ICH Q1E. Long-term study: 0, 3, 6, 9, 12 months then 6-monthly to 24 months then annually. Accelerated study: minimum 0, 3 and 6 months. Define the statistical analysis approach in the protocol before data collection begins: whether data from multiple batches will be combined, the regression model to be applied, the confidence interval approach and the criteria for poolability of batch data. Statistical approach defined retrospectively to fit the data is a GMP and regulatory deficiency.</div>
+            <div class="node-reg">ICH Q1E &nbsp;·&nbsp; ICH Q1A(R2) Section 2.6 &nbsp;·&nbsp; FDA Q1E guidance</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">5</span>Approve protocol before study initiation</div>
+            <div class="node-body">The stability protocol must be approved by the quality unit before any samples are placed on stability. Placing samples without an approved protocol invalidates the study for regulatory purposes regardless of the quality of the data generated. The protocol must include: batch identification method, container-closure system specification, storage condition specifications with permitted tolerance, sampling and testing schedule, test methods, acceptance criteria, statistical analysis approach and criteria for out-of-trend and out-of-specification results.</div>
+            <div class="node-reg">21 CFR 211.166 &nbsp;·&nbsp; ICH Q1A(R2) &nbsp;·&nbsp; EU GMP Chapter 6 Section 6.27</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 2 -->
+      <div class="phase-col ph2">
+        <div class="phase-header">
+          <div class="phase-num">Phase 2</div>
+          Study Execution and Monitoring
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">6</span>Place samples on stability per protocol</div>
+            <div class="node-body">Place samples in qualified stability chambers set to the specified storage conditions with controlled temperature and humidity within permitted tolerances. Each chamber must have continuous temperature and humidity monitoring with alarm systems. Samples must be in the final commercial container-closure system. Label samples with batch number, storage condition, placement date and test schedule. Log all samples into the stability programme management system. Confirm chamber qualification is current before placing commercial registration samples.</div>
+            <div class="node-reg">ICH Q1A(R2) &nbsp;·&nbsp; 21 CFR 211.166 &nbsp;·&nbsp; EU GMP Chapter 6 Section 6.27</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">7</span>Pull and test samples at scheduled time points</div>
+            <div class="node-body">Pull samples at scheduled time points within the tolerance permitted by the protocol - typically plus or minus seven days for the first six months and plus or minus one month thereafter per ICH Q1A(R2). Test against all parameters specified in the protocol using validated analytical methods. All stability testing must comply with 21 CFR 211.166 requirements for complete and contemporaneous records. Stability data is original data - it cannot be averaged, selected or manipulated. All results including atypical results must be recorded and investigated.</div>
+            <div class="node-reg">ICH Q1A(R2) Section 2.6 &nbsp;·&nbsp; ALCOA+ &nbsp;·&nbsp; 21 CFR 211.166</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-decision">
+            <div class="decision-q">Does any result show significant change at accelerated conditions?</div>
+            <div class="d-opts">
+              <span class="opt-y" style="color:#FC8181">YES &#8594; Initiate intermediate</span>
+              <span class="opt-n">NO &#8594; Continue per protocol</span>
+            </div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">8</span>Monitor chamber performance and excursions</div>
+            <div class="node-body">Review chamber temperature and humidity logs continuously. Temperature and humidity excursions within the stability chamber require documented assessment of impact on the study. A minor short-duration excursion may be assessed as having no impact - but this assessment must be documented. A significant excursion that could have affected sample integrity requires investigation of impact on stability data generated from affected samples. Excursion events documented in the stability study record become part of the regulatory submission package.</div>
+            <div class="node-reg">ICH Q1A(R2) &nbsp;·&nbsp; 21 CFR 211.166 &nbsp;·&nbsp; ALCOA+ integrity requirements</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">9</span>Out-of-trend investigation</div>
+            <div class="node-body">An out-of-trend result is a result that does not follow the expected degradation trend even if it remains within specification. OOT results must be investigated before the study continues. Do not discard OOT results as anomalies without investigation. Possible causes: analytical error, sampling error, chamber excursion, labelling error, genuine stability event. The investigation conclusion must be documented. If the OOT result is confirmed as a genuine stability result it affects the shelf life determination and must be reported in the regulatory submission.</div>
+            <div class="node-reg">ICH Q1A(R2) &nbsp;·&nbsp; FDA OOS Guidance 2022 &nbsp;·&nbsp; 21 CFR 211.192</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 3 -->
+      <div class="phase-col ph3">
+        <div class="phase-header">
+          <div class="phase-num">Phase 3</div>
+          Data Analysis and Shelf Life Determination
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">10</span>Assess poolability of batch data</div>
+            <div class="node-body">Before combining data from multiple batches for shelf life determination assess whether the batches can be pooled statistically using the test for poolability described in ICH Q1E. If the slopes and intercepts of the regression lines for individual batches are not significantly different the data may be combined. If pooling is not supported shelf life must be based on the worst-case individual batch. The poolability assessment must be prospectively defined in the stability protocol - not selected after data collection to produce a more favourable shelf life.</div>
+            <div class="node-reg">ICH Q1E Section 4 &nbsp;·&nbsp; FDA Q1E guidance &nbsp;·&nbsp; Statistical analysis requirements</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">11</span>Determine shelf life by statistical analysis</div>
+            <div class="node-body">Apply the statistical analysis method defined in the protocol. ICH Q1E recommends determination of shelf life from the intersection of the 95% one-sided confidence limit of the regression line with the acceptance criterion. The nature of the degradation relationship determines whether linear, quadratic or cubic regression on arithmetic or logarithmic scale is appropriate. Where multiple attributes are stability-indicating the shelf life is set by the attribute with the earliest intersection of its confidence interval with its acceptance criterion. Shelf life cannot exceed the period supported by the actual long-term data plus any extrapolation justified by accelerated data.</div>
+            <div class="node-reg">ICH Q1E Sections 5 and 6 &nbsp;·&nbsp; ICH Q1A(R2) &nbsp;·&nbsp; FDA Q1E guidance</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-decision">
+            <div class="decision-q">Is proposed shelf life supported by the statistical analysis?</div>
+            <div class="d-opts">
+              <span class="opt-y">YES &#8594; Document and submit</span>
+              <span class="opt-n">NO &#8594; Reduce shelf life or reformulate</span>
+            </div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">12</span>Photostability assessment per ICH Q1B</div>
+            <div class="node-body">ICH Q1B requires photostability testing for new drug substances and drug products. Forced degradation studies expose samples to a minimum of 1.2 million lux hours of visible light and 200 watt hours per square metre of UV light. If the drug substance or product is light-sensitive protective packaging must be specified and the shelf life must be based on testing in the proposed commercial protective container. If the product is not light-sensitive this must be demonstrated through the ICH Q1B exposure studies. Photostability data must be included in the regulatory submission.</div>
+            <div class="node-reg">ICH Q1B &nbsp;·&nbsp; 21 CFR 211.166 &nbsp;·&nbsp; EU GMP Chapter 6</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-success">
+            <div style="font-size:0.74rem;font-weight:800;color:var(--c2acc);margin-bottom:2px">&#10003; SHELF LIFE ESTABLISHED</div>
+            <div style="font-size:0.64rem;color:var(--light)">Supported by statistical analysis of long-term data. Documented in stability report. Included in regulatory submission. Ongoing programme initiated.</div>
+            <div style="font-size:0.6rem;font-family:var(--mono);color:var(--mid);margin-top:2px">ICH Q1E &nbsp;·&nbsp; ICH Q1A(R2) &nbsp;·&nbsp; 21 CFR 211.166</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 4 -->
+      <div class="phase-col ph4">
+        <div class="phase-header">
+          <div class="phase-num">Phase 4</div>
+          Ongoing Stability Programme
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">13</span>Annual stability batches for commercial product</div>
+            <div class="node-body">After registration the ongoing stability programme must place at least one batch per year of each commercial product on long-term stability conditions per 21 CFR 211.166 and EU GMP Chapter 6. The ongoing programme confirms that the product continues to meet its shelf life specification throughout the commercial lifecycle. Batches selected for the annual programme should be representative of commercial production - not cherry-picked from the best-performing batches. Any excursion from the ongoing programme trend must be assessed against the registered shelf life.</div>
+            <div class="node-reg">21 CFR 211.166 &nbsp;·&nbsp; EU GMP Chapter 6 Section 6.27 &nbsp;·&nbsp; ICH Q1A(R2)</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">14</span>Trend monitoring and OOS investigation</div>
+            <div class="node-body">Review ongoing stability data at defined intervals against the established degradation trend and acceptance criteria. Identify out-of-trend results before they become OOS results. An adverse trend in the ongoing programme - even with all results within specification - may indicate that the shelf life is shorter than registered or that a manufacturing or storage change has occurred. OOS results from the ongoing stability programme require formal investigation under 21 CFR 211.192 with assessment of whether the registered shelf life remains valid and whether any regulatory action is required.</div>
+            <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.166 &nbsp;·&nbsp; ICH Q1A(R2)</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">15</span>APQR inclusion and annual review</div>
+            <div class="node-body">Ongoing stability programme data must be included in the Annual Product Quality Review per 21 CFR 211.180(e) and EU GMP Chapter 1 Section 1.10. The APQR must review: stability results from all ongoing programme batches in the review period, any OOT or OOS results and their investigation conclusions, comparison of ongoing programme data to the registered stability data, and whether any change in degradation rate or trend is emerging. Adverse stability trends identified in the APQR must be assessed for regulatory impact and for the need to file a variation to the registered shelf life.</div>
+            <div class="node-reg">21 CFR 211.180(e) &nbsp;·&nbsp; EU GMP Chapter 1 Section 1.10 &nbsp;·&nbsp; ICH Q10</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">16</span>Post-approval change stability requirements</div>
+            <div class="node-body">Any post-approval change that could affect product stability requires additional stability data. Changes to formulation, manufacturing process, container-closure system, manufacturing site and storage conditions all require stability assessment. ICH Q12 Established Conditions framework identifies which elements of the approved stability programme are ECs requiring regulatory notification when changed. A change to the container-closure system typically requires a comparative stability study demonstrating equivalence. The extent of stability data required for a regulatory submission depends on the change classification under 21 CFR 314.70 or EU variation regulation.</div>
+            <div class="node-reg">ICH Q12 &nbsp;·&nbsp; 21 CFR 314.70 &nbsp;·&nbsp; EU Variation Regulation &nbsp;·&nbsp; ICH Q1A(R2)</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-col">
+
+      <!-- SIGNIFICANT CHANGE CRITERIA -->
+      <div class="sig-change-box">
+        <h3>Significant Change at Accelerated Conditions - ICH Q1A(R2) Definitions</h3>
+        <div class="sc-items">
+          <div class="sc-item">
+            <strong>5% change in assay from initial value</strong>
+            A 5% or greater change in assay from the initial value for a drug substance or a 5% or greater change in assay from the labelled amount for a drug product constitutes significant change at accelerated conditions and triggers the intermediate study requirement.
+          </div>
+          <div class="sc-item">
+            <strong>Failure to meet acceptance criteria for degradation products</strong>
+            Any degradation product that exceeds its acceptance criterion at the accelerated storage condition constitutes significant change regardless of the magnitude of the increase. A single new degradation product appearing at the accelerated condition is also significant change.
+          </div>
+          <div class="sc-item">
+            <strong>Failure to meet physical acceptance criteria</strong>
+            For solid oral dosage forms: failure to meet dissolution specification. For topical products: phase separation. For semi-solid dosage forms: significant change in viscosity or consistency outside the acceptance criterion. Physical significant change at accelerated conditions is treated with the same consequence as chemical significant change.
+          </div>
+          <div class="sc-item">
+            <strong>pH beyond acceptance criteria for solutions</strong>
+            For aqueous solutions: pH outside the acceptance criterion at the accelerated storage condition. This is particularly relevant for parenteral products where pH affects both chemical stability and patient safety.
+          </div>
+          <div class="sc-item">
+            <strong>Consequence of significant change</strong>
+            Significant change at the accelerated storage condition means the product cannot be assumed to be stable at room temperature for the proposed shelf life based on accelerated data alone. An intermediate study at 30°C/65% RH must be initiated. If significant change also occurs at intermediate conditions the shelf life must be determined from long-term data only with no extrapolation beyond the period of actual long-term data available.
+          </div>
+        </div>
+      </div>
+
+      <!-- ICH STABILITY GUIDELINE SUITE -->
+      <div class="ich-suite-box">
+        <h3>ICH Stability Guideline Suite - Complete Reference</h3>
+        <div class="ich-items">
+          <div class="ich-item">
+            <strong>ICH Q1A(R2) - Core stability guideline</strong>
+            Stability testing of new drug substances and drug products. Defines storage conditions, time points, minimum number of batches, photostability requirements and ongoing stability programme requirements. The primary regulatory reference for stability study design.
+          </div>
+          <div class="ich-item">
+            <strong>ICH Q1B - Photostability testing</strong>
+            Photostability testing of new drug substances and drug products. Defines the light exposure conditions for forced degradation and confirmatory studies. Applies to both drug substance and drug product in its proposed commercial packaging.
+          </div>
+          <div class="ich-item">
+            <strong>ICH Q1C - New dosage forms</strong>
+            Stability testing for new dosage forms - products that are new formulations of already-approved drug substances. Defines the reduced stability data package acceptable for new dosage form applications where the drug substance stability is already established.
+          </div>
+          <div class="ich-item">
+            <strong>ICH Q1E - Shelf life evaluation</strong>
+            Evaluation of stability data for shelf life determination using statistical methods. Defines the poolability test, the regression approach, confidence interval methodology and the criteria for extrapolation beyond the data period. This is the statistical foundation of shelf life determination.
+          </div>
+          <div class="ich-item">
+            <strong>ICH Q5C - Biotechnological products</strong>
+            Stability testing of biotechnological and biological products. Different requirements from small-molecule products reflecting the greater complexity and lability of biological macromolecules. Includes specific provisions for proteins, vaccines, cell-based products and gene therapy products.
+          </div>
+        </div>
+      </div>
+
+      <!-- SHELF LIFE DETERMINATION PRINCIPLES -->
+      <div class="shelf-life-box">
+        <h3>Shelf Life Determination - ICH Q1E Statistical Principles</h3>
+        <div class="sl-items">
+          <div class="sl-item">
+            <strong>Regression analysis approach</strong>
+            Shelf life is determined from the intersection of the 95% one-sided confidence limit of the regression line with the acceptance criterion. The choice of regression model - linear, quadratic, cubic, arithmetic or logarithmic scale - must be justified by the data and defined in the protocol before data collection.
+          </div>
+          <div class="sl-item">
+            <strong>Extrapolation limits</strong>
+            Shelf life may be extrapolated beyond the period covered by actual long-term data only when supported by accelerated data and degradation kinetic knowledge. In general extrapolation beyond the long-term data period by more than 12 months is not accepted without intermediate data. A proposed 24-month shelf life supported by only 6 months of long-term data without accelerated data cannot be justified.
+          </div>
+          <div class="sl-item">
+            <strong>Multiple stability-indicating attributes</strong>
+            When multiple attributes are monitored the shelf life is set by the attribute that first reaches its acceptance criterion. A product with excellent assay stability but a dissolution attribute approaching its acceptance criterion at 24 months will have its shelf life set by dissolution, not assay.
+          </div>
+          <div class="sl-item">
+            <strong>Matrixing and bracketing designs</strong>
+            ICH Q1D permits reduced stability study designs using matrixing or bracketing when justified. Matrixing tests a subset of samples at each time point. Bracketing tests only the extreme design factors. Both require prospective justification in the protocol and must be designed so that all combinations of factors are tested at least once during the study.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DOSAGE FORM CONSIDERATIONS -->
+  <div class="dosage-section">
+    <h3>Dosage Form Specific Stability Considerations</h3>
+    <div class="dosage-grid">
+      <div class="dosage-card">
+        <h4>Solid Oral Dosage Forms</h4>
+        <p>Key parameters: assay, degradation products, dissolution, moisture content, hardness and friability for tablets, particle size distribution for capsule fill. Moisture uptake is often the primary degradation driver - container closure integrity and desiccant performance are critical stability variables. Dissolution changes can occur without assay changes and must be monitored throughout the study.</p>
+      </div>
+      <div class="dosage-card">
+        <h4>Sterile Injectables</h4>
+        <p>Key parameters: assay, related substances, particulate matter, pH, osmolality, colour and appearance, sterility, container closure integrity, reconstitution time for lyophilised products and visible and subvisible particle counts. Container closure integrity testing is required throughout the stability programme. Headspace oxygen and moisture content critical for oxygen-sensitive and moisture-sensitive products.</p>
+      </div>
+      <div class="dosage-card">
+        <h4>Topical and Semi-Solid Products</h4>
+        <p>Key parameters: assay, degradation products, viscosity or rheology, pH, microbial limits, preservative content and efficacy, appearance including colour and homogeneity, and particle size distribution for suspensions. Phase separation is a significant change criterion for semi-solids. Preservative efficacy must be demonstrated at the end of the proposed shelf life as well as at initial time point.</p>
+      </div>
+      <div class="dosage-card">
+        <h4>Biological and Biotechnology Products</h4>
+        <p>ICH Q5C applies. Key parameters include potency assay, protein content, aggregation by size exclusion HPLC or dynamic light scattering, purity by SDS-PAGE or CE-SDS, charge variants by IEF or IEC, subvisible particles, pH, osmolality and container closure integrity. Biological products are more complex and labile than small molecules - stability profiles must assess higher-order structure and biological activity not just chemical identity.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="rules-row">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Start a stability study without an approved protocol. Select the statistical analysis approach after data collection to produce a more favourable shelf life. Discard OOT results without investigation. Place stability samples in unqualified chambers. Use development-scale stability data to justify commercial shelf life without bridging data from commercial-scale batches.</p>
+    </div>
+    <div class="rule-card gold-card">
+      <h4>Significant change response</h4>
+      <p>Significant change at 40°C accelerated conditions requires an intermediate study at 30°C/65% RH. Significant change at intermediate conditions means shelf life must be based on long-term data only with no extrapolation. The shelf life must be set at the period for which the product demonstrably meets all acceptance criteria in actual long-term data.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Registration data requirements</h4>
+      <p>Minimum three commercial-scale batches for registration stability. Minimum 12 months long-term data at submission. Full 6-month accelerated data at submission. Photostability study per ICH Q1B. All data from validated analytical methods. Statistical analysis per ICH Q1E. Stability report with all raw data and a complete data summary.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>ICH Q1A(R2) - core stability requirements. ICH Q1B - photostability. ICH Q1E - shelf life determination. ICH Q5C - biologics stability. 21 CFR 211.166 - US stability requirements. EU GMP Chapter 6 Section 6.27 - ongoing stability programme. USP 1150 - pharmaceutical stability. WHO stability guidelines for tropical zone products.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Stability Study Design Map &nbsp;&#183;&nbsp;
+    Built from ICH Q1A(R2), ICH Q1B, ICH Q1E, ICH Q5C, 21 CFR 211.166, EU GMP Chapter 6 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
