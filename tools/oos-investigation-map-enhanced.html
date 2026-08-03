@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OOS Investigation Procedural Map  -  Enhanced | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0D2B3E;
+    --navy2:   #112d41;
+    --teal:    #00C2A8;
+    --teal2:   #00A890;
+    --gold:    #F5A623;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --amber:   #F97316;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --phase1:  #0E3A52;
+    --phase2:  #0E3526;
+    --p1acc:   #38BDF8;
+    --p2acc:   #4ADE80;
+    --warn-bg: #1A0808;
+    --warn-bdr:#DC2626;
+    --case-bg: #0A1A10;
+    --case-bdr:#16A34A;
+    --reg-bg:  #0A1020;
+    --reg-bdr: #3B82F6;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  /* TOP SUBSCRIBER BANNER */
+  .sub-banner{
+    background:linear-gradient(90deg,rgba(0,194,168,0.15),rgba(0,194,168,0.05));
+    border-bottom:1px solid rgba(0,194,168,0.3);
+    padding:8px 40px;
+    display:flex;align-items:center;justify-content:space-between;
+    font-size:0.75rem;
+  }
+  .sub-banner-left{display:flex;align-items:center;gap:10px;color:var(--teal)}
+  .sub-badge{background:var(--teal);color:var(--navy);font-weight:800;font-size:0.68rem;padding:2px 10px;border-radius:10px;letter-spacing:0.5px}
+  .sub-banner-right{font-size:0.7rem;color:var(--mid);font-family:var(--mono)}
+
+  /* HEADER */
+  .header{
+    background:linear-gradient(135deg,#091E2E 0%,#0D2B3E 60%,#0A3040 100%);
+    border-bottom:2px solid var(--teal);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--teal);font-style:normal}
+  .enhanced-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.35);border-radius:20px;padding:3px 12px;font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:8px;letter-spacing:0.5px}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(0,194,168,0.12);border:1px solid rgba(0,194,168,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--teal);letter-spacing:0.5px;text-align:right;line-height:1.6}
+
+  /* MODE TOGGLE */
+  .mode-bar{
+    background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.07);
+    padding:10px 40px;display:flex;align-items:center;gap:16px;
+  }
+  .mode-label{font-size:0.75rem;color:var(--mid)}
+  .mode-btn{
+    padding:5px 16px;border-radius:20px;font-size:0.75rem;font-weight:700;
+    cursor:pointer;border:1.5px solid;transition:all 0.2s;
+  }
+  .mode-btn.active{background:var(--teal);color:var(--navy);border-color:var(--teal)}
+  .mode-btn.inactive{background:transparent;color:var(--mid);border-color:rgba(255,255,255,0.15)}
+  .mode-btn:hover{border-color:var(--teal);color:var(--teal)}
+  .mode-hint{font-size:0.72rem;color:var(--mid);font-style:italic;margin-left:auto}
+
+  /* LEGEND */
+  .legend{display:flex;gap:20px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:7px;font-size:0.75rem;color:var(--mid)}
+  .ls{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+
+  /* MAIN WRAP */
+  .map-wrap{padding:32px 40px 40px;display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    grid-column:1/-1;
+    background:linear-gradient(135deg,rgba(0,194,168,0.08),rgba(0,194,168,0.03));
+    border:1.5px solid rgba(0,194,168,0.25);border-radius:12px;padding:18px 24px;
+    display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:flex-start;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.95rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.78rem;color:var(--light);line-height:1.5;margin-bottom:6px}
+  .trigger-text .reg{font-size:0.7rem;font-family:var(--mono);color:var(--teal)}
+
+  /* REGULATORY TEXT PANEL */
+  .reg-text{
+    background:var(--reg-bg);border:1px solid var(--reg-bdr);border-radius:6px;
+    padding:8px 12px;margin-top:8px;
+  }
+  .reg-text .rt-label{font-size:0.67rem;font-weight:700;color:#60A5FA;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+  .reg-text p{font-size:0.71rem;color:#BFDBFE;line-height:1.5;font-style:italic}
+
+  /* WARNING LETTER CASE */
+  .wl-case{
+    background:var(--warn-bg);border:1px solid var(--warn-bdr);border-radius:6px;
+    padding:8px 12px;margin-top:8px;
+  }
+  .wl-case .wl-label{font-size:0.67rem;font-weight:700;color:#FC8181;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;display:flex;align-items:center;gap:5px}
+  .wl-case p{font-size:0.71rem;color:#FECACA;line-height:1.5}
+
+  /* BEST PRACTICE */
+  .best-practice{
+    background:var(--case-bg);border:1px solid var(--case-bdr);border-radius:6px;
+    padding:8px 12px;margin-top:8px;
+  }
+  .best-practice .bp-label{font-size:0.67rem;font-weight:700;color:#86EFAC;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+  .best-practice p{font-size:0.71rem;color:#BBF7D0;line-height:1.5}
+
+  /* PHASE COLUMNS */
+  .phase-col{border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.08)}
+  .phase-header{padding:14px 20px;font-size:0.78rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between}
+  .phase1 .phase-header{background:#083248;color:var(--p1acc);border-bottom:2px solid var(--p1acc)}
+  .phase2 .phase-header{background:#082820;color:var(--p2acc);border-bottom:2px solid var(--p2acc)}
+  .phase-body{padding:20px;display:flex;flex-direction:column;gap:0}
+  .phase1 .phase-body{background:var(--phase1)}
+  .phase2 .phase-body{background:var(--phase2)}
+
+  /* NODES */
+  .node{border-radius:8px;padding:12px 14px;position:relative}
+  .node-start{background:var(--teal);color:var(--navy);font-weight:800;font-size:0.9rem;text-align:center;border-radius:24px;padding:10px 20px;box-shadow:0 0 20px rgba(0,194,168,0.3)}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1)}
+  .phase1 .node-action{border-left:3px solid var(--p1acc)}
+  .phase2 .node-action{border-left:3px solid var(--p2acc)}
+  .node-decision{background:rgba(245,166,35,0.08);border:1.5px solid var(--gold);border-radius:8px;text-align:center}
+  .node-end-release{background:rgba(34,197,94,0.15);border:2px solid var(--green);border-radius:24px;text-align:center;font-weight:700;color:var(--green);padding:10px}
+  .node-end-reject{background:rgba(229,62,62,0.15);border:2px solid var(--red);border-radius:24px;text-align:center;font-weight:700;color:var(--red);padding:10px}
+  .node-capa{background:rgba(139,92,246,0.12);border:1.5px solid rgba(139,92,246,0.4);border-radius:8px}
+
+  /* KNOWLEDGE CHECK MODE */
+  .kc-overlay{display:none;position:absolute;inset:0;border-radius:8px;background:rgba(13,43,62,0.95);backdrop-filter:blur(2px);border:1.5px solid var(--teal);z-index:10;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:8px}
+  .kc-overlay span{font-size:0.75rem;font-weight:700;color:var(--teal)}
+  .kc-mode .node-action{position:relative}
+  .kc-mode .node-action .kc-overlay{display:flex}
+  .kc-mode .node-action.revealed .kc-overlay{display:none}
+
+  .node-title{font-size:0.8rem;font-weight:700;color:var(--white);margin-bottom:4px;display:flex;align-items:center;gap:6px}
+  .node-title .step-num{background:rgba(0,194,168,0.2);color:var(--teal);border-radius:50%;width:18px;height:18px;font-size:0.65rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .phase2 .node-title .step-num{background:rgba(74,222,128,0.2);color:var(--p2acc)}
+  .node-body{font-size:0.73rem;color:var(--light);line-height:1.5}
+  .node-reg{font-size:0.67rem;font-family:var(--mono);color:var(--mid);margin-top:4px}
+  .decision-q{font-size:0.8rem;font-weight:700;color:var(--gold);margin-bottom:6px}
+  .decision-opts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+  .opt-yes{color:var(--green);font-size:0.72rem;font-weight:700;font-family:var(--mono)}
+  .opt-no{color:var(--red);font-size:0.72rem;font-weight:700;font-family:var(--mono)}
+  .arrow{text-align:center;font-size:0.9rem;color:var(--mid);padding:3px 0;line-height:1;flex-shrink:0}
+  .arrow-p1{color:var(--p1acc)}
+  .arrow-p2{color:var(--p2acc)}
+  .arrow-gold{color:var(--gold)}
+
+  /* SCOPE EXTENSION */
+  .scope-box{grid-column:1/-1;background:rgba(245,166,35,0.07);border:1.5px solid rgba(245,166,35,0.25);border-radius:12px;padding:16px 24px}
+  .scope-box h3{font-size:0.82rem;font-weight:700;color:var(--gold);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+  .scope-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .scope-item{font-size:0.73rem;color:var(--light);line-height:1.5}
+  .scope-item strong{color:var(--white);display:block;margin-bottom:2px;font-size:0.72rem}
+
+  /* RULES */
+  .rules-box{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--teal);border-radius:8px;padding:12px 14px}
+  .rule-card h4{font-size:0.72rem;font-weight:700;color:var(--teal);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.71rem;color:var(--light);line-height:1.5}
+  .rule-card.red-top{border-top-color:var(--red)}
+  .rule-card.red-top h4{color:#FC8181}
+
+  /* SITE ANNOTATION */
+  .annotation-section{grid-column:1/-1;background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 24px}
+  .annotation-section h3{font-size:0.82rem;font-weight:700;color:var(--white);margin-bottom:12px}
+  .annotation-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotation-field{display:flex;flex-direction:column;gap:4px}
+  .annotation-field label{font-size:0.7rem;font-weight:600;color:var(--mid);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.5px}
+  .annotation-field input,.annotation-field textarea{
+    background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
+    border-radius:6px;padding:7px 10px;font-size:0.78rem;color:var(--white);
+    font-family:var(--font);resize:vertical;
+  }
+  .annotation-field input:focus,.annotation-field textarea:focus{outline:none;border-color:var(--teal)}
+  .annotation-field textarea{min-height:60px}
+  .annotation-note{font-size:0.7rem;color:var(--mid);margin-top:8px;font-style:italic}
+
+  /* PRINT */
+  @media print {
+    .sub-banner,.mode-bar{display:none}
+    .annotation-section{border:1px solid #ccc}
+    body{background:white;color:#111}
+    .header{background:#0D2B3E;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .phase1 .phase-body{background:#0E3A52;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .phase2 .phase-body{background:#0E3526;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .wl-case,.reg-text,.best-practice{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .kc-overlay{display:none!important}
+  }
+
+  /* FOOTER */
+  .footer-bar{border-top:1px solid rgba(255,255,255,0.08);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;font-size:0.7rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer-bar a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(0,194,168,0.1);border:1px solid rgba(0,194,168,0.2);border-radius:4px;padding:2px 8px;font-family:var(--mono);font-size:0.66rem;color:var(--teal)}
+</style>
+</head>
+<body>
+
+<!-- SUBSCRIBER BANNER -->
+<div class="sub-banner">
+  <div class="sub-banner-left">
+    <div class="sub-badge">SUBSCRIBER CONTENT</div>
+    <span>OOS Investigation Procedural Map  -  Enhanced Edition with regulatory text, warning letter cases and site annotation</span>
+  </div>
+  <div class="sub-banner-right">learn.gmpify.com &nbsp;|&nbsp; GMPify Training &nbsp;|&nbsp; Subscriber exclusive</div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <div class="enhanced-tag">&#11088; Enhanced Subscriber Edition</div>
+    <h1>OOS Investigation <em>Procedural Map</em></h1>
+    <div class="header-sub">21 CFR 211.192 &nbsp;|&nbsp; FDA OOS Guidance 2022 &nbsp;|&nbsp; ICH Q10 &nbsp;|&nbsp; Barr Laboratories &nbsp;|&nbsp; Two-Phase Framework &nbsp;|&nbsp; Warning Letter Cases &nbsp;|&nbsp; Regulatory Text</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.165(f)<br>
+      21 CFR 211.160 &nbsp;·&nbsp; 21 CFR 211.194<br>
+      FDA OOS Guidance October 2022
+    </div>
+    <div style="display:flex;gap:8px">
+      <div style="background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.3);border-radius:20px;padding:4px 12px;font-size:0.72rem;font-weight:600;color:var(--gold);font-family:var(--mono)">Phase I: 3-10 days</div>
+      <div style="background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.3);border-radius:20px;padding:4px 12px;font-size:0.72rem;font-weight:600;color:var(--gold);font-family:var(--mono)">Total: max 45 days</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODE TOGGLE -->
+<div class="mode-bar">
+  <span class="mode-label">View mode:</span>
+  <button class="mode-btn active" id="btn-reference" onclick="setMode('reference')">Reference Map</button>
+  <button class="mode-btn inactive" id="btn-assessment" onclick="setMode('assessment')">Self-Assessment Mode</button>
+  <span class="mode-hint" id="mode-hint">Click any hidden step to reveal it</span>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:var(--teal)"></div>Start / End point</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(14,58,82,0.9);border-left:3px solid #38BDF8"></div>Phase I action step</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(14,53,38,0.9);border-left:3px solid #4ADE80"></div>Phase II action step</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(245,166,35,0.2);border:2px solid #F5A623"></div>Decision point</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(30,8,8,0.9);border:1px solid #DC2626"></div>Warning letter case</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(10,26,16,0.9);border:1px solid #16A34A"></div>Best practice insight</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(10,16,32,0.9);border:1px solid #3B82F6"></div>Regulatory text</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.7rem;color:var(--teal)">GMPify Enhanced Subscriber Edition</div>
+</div>
+
+<div class="map-wrap" id="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#9879;</div>
+    <div class="trigger-text">
+      <h3>OOS Result Obtained - Investigation Triggered Immediately Under 21 CFR 211.192</h3>
+      <p>Any analytical result falling outside established acceptance criteria triggers mandatory investigation. This includes in-process tests, raw material testing and finished product release testing. No retesting may occur before investigation initiation. The two-phase framework below reflects FDA OOS Guidance October 2022, the Barr Laboratories court decision and current FDA inspection expectations.</p>
+      <div class="reg-text">
+        <div class="rt-label">21 CFR 211.192 - exact regulatory text</div>
+        <p>"All drug product production and control records, including those for packaging and labeling, shall be reviewed and approved by the quality control unit to determine compliance with all established, approved written procedures before a batch is released or distributed. Any unexplained discrepancy or the failure of a batch or any of its components to meet any of its specifications shall be thoroughly investigated, whether or not the batch has already been distributed."</p>
+      </div>
+      <div class="wl-case">
+        <div class="wl-label">&#9888; Warning letter case - testing into compliance</div>
+        <p>Apotex 2025 warning letter: leak tests on critical aseptic equipment were repeated until passing results were obtained over 19 months. FDA cited this as testing into compliance - performing tests until a passing result is obtained is not an investigation. Every failing result is a signal requiring investigation, not a problem to be managed by repetition.</p>
+      </div>
+      <div class="reg">21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.165(f) &nbsp;·&nbsp; FDA OOS Guidance October 2022 &nbsp;·&nbsp; Barr Laboratories Ltd v. Thompson, 2003</div>
+    </div>
+  </div>
+
+  <!-- PHASE I -->
+  <div class="phase-col phase1">
+    <div class="phase-header">
+      <span>Phase I - Laboratory Investigation</span>
+      <span style="font-size:0.68rem;font-weight:500;opacity:0.7">Complete within 3-10 business days</span>
+    </div>
+    <div class="phase-body">
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">1</span>Notify supervisor and QA unit immediately</div>
+        <div class="node-body">Analyst reports OOS result to laboratory supervisor before any further action. QA unit notified. Original result preserved in raw data with no alterations. Documentation timestamped at point of discovery. The clock for Phase I starts at this point.</div>
+        <div class="reg-text">
+          <div class="rt-label">FDA OOS Guidance 2022 - Section IV.A</div>
+          <p>"The laboratory investigation should begin as soon as a suspect result is obtained. The laboratory supervisor should be notified and should be involved in any assessment of possible causes."</p>
+        </div>
+        <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.194</div>
+      </div>
+      <div class="arrow arrow-p1">&#8595;</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">2</span>Preserve all original materials and raw data</div>
+        <div class="node-body">Retain the original test sample, reference standards, reagents, solutions and all instrument raw data files with audit trail intact. Do not discard any material until the investigation is complete and QA has approved the disposition decision.</div>
+        <div class="best-practice">
+          <div class="bp-label">&#10003; Best practice - data integrity</div>
+          <p>Print or electronically export instrument raw data files at this point and attach to the investigation record. If instrument access is later lost the raw data is already secured. FDA data integrity inspections look for gaps between electronic raw data and what appears in investigation records.</p>
+        </div>
+        <div class="node-reg">21 CFR 211.194 &nbsp;·&nbsp; ALCOA+ data integrity</div>
+      </div>
+      <div class="arrow arrow-p1">&#8595;</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">3</span>Review original analytical procedure and execution</div>
+        <div class="node-body">Laboratory supervisor reviews: calculation errors, instrument calibration status at time of analysis, standard preparation and certificate expiry, reagent expiry and preparation records, column condition and lot number, sample preparation technique against the validated method, environmental conditions during analysis and analyst training records for this specific method.</div>
+        <div class="wl-case">
+          <div class="wl-label">&#9888; Warning letter case - analyst training gaps</div>
+          <p>Multiple 2024 and 2025 warning letters cited OOS investigations where the analyst who performed the original analysis was not confirmed as trained on the validated method. An OOS result from an untrained analyst may have a valid assignable cause - but this must be documented with evidence, not assumed. Training records must be checked at Step 3.</p>
+        </div>
+        <div class="node-reg">21 CFR 211.160(b) &nbsp;·&nbsp; FDA OOS Guidance 2022 Section IV.A</div>
+      </div>
+      <div class="arrow arrow-p1">&#8595;</div>
+
+      <div class="node node-decision">
+        <div class="decision-q">Is an assignable laboratory cause identified with objective evidence?</div>
+        <div class="node-body" style="font-size:0.72rem;color:var(--light);margin-top:4px">"Analyst error" alone is NOT sufficient. Cause must be specific, documented and supported by objective evidence.</div>
+        <div class="reg-text" style="margin-top:6px">
+          <div class="rt-label">FDA OOS Guidance 2022 - what counts as assignable cause</div>
+          <p>"An assignable cause is one that can be identified and documented. Examples include: wrong dilution factor confirmed by pipette calibration records; expired reference standard confirmed by COA date; equipment malfunction confirmed by calibration records or maintenance log."</p>
+        </div>
+        <div class="decision-opts">
+          <span class="opt-yes">YES &#8594; Step 4</span>
+          <span class="opt-no">NO &#8594; Step 5 (Phase II)</span>
+        </div>
+      </div>
+      <div class="arrow arrow-p1">&#8595; YES - assignable cause identified</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">4</span>Document laboratory error with objective evidence</div>
+        <div class="node-body">Assignable cause documented with specific objective evidence - not vague attribution. Supervisor and QA must both approve the invalidation before any retest. The Barr Laboratories decision established that laboratory error can invalidate an OOS result only when it is identified by a specific, documented, scientifically-valid cause.</div>
+        <div class="wl-case">
+          <div class="wl-label">&#9888; Warning letter case - generic error attribution</div>
+          <p>2023 FDA warning letter to a generic manufacturer cited invalidation of 14 OOS results over 18 months attributed to "analyst error" without specific documented evidence for each invalidation. FDA found the pattern of invalidations without specific documented causes to be evidence of a systematic data integrity problem rather than legitimate laboratory error investigation.</p>
+        </div>
+        <div class="reg-text">
+          <div class="rt-label">Barr Laboratories Ltd v. Thompson (2003) - key principle</div>
+          <p>"Laboratory error may only be used to invalidate a test result if there is a scientifically documented reason to attribute the failure to error. A pattern of invalidations without documented specific causes may constitute evidence of CGMP violations."</p>
+        </div>
+        <div class="node-reg">FDA OOS Guidance 2022 Section IV.A.2 &nbsp;·&nbsp; Barr Laboratories precedent</div>
+      </div>
+      <div class="arrow arrow-p1">&#8595;</div>
+
+      <div class="node node-decision">
+        <div class="decision-q">QA unit approves laboratory error invalidation?</div>
+        <div class="decision-opts">
+          <span class="opt-yes">YES &#8594; Single retest</span>
+          <span class="opt-no">NO &#8594; Phase II</span>
+        </div>
+      </div>
+      <div class="arrow arrow-p1">&#8595; YES - QA approved</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">4a</span>Conduct single retest - fresh sample preparation</div>
+        <div class="node-body">One retest by a second qualified analyst. Fresh sample preparation. Same validated method. If retest is also OOS proceed to Phase II regardless of the laboratory error conclusion. Retesting to obtain a passing result - averaging, discarding the original or selecting only passing results - is a critical GMP violation.</div>
+        <div class="wl-case">
+          <div class="wl-label">&#9888; Warning letter case - averaging passing and failing results</div>
+          <p>2024 warning letter cited a manufacturer who averaged initial OOS results with subsequent passing retest results to produce a passing average. FDA cited this as testing into compliance. All results - passing and failing - must be reported individually. The practice of averaging to pass is explicitly prohibited by the Barr Laboratories decision and FDA OOS Guidance.</p>
+        </div>
+        <div class="node-reg">FDA OOS Guidance 2022 Section V &nbsp;·&nbsp; 21 CFR 211.192</div>
+      </div>
+      <div class="arrow arrow-p1">&#8595;</div>
+
+      <div class="node node-decision">
+        <div class="decision-q">Retest result within specification?</div>
+        <div class="decision-opts">
+          <span class="opt-yes">YES &#8594; Document and proceed to disposition</span>
+          <span class="opt-no">NO &#8594; Phase II immediately</span>
+        </div>
+      </div>
+      <div class="arrow arrow-p1">&#8595; NO assignable cause found</div>
+
+      <div class="node" style="background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.25);border-radius:8px;padding:10px 14px">
+        <div class="node-title" style="color:var(--p1acc)"><span class="step-num">5</span>No laboratory cause found - escalate to Phase II</div>
+        <div class="node-body">Phase I complete. No assignable laboratory error identified with objective evidence. Manufacturing investigation required. QA unit formally opens Phase II. Batch remains on quarantine hold pending Phase II completion.</div>
+        <div class="best-practice">
+          <div class="bp-label">&#10003; Best practice - Phase I documentation</div>
+          <p>Phase I report should be completed before Phase II begins. The report documents every element reviewed, the conclusion for each, and the reason no assignable laboratory cause was identified. A well-documented Phase I report that concludes no laboratory cause was found is just as important as one that identifies an error. It demonstrates rigour.</p>
+        </div>
+        <div class="node-reg">FDA OOS Guidance 2022 Section IV.B &nbsp;·&nbsp; 21 CFR 211.192</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE II -->
+  <div class="phase-col phase2">
+    <div class="phase-header">
+      <span>Phase II - Full Manufacturing Investigation</span>
+      <span style="font-size:0.68rem;font-weight:500;opacity:0.7">Total investigation max 45 days</span>
+    </div>
+    <div class="phase-body">
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">6</span>QA formally opens Phase II investigation</div>
+        <div class="node-body">Quality unit opens formal investigation record. Assigns investigation lead. Batch placed on quarantine hold. Manufacturing batch record retrieved. All relevant personnel identified. Investigation timeline documented from Phase I conclusion date. The 45-day total investigation clock includes Phase I time already elapsed.</div>
+        <div class="reg-text">
+          <div class="rt-label">21 CFR 211.192 - investigation scope</div>
+          <p>"The investigation shall extend to other batches of the same drug product and other drug products that may have been associated with the specific failure or discrepancy."</p>
+        </div>
+        <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; ICH Q10 Section 3.2</div>
+      </div>
+      <div class="arrow arrow-p2">&#8595;</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">7</span>Review complete batch production records</div>
+        <div class="node-body">Complete batch record review covering: raw material COAs and test results, equipment calibration and cleaning records, in-process test results, deviation records, environmental monitoring data for the manufacturing period, personnel training records and any batch-specific observations or events noted during manufacture.</div>
+        <div class="best-practice">
+          <div class="bp-label">&#10003; Best practice - systematic record review</div>
+          <p>Use a structured review checklist with a sign-off field for each element reviewed. A checklist produces a documented audit trail showing every element was assessed. An investigator reviewing an open-narrative investigation report cannot readily confirm which records were actually reviewed versus which were assumed to be acceptable.</p>
+        </div>
+        <div class="node-reg">21 CFR 211.188 &nbsp;·&nbsp; 21 CFR 211.192</div>
+      </div>
+      <div class="arrow arrow-p2">&#8595;</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">8</span>Conduct root cause investigation with documented methodology</div>
+        <div class="node-body">Apply documented RCA methodology: 5 Why for single-factor events, Ishikawa fishbone for complex multi-factor events. Human error is NOT an acceptable root cause - investigate why the system allowed the error to occur. Document the full analytical pathway from observed event to identified root cause.</div>
+        <div class="wl-case">
+          <div class="wl-label">&#9888; Warning letter case - human error root cause</div>
+          <p>2025 warning letter cited a manufacturer whose OOS investigation programme assigned "operator error" or "analyst error" as the root cause in 34 of 47 OOS investigations over three years. FDA found this pattern demonstrated a systematic failure to identify true root causes. When the same OOS type recurred with different operators after retraining the original root cause assignment was demonstrated to have been incorrect.</p>
+        </div>
+        <div class="reg-text">
+          <div class="rt-label">ICH Q9(R1) 2023 - subjectivity reduction in RCA</div>
+          <p>"The use of structured risk management tools reduces reliance on individual judgement and improves consistency and reproducibility of investigations. The analytical pathway from observed event to root cause should be documented to allow independent verification of the conclusion."</p>
+        </div>
+        <div class="node-reg">ICH Q9(R1) 2023 &nbsp;·&nbsp; FDA OOS Guidance Section IV.B</div>
+      </div>
+      <div class="arrow arrow-p2">&#8595;</div>
+
+      <div class="node node-decision">
+        <div class="decision-q">Is a manufacturing root cause identified with objective evidence?</div>
+        <div class="decision-opts">
+          <span class="opt-yes">YES &#8594; Step 9</span>
+          <span class="opt-no">NO &#8594; Extended investigation</span>
+        </div>
+      </div>
+      <div class="arrow arrow-p2">&#8595;</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">9</span>Additional testing if scientifically justified</div>
+        <div class="node-body">If additional testing is needed to characterise the failure the number of additional tests must be pre-defined before testing begins. All results - passing and failing - must be reported. Averaging passing results while discarding failing results is prohibited. The protocol for additional testing must be documented and QA-approved before any additional samples are tested.</div>
+        <div class="reg-text">
+          <div class="rt-label">FDA OOS Guidance 2022 - Section V.B</div>
+          <p>"Any additional testing must have a pre-defined rationale and protocol. The number of tests to be conducted should be specified in advance. All test results, including those that are out of specification, must be reported and included in the investigation."</p>
+        </div>
+        <div class="node-reg">FDA OOS Guidance 2022 Section V.B &nbsp;·&nbsp; Barr Laboratories decision</div>
+      </div>
+      <div class="arrow arrow-p2">&#8595;</div>
+
+      <div class="node node-capa">
+        <div class="node-title" style="color:#A78BFA"><span class="step-num" style="background:rgba(139,92,246,0.2);color:#A78BFA">10</span>Implement CAPA with pre-defined effectiveness criteria</div>
+        <div class="node-body">CAPA must address the identified root cause, not the symptom. Effectiveness criterion defined before implementation. Scheduled effectiveness check with measurable threshold. Scope extension to other batches documented per 21 CFR 211.192.</div>
+        <div class="best-practice">
+          <div class="bp-label">&#10003; Best practice - VOE design for OOS CAPAs</div>
+          <p>For OOS-related CAPAs the most meaningful effectiveness criterion is zero recurrences of the same OOS type in the same product, process step and analytical method within a defined monitoring period - typically 90 days. A retraining CAPA that defines its effectiveness criterion as training records completed misses the point. The measure of effectiveness is whether the OOS recurs, not whether training was documented.</p>
+        </div>
+        <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; ICH Q10 Section 3.2.2 &nbsp;·&nbsp; FDA CAPA guidance</div>
+      </div>
+      <div class="arrow arrow-p2">&#8595;</div>
+
+      <div class="node node-action">
+        <div class="node-title"><span class="step-num">11</span>QA review and batch disposition decision</div>
+        <div class="node-body">Quality unit reviews the complete investigation package. QA approves or rejects the investigation before batch disposition. No batch may be released or rejected before investigation completion and QA approval.</div>
+        <div class="wl-case">
+          <div class="wl-label">&#9888; Warning letter case - premature disposition</div>
+          <p>2024 warning letter cited a manufacturer who released batches before OOS investigations were completed, documenting the release as provisional pending investigation conclusion. FDA found no regulatory basis for provisional release. A batch cannot be released before the investigation is complete. The quality unit approval of the investigation is a prerequisite for batch disposition, not a parallel activity.</p>
+        </div>
+        <div class="node-reg">21 CFR 211.165(f) &nbsp;·&nbsp; 21 CFR 211.192</div>
+      </div>
+      <div class="arrow arrow-p2">&#8595;</div>
+
+      <div class="node node-decision">
+        <div class="decision-q">Does investigation support batch release?</div>
+        <div class="decision-opts">
+          <span class="opt-yes">YES &#8594; Release</span>
+          <span class="opt-no">NO &#8594; Reject</span>
+        </div>
+      </div>
+      <div class="arrow" style="display:flex;gap:40px;justify-content:center">
+        <span class="opt-yes">&#8601; YES</span>
+        <span class="opt-no">&#8600; NO</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px">
+        <div class="node node-end-release">&#10003; BATCH RELEASED<br><span style="font-size:0.68rem;font-weight:400">Full documentation retained<br>CAPA monitoring active</span></div>
+        <div class="node node-end-reject">&#10007; BATCH REJECTED<br><span style="font-size:0.68rem;font-weight:400">Quarantine confirmed<br>Scope extension assessed</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCOPE EXTENSION -->
+  <div class="scope-box">
+    <h3>&#9888; Mandatory Scope Extension Under 21 CFR 211.192</h3>
+    <div class="scope-grid">
+      <div class="scope-item">
+        <strong>Other batches of the same product</strong>
+        Every other batch of the same drug product manufactured in the same period or using the same materials must be assessed. The scope extension conclusion must be documented even when no other batches are affected - the absence of impact is itself a required documented conclusion.
+      </div>
+      <div class="scope-item">
+        <strong>Other products associated with the same failure</strong>
+        Other drug products associated with the same specific failure or discrepancy must be assessed. Equipment sharing, raw material supplier commonality and process step commonality are the primary assessment criteria for determining which other products require scope extension review.
+      </div>
+      <div class="scope-item">
+        <strong>Distributed batches</strong>
+        21 CFR 211.192 requires investigation whether or not the batch has already been distributed. If a distributed batch is associated with an OOS failure a field alert report or recall assessment may be required. The quality unit must assess distributed batch implications regardless of the commercial consequences of the conclusion.
+      </div>
+    </div>
+    <div class="reg-text" style="margin-top:12px">
+      <div class="rt-label">21 CFR 211.192 - scope extension requirement</div>
+      <p>"The investigation shall extend to other batches of the same drug product and other drug products that may have been associated with the specific failure or discrepancy."</p>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="rules-box">
+    <div class="rule-card red-top">
+      <h4>Never do this</h4>
+      <p>Retest until a passing result is obtained then report only the passing result. Average passing and failing results. Attribute root cause to analyst error without specific objective documented evidence. Begin retesting before investigation is initiated. Release a batch before the investigation is QA-approved and complete.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Phase I timelines</h4>
+      <p>Phase I must be completed within 3 to 10 business days. This is an FDA expectation from OOS Guidance 2022 - not a hard statutory deadline but a standard against which investigations are assessed. A Phase I that takes 30 days to conclude no laboratory cause is not compliant regardless of the conclusion. Document the reasons for any Phase I exceeding 10 business days.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Documentation standards</h4>
+      <p>All raw data preserved with complete audit trail. Every decision point documented with dated rationale. All test results reported individually - passing and failing. Timestamps contemporaneous at each stage. QA approval documented at each phase transition. The investigation record must be self-contained - a reviewer should be able to follow every decision from the raw data without needing to ask the investigator for clarification.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key enforcement reference</h4>
+      <p>21 CFR 211.192 appeared 523 times in FDA warning letters FY2017 to FY2021 - consistently in the top five cited regulations. The most common specific citations: failure to extend investigation to other batches; inadequate investigation before retesting; failure to investigate discrepancies in distributed batches; and generic root cause attributions without documented evidence.</p>
+    </div>
+  </div>
+
+  <!-- SITE ANNOTATION -->
+  <div class="annotation-section">
+    <h3>Site-Specific Annotation  -  Personalise This Map for Your Quality System</h3>
+    <div class="annotation-grid">
+      <div class="annotation-field">
+        <label>Site / Facility Name</label>
+        <input type="text" placeholder="e.g. Acme Pharma Ltd - Dublin Manufacturing Site">
+      </div>
+      <div class="annotation-field">
+        <label>OOS Investigation SOP Reference</label>
+        <input type="text" placeholder="e.g. SOP-QA-0042 Rev 3">
+      </div>
+      <div class="annotation-field">
+        <label>Phase I Responsible Role</label>
+        <input type="text" placeholder="e.g. QC Laboratory Supervisor">
+      </div>
+      <div class="annotation-field">
+        <label>Phase II Responsible Role</label>
+        <input type="text" placeholder="e.g. QA Manager or Investigation Lead">
+      </div>
+      <div class="annotation-field">
+        <label>Phase I Maximum Timeline at This Site</label>
+        <input type="text" placeholder="e.g. 5 business days per site SOP">
+      </div>
+      <div class="annotation-field">
+        <label>LIMS / Quality System Reference</label>
+        <input type="text" placeholder="e.g. Veeva Vault QualityDocs - OOS module">
+      </div>
+      <div class="annotation-field" style="grid-column:1/-1">
+        <label>Site-Specific Notes or Process Deviations from Standard Framework</label>
+        <textarea placeholder="e.g. All Phase II investigations require Regulatory Affairs notification within 48 hours for products in active regulatory submissions. Phase I extensions beyond 10 days require written QA Director approval."></textarea>
+      </div>
+    </div>
+    <div class="annotation-note">Annotations are stored in your browser session only. To save permanently: complete annotations then use your browser Print function (Ctrl+P or Cmd+P) to save as PDF with your site-specific information included.</div>
+  </div>
+
+</div>
+
+<div class="footer-bar">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;·&nbsp;
+    OOS Investigation Procedural Map - Enhanced Subscriber Edition &nbsp;·&nbsp;
+    Built from 21 CFR 211.192, FDA OOS Guidance October 2022, ICH Q10, Barr Laboratories decision, FDA warning letter database 2020-2026 &nbsp;·&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="footer-badge">Subscriber Exclusive</div>
+    <div class="footer-badge">Enhanced Edition</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+<script>
+function setMode(mode) {
+  const wrap = document.getElementById('map-wrap');
+  const btnRef = document.getElementById('btn-reference');
+  const btnAss = document.getElementById('btn-assessment');
+  const hint = document.getElementById('mode-hint');
+
+  if (mode === 'assessment') {
+    wrap.classList.add('kc-mode');
+    btnRef.classList.remove('active'); btnRef.classList.add('inactive');
+    btnAss.classList.remove('inactive'); btnAss.classList.add('active');
+    hint.style.display = 'block';
+    // Add overlays to all action nodes that don't already have them
+    document.querySelectorAll('.phase-body .node-action').forEach(node => {
+      if (!node.querySelector('.kc-overlay')) {
+        const overlay = document.createElement('div');
+        overlay.className = 'kc-overlay';
+        overlay.innerHTML = '<span>Click to reveal this step</span>';
+        overlay.onclick = function(e) {
+          e.stopPropagation();
+          node.classList.add('revealed');
+        };
+        node.style.position = 'relative';
+        node.appendChild(overlay);
+      }
+      node.classList.remove('revealed');
+    });
+  } else {
+    wrap.classList.remove('kc-mode');
+    btnAss.classList.remove('active'); btnAss.classList.add('inactive');
+    btnRef.classList.remove('inactive'); btnRef.classList.add('active');
+    hint.style.display = 'none';
+    document.querySelectorAll('.node-action').forEach(n => n.classList.remove('revealed'));
+  }
+}
+// Hide hint initially
+document.getElementById('mode-hint').style.display = 'none';
+</script>
+</body>
+</html>
