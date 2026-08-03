@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAPA Lifecycle Map  -  Enhanced | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0D1E2E;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --violet:  #8B5CF6;
+    --violet2: #A78BFA;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #0E2840;
+    --c2:      #1A1040;
+    --c3:      #0E3020;
+    --c4:      #2A1008;
+    --c1acc:   #38BDF8;
+    --c2acc:   #A78BFA;
+    --c3acc:   #4ADE80;
+    --c4acc:   #FB923C;
+    --warn-bg: #1A0808;
+    --warn-bdr:#DC2626;
+    --case-bg: #0A1A10;
+    --case-bdr:#16A34A;
+    --reg-bg:  #0A1020;
+    --reg-bdr: #3B82F6;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  /* SUBSCRIBER BANNER */
+  .sub-banner{background:linear-gradient(90deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05));border-bottom:1px solid rgba(139,92,246,0.3);padding:8px 40px;display:flex;align-items:center;justify-content:space-between;font-size:0.75rem}
+  .sub-banner-left{display:flex;align-items:center;gap:10px;color:var(--violet2)}
+  .sub-badge{background:var(--violet);color:var(--white);font-weight:800;font-size:0.68rem;padding:2px 10px;border-radius:10px;letter-spacing:0.5px}
+  .sub-banner-right{font-size:0.7rem;color:var(--mid);font-family:var(--mono)}
+
+  /* HEADER */
+  .header{background:linear-gradient(135deg,#080614 0%,#0D1E2E 60%,#0C0820 100%);border-bottom:2px solid var(--violet);padding:28px 40px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--violet2);font-style:normal}
+  .enhanced-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.35);border-radius:20px;padding:3px 12px;font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:8px;letter-spacing:0.5px}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--violet2);letter-spacing:0.5px;text-align:right;line-height:1.6}
+
+  /* MODE TOGGLE */
+  .mode-bar{background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 40px;display:flex;align-items:center;gap:16px}
+  .mode-label{font-size:0.75rem;color:var(--mid)}
+  .mode-btn{padding:5px 16px;border-radius:20px;font-size:0.75rem;font-weight:700;cursor:pointer;border:1.5px solid;transition:all 0.2s}
+  .mode-btn.active{background:var(--violet);color:var(--white);border-color:var(--violet)}
+  .mode-btn.inactive{background:transparent;color:var(--mid);border-color:rgba(255,255,255,0.15)}
+  .mode-hint{font-size:0.72rem;color:var(--mid);font-style:italic;margin-left:auto;display:none}
+
+  /* LEGEND */
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  /* MAIN WRAP */
+  .map-wrap{padding:28px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(139,92,246,0.03));border:1.5px solid rgba(139,92,246,0.25);border-radius:12px;padding:18px 24px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:flex-start;margin-bottom:24px}
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.95rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.78rem;color:var(--light);line-height:1.5;margin-bottom:6px}
+  .trigger-text .reg{font-size:0.7rem;font-family:var(--mono);color:var(--violet2)}
+  .trigger-sources{display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+  .src-chip{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);border-radius:10px;padding:2px 10px;font-size:0.68rem;font-family:var(--mono);color:var(--violet2);white-space:nowrap}
+
+  /* ENHANCED PANELS */
+  .reg-text{background:var(--reg-bg);border:1px solid var(--reg-bdr);border-radius:6px;padding:8px 12px;margin-top:8px}
+  .reg-text .rt-label{font-size:0.67rem;font-weight:700;color:#60A5FA;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+  .reg-text p{font-size:0.71rem;color:#BFDBFE;line-height:1.5;font-style:italic}
+  .wl-case{background:var(--warn-bg);border:1px solid var(--warn-bdr);border-radius:6px;padding:8px 12px;margin-top:8px}
+  .wl-case .wl-label{font-size:0.67rem;font-weight:700;color:#FC8181;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+  .wl-case p{font-size:0.71rem;color:#FECACA;line-height:1.5}
+  .best-practice{background:var(--case-bg);border:1px solid var(--case-bdr);border-radius:6px;padding:8px 12px;margin-top:8px}
+  .best-practice .bp-label{font-size:0.67rem;font-weight:700;color:#86EFAC;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+  .best-practice p{font-size:0.71rem;color:#BBF7D0;line-height:1.5}
+
+  /* FOUR PHASE GRID */
+  .phases-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;margin-bottom:24px}
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:12px 16px;font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;display:flex;flex-direction:column;gap:2px}
+  .phase-header .phase-num{font-size:0.65rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#082040;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#14083A;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#082818;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#280C04;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:16px;display:flex;flex-direction:column;gap:0}
+
+  /* NODES */
+  .node{border-radius:7px;padding:9px 11px;position:relative}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:7px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.09);border:1.5px solid rgba(229,62,62,0.35);border-radius:7px}
+  .node-title{font-size:0.74rem;font-weight:700;color:var(--white);margin-bottom:3px;display:flex;align-items:center;gap:5px}
+  .step-num{border-radius:50%;width:16px;height:16px;font-size:0.61rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(167,139,250,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(74,222,128,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(251,146,60,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.70rem;color:var(--light);line-height:1.48}
+  .node-reg{font-size:0.63rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.82rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.74rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+  .d-opts{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.67rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.67rem;font-weight:700;font-family:var(--mono)}
+
+  /* KNOWLEDGE CHECK OVERLAY */
+  .kc-overlay{display:none;position:absolute;inset:0;border-radius:7px;background:rgba(13,30,46,0.96);backdrop-filter:blur(2px);border:1.5px solid var(--violet);z-index:10;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:8px}
+  .kc-overlay span{font-size:0.75rem;font-weight:700;color:var(--violet2)}
+  .kc-mode .node-action{position:relative}
+  .kc-mode .node-action .kc-overlay{display:flex}
+  .kc-mode .node-action.revealed .kc-overlay{display:none}
+
+  /* BOTTOM SECTIONS */
+  .bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+
+  /* VOE BOX */
+  .voe-box{background:rgba(229,62,62,0.07);border:1.5px solid rgba(229,62,62,0.3);border-radius:10px;padding:18px 20px}
+  .voe-box h3{font-size:0.78rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .voe-steps{display:flex;flex-direction:column;gap:8px}
+  .voe-step{background:rgba(229,62,62,0.08);border:1px solid rgba(229,62,62,0.15);border-radius:6px;padding:8px 12px;font-size:0.72rem;color:var(--light);line-height:1.5}
+  .voe-step strong{color:#FC8181;display:block;font-size:0.7rem;margin-bottom:2px}
+
+  /* SEVEN ELEMENTS */
+  .elements-box{background:rgba(139,92,246,0.06);border:1.5px solid rgba(139,92,246,0.2);border-radius:10px;padding:18px 20px}
+  .elements-box h3{font-size:0.78rem;font-weight:700;color:var(--violet2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .elements-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .el-item{background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);border-radius:5px;padding:7px 10px;font-size:0.70rem;color:var(--light);line-height:1.4}
+  .el-item strong{color:var(--violet2);display:block;font-size:0.68rem;margin-bottom:1px}
+
+  /* RULES */
+  .rules-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--violet);border-radius:7px;padding:12px 13px}
+  .rule-card h4{font-size:0.70rem;font-weight:700;color:var(--violet2);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.69rem;color:var(--light);line-height:1.5}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  /* SITE ANNOTATION */
+  .annotation-section{background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 24px;margin-bottom:24px}
+  .annotation-section h3{font-size:0.82rem;font-weight:700;color:var(--white);margin-bottom:12px}
+  .annotation-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotation-field{display:flex;flex-direction:column;gap:4px}
+  .annotation-field label{font-size:0.7rem;font-weight:600;color:var(--mid);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.5px}
+  .annotation-field input,.annotation-field textarea{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:7px 10px;font-size:0.78rem;color:var(--white);font-family:var(--font);resize:vertical}
+  .annotation-field input:focus,.annotation-field textarea:focus{outline:none;border-color:var(--violet)}
+  .annotation-field textarea{min-height:60px}
+  .annotation-note{font-size:0.7rem;color:var(--mid);margin-top:8px;font-style:italic}
+
+  /* FOOTER */
+  .footer-bar{border-top:1px solid rgba(255,255,255,0.08);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;font-size:0.7rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer-bar a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);border-radius:4px;padding:2px 8px;font-family:var(--mono);font-size:0.66rem;color:var(--violet2)}
+
+  @media print{
+    .sub-banner,.mode-bar{display:none}
+    body{background:white;color:#111}
+    .header{background:#0D1E2E;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .wl-case,.reg-text,.best-practice{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .kc-overlay{display:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div class="sub-banner">
+  <div class="sub-banner-left">
+    <div class="sub-badge">SUBSCRIBER CONTENT</div>
+    <span>CAPA Lifecycle Map - Enhanced Edition with regulatory text, warning letter cases and site annotation</span>
+  </div>
+  <div class="sub-banner-right">learn.gmpify.com &nbsp;|&nbsp; GMPify Training &nbsp;|&nbsp; Subscriber exclusive</div>
+</div>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <div class="enhanced-tag">&#11088; Enhanced Subscriber Edition</div>
+    <h1>CAPA <em>Lifecycle Map</em></h1>
+    <div class="header-sub">21 CFR 211.192 &nbsp;|&nbsp; 21 CFR 820.100 &nbsp;|&nbsp; ICH Q10 S3.2.2 &nbsp;|&nbsp; Seven-Element Framework &nbsp;|&nbsp; VOE Design &nbsp;|&nbsp; March 2026 Warning Letter</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 820.100<br>
+      ICH Q10 Section 3.2.2 &nbsp;·&nbsp; ICH Q9(R1) 2023<br>
+      FDA QSIT Guide &nbsp;·&nbsp; FDA March 2026 Warning Letter
+    </div>
+    <div style="background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right">
+      March 2026 WL: VOE data showed failure<br>3 consecutive quarters - firm did not act
+    </div>
+  </div>
+</div>
+
+<div class="mode-bar">
+  <span class="mode-label">View mode:</span>
+  <button class="mode-btn active" id="btn-reference" onclick="setMode('reference')">Reference Map</button>
+  <button class="mode-btn inactive" id="btn-assessment" onclick="setMode('assessment')">Self-Assessment Mode</button>
+  <span class="mode-hint" id="mode-hint">Click any hidden step to reveal it</span>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Problem Identification</div>
+  <div class="legend-item"><div class="ls" style="background:#A78BFA"></div>Phase 2 - Investigation and RCA</div>
+  <div class="legend-item"><div class="ls" style="background:#4ADE80"></div>Phase 3 - CAPA Implementation</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 4 - VOE and Closure</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(30,8,8,0.9);border:1px solid #DC2626"></div>Warning letter case</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(10,26,16,0.9);border:1px solid #16A34A"></div>Best practice</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(10,16,32,0.9);border:1px solid #3B82F6"></div>Regulatory text</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.7rem;color:var(--violet2)">GMPify Enhanced Subscriber Edition</div>
+</div>
+
+<div class="map-wrap" id="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#9888;</div>
+    <div class="trigger-text">
+      <h3>CAPA Trigger - Problem Identified from Any Quality Data Source</h3>
+      <p>CAPA deficiencies appear in over 60% of FDA enforcement actions. ICH Q10 Section 3.2.2 establishes CAPA as one of four pharmaceutical quality system enablers. 21 CFR 820.100 provides the seven-element framework FDA uses to assess CAPA systems. The March 2026 FDA warning letter is the most important recent enforcement precedent - a firm whose own VOE data showed CAPA failure for three consecutive quarters without action demonstrates the most serious CAPA programme failure mode.</p>
+      <div class="reg-text">
+        <div class="rt-label">ICH Q10 Section 3.2.2 - CAPA as PQS enabler</div>
+        <p>"The pharmaceutical quality system should include a corrective action and preventive action system resulting from the investigation of complaints, product rejections, non-conformances, recalls, deviations, audits, regulatory inspections and findings, and trends from process performance and product quality monitoring."</p>
+      </div>
+      <div class="wl-case">
+        <div class="wl-label">&#9888; March 2026 warning letter - VOE failure</div>
+        <p>FDA cited a manufacturer whose complaint rate exceeded the pre-defined VOE threshold for three consecutive quarters. The CAPA SOP required routing back to a previous phase when effectiveness checks failed. The firm did not act. 221 complaints and 177 MDRs were filed before FDA inspection in December 2025. The warning letter followed in March 2026. The VOE plan existed. The threshold existed. The data exceeded it. Nobody acted.</p>
+      </div>
+      <div class="reg">21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 820.100 &nbsp;·&nbsp; ICH Q10 Section 3.2.2 &nbsp;·&nbsp; FDA QSIT Guide &nbsp;·&nbsp; FY2024 FDA enforcement data</div>
+    </div>
+    <div class="trigger-sources">
+      <div class="src-chip">Deviations</div>
+      <div class="src-chip">OOS results</div>
+      <div class="src-chip">Complaints</div>
+      <div class="src-chip">Audit findings</div>
+      <div class="src-chip">Trend data</div>
+      <div class="src-chip">EM exceedances</div>
+    </div>
+  </div>
+
+  <!-- FOUR PHASES -->
+  <div class="phases-grid">
+
+    <!-- PHASE 1 -->
+    <div class="phase-col ph1">
+      <div class="phase-header">
+        <div class="phase-num">Phase 1</div>
+        Problem Identification and Risk Assessment
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">1</span>Document the problem formally</div>
+          <div class="node-body">Open CAPA record immediately. Document what occurred, when, where and what product or process is affected. Contemporaneous documentation required. Reference all source data.</div>
+          <div class="reg-text">
+            <div class="rt-label">21 CFR 820.100(a)(1) - data analysis requirement</div>
+            <p>"Establish and maintain procedures for implementing corrective and preventive action. The procedures shall include requirements for analyzing processes, work operations, concessions, quality audit reports, quality records, service records, complaints, returned product, and other sources of quality data to identify existing and potential causes of nonconforming product."</p>
+          </div>
+          <div class="node-reg">21 CFR 820.100(a)(1) &nbsp;·&nbsp; ALCOA+ data integrity</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">2</span>Conduct initial risk assessment</div>
+          <div class="node-body">Assess severity, scope and patient safety risk using ICH Q9(R1) 2023 methodology. Classify CAPA priority - critical, major or minor. Higher risk CAPAs require faster timelines and more rigorous investigation.</div>
+          <div class="best-practice">
+            <div class="bp-label">&#10003; Best practice - risk classification</div>
+            <p>Document the risk assessment using a structured tool such as a risk matrix or FMEA mini-assessment. A documented risk classification protects the quality team during inspection. A verbal or undocumented classification decision is invisible to FDA and cannot be defended. ICH Q9(R1) 2023 specifically requires subjectivity reduction through structured methodology.</p>
+          </div>
+          <div class="node-reg">ICH Q9(R1) 2023 &nbsp;·&nbsp; 21 CFR 820.100(a)(2)</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">3</span>Implement containment actions</div>
+          <div class="node-body">Quarantine affected product, halt process if required, notify QA unit and document all containment actions with timestamps. Containment is not corrective action - document separately.</div>
+          <div class="wl-case">
+            <div class="wl-label">&#9888; Warning letter case - containment confused with CAPA</div>
+            <p>2025 warning letter cited a manufacturer who closed multiple CAPAs after completing containment actions without implementing corrective actions addressing the root cause. Quarantining affected batches and retraining one operator were the only actions documented. The quality system treated containment as the corrective action. Recurrence at the same rate as before confirmed root causes were not addressed.</p>
+          </div>
+          <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; ICH Q10 Section 3.2.2</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">4</span>Assess scope extension</div>
+          <div class="node-body">Assess whether the problem could affect other batches, products, processes or sites. Document the conclusion even when no other areas are affected. Undocumented scope extension assessment is a direct 483 citation risk.</div>
+          <div class="reg-text">
+            <div class="rt-label">21 CFR 211.192 - scope extension obligation</div>
+            <p>"The investigation shall extend to other batches of the same drug product and other drug products that may have been associated with the specific failure or discrepancy."</p>
+          </div>
+          <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; FDA OOS Guidance 2022</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase-col ph2">
+      <div class="phase-header">
+        <div class="phase-num">Phase 2</div>
+        Root Cause Investigation
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">5</span>Select RCA methodology</div>
+          <div class="node-body">Select methodology appropriate to complexity. 5 Why for single-factor events. Ishikawa fishbone for multi-factor complex events. FMEA for preventive action assessment. Document the selection rationale.</div>
+          <div class="best-practice">
+            <div class="bp-label">&#10003; Best practice - methodology selection</div>
+            <p>Document why you selected a specific methodology. If you used 5 Why and the same event recurs the investigation record will be reviewed. If the selection rationale shows 5 Why was appropriate for the problem type the record defends itself. If no rationale is documented the selection appears arbitrary and the repeat event appears to be a CAPA programme failure.</p>
+          </div>
+          <div class="node-reg">ICH Q9(R1) 2023 &nbsp;·&nbsp; 21 CFR 820.100(a)(2)</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">6</span>Conduct root cause analysis</div>
+          <div class="node-body">Apply methodology with full documentation. Distinguish immediate cause from contributing causes from root cause. Human error is NOT a root cause - investigate why the system allowed the error.</div>
+          <div class="wl-case">
+            <div class="wl-label">&#9888; Warning letter case - human error as root cause</div>
+            <p>2025 warning letter cited a manufacturer who assigned operator error or analyst error as the root cause in 34 of 47 CAPA investigations over three years. FDA found this pattern demonstrated systematic failure to identify true root causes. When the same event type recurred with different operators after retraining it confirmed that the root cause had never been correctly identified. The investigation programme was closing records not solving problems.</p>
+          </div>
+          <div class="node-reg">ICH Q9(R1) 2023 &nbsp;·&nbsp; FDA QSIT Guide &nbsp;·&nbsp; 21 CFR 211.192</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-decision">
+          <div class="decision-q">Root cause identified with objective evidence?</div>
+          <div class="d-opts">
+            <span class="opt-y">YES &#8594; Step 7</span>
+            <span class="opt-n">NO &#8594; Reopen investigation</span>
+          </div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">7</span>Assess preventive action scope</div>
+          <div class="node-body">Assess whether the root cause exists in other processes, products or sites. Preventive action addresses potential failures before they occur. Document conclusion even when no preventive actions are identified.</div>
+          <div class="reg-text">
+            <div class="rt-label">21 CFR 820.100(a)(3) - preventive action requirement</div>
+            <p>"Identifying the action needed to correct and prevent recurrence of nonconforming product and other quality problems. The manufacturer shall document the investigation and the action taken."</p>
+          </div>
+          <div class="node-reg">21 CFR 820.100(a)(3) &nbsp;·&nbsp; ICH Q10 Section 3.2.2</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-critical">
+          <div class="node-title" style="color:#FC8181">&#9888; Do not accept these as root causes</div>
+          <div class="node-body" style="font-size:0.68rem">Human error &nbsp;·&nbsp; Operator did not follow procedure &nbsp;·&nbsp; Equipment malfunction &nbsp;·&nbsp; Training gap &nbsp;·&nbsp; Unknown. These are immediate causes. The investigation must explain why the system allowed the failure and why it could recur.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase-col ph3">
+      <div class="phase-header">
+        <div class="phase-num">Phase 3</div>
+        CAPA Implementation
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">8</span>Define effectiveness criterion BEFORE implementing</div>
+          <div class="node-body">This step must occur before corrective action implementation. Define a measurable effectiveness criterion with a specific threshold and a scheduled check date. A criterion defined after closure is designed to confirm the action was taken not that the problem was solved.</div>
+          <div class="wl-case">
+            <div class="wl-label">&#9888; March 2026 warning letter - VOE criterion existed but was ignored</div>
+            <p>The March 2026 warning letter case is particularly instructive because the VOE criterion did exist. The threshold was defined. The data showed exceedance for three consecutive quarters. The CAPA SOP required escalation when the criterion was not met. None of these safeguards prevented the failure because the organisation did not act on the signals its own system was generating. Having a VOE criterion is necessary but not sufficient. Acting on it is what matters.</p>
+          </div>
+          <div class="node-reg">ICH Q10 Section 3.2.2 &nbsp;·&nbsp; FDA March 2026 Warning Letter</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">9</span>Develop CAPA action plan</div>
+          <div class="node-body">Define specific corrective actions addressing the identified root cause not the symptom. Named owner and realistic completion date for each action. Preventive actions for other at-risk processes documented separately.</div>
+          <div class="best-practice">
+            <div class="bp-label">&#10003; Best practice - action specificity</div>
+            <p>The difference between a compliant and non-compliant CAPA action is specificity. We will retrain the team is not a corrective action. The following 12 analysts will complete refresher training on SOP-QC-0042 by 15 September 2026 with competency assessment documented by the QC Manager is a corrective action. FDA inspectors read CAPA records looking for this level of specificity. Vague actions indicate that the root cause was not truly understood.</p>
+          </div>
+          <div class="node-reg">21 CFR 820.100(a)(4) &nbsp;·&nbsp; ICH Q10 Section 3.2.2</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">10</span>QA review and approve CAPA plan</div>
+          <div class="node-body">Quality unit reviews and approves the complete CAPA plan before implementation begins. No corrective action may begin without QA approval of the complete plan including the VOE criterion.</div>
+          <div class="reg-text">
+            <div class="rt-label">21 CFR 820.100(a)(5) - implementation and documentation</div>
+            <p>"Implementing and recording changes in methods and procedures needed to correct and prevent identified quality problems. Using relevant information on quality problems and corrective and preventive actions and submitting this information for management review."</p>
+          </div>
+          <div class="node-reg">21 CFR 820.100(a)(5) &nbsp;·&nbsp; 21 CFR 211.22</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">11</span>Implement corrective and preventive actions</div>
+          <div class="node-body">Execute approved corrective actions per plan. Document implementation evidence for each action: updated SOP with approval record, training record with competency assessment, equipment modification with qualification data. Implementation evidence must be objective not just a note that action occurred.</div>
+          <div class="node-reg">21 CFR 820.100(a)(5) &nbsp;·&nbsp; ICH Q10</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">12</span>Communicate changes to responsible personnel</div>
+          <div class="node-body">Ensure all affected personnel are informed and trained. 21 CFR 820.100 specifically requires information on quality problems and CAPA to be disseminated. Communication records documented. Management review informed of significant CAPAs.</div>
+          <div class="node-reg">21 CFR 820.100(a)(6) &nbsp;·&nbsp; ICH Q10 Section 3.2.4</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase-col ph4">
+      <div class="phase-header">
+        <div class="phase-num">Phase 4</div>
+        VOE and Closure
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">13</span>Conduct scheduled effectiveness check</div>
+          <div class="node-body">At the pre-defined scheduled date conduct the effectiveness check using the pre-defined criterion and threshold. Collect objective data. Do not rely on absence of complaints as evidence. Document results with supporting data.</div>
+          <div class="best-practice">
+            <div class="bp-label">&#10003; Best practice - effectiveness check design</div>
+            <p>The effectiveness check must be scheduled and tracked in your quality management system. It should not rely on someone remembering to conduct it. Build the effectiveness check due date into your CAPA tracking dashboard with an escalation alert if it is not completed on time. The March 2026 warning letter failure occurred partly because the VOE check data existed but was not acted upon. Automation of the escalation pathway removes the human dependency from the most critical part of the CAPA programme.</p>
+          </div>
+          <div class="node-reg">ICH Q10 Section 3.2.2 &nbsp;·&nbsp; 21 CFR 820.100(a)(7) &nbsp;·&nbsp; FDA March 2026 WL</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-decision">
+          <div class="decision-q">Does effectiveness check meet the pre-defined criterion?</div>
+          <div class="d-opts">
+            <span class="opt-y">YES &#8594; Step 15</span>
+            <span class="opt-n">NO &#8594; Step 14</span>
+          </div>
+        </div>
+        <div class="arrow">&#8595; NO</div>
+
+        <div class="node node-critical">
+          <div class="node-title" style="color:#FC8181"><span class="step-num" style="background:rgba(229,62,62,0.2);color:#FC8181">14</span>VOE failure - mandatory escalation</div>
+          <div class="node-body">Route CAPA back to RCA phase if original root cause may be incorrect. Open additional CAPA if VOE reveals new failure mode. Implement supplementary containment. Do not close with a failed effectiveness check.</div>
+          <div class="wl-case">
+            <div class="wl-label">&#9888; March 2026 - the definitive VOE failure</div>
+            <p>Q1 2025: effectiveness check fails. Required escalation. No action. Q2 2025: fails again. No action. Q3 2025: fails for third time. 221 complaints. 177 MDRs. FDA inspects December 2025. Warning letter March 2026. This is not a hypothetical risk. It is the documented consequence of ignoring VOE data that your own system generated and that your own SOP required you to act upon.</p>
+          </div>
+          <div class="node-reg">FDA Warning Letter March 2026 &nbsp;·&nbsp; 21 CFR 820.100(a)(7)</div>
+        </div>
+        <div class="arrow">&#8595; YES</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">15</span>Complete closure documentation</div>
+          <div class="node-body">Closure package: root cause analysis with methodology, all actions with implementation evidence, effectiveness criterion and verification result with data, scope extension conclusion, preventive action conclusion. QA approval required for closure.</div>
+          <div class="node-reg">21 CFR 820.100 &nbsp;·&nbsp; 21 CFR 211.192 &nbsp;·&nbsp; ICH Q10</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node" style="background:rgba(74,222,128,0.1);border:1.5px solid rgba(74,222,128,0.3);border-radius:7px;padding:10px 12px;text-align:center">
+          <div style="font-size:0.82rem;font-weight:800;color:var(--c3acc);margin-bottom:3px">&#10003; CAPA CLOSED</div>
+          <div style="font-size:0.69rem;color:var(--light)">APQR trending &nbsp;·&nbsp; Management review &nbsp;·&nbsp; Monitor for recurrence</div>
+          <div style="font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px">ICH Q10 Sections 3.2.1 and 3.2.4</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM GRID -->
+  <div class="bottom-grid">
+
+    <div class="voe-box">
+      <h3>&#9888; March 2026 Warning Letter - Full VOE Failure Timeline</h3>
+      <div class="voe-steps">
+        <div class="voe-step"><strong>Q1 2025 - VOE check fails for first time</strong>Complaint rate exceeds the pre-defined threshold. The CAPA SOP requires routing back when effectiveness checks fail. The firm does not act. No escalation. No supplementary containment. No additional CAPA.</div>
+        <div class="voe-step"><strong>Q2 2025 - VOE check fails for second time</strong>Second consecutive quarter exceeding the threshold. No additional CAPA opened. No containment applied. No response. The CAPA record remains open with the failing VOE data documented inside it.</div>
+        <div class="voe-step"><strong>Q3 2025 - VOE check fails for third consecutive time</strong>221 complaints filed. 177 Medical Device Reports submitted. FDA inspection conducted December 2025.</div>
+        <div class="voe-step"><strong>March 25, 2026 - FDA warning letter issued</strong>CDRH warning letter cites VOE data showing three consecutive quarters of failure with no response as the primary CAPA system deficiency. The VOE plan existed. The threshold was defined. The data exceeded it. Nobody acted on it.</div>
+        <div class="voe-step"><strong>The lesson</strong>A CAPA programme that generates VOE data but does not act on it is not a CAPA programme. It is a documentation system. The difference between the two is whether someone reads the data and escalates when it requires escalation. Build the escalation into the system - do not rely on it being noticed.</div>
+      </div>
+    </div>
+
+    <div class="elements-box">
+      <h3>The Seven CAPA Elements FDA Assesses - 21 CFR 820.100</h3>
+      <div class="elements-grid">
+        <div class="el-item"><strong>Element 1 - Data analysis</strong>Systematic analysis of all quality data sources to identify existing and potential causes of nonconforming product.</div>
+        <div class="el-item"><strong>Element 2 - Investigation</strong>Investigation of causes of nonconformities relating to product, processes and the quality system.</div>
+        <div class="el-item"><strong>Element 3 - Action identification</strong>Identification of the action needed to correct and prevent recurrence of nonconforming product and quality problems.</div>
+        <div class="el-item"><strong>Element 4 - Action verification</strong>Verification or validation of corrective and preventive actions to ensure they are effective and do not adversely affect the finished device.</div>
+        <div class="el-item"><strong>Element 5 - Implementation</strong>Implementation and documentation of changes in methods and procedures needed to correct and prevent identified quality problems.</div>
+        <div class="el-item"><strong>Element 6 - Communication</strong>Dissemination of information on quality problems and CAPA to those directly responsible for quality assurance.</div>
+        <div class="el-item" style="grid-column:1/-1"><strong>Element 7 - Management review</strong>Submission of relevant information on quality problems and CAPA for management review per ICH Q10 Sections 3.2.1 and 3.2.4. CAPA data must feed APQR and management review with systemic trend analysis not just closure rate summaries.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RULES -->
+  <div class="rules-row">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Close a CAPA with a failed effectiveness check. Accept human error as a root cause. Define effectiveness criteria after closure. Ignore VOE data exceeding the threshold. Close CAPAs to meet administrative targets. Treat containment actions as corrective actions.</p>
+    </div>
+    <div class="rule-card">
+      <h4>VOE design principles</h4>
+      <p>Criterion defined before implementation. Measurable with specific threshold. Scheduled check date tracked in QMS. Failed criterion triggers mandatory escalation with no discretion. All results documented. Effectiveness period typically 30 to 90 days post-implementation. Automate the escalation alert - do not rely on memory.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Trending obligations</h4>
+      <p>CAPA data trended at APQR and management review per ICH Q10. Three critical analyses: root cause category trending across products and processes, repeat CAPA rate - above 10% signals systematic investigation failure - and time-to-effectiveness distribution. Closure rate is an administrative metric not an effectiveness metric.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR 211.192 - pharmaceutical investigation requirement. 21 CFR 820.100 - seven-element CAPA framework. ICH Q10 Section 3.2.2 - CAPA as PQS enabler. ICH Q9(R1) 2023 - subjectivity reduction in RCA. FDA March 2026 Warning Letter - the definitive VOE failure case study.</p>
+    </div>
+  </div>
+
+  <!-- SITE ANNOTATION -->
+  <div class="annotation-section">
+    <h3>Site-Specific Annotation - Personalise This Map for Your Quality System</h3>
+    <div class="annotation-grid">
+      <div class="annotation-field">
+        <label>Site / Facility Name</label>
+        <input type="text" placeholder="e.g. Acme Pharma Ltd - Dublin Manufacturing Site">
+      </div>
+      <div class="annotation-field">
+        <label>CAPA SOP Reference</label>
+        <input type="text" placeholder="e.g. SOP-QA-0018 Rev 5">
+      </div>
+      <div class="annotation-field">
+        <label>CAPA Investigation Lead Role</label>
+        <input type="text" placeholder="e.g. QA Manager or designated Investigation Lead">
+      </div>
+      <div class="annotation-field">
+        <label>QMS / CAPA Tracking System</label>
+        <input type="text" placeholder="e.g. Veeva Vault QualityDocs - CAPA module">
+      </div>
+      <div class="annotation-field">
+        <label>Critical CAPA Timeline at This Site</label>
+        <input type="text" placeholder="e.g. Critical: 30 days. Major: 45 days. Minor: 60 days.">
+      </div>
+      <div class="annotation-field">
+        <label>VOE Monitoring Period at This Site</label>
+        <input type="text" placeholder="e.g. 90 days post-implementation for all CAPAs">
+      </div>
+      <div class="annotation-field" style="grid-column:1/-1">
+        <label>Site-Specific Notes or Process Deviations from Standard Framework</label>
+        <textarea placeholder="e.g. All critical CAPAs require Regulatory Affairs notification within 24 hours. CAPAs open beyond 60 days require documented QA Director extension approval. Repeat CAPAs on the same root cause category require escalation to site Quality Council."></textarea>
+      </div>
+    </div>
+    <div class="annotation-note">Annotations are stored in your browser session only. To save permanently complete annotations then use your browser Print function (Ctrl+P or Cmd+P) to save as PDF with your site-specific information included.</div>
+  </div>
+
+</div>
+
+<div class="footer-bar">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;·&nbsp;
+    CAPA Lifecycle Map - Enhanced Subscriber Edition &nbsp;·&nbsp;
+    Built from 21 CFR 211.192, 21 CFR 820.100, ICH Q10 S3.2.2, ICH Q9(R1) 2023, FDA March 2026 Warning Letter &nbsp;·&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="footer-badge">Subscriber Exclusive</div>
+    <div class="footer-badge">Enhanced Edition</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+<script>
+function setMode(mode) {
+  const wrap = document.getElementById('map-wrap');
+  const btnRef = document.getElementById('btn-reference');
+  const btnAss = document.getElementById('btn-assessment');
+  const hint = document.getElementById('mode-hint');
+  if (mode === 'assessment') {
+    wrap.classList.add('kc-mode');
+    btnRef.classList.remove('active'); btnRef.classList.add('inactive');
+    btnAss.classList.remove('inactive'); btnAss.classList.add('active');
+    hint.style.display = 'block';
+    document.querySelectorAll('.phase-body .node-action').forEach(node => {
+      if (!node.querySelector('.kc-overlay')) {
+        const overlay = document.createElement('div');
+        overlay.className = 'kc-overlay';
+        overlay.innerHTML = '<span>Click to reveal this step</span>';
+        overlay.onclick = function(e) { e.stopPropagation(); node.classList.add('revealed'); };
+        node.style.position = 'relative';
+        node.appendChild(overlay);
+      }
+      node.classList.remove('revealed');
+    });
+  } else {
+    wrap.classList.remove('kc-mode');
+    btnAss.classList.remove('active'); btnAss.classList.add('inactive');
+    btnRef.classList.remove('inactive'); btnRef.classList.add('active');
+    hint.style.display = 'none';
+    document.querySelectorAll('.node-action').forEach(n => n.classList.remove('revealed'));
+  }
+}
+</script>
+</body>
+</html>
