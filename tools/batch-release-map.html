@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batch Release Decision Flowchart | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0C1428;
+    --navy2:   #101C34;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081428;
+    --c2:      #14080C;
+    --c3:      #061C10;
+    --c4:      #181408;
+    --c1acc:   #818CF8;
+    --c2acc:   #F87171;
+    --c3acc:   #6EE7B7;
+    --c4acc:   #FDE68A;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#060C1C 0%,#0C1428 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(129,140,248,0.07),rgba(129,140,248,0.02));
+    border:1.5px solid rgba(129,140,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-right{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .t-chip{border-radius:8px;padding:3px 10px;font-size:0.68rem;font-weight:700;font-family:var(--mono);white-space:nowrap}
+  .chip-i{background:rgba(129,140,248,0.12);border:1px solid rgba(129,140,248,0.28);color:var(--c1acc)}
+  .chip-e{background:rgba(110,231,183,0.12);border:1px solid rgba(110,231,183,0.28);color:var(--c3acc)}
+  .chip-r{background:rgba(229,62,62,0.12);border:1px solid rgba(229,62,62,0.28);color:#FC8181}
+
+  /* US VS EU COMPARISON */
+  .compare-bar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+  .compare-card{border-radius:10px;padding:14px 18px;border:1.5px solid}
+  .compare-us{background:rgba(129,140,248,0.06);border-color:rgba(129,140,248,0.25)}
+  .compare-eu{background:rgba(110,231,183,0.06);border-color:rgba(110,231,183,0.25)}
+  .compare-card h4{font-size:0.78rem;font-weight:800;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.8px}
+  .compare-us h4{color:var(--c1acc)}
+  .compare-eu h4{color:var(--c3acc)}
+  .compare-card p{font-size:0.71rem;color:var(--light);line-height:1.5}
+  .compare-regs{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+  .compare-reg{font-size:0.64rem;font-family:var(--mono);padding:2px 7px;border-radius:8px}
+  .reg-us{background:rgba(129,140,248,0.12);color:var(--c1acc);border:1px solid rgba(129,140,248,0.2)}
+  .reg-eu{background:rgba(110,231,183,0.12);color:var(--c3acc);border:1px solid rgba(110,231,183,0.2)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  /* PHASES */
+  .phases-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#050E20;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#100406;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#031408;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#120E04;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-release{background:rgba(34,197,94,0.09);border:1.5px solid rgba(34,197,94,0.3);border-radius:6px;text-align:center}
+  .node-reject{background:rgba(229,62,62,0.09);border:1.5px solid rgba(229,62,62,0.3);border-radius:6px;text-align:center}
+  .node-hold{background:rgba(245,166,35,0.08);border:1.5px solid rgba(245,166,35,0.3);border-radius:6px;text-align:center}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(129,140,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(248,113,113,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(110,231,183,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(253,230,138,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  /* RIGHT COLUMN */
+  .right-col{display:flex;flex-direction:column;gap:12px}
+
+  .checklist-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .checklist-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .checklist-body{padding:12px 16px;display:flex;flex-direction:column;gap:6px}
+  .check-item{display:flex;align-items:flex-start;gap:8px;font-size:0.69rem;color:var(--light);line-height:1.45;padding:5px 8px;border-radius:4px;background:rgba(255,255,255,0.03)}
+  .check-icon{font-size:0.75rem;flex-shrink:0;margin-top:1px}
+  .check-icon.ok{color:var(--c3acc)}
+  .check-icon.warn{color:var(--gold)}
+  .check-icon.fail{color:#FC8181}
+
+  .qp-box{background:rgba(110,231,183,0.05);border:1.5px solid rgba(110,231,183,0.2);border-radius:10px;padding:14px 16px}
+  .qp-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .qp-items{display:flex;flex-direction:column;gap:7px}
+  .qp-item{background:rgba(110,231,183,0.06);border:1px solid rgba(110,231,183,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .qp-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  .disposition-box{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .disp-card{border-radius:8px;padding:11px 13px;border:1.5px solid}
+  .disp-rel{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.3)}
+  .disp-rej{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .disp-hld{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.28)}
+  .disp-card h4{font-size:0.73rem;font-weight:800;margin-bottom:5px}
+  .disp-rel h4{color:var(--green)}
+  .disp-rej h4{color:#FC8181}
+  .disp-hld h4{color:var(--gold)}
+  .disp-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+
+  .rules-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(129,140,248,0.1);border:1px solid rgba(129,140,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Batch Release <em>Decision Flowchart</em></h1>
+    <div class="header-sub">21 CFR 211.22 &nbsp;|&nbsp; 21 CFR 211.165 &nbsp;|&nbsp; 21 CFR 211.192 &nbsp;|&nbsp; EU GMP Annex 16 &nbsp;|&nbsp; EU GMP Chapter 2 &nbsp;|&nbsp; QP Certification &nbsp;|&nbsp; ICH Q7</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      21 CFR 211.22 &nbsp;·&nbsp; 21 CFR 211.165(f)<br>
+      21 CFR 211.192 &nbsp;·&nbsp; EU GMP Annex 16<br>
+      EU GMP Chapter 2 &nbsp;·&nbsp; ICH Q7 Section 11
+    </div>
+    <div class="stat-badge">
+      21 CFR 211.192 cited 523 times<br>
+      in FDA warning letters FY2017 to FY2021
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#818CF8"></div>Phase 1 - Batch Record Review</div>
+  <div class="legend-item"><div class="ls" style="background:#F87171"></div>Phase 2 - QC Testing Review</div>
+  <div class="legend-item"><div class="ls" style="background:#6EE7B7"></div>Phase 3 - Quality Assessment</div>
+  <div class="legend-item"><div class="ls" style="background:#FDE68A"></div>Phase 4 - Disposition Decision</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(34,197,94,0.3);border:1px solid #22C55E"></div>Release</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(229,62,62,0.3);border:1px solid #E53E3E"></div>Reject</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(245,166,35,0.3);border:1px solid #F5A623"></div>Hold</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#9989;</div>
+    <div class="trigger-text">
+      <h3>Batch Manufacturing Complete - Formal Release Decision Required Before Distribution</h3>
+      <p>No batch of drug product may be released for distribution before the quality unit has reviewed and approved production and control records under 21 CFR 211.192. In the EU, no batch may be placed on the market before a Qualified Person has personally certified it under EU GMP Annex 16. The QP certification is personal, traceable and non-delegable under EU pharmaceutical law. 21 CFR 211.192 appeared 523 times in FDA warning letters FY2017 to FY2021 - making batch record review one of the highest-risk areas of pharmaceutical GMP compliance. Release is not a clerical act. It is a risk decision anchored in complete, verified evidence.</p>
+      <div class="reg">21 CFR 211.22 &nbsp;·&nbsp; 21 CFR 211.165(f) &nbsp;·&nbsp; 21 CFR 211.192 &nbsp;·&nbsp; EU GMP Annex 16 &nbsp;·&nbsp; EU GMP Chapter 2 &nbsp;·&nbsp; ICH Q7 Section 11</div>
+    </div>
+    <div class="trigger-right">
+      <div class="t-chip chip-i">US: Quality Unit decision</div>
+      <div class="t-chip chip-e">EU: QP personal certification</div>
+      <div class="t-chip chip-r">21 CFR 211.192 - top 5 cited</div>
+    </div>
+  </div>
+
+  <!-- US VS EU -->
+  <div class="compare-bar">
+    <div class="compare-card compare-us">
+      <h4>United States - Quality Unit Release Authority</h4>
+      <p>Release authority rests with the Quality Unit under 21 CFR 211.22. The Quality Unit must be independent of production. No batch may be released before the Quality Unit has reviewed and approved all production and control records under 21 CFR 211.192. Any unexplained discrepancy or specification failure must be investigated before release - even for batches already distributed. 21 CFR 211.165(f) requires each lot to be tested against all specifications before release. Production cannot release a batch if the Quality Unit is backlogged - independence is fundamental and shortcuts are not acceptable. The quality control unit cannot be the same individuals performing production operations.</p>
+      <div class="compare-regs">
+        <span class="compare-reg reg-us">21 CFR 211.22</span>
+        <span class="compare-reg reg-us">21 CFR 211.165(f)</span>
+        <span class="compare-reg reg-us">21 CFR 211.192</span>
+        <span class="compare-reg reg-us">21 CFR 211.194</span>
+      </div>
+    </div>
+    <div class="compare-card compare-eu">
+      <h4>European Union - Qualified Person Certification</h4>
+      <p>EU pharmaceutical law requires a named Qualified Person to personally certify each batch before supply. The QP certification is personal, traceable and non-delegable. A QP cannot delegate the certification act to another person - they can delegate preparatory review activities but the certification signature is theirs alone. EU GMP Annex 16 lists the responsibilities the QP must personally confirm are fulfilled. The QP faces personal legal liability under Directive 2001/83/EC for batches they certify. If a post-certification defect is identified - such as an EM exceedance omitted from the batch documentation - the QP has statutory notification obligations to the national competent authority. QP certification and US Quality Unit release are not equivalent - they have different legal weight and different personal accountability implications.</p>
+      <div class="compare-regs">
+        <span class="compare-reg reg-eu">EU GMP Annex 16</span>
+        <span class="compare-reg reg-eu">EU GMP Chapter 2</span>
+        <span class="compare-reg reg-eu">Directive 2001/83/EC</span>
+        <span class="compare-reg reg-eu">EudraLex Vol 4</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- FOUR PHASES -->
+    <div class="phases-grid">
+
+      <!-- PHASE 1 -->
+      <div class="phase-col ph1">
+        <div class="phase-header">
+          <div class="phase-num">Phase 1</div>
+          Batch Record Review
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">1</span>Compile complete batch record package</div>
+            <div class="node-body">Collect all documents required for release review before beginning the review process. Batch Manufacturing Record or executed batch record with all steps completed and signed. All in-process testing results. Deviation records and investigations related to this batch. Environmental monitoring data for the manufacturing period. Equipment calibration and cleaning records. Material certificates of analysis for all active and inactive components. Packaging and labelling records. The package must be complete - a release review cannot begin with missing records.</div>
+            <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.188 &nbsp;·&nbsp; EU GMP Chapter 4</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">2</span>Review batch manufacturing record completeness</div>
+            <div class="node-body">Every step in the batch record must be completed, dated and signed by the performing operator and checked by a second person where required. Blank fields, undated entries, retrospective corrections without documentation and incomplete yield calculations are data integrity violations that prevent release. Electronic records must have complete audit trails. A batch record with unexplained blank fields or unsigned steps cannot be approved for release regardless of analytical results.</div>
+            <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; ALCOA+ &nbsp;·&nbsp; 21 CFR Part 11 &nbsp;·&nbsp; EU GMP Annex 11</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">3</span>Verify component reconciliation and yield</div>
+            <div class="node-body">Verify that the quantities of all components used in the batch are reconciled against the theoretical quantities per the batch record. Actual yield must be calculated and compared against theoretical yield with any discrepancies outside the acceptable range documented and investigated. Unexplained yield discrepancies are a 21 CFR 211.192 deficiency and a data integrity risk. Material reconciliation must account for all components including reject, rework and in-process sample quantities.</div>
+            <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.188(b)(7) &nbsp;·&nbsp; EU GMP Chapter 4</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-decision">
+            <div class="decision-q">Is the batch record complete, accurate and reconciled?</div>
+            <div class="d-opts">
+              <span class="opt-y">YES &#8594; Phase 2</span>
+              <span class="opt-n">NO &#8594; Hold - investigate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 2 -->
+      <div class="phase-col ph2">
+        <div class="phase-header">
+          <div class="phase-num">Phase 2</div>
+          QC Testing Review
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">4</span>Review all release specification test results</div>
+            <div class="node-body">Every test in the release specification must have a result reported. Identity, assay, purity, related substances, physical attributes, microbiological testing, container closure integrity, water content, dissolution or disintegration as applicable. Results must be compared against approved specification limits. Each test result reviewed individually - not as a summary pass or fail. Raw data must be available and the analytical run must have met all system suitability criteria before the result is considered valid.</div>
+            <div class="node-reg">21 CFR 211.165(f) &nbsp;·&nbsp; 21 CFR 211.194 &nbsp;·&nbsp; EU GMP Chapter 6</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-decision">
+            <div class="decision-q">Are any results OOS or missing?</div>
+            <div class="d-opts">
+              <span class="opt-y">YES &#8594; OOS investigation required</span>
+              <span class="opt-n">NO &#8594; Step 5</span>
+            </div>
+          </div>
+          <div class="arrow">&#8595; NO OOS</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">5</span>Verify analytical method validity and system suitability</div>
+            <div class="node-body">Confirm that the analytical methods used are validated and that system suitability criteria were met for each analytical run. A result obtained from a run that failed system suitability criteria is not a valid result. Confirm the reference standards used were within their expiry dates and were prepared per the approved procedure. Confirm that analyst training records are current for the methods used. An otherwise compliant analytical result obtained by an untrained analyst is a data integrity vulnerability.</div>
+            <div class="node-reg">21 CFR 211.165 &nbsp;·&nbsp; 21 CFR 211.194 &nbsp;·&nbsp; ICH Q2(R2)</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">6</span>Review stability data and shelf life confirmation</div>
+            <div class="node-body">Confirm that stability data supporting the approved shelf life remains current. For batches where the registered stability protocol requires ongoing stability testing confirm that the stability samples for this batch have been pulled and placed on stability. Confirm that no adverse stability trending has occurred for this product type that would call the established shelf life into question. Stability data gaps or OOS stability results must be assessed before release.</div>
+            <div class="node-reg">21 CFR 211.166 &nbsp;·&nbsp; ICH Q1A(R2) &nbsp;·&nbsp; EU GMP Chapter 6</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 3 -->
+      <div class="phase-col ph3">
+        <div class="phase-header">
+          <div class="phase-num">Phase 3</div>
+          Quality Assessment
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">7</span>Review all deviations and investigations</div>
+            <div class="node-body">Every deviation that occurred during manufacture of this batch must be reviewed. Each deviation must have a completed investigation with a documented conclusion on batch impact. A deviation without a completed investigation cannot support release. The Quality Unit must specifically assess whether each deviation conclusion is adequate - not just whether a deviation record exists. An investigation that concludes no impact without documented rationale is as problematic as no investigation. All deviations must be closed and QA-approved before release can proceed.</div>
+            <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; EU GMP Chapter 1 Section 1.8</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">8</span>Review environmental monitoring data</div>
+            <div class="node-body">For sterile products review the environmental monitoring data for the manufacturing period. Confirm no action level exceedances occurred during or after the manufacturing session that would affect this batch. Confirm that all EM data from the manufacturing period has been received and reviewed - late EM data is a common cause of batch hold after provisional release. For non-sterile products review bioburden data where applicable and any EM data specified in the batch record or annual product quality review.</div>
+            <div class="node-reg">EU GMP Annex 1 2022 &nbsp;·&nbsp; 21 CFR 211.113 &nbsp;·&nbsp; USP 1116</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-decision">
+            <div class="decision-q">Are any deviations unresolved or EM data outstanding?</div>
+            <div class="d-opts">
+              <span class="opt-y">YES &#8594; Hold pending resolution</span>
+              <span class="opt-n">NO &#8594; Step 9</span>
+            </div>
+          </div>
+          <div class="arrow">&#8595; NO</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">9</span>Review packaging, labelling and serialisation</div>
+            <div class="node-body">Confirm that packaging and labelling records are complete with reconciliation of labels used, labels destroyed and any overruns within limits. Label text confirmed against approved artwork and market authorisation. For products subject to serialisation requirements confirm that serialisation data has been uploaded and verified. Labelling errors are a leading cause of product recalls globally. The label review is a patient safety act not a clerical check.</div>
+            <div class="node-reg">21 CFR 211.122 &nbsp;·&nbsp; 21 CFR 211.125 &nbsp;·&nbsp; EU GMP Chapter 5</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 4 -->
+      <div class="phase-col ph4">
+        <div class="phase-header">
+          <div class="phase-num">Phase 4</div>
+          Disposition Decision
+        </div>
+        <div class="phase-body">
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">10</span>Quality Unit or QP final assessment</div>
+            <div class="node-body">The Quality Unit reviewer or QP performs a final holistic assessment of all review elements: batch record completeness and accuracy, component reconciliation, all specification results within limits, analytical method validity, deviation closure status, EM data review and packaging and labelling. The final assessment must be documented with the reviewer's conclusion and approval. In the EU the QP must personally confirm all Annex 16 obligations before signing the batch certificate. This is not a rubber stamp - it is a professional judgement with regulatory and legal weight.</div>
+            <div class="node-reg">21 CFR 211.22 &nbsp;·&nbsp; EU GMP Annex 16 &nbsp;·&nbsp; Directive 2001/83/EC</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-decision">
+            <div class="decision-q">Does the complete batch evidence package support release?</div>
+            <div class="d-opts">
+              <span class="opt-y">YES &#8594; Release</span>
+              <span class="opt-n">NO &#8594; Hold or Reject</span>
+            </div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div class="node node-release">
+              <div style="font-size:0.75rem;font-weight:800;color:var(--green);margin-bottom:2px">&#10003; RELEASED</div>
+              <div style="font-size:0.65rem;color:var(--light)">QA or QP approval documented. Batch certificate issued. Release date recorded. Certificate of analysis generated.</div>
+              <div style="font-size:0.6rem;font-family:var(--mono);color:var(--mid);margin-top:2px">21 CFR 211.22 &nbsp;·&nbsp; EU Annex 16</div>
+            </div>
+            <div class="node node-reject">
+              <div style="font-size:0.75rem;font-weight:800;color:#FC8181;margin-bottom:2px">&#10007; REJECTED</div>
+              <div style="font-size:0.65rem;color:var(--light)">Rejection documented with reason. Batch quarantined. CAPA opened. Scope extension to other batches assessed per 21 CFR 211.192.</div>
+              <div style="font-size:0.6rem;font-family:var(--mono);color:var(--mid);margin-top:2px">21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.165</div>
+            </div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-hold" style="padding:8px 10px;text-align:center;">
+            <div style="font-size:0.74rem;font-weight:800;color:var(--gold);margin-bottom:2px">&#9654; ON HOLD</div>
+            <div style="font-size:0.64rem;color:var(--light)">Pending investigation completion, EM data receipt, deviation closure or QP review. Documented hold reason with expected resolution date. No distribution during hold.</div>
+          </div>
+          <div class="arrow">&#8595;</div>
+          <div class="node node-action">
+            <div class="node-title"><span class="step-num">11</span>Post-release record retention</div>
+            <div class="node-body">All batch records retained for the required period: 21 CFR 211.180(a) requires records be retained for at least 1 year after the expiry date or 3 years after distribution, whichever is longer. EU GMP requires records retained for at least 1 year after the shelf life of the batch or at least 5 years after certification, whichever is longer. Retain reference and retention samples per 21 CFR 211.170 and EU GMP Annex 19. Records must remain accessible and legible for the full retention period.</div>
+            <div class="node-reg">21 CFR 211.180(a) &nbsp;·&nbsp; 21 CFR 211.170 &nbsp;·&nbsp; EU GMP Annex 19</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-col">
+
+      <!-- BATCH RELEASE CHECKLIST -->
+      <div class="checklist-box">
+        <div class="checklist-header">Batch Release Evidence Checklist - Quality Unit Minimum Review</div>
+        <div class="checklist-body">
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>Executed batch manufacturing record - all steps completed, signed and dated with no unexplained blank fields</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>Component reconciliation within approved limits with all discrepancies investigated and resolved</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>Actual yield versus theoretical yield calculated and within approved range or discrepancy investigated</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>All release specification test results within limits - identity, assay, purity, related substances, physical, microbiological</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>Analytical method validation current - no expired validations or specification changes without updated validation</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>All analytical runs met system suitability criteria - no runs with failed system suitability reported as valid</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>Reference standard certificates of analysis current and within expiry on date of use</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>All deviations during manufacture closed with QA-approved investigations and documented batch impact conclusions</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>No open OOS investigations for this batch - all OOS results either invalidated with documented evidence or investigated to conclusion</div>
+          <div class="check-item"><span class="check-icon warn">&#9675;</span>Environmental monitoring data for the manufacturing period received, reviewed and within limits or exceedances investigated</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>Equipment used for manufacture was in calibrated and qualified status at time of use</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>Cleaning validation status current for all shared equipment used in manufacture of this batch</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>Packaging and labelling records complete with label reconciliation within approved limits</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>Label text confirmed against current approved artwork and market authorisation text</div>
+          <div class="check-item"><span class="check-icon warn">&#9675;</span>Serialisation data uploaded and verified where applicable</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>Stability samples placed on stability and confirmed per approved protocol</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>No adverse stability trending for this product that would affect shelf life conclusion</div>
+          <div class="check-item"><span class="check-icon ok">&#9675;</span>Approved specifications and analytical methods used are those in the current approved regulatory submission</div>
+        </div>
+      </div>
+
+      <!-- QP OBLIGATIONS -->
+      <div class="qp-box">
+        <h3>EU QP Certification - Key Personal Obligations (Annex 16)</h3>
+        <div class="qp-items">
+          <div class="qp-item">
+            <strong>Personal and non-delegable certification act</strong>
+            The QP must personally sign the batch certificate. The signature carries legal weight under Directive 2001/83/EC. The QP can delegate preparatory review activities to qualified staff but the certification act itself cannot be delegated. A QP who signs a certificate without personally assuring themselves of the requirements has not fulfilled their statutory obligations regardless of what subordinates have reviewed.
+          </div>
+          <div class="qp-item">
+            <strong>Manufacturing authorisation compliance</strong>
+            The QP must confirm the batch was manufactured at a site holding an appropriate Manufacturing Authorisation. For imported batches from third countries without an MRA the QP must ensure testing in the EU or EEA has been performed unless a recognised MRA exempts this requirement.
+          </div>
+          <div class="qp-item">
+            <strong>Marketing authorisation compliance</strong>
+            The QP must confirm that all manufacturing steps were carried out in accordance with the Marketing Authorisation. Any manufacturing that deviated from the approved MA without an appropriate variation is a certification risk for the QP regardless of product quality outcome.
+          </div>
+          <div class="qp-item">
+            <strong>Post-certification obligations</strong>
+            If the QP discovers after certification that a significant quality defect was not included in the batch documentation reviewed - such as the environmental monitoring exceedance case in this series - the QP has statutory obligations to notify the national competent authority. Personal legal liability does not end at the point of certification.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- THREE DISPOSITION OUTCOMES -->
+  <div class="disposition-box" style="margin-bottom:18px">
+    <div class="disp-card disp-rel">
+      <h4>Released</h4>
+      <p>All review elements complete and satisfactory. Quality Unit or QP approval documented with approver identity, date and signature. Certificate of analysis generated. Batch release date recorded in the quality system. Batch available for distribution. Retained samples confirmed. Stability samples on programme. All documentation archived. In the EU the signed batch certificate is the legal authorisation for supply to the market - distribution before QP certification is a criminal offence in most member states.</p>
+    </div>
+    <div class="disp-card disp-rej">
+      <h4>Rejected</h4>
+      <p>One or more elements of the review are non-conforming and cannot be remediated. Rejection documented with specific reason. Batch placed in rejected quarantine area with physical or system controls preventing accidental distribution. CAPA opened for the root cause of the rejection. Scope extension assessed per 21 CFR 211.192 - other batches of the same product and batches of other products associated with the same failure must be assessed. Rejection does not remove the investigation obligation.</p>
+    </div>
+    <div class="disp-card disp-hld">
+      <h4>On Hold - Pending Resolution</h4>
+      <p>Review elements are incomplete or require investigation before a disposition decision can be made. Hold documented with the specific reason for hold and the expected resolution date. Batch cannot be distributed while on hold. Common hold reasons: outstanding EM data from the manufacturing period, open deviation investigation, pending OOS investigation, QP review not yet completed, missing supplier certificate of analysis. Hold status reviewed at defined intervals with escalation if resolution is not progressing on schedule.</p>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="rules-row">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Release a batch before all release specification testing is complete. Release with an open OOS investigation. Release before all batch deviations are closed with documented impact conclusions. Allow production to release a batch without Quality Unit approval. Release based on verbal assurance that documentation will follow. Allow the same individual to perform manufacturing and release review.</p>
+    </div>
+    <div class="rule-card">
+      <h4>QU independence</h4>
+      <p>The Quality Unit must be independent of production under 21 CFR 211.22. If capacity constraints arise the answer is deputy approvers and standardised review packs - not shortcuts or production personnel making release decisions. Independence is fundamental and structural - it cannot be waived by management decision even under time or commercial pressure.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Record requirements</h4>
+      <p>21 CFR 211.192 requires review and approval of all production and control records before release. All records must be ALCOA+ compliant: attributable, legible, contemporaneous, original and accurate. Electronic records under 21 CFR Part 11 require full audit trails. Gaps in record completeness must be investigated before release - not noted and approved with a comment.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR 211.22 - Quality Unit release authority and independence. 21 CFR 211.165(f) - testing against specifications before release. 21 CFR 211.192 - production record review - top five FDA 483 citation. EU GMP Annex 16 - QP certification obligations. EU GMP Chapter 2 - key personnel. ICH Q7 Section 11 - API batch release. Directive 2001/83/EC - QP personal liability.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Batch Release Decision Flowchart &nbsp;&#183;&nbsp;
+    Built from 21 CFR 211.22, 211.165, 211.192, EU GMP Annex 16, EU GMP Chapter 2, Directive 2001/83/EC, ICH Q7 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
