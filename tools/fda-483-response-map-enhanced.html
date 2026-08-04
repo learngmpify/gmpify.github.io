@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FDA 483 Response Workflow  -  Enhanced | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0D1E2E;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --violet:  #8B5CF6;
+    --violet2: #A78BFA;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #0E2840;
+    --c2:      #1A1040;
+    --c3:      #0E3020;
+    --c4:      #2A1008;
+    --c1acc:   #38BDF8;
+    --c2acc:   #A78BFA;
+    --c3acc:   #4ADE80;
+    --c4acc:   #FB923C;
+    --warn-bg: #1A0808;
+    --warn-bdr:#DC2626;
+    --case-bg: #0A1A10;
+    --case-bdr:#16A34A;
+    --reg-bg:  #0A1020;
+    --reg-bdr: #3B82F6;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  /* SUBSCRIBER BANNER */
+  .sub-banner{background:linear-gradient(90deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05));border-bottom:1px solid rgba(139,92,246,0.3);padding:8px 40px;display:flex;align-items:center;justify-content:space-between;font-size:0.75rem}
+  .sub-banner-left{display:flex;align-items:center;gap:10px;color:var(--violet2)}
+  .sub-badge{background:var(--violet);color:var(--white);font-weight:800;font-size:0.68rem;padding:2px 10px;border-radius:10px;letter-spacing:0.5px}
+  .sub-banner-right{font-size:0.7rem;color:var(--mid);font-family:var(--mono)}
+
+  /* HEADER */
+  .header{background:linear-gradient(135deg,#080614 0%,#0D1E2E 60%,#0C0820 100%);border-bottom:2px solid var(--violet);padding:28px 40px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--violet2);font-style:normal}
+  .enhanced-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.35);border-radius:20px;padding:3px 12px;font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:8px;letter-spacing:0.5px}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--violet2);letter-spacing:0.5px;text-align:right;line-height:1.6}
+
+  /* MODE TOGGLE */
+  .mode-bar{background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 40px;display:flex;align-items:center;gap:16px}
+  .mode-label{font-size:0.75rem;color:var(--mid)}
+  .mode-btn{padding:5px 16px;border-radius:20px;font-size:0.75rem;font-weight:700;cursor:pointer;border:1.5px solid;transition:all 0.2s}
+  .mode-btn.active{background:var(--violet);color:var(--white);border-color:var(--violet)}
+  .mode-btn.inactive{background:transparent;color:var(--mid);border-color:rgba(255,255,255,0.15)}
+  .mode-hint{font-size:0.72rem;color:var(--mid);font-style:italic;margin-left:auto;display:none}
+
+  /* LEGEND */
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  /* MAIN WRAP */
+  .map-wrap{padding:28px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(139,92,246,0.03));border:1.5px solid rgba(139,92,246,0.25);border-radius:12px;padding:18px 24px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:flex-start;margin-bottom:24px}
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.95rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.78rem;color:var(--light);line-height:1.5;margin-bottom:6px}
+  .trigger-text .reg{font-size:0.7rem;font-family:var(--mono);color:var(--violet2)}
+  .trigger-sources{display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+  .src-chip{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);border-radius:10px;padding:2px 10px;font-size:0.68rem;font-family:var(--mono);color:var(--violet2);white-space:nowrap}
+
+  /* ENHANCED PANELS */
+  .reg-text{background:var(--reg-bg);border:1px solid var(--reg-bdr);border-radius:6px;padding:8px 12px;margin-top:8px}
+  .reg-text .rt-label{font-size:0.67rem;font-weight:700;color:#60A5FA;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+  .reg-text p{font-size:0.71rem;color:#BFDBFE;line-height:1.5;font-style:italic}
+  .wl-case{background:var(--warn-bg);border:1px solid var(--warn-bdr);border-radius:6px;padding:8px 12px;margin-top:8px}
+  .wl-case .wl-label{font-size:0.67rem;font-weight:700;color:#FC8181;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+  .wl-case p{font-size:0.71rem;color:#FECACA;line-height:1.5}
+  .best-practice{background:var(--case-bg);border:1px solid var(--case-bdr);border-radius:6px;padding:8px 12px;margin-top:8px}
+  .best-practice .bp-label{font-size:0.67rem;font-weight:700;color:#86EFAC;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+  .best-practice p{font-size:0.71rem;color:#BBF7D0;line-height:1.5}
+
+  /* FOUR PHASE GRID */
+  .phases-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;margin-bottom:24px}
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:12px 16px;font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;display:flex;flex-direction:column;gap:2px}
+  .phase-header .phase-num{font-size:0.65rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#082040;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#14083A;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#082818;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#280C04;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:16px;display:flex;flex-direction:column;gap:0}
+
+  /* NODES */
+  .node{border-radius:7px;padding:9px 11px;position:relative}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:7px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.09);border:1.5px solid rgba(229,62,62,0.35);border-radius:7px}
+  .node-title{font-size:0.74rem;font-weight:700;color:var(--white);margin-bottom:3px;display:flex;align-items:center;gap:5px}
+  .step-num{border-radius:50%;width:16px;height:16px;font-size:0.61rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(167,139,250,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(74,222,128,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(251,146,60,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.70rem;color:var(--light);line-height:1.48}
+  .node-reg{font-size:0.63rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.82rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.74rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+  .d-opts{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.67rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.67rem;font-weight:700;font-family:var(--mono)}
+
+  /* KNOWLEDGE CHECK OVERLAY */
+  .kc-overlay{display:none;position:absolute;inset:0;border-radius:7px;background:rgba(13,30,46,0.96);backdrop-filter:blur(2px);border:1.5px solid var(--violet);z-index:10;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:8px}
+  .kc-overlay span{font-size:0.75rem;font-weight:700;color:var(--violet2)}
+  .kc-mode .node-action{position:relative}
+  .kc-mode .node-action .kc-overlay{display:flex}
+  .kc-mode .node-action.revealed .kc-overlay{display:none}
+
+  /* BOTTOM SECTIONS */
+  .bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+
+  /* CASE BOX (reused voe-box pattern) */
+  .voe-box{background:rgba(229,62,62,0.07);border:1.5px solid rgba(229,62,62,0.3);border-radius:10px;padding:18px 20px}
+  .voe-box h3{font-size:0.78rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .voe-steps{display:flex;flex-direction:column;gap:8px}
+  .voe-step{background:rgba(229,62,62,0.08);border:1px solid rgba(229,62,62,0.15);border-radius:6px;padding:8px 12px;font-size:0.72rem;color:var(--light);line-height:1.5}
+  .voe-step strong{color:#FC8181;display:block;font-size:0.7rem;margin-bottom:2px}
+
+  /* CHECKLIST BOX (reused elements-box pattern) */
+  .elements-box{background:rgba(139,92,246,0.06);border:1.5px solid rgba(139,92,246,0.2);border-radius:10px;padding:18px 20px}
+  .elements-box h3{font-size:0.78rem;font-weight:700;color:var(--violet2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .elements-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .el-item{background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);border-radius:5px;padding:7px 10px;font-size:0.70rem;color:var(--light);line-height:1.4}
+  .el-item strong{color:var(--violet2);display:block;font-size:0.68rem;margin-bottom:1px}
+
+  /* RULES */
+  .rules-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--violet);border-radius:7px;padding:12px 13px}
+  .rule-card h4{font-size:0.70rem;font-weight:700;color:var(--violet2);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.69rem;color:var(--light);line-height:1.5}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  /* SITE ANNOTATION */
+  .annotation-section{background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 24px;margin-bottom:24px}
+  .annotation-section h3{font-size:0.82rem;font-weight:700;color:var(--white);margin-bottom:12px}
+  .annotation-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotation-field{display:flex;flex-direction:column;gap:4px}
+  .annotation-field label{font-size:0.7rem;font-weight:600;color:var(--mid);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.5px}
+  .annotation-field input,.annotation-field textarea{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:7px 10px;font-size:0.78rem;color:var(--white);font-family:var(--font);resize:vertical}
+  .annotation-field input:focus,.annotation-field textarea:focus{outline:none;border-color:var(--violet)}
+  .annotation-field textarea{min-height:60px}
+  .annotation-note{font-size:0.7rem;color:var(--mid);margin-top:8px;font-style:italic}
+
+  /* FOOTER */
+  .footer-bar{border-top:1px solid rgba(255,255,255,0.08);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;font-size:0.7rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer-bar a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);border-radius:4px;padding:2px 8px;font-family:var(--mono);font-size:0.66rem;color:var(--violet2)}
+
+  @media print{
+    .sub-banner,.mode-bar{display:none}
+    body{background:white;color:#111}
+    .header{background:#0D1E2E;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .wl-case,.reg-text,.best-practice{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .kc-overlay{display:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div class="sub-banner">
+  <div class="sub-banner-left">
+    <div class="sub-badge">SUBSCRIBER CONTENT</div>
+    <span>FDA 483 Response Workflow - Enhanced Edition with regulatory basis, escalation case pattern and site annotation</span>
+  </div>
+  <div class="sub-banner-right">learn.gmpify.com &nbsp;|&nbsp; GMPify Training &nbsp;|&nbsp; Subscriber exclusive</div>
+</div>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <div class="enhanced-tag">&#11088; Enhanced Subscriber Edition</div>
+    <h1>FDA 483 <em>Response Workflow</em></h1>
+    <div class="header-sub">FDA March 2026 Draft Guidance &nbsp;|&nbsp; 15 Business Day Window &nbsp;|&nbsp; Root Cause &nbsp;|&nbsp; CAPA &nbsp;|&nbsp; Warning Letter Risk Factors &nbsp;|&nbsp; Management Accountability</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      FDA Draft Guidance March 6, 2026<br>
+      Responding to FDA Form 483 Observations<br>
+      21 CFR Parts 210 and 211 &nbsp;·&nbsp; ICH Q10 &nbsp;·&nbsp; ICH Q9(R1) 2023
+    </div>
+    <div style="background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right">
+      50%+ warning letter probability<br>from inadequate 483 responses
+    </div>
+  </div>
+</div>
+
+<div class="mode-bar">
+  <span class="mode-label">View mode:</span>
+  <button class="mode-btn active" id="btn-reference" onclick="setMode('reference')">Reference Map</button>
+  <button class="mode-btn inactive" id="btn-assessment" onclick="setMode('assessment')">Self-Assessment Mode</button>
+  <span class="mode-hint" id="mode-hint">Click any hidden step to reveal it</span>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Receipt and Assessment</div>
+  <div class="legend-item"><div class="ls" style="background:#A78BFA"></div>Phase 2 - Investigation and Root Cause</div>
+  <div class="legend-item"><div class="ls" style="background:#4ADE80"></div>Phase 3 - Response Drafting</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 4 - Submission and Follow-up</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(30,8,8,0.9);border:1px solid #DC2626"></div>Escalation risk case</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(10,26,16,0.9);border:1px solid #16A34A"></div>Best practice</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(10,16,32,0.9);border:1px solid #3B82F6"></div>Regulatory basis</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.7rem;color:var(--violet2)">GMPify Enhanced Subscriber Edition</div>
+</div>
+
+<div class="map-wrap" id="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128196;</div>
+    <div class="trigger-text">
+      <h3>Form 483 Received at Close of FDA cGMP Inspection - 15 Business Day Clock Starts</h3>
+      <p>FDA's March 2026 Draft Guidance was issued in direct response to what FDA called inadequate responses due to lack of relevant data, excessive data and failure to address root causes. Research shows firms with inadequate 483 responses face greater than 50% probability of warning letter escalation. The response is not a writing exercise - it is a test of whether the company actually understands the problem.</p>
+      <div class="reg-text">
+        <div class="rt-label">FDA Draft Guidance March 6, 2026 - regulatory basis</div>
+        <p>Manufacturers are expected to submit a single comprehensive written response within 15 business days of Form 483 issuance, addressing each observation individually with documented root cause, systemic scope assessment, corrective action and supporting evidence, with senior management accountability demonstrated throughout.</p>
+      </div>
+      <div class="wl-case">
+        <div class="wl-label">&#9888; Illustrative escalation case - composite response failure pattern</div>
+        <p>A site received a Form 483 with four observations touching documentation practices, an OOS investigation and equipment maintenance records. The response was submitted on day 14: a single combined section addressed all four observations together, cited "retraining" as the corrective action for three of them without attaching training records, and proposed a 30-day completion timeline for a systemic documentation control gap. No senior management signature appeared. FDA classified the inspection OAI and issued a warning letter citing the response itself as evidence the firm did not understand the scope of its own quality system failure. This composite reflects the failure patterns FDA's March 2026 guidance identifies as most common, not a specific real enforcement action.</p>
+      </div>
+      <div class="reg">FDA Draft Guidance March 6, 2026 &nbsp;·&nbsp; 21 CFR Parts 210 and 211 &nbsp;·&nbsp; IJMPR research on 483 to WL escalation rates</div>
+    </div>
+    <div class="trigger-sources">
+      <div class="src-chip">15 business days</div>
+      <div class="src-chip">50%+ WL risk if inadequate</div>
+      <div class="src-chip">March 2026 Draft Guidance</div>
+    </div>
+  </div>
+
+  <!-- FOUR PHASES -->
+  <div class="phases-grid">
+
+    <!-- PHASE 1 -->
+    <div class="phase-col ph1">
+      <div class="phase-header">
+        <div class="phase-num">Phase 1 - Days 1 to 3</div>
+        Receipt and Initial Assessment
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">1</span>Convene response team immediately</div>
+          <div class="node-body">Assemble the response team on the day of receipt. Team must include senior management, quality leadership, regulatory affairs, operations leads for affected areas and legal counsel for complex observations. External consultant with FDA experience should be considered for serious or repeat observations.</div>
+          <div class="reg-text">
+            <div class="rt-label">FDA March 2026 Draft Guidance - regulatory basis</div>
+            <p>The response must be an organisational commitment, not a document QA prepares in isolation. Guidance places explicit weight on management accountability as a structural requirement of an adequate response, not an optional courtesy.</p>
+          </div>
+          <div class="node-reg">FDA March 2026 Draft Guidance &nbsp;·&nbsp; Management accountability section</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">2</span>Categorise and triage observations</div>
+          <div class="node-body">Identify whether each observation is standalone or part of a systemic failure. Identify repeat observations from previous 483s. Do not limit response to specific examples cited - assess systemic scope across all applicable products, equipment and processes.</div>
+          <div class="best-practice">
+            <div class="bp-label">&#10003; Best practice - repeat observation cross-check</div>
+            <p>Before triage begins, pull the site's full 483 and warning letter history for the past three inspection cycles and check every new observation against it. A repeat observation changes the entire response strategy - it requires an explanation of why the prior corrective action failed, not just a new one. Missing this check at triage means discovering it during drafting, when there is far less time to build the explanation properly.</p>
+          </div>
+          <div class="node-reg">FDA March 2026 Draft Guidance &nbsp;·&nbsp; ADRES May 2026</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">3</span>Develop response timeline</div>
+          <div class="node-body">Map backwards from the 15 business day deadline. Days 1-3: team assembly and triage. Days 3-7: investigations and preliminary root causes. Days 7-10: CAPA plans drafted. Days 10-13: response drafted and reviewed. Days 13-15: senior management review and submission.</div>
+          <div class="node-reg">FDA March 2026 Draft Guidance &nbsp;·&nbsp; 15 business day recommendation</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-decision">
+          <div class="decision-q">Are any observations related to patient safety or distributed product risk?</div>
+          <div class="d-opts">
+            <span class="opt-n">YES &#8594; Immediate escalation</span>
+            <span class="opt-y">NO &#8594; Phase 2</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase-col ph2">
+      <div class="phase-header">
+        <div class="phase-num">Phase 2 - Days 3 to 10</div>
+        Investigation and Root Cause
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">4</span>Initiate investigations for each observation</div>
+          <div class="node-body">Open a formal investigation for each observation. Assess systemic scope - does the same condition exist in other processes, products or sites beyond the specific example cited? Scope extension is required, not optional.</div>
+          <div class="reg-text">
+            <div class="rt-label">21 CFR 211.192 - regulatory basis</div>
+            <p>FDA expects responses to demonstrate understanding of the systemic nature of each finding, not just the specific cited instance. An investigation that confirms the observation is accurate without assessing broader scope does not meet the guidance's evidentiary standard.</p>
+          </div>
+          <div class="node-reg">21 CFR 211.192 &nbsp;·&nbsp; FDA March 2026 Draft Guidance &nbsp;·&nbsp; King Spalding March 2026</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">5</span>Identify root cause with objective evidence</div>
+          <div class="node-body">Root cause must go beyond the observation description. Use documented RCA methodology. Human error is not a root cause - it must explain why the quality system allowed the condition to exist.</div>
+          <div class="wl-case">
+            <div class="wl-label">&#9888; Illustrative case pattern - root cause shortcut</div>
+            <p>In the composite escalation case above, the root cause listed for all three documentation-related observations was "operator did not follow the existing procedure consistently." FDA's reviewer noted this explanation was repeated near-verbatim across unrelated observations, which itself signalled that no true root cause analysis had been performed for any of them.</p>
+          </div>
+          <div class="node-reg">ICH Q9(R1) 2023 &nbsp;·&nbsp; FDA March 2026 Draft Guidance root cause section</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-critical">
+          <div class="node-title" style="color:#FC8181">&#9888; Do not commit to timelines you cannot meet</div>
+          <div class="node-body" style="font-size:0.69rem">FDA will hold you to every commitment made in the 483 response. If a corrective action requires 90 days to implement properly, say 90 days and explain why. Do not promise 30 days and deliver nothing. Unmet commitments are cited in warning letters as evidence of systemic compliance failure.</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">6</span>Develop CAPA plans with specific owners and timelines</div>
+          <div class="node-body">For each observation define corrective actions addressing the root cause, named owner, realistic completion date, interim controls, effectiveness criterion and scheduled effectiveness check date. Actions must be specific.</div>
+          <div class="best-practice">
+            <div class="bp-label">&#10003; Best practice - specificity test</div>
+            <p>"We will retrain staff" is not a corrective action. "The following 8 operators will complete refresher training on SOP-QC-0031 by 15 September 2026 with competency assessment documented by the Line Supervisor" is. Run every draft CAPA action through this test before it goes into the response: does it name who, what, by when, and how success will be verified?</p>
+          </div>
+          <div class="node-reg">ICH Q10 Section 3.2.2 &nbsp;·&nbsp; FDA March 2026 Draft Guidance CAPA section</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase-col ph3">
+      <div class="phase-header">
+        <div class="phase-num">Phase 3 - Days 10 to 14</div>
+        Response Drafting and Review
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">7</span>Address each observation individually</div>
+          <div class="node-body">Do not group observations or address them collectively. Each observation must be addressed individually with its own root cause analysis, CAPA plan and supporting evidence.</div>
+          <div class="reg-text">
+            <div class="rt-label">FDA March 2026 Draft Guidance - regulatory basis</div>
+            <p>A response that addresses multiple observations collectively without individual root cause and CAPA for each is treated as inadequate regardless of the response length or apparent thoroughness of the overall document.</p>
+          </div>
+          <div class="node-reg">FDA March 2026 Draft Guidance structure requirements</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">8</span>Attach objective evidence not promises</div>
+          <div class="node-body">Every completed action must be supported by documentary evidence: updated SOP with approval date, training record with competency result, equipment qualification data, calibration certificate. FDA reviews evidence, not assertions.</div>
+          <div class="best-practice">
+            <div class="bp-label">&#10003; Best practice - evidence checklist per action</div>
+            <p>Before the response goes to senior management review, build a simple table mapping every completed action to the specific attachment that proves it happened. Any row without a matching attachment is not a completed action yet - it is a promise, and it belongs in the CAPA timeline section instead of the evidence section.</p>
+          </div>
+          <div class="node-reg">FDA March 2026 Draft Guidance evidence requirements &nbsp;·&nbsp; MedDeviceGuide April 2026</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">9</span>Address patient and product risk assessment</div>
+          <div class="node-body">Include a documented risk assessment evaluating whether distributed product has been or could be affected. For observations affecting product quality or sterility assurance the risk assessment must address distributed batches specifically.</div>
+          <div class="reg-text">
+            <div class="rt-label">FDA March 2026 Draft Guidance - regulatory basis</div>
+            <p>A response that does not address patient risk for product-affecting observations is incomplete regardless of the CAPA content. Patient risk assessment is a required response element, not a supplementary consideration.</p>
+          </div>
+          <div class="node-reg">FDA March 2026 Draft Guidance &nbsp;·&nbsp; ICH Q9(R1) 2023 &nbsp;·&nbsp; 21 CFR 211.192</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">10</span>Senior management review and accountability statement</div>
+          <div class="node-body">The response should be signed by or demonstrate the involvement of senior management, not just the quality unit. This confirms the organisation understands the systemic nature of the observations and has allocated appropriate resources.</div>
+          <div class="wl-case">
+            <div class="wl-label">&#9888; Illustrative case pattern - missing accountability signal</div>
+            <p>The composite escalation case's response carried only a QA manager's signature. FDA's guidance explicitly flags this pattern: a response signed only by a QA manager without evidence of senior management involvement reads to reviewers as evidence the organisation itself has not engaged with the seriousness of the findings.</p>
+          </div>
+          <div class="node-reg">FDA March 2026 Draft Guidance management accountability section</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase-col ph4">
+      <div class="phase-header">
+        <div class="phase-num">Phase 4 - Day 15 and beyond</div>
+        Submission and Follow-up
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">11</span>Submit single comprehensive response by day 15</div>
+          <div class="node-body">Submit one complete response addressing all observations by the 15 business day deadline. Send to the district office address on the Form 483. Keep a complete copy including all attachments. Confirm receipt.</div>
+          <div class="node-reg">FDA March 2026 Draft Guidance &nbsp;·&nbsp; 15 business day recommendation</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">12</span>Implement all committed actions on schedule</div>
+          <div class="node-body">Execute every corrective action on the committed schedule. If a committed timeline cannot be met, notify FDA proactively with a revised timeline and explanation before the original deadline passes.</div>
+          <div class="best-practice">
+            <div class="bp-label">&#10003; Best practice - proactive slippage notification</div>
+            <p>Build a standing CAPA tracking log with a 30-day-ahead alert for every committed date in the response. If a date is going to slip, draft and send the notification to the district office before the original deadline, not after. FDA's own guidance treats proactive communication as materially better than silence, even when the news itself is a delay.</p>
+          </div>
+          <div class="node-reg">FDA March 2026 Draft Guidance commitment tracking section</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">13</span>Conduct effectiveness checks and document results</div>
+          <div class="node-body">At each pre-defined effectiveness check date collect objective data against the pre-defined criterion. If an effectiveness check fails the CAPA must be escalated, not closed. Missed effectiveness checks are as serious as failed ones.</div>
+          <div class="reg-text">
+            <div class="rt-label">ICH Q10 Section 3.2.2 - regulatory basis</div>
+            <p>Effectiveness verification is expected to be scheduled, tracked and documented regardless of outcome, with failed checks routed back into the CAPA system rather than closed administratively.</p>
+          </div>
+          <div class="node-reg">ICH Q10 Section 3.2.2 &nbsp;·&nbsp; FDA March 2026 Draft Guidance VOE section</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-decision">
+          <div class="decision-q">Does FDA request additional information or schedule reinspection?</div>
+          <div class="d-opts">
+            <span class="opt-n">YES &#8594; Respond promptly</span>
+            <span class="opt-y">NO &#8594; Continue CAPA monitoring</span>
+          </div>
+        </div>
+        <div class="arrow">&#8595; satisfactory outcome</div>
+
+        <div class="node" style="background:rgba(74,222,128,0.1);border:1.5px solid rgba(74,222,128,0.3);border-radius:7px;padding:10px 12px;text-align:center">
+          <div style="font-size:0.82rem;font-weight:800;color:var(--c3acc);margin-bottom:3px">&#10003; CLOSED - VAI OR NAI CLASSIFICATION</div>
+          <div style="font-size:0.69rem;color:var(--light)">All commitments fulfilled &nbsp;·&nbsp; Effectiveness checks documented &nbsp;·&nbsp; Lessons learned integrated into quality system</div>
+          <div style="font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px">FDA EIR classification &nbsp;·&nbsp; FDA District Office</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM GRID -->
+  <div class="bottom-grid">
+
+    <div class="voe-box">
+      <h3>&#9888; What Makes a Response Inadequate - Warning Letter Risk Factors</h3>
+      <div class="voe-steps">
+        <div class="voe-step"><strong>Generic commitments without root cause</strong>"We will implement CAPA" or "we will retrain staff" without identifying why the system failed. FDA's March 2026 guidance cites this as the primary driver of inadequate responses.</div>
+        <div class="voe-step"><strong>Observations addressed collectively</strong>Grouping observations in a single response section rather than addressing each individually, or treating multiple observations as one systemic issue without individual root cause for each.</div>
+        <div class="voe-step"><strong>Excessive data without analysis</strong>Submitting large volumes of data without analysis or conclusions. FDA specifically cited this as an inadequacy driver in the March 2026 guidance.</div>
+        <div class="voe-step"><strong>Promises without evidence</strong>Stating that actions have been completed without attaching documentary evidence - training records not attached, updated procedures not provided, calibration certificates not included.</div>
+        <div class="voe-step"><strong>Timelines that are not met</strong>Committing to 30-day timelines for complex systemic corrections that realistically require 90 days. Unmet timelines at reinspection are cited as evidence of continued non-compliance.</div>
+      </div>
+    </div>
+
+    <div class="elements-box">
+      <h3>What Makes a Response Adequate - March 2026 Guidance</h3>
+      <div class="elements-grid">
+        <div class="el-item"><strong>Each observation addressed individually</strong>Individual root cause, CAPA plan and evidence package per observation. Grouped responses are treated as inadequate.</div>
+        <div class="el-item"><strong>Root cause with objective evidence</strong>Documented RCA methodology. Specific system failure identified, not human error or vague compliance language.</div>
+        <div class="el-item"><strong>Systemic scope assessed</strong>Assessment of whether the condition exists elsewhere, documented even when the conclusion is no other areas affected.</div>
+        <div class="el-item"><strong>Evidence attached, not promised</strong>Completed actions supported by documentary evidence attached to the response.</div>
+        <div class="el-item"><strong>Realistic timelines with interim controls</strong>Commitments that can actually be met, with interim controls for gaps that cannot close immediately.</div>
+        <div class="el-item"><strong>Patient risk assessment included</strong>Risk assessment addressing whether distributed product has been or could be affected.</div>
+        <div class="el-item" style="grid-column:1/-1"><strong>Senior management accountability demonstrated</strong>Response demonstrates senior management involvement and commitment, not just quality unit sign-off. Executive understanding that the response is an organisational commitment to genuine remediation.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RULES -->
+  <div class="rules-row">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Submit a preliminary acknowledgement and promise a full response later. Group observations in a collective response. Commit to timelines you cannot meet. Submit data without analysis. Respond only to the specific example cited without assessing systemic scope. Miss the 15 business day window without communication.</p>
+    </div>
+    <div class="rule-card">
+      <h4>The 15-day window</h4>
+      <p>FDA reviews responses submitted within 15 business days in detail before escalation decisions. Responses after 15 days may still be reviewed but the window of maximum influence is lost. If you genuinely need more time, contact the district office proactively - do not simply miss the deadline and submit late.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Repeat observations</h4>
+      <p>Repeat observations from prior inspections carry the highest warning letter escalation risk. FDA characterises them as evidence of systemic compliance failure. A repeat observation requires an explanation of why the previous corrective action did not prevent recurrence, not just a new one.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key references</h4>
+      <p>FDA Draft Guidance March 6, 2026 - Responding to FDA Form 483 Observations at the Conclusion of a Drug cGMP Inspection. 21 CFR Parts 210 and 211. ICH Q10 Section 3.2.2 CAPA requirements. ICH Q9(R1) 2023 risk assessment.</p>
+    </div>
+  </div>
+
+  <!-- SITE ANNOTATION -->
+  <div class="annotation-section">
+    <h3>Site-Specific Annotation - Personalise This Map for Your Quality System</h3>
+    <div class="annotation-grid">
+      <div class="annotation-field">
+        <label>Site / Facility Name</label>
+        <input type="text" placeholder="e.g. Acme Pharma Ltd - Dublin Manufacturing Site">
+      </div>
+      <div class="annotation-field">
+        <label>FEI Number / District Office</label>
+        <input type="text" placeholder="e.g. FEI 3004567890 - New York District Office">
+      </div>
+      <div class="annotation-field">
+        <label>483 Response Team Lead Role</label>
+        <input type="text" placeholder="e.g. Site Quality Director">
+      </div>
+      <div class="annotation-field">
+        <label>Internal 483 Response SOP Reference</label>
+        <input type="text" placeholder="e.g. SOP-QA-0041 Rev 3">
+      </div>
+      <div class="annotation-field">
+        <label>Response Timeline Owner</label>
+        <input type="text" placeholder="e.g. QA Manager tracks Day 1-15 milestone schedule">
+      </div>
+      <div class="annotation-field">
+        <label>Senior Management Sign-off Role</label>
+        <input type="text" placeholder="e.g. VP Quality or Site General Manager">
+      </div>
+      <div class="annotation-field" style="grid-column:1/-1">
+        <label>Site-Specific Notes or Process Deviations from Standard Framework</label>
+        <textarea placeholder="e.g. All Form 483 receipts trigger same-day notification to Regulatory Affairs and Legal regardless of observation severity. Patient risk assessments for sterile product observations require Medical Affairs sign-off before submission."></textarea>
+      </div>
+    </div>
+    <div class="annotation-note">Annotations are stored in your browser session only. To save permanently complete annotations then use your browser Print function (Ctrl+P or Cmd+P) to save as PDF with your site-specific information included.</div>
+  </div>
+
+</div>
+
+<div class="footer-bar">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;·&nbsp;
+    FDA 483 Response Workflow - Enhanced Subscriber Edition &nbsp;·&nbsp;
+    Built from FDA Draft Guidance March 2026, 21 CFR Parts 210 and 211, ICH Q10, ICH Q9(R1) 2023 &nbsp;·&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="footer-badge">Subscriber Exclusive</div>
+    <div class="footer-badge">Enhanced Edition</div>
+    <div class="footer-badge">Issue 6 of 10</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+<script>
+function setMode(mode) {
+  const wrap = document.getElementById('map-wrap');
+  const btnRef = document.getElementById('btn-reference');
+  const btnAss = document.getElementById('btn-assessment');
+  const hint = document.getElementById('mode-hint');
+  if (mode === 'assessment') {
+    wrap.classList.add('kc-mode');
+    btnRef.classList.remove('active'); btnRef.classList.add('inactive');
+    btnAss.classList.remove('inactive'); btnAss.classList.add('active');
+    hint.style.display = 'block';
+    document.querySelectorAll('.phase-body .node-action').forEach(node => {
+      if (!node.querySelector('.kc-overlay')) {
+        const overlay = document.createElement('div');
+        overlay.className = 'kc-overlay';
+        overlay.innerHTML = '<span>Click to reveal this step</span>';
+        overlay.onclick = function(e) { e.stopPropagation(); node.classList.add('revealed'); };
+        node.style.position = 'relative';
+        node.appendChild(overlay);
+      }
+      node.classList.remove('revealed');
+    });
+  } else {
+    wrap.classList.remove('kc-mode');
+    btnAss.classList.remove('active'); btnAss.classList.add('inactive');
+    btnRef.classList.remove('inactive'); btnRef.classList.add('active');
+    hint.style.display = 'none';
+    document.querySelectorAll('.node-action').forEach(n => n.classList.remove('revealed'));
+  }
+}
+</script>
+</body>
+</html>
