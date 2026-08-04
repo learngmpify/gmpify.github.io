@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Environmental Monitoring Programme Workflow  -  Enhanced | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0D1E2E;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --violet:  #8B5CF6;
+    --violet2: #A78BFA;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #0E2840;
+    --c2:      #1A1040;
+    --c3:      #0E3020;
+    --c4:      #2A1008;
+    --c1acc:   #38BDF8;
+    --c2acc:   #A78BFA;
+    --c3acc:   #4ADE80;
+    --c4acc:   #FB923C;
+    --warn-bg: #1A0808;
+    --warn-bdr:#DC2626;
+    --case-bg: #0A1A10;
+    --case-bdr:#16A34A;
+    --reg-bg:  #0A1020;
+    --reg-bdr: #3B82F6;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  /* SUBSCRIBER BANNER */
+  .sub-banner{background:linear-gradient(90deg,rgba(139,92,246,0.15),rgba(139,92,246,0.05));border-bottom:1px solid rgba(139,92,246,0.3);padding:8px 40px;display:flex;align-items:center;justify-content:space-between;font-size:0.75rem}
+  .sub-banner-left{display:flex;align-items:center;gap:10px;color:var(--violet2)}
+  .sub-badge{background:var(--violet);color:var(--white);font-weight:800;font-size:0.68rem;padding:2px 10px;border-radius:10px;letter-spacing:0.5px}
+  .sub-banner-right{font-size:0.7rem;color:var(--mid);font-family:var(--mono)}
+
+  /* HEADER */
+  .header{background:linear-gradient(135deg,#080614 0%,#0D1E2E 60%,#0C0820 100%);border-bottom:2px solid var(--violet);padding:28px 40px 24px;display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--violet2);font-style:normal}
+  .enhanced-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.35);border-radius:20px;padding:3px 12px;font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:8px;letter-spacing:0.5px}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--violet2);letter-spacing:0.5px;text-align:right;line-height:1.6}
+
+  /* MODE TOGGLE */
+  .mode-bar{background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 40px;display:flex;align-items:center;gap:16px}
+  .mode-label{font-size:0.75rem;color:var(--mid)}
+  .mode-btn{padding:5px 16px;border-radius:20px;font-size:0.75rem;font-weight:700;cursor:pointer;border:1.5px solid;transition:all 0.2s}
+  .mode-btn.active{background:var(--violet);color:var(--white);border-color:var(--violet)}
+  .mode-btn.inactive{background:transparent;color:var(--mid);border-color:rgba(255,255,255,0.15)}
+  .mode-hint{font-size:0.72rem;color:var(--mid);font-style:italic;margin-left:auto;display:none}
+
+  /* LEGEND */
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  /* MAIN WRAP */
+  .map-wrap{padding:28px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(139,92,246,0.03));border:1.5px solid rgba(139,92,246,0.25);border-radius:12px;padding:18px 24px;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:flex-start;margin-bottom:24px}
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.95rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.78rem;color:var(--light);line-height:1.5;margin-bottom:6px}
+  .trigger-text .reg{font-size:0.7rem;font-family:var(--mono);color:var(--violet2)}
+  .trigger-sources{display:flex;flex-direction:column;gap:5px;align-items:flex-end}
+  .src-chip{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);border-radius:10px;padding:2px 10px;font-size:0.68rem;font-family:var(--mono);color:var(--violet2);white-space:nowrap}
+
+  /* ENHANCED PANELS */
+  .reg-text{background:var(--reg-bg);border:1px solid var(--reg-bdr);border-radius:6px;padding:8px 12px;margin-top:8px}
+  .reg-text .rt-label{font-size:0.67rem;font-weight:700;color:#60A5FA;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+  .reg-text p{font-size:0.71rem;color:#BFDBFE;line-height:1.5;font-style:italic}
+  .wl-case{background:var(--warn-bg);border:1px solid var(--warn-bdr);border-radius:6px;padding:8px 12px;margin-top:8px}
+  .wl-case .wl-label{font-size:0.67rem;font-weight:700;color:#FC8181;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+  .wl-case p{font-size:0.71rem;color:#FECACA;line-height:1.5}
+  .best-practice{background:var(--case-bg);border:1px solid var(--case-bdr);border-radius:6px;padding:8px 12px;margin-top:8px}
+  .best-practice .bp-label{font-size:0.67rem;font-weight:700;color:#86EFAC;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+  .best-practice p{font-size:0.71rem;color:#BBF7D0;line-height:1.5}
+
+  /* GRADE ROW */
+  .grade-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+  .grade-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);border-radius:10px;padding:14px 16px}
+  .grade-card h4{font-size:0.85rem;font-weight:800;color:var(--white);margin-bottom:6px}
+  .grade-card p{font-size:0.71rem;color:var(--light);line-height:1.5;margin-bottom:8px}
+  .grade-stats{display:flex;flex-direction:column;gap:3px}
+  .grade-stat{font-size:0.66rem;font-family:var(--mono);color:var(--mid);display:flex;justify-content:space-between;gap:8px}
+  .grade-stat strong{color:var(--teal)}
+
+  /* FOUR PHASE GRID */
+  .phases-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;margin-bottom:24px}
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:12px 16px;font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;display:flex;flex-direction:column;gap:2px}
+  .phase-header .phase-num{font-size:0.65rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#082040;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#14083A;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#082818;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#280C04;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:16px;display:flex;flex-direction:column;gap:0}
+
+  /* NODES */
+  .node{border-radius:7px;padding:9px 11px;position:relative}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:7px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.09);border:1.5px solid rgba(229,62,62,0.35);border-radius:7px}
+  .node-title{font-size:0.74rem;font-weight:700;color:var(--white);margin-bottom:3px;display:flex;align-items:center;gap:5px}
+  .step-num{border-radius:50%;width:16px;height:16px;font-size:0.61rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(167,139,250,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(74,222,128,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(251,146,60,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.70rem;color:var(--light);line-height:1.48}
+  .node-reg{font-size:0.63rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.82rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.74rem;font-weight:700;color:var(--gold);margin-bottom:4px}
+  .d-opts{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.67rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.67rem;font-weight:700;font-family:var(--mono)}
+  .opt-mid{color:var(--gold);font-size:0.67rem;font-weight:700;font-family:var(--mono)}
+
+  /* KNOWLEDGE CHECK OVERLAY */
+  .kc-overlay{display:none;position:absolute;inset:0;border-radius:7px;background:rgba(13,30,46,0.96);backdrop-filter:blur(2px);border:1.5px solid var(--violet);z-index:10;align-items:center;justify-content:center;text-align:center;cursor:pointer;padding:8px}
+  .kc-overlay span{font-size:0.75rem;font-weight:700;color:var(--violet2)}
+  .kc-mode .node-action{position:relative}
+  .kc-mode .node-action .kc-overlay{display:flex}
+  .kc-mode .node-action.revealed .kc-overlay{display:none}
+
+  /* BOTTOM SECTIONS */
+  .bottom-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+
+  /* WARNING LETTER TIMELINE BOX (reused voe-box pattern) */
+  .voe-box{background:rgba(229,62,62,0.07);border:1.5px solid rgba(229,62,62,0.3);border-radius:10px;padding:18px 20px}
+  .voe-box h3{font-size:0.78rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .voe-steps{display:flex;flex-direction:column;gap:8px}
+  .voe-step{background:rgba(229,62,62,0.08);border:1px solid rgba(229,62,62,0.15);border-radius:6px;padding:8px 12px;font-size:0.72rem;color:var(--light);line-height:1.5}
+  .voe-step strong{color:#FC8181;display:block;font-size:0.7rem;margin-bottom:2px}
+
+  /* CCS COMPONENTS BOX (reused elements-box pattern) */
+  .elements-box{background:rgba(139,92,246,0.06);border:1.5px solid rgba(139,92,246,0.2);border-radius:10px;padding:18px 20px}
+  .elements-box h3{font-size:0.78rem;font-weight:700;color:var(--violet2);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .elements-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .el-item{background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.15);border-radius:5px;padding:7px 10px;font-size:0.70rem;color:var(--light);line-height:1.4}
+  .el-item strong{color:var(--violet2);display:block;font-size:0.68rem;margin-bottom:1px}
+
+  /* RULES */
+  .rules-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--violet);border-radius:7px;padding:12px 13px}
+  .rule-card h4{font-size:0.70rem;font-weight:700;color:var(--violet2);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.69rem;color:var(--light);line-height:1.5}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  /* SITE ANNOTATION */
+  .annotation-section{background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:12px;padding:18px 24px;margin-bottom:24px}
+  .annotation-section h3{font-size:0.82rem;font-weight:700;color:var(--white);margin-bottom:12px}
+  .annotation-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotation-field{display:flex;flex-direction:column;gap:4px}
+  .annotation-field label{font-size:0.7rem;font-weight:600;color:var(--mid);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.5px}
+  .annotation-field input,.annotation-field textarea{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:7px 10px;font-size:0.78rem;color:var(--white);font-family:var(--font);resize:vertical}
+  .annotation-field input:focus,.annotation-field textarea:focus{outline:none;border-color:var(--violet)}
+  .annotation-field textarea{min-height:60px}
+  .annotation-note{font-size:0.7rem;color:var(--mid);margin-top:8px;font-style:italic}
+
+  /* FOOTER */
+  .footer-bar{border-top:1px solid rgba(255,255,255,0.08);padding:14px 40px;display:flex;align-items:center;justify-content:space-between;font-size:0.7rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer-bar a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);border-radius:4px;padding:2px 8px;font-family:var(--mono);font-size:0.66rem;color:var(--violet2)}
+
+  @media print{
+    .sub-banner,.mode-bar{display:none}
+    body{background:white;color:#111}
+    .header{background:#0D1E2E;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .wl-case,.reg-text,.best-practice{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .kc-overlay{display:none!important}
+  }
+</style>
+</head>
+<body>
+
+<div class="sub-banner">
+  <div class="sub-banner-left">
+    <div class="sub-badge">SUBSCRIBER CONTENT</div>
+    <span>Environmental Monitoring Programme Workflow - Enhanced Edition with regulatory basis, warning letter case and site annotation</span>
+  </div>
+  <div class="sub-banner-right">learn.gmpify.com &nbsp;|&nbsp; GMPify Training &nbsp;|&nbsp; Subscriber exclusive</div>
+</div>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <div class="enhanced-tag">&#11088; Enhanced Subscriber Edition</div>
+    <h1>Environmental Monitoring <em>Programme Workflow</em></h1>
+    <div class="header-sub">EU GMP Annex 1 2022 &nbsp;|&nbsp; 21 CFR 211.42 and 211.113 &nbsp;|&nbsp; FDA Aseptic Processing Guidance &nbsp;|&nbsp; USP 1116 &nbsp;|&nbsp; ISO 14644-1:2015 &nbsp;|&nbsp; PDA TR 13</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      EU GMP Annex 1 2022 &nbsp;·&nbsp; 21 CFR 211.42 and 211.113<br>
+      FDA Aseptic Guidance 2004 &nbsp;·&nbsp; USP 1116<br>
+      ISO 14644-1:2015 &nbsp;·&nbsp; PDA TR 13
+    </div>
+    <div style="background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right">
+      German 2026 WL: 47 microbial recoveries<br>over 27 months - known design flaw never corrected
+    </div>
+  </div>
+</div>
+
+<div class="mode-bar">
+  <span class="mode-label">View mode:</span>
+  <button class="mode-btn active" id="btn-reference" onclick="setMode('reference')">Reference Map</button>
+  <button class="mode-btn inactive" id="btn-assessment" onclick="setMode('assessment')">Self-Assessment Mode</button>
+  <span class="mode-hint" id="mode-hint">Click any hidden step to reveal it</span>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Programme Design</div>
+  <div class="legend-item"><div class="ls" style="background:#A78BFA"></div>Phase 2 - Sampling and Testing</div>
+  <div class="legend-item"><div class="ls" style="background:#4ADE80"></div>Phase 3 - Review and Trending</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 4 - Programme Maintenance</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(30,8,8,0.9);border:1px solid #DC2626"></div>Warning letter case</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(10,26,16,0.9);border:1px solid #16A34A"></div>Best practice</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(10,16,32,0.9);border:1px solid #3B82F6"></div>Regulatory basis</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.7rem;color:var(--violet2)">GMPify Enhanced Subscriber Edition</div>
+</div>
+
+<div class="map-wrap" id="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#129452;</div>
+    <div class="trigger-text">
+      <h3>Environmental Monitoring Programme - Continuous Assessment of Cleanroom Contamination Control</h3>
+      <p>EU GMP Annex 1 2022, effective August 2023, mandated a formal Contamination Control Strategy for all sterile manufacturing sites. 21 CFR 211.42 and 211.113 were the two most cited provisions in 2024 sterile manufacturer inspections. The most instructive recent enforcement case is not one where EM failed to detect a problem - it is one where EM detected the same problem 47 times over 27 months and the facility's corrective action system never acted on a known equipment design flaw.</p>
+      <div class="reg-text">
+        <div class="rt-label">EU GMP Annex 1 2022 Section 2.2 - regulatory basis</div>
+        <p>Every sterile manufacturing site is expected to maintain a documented, holistic Contamination Control Strategy covering facility design, personnel practices, cleaning and disinfection, environmental monitoring and CAPA, reviewed and updated as a living document whenever significant changes occur.</p>
+      </div>
+      <div class="wl-case">
+        <div class="wl-label">&#9888; German 2026 warning letter - detection without correction</div>
+        <p>A sterile manufacturing site was cited for 47 microbial recoveries at ISO 5 filling lines over 27 months, tied to a known equipment design flaw that was never corrected. The EM programme was working exactly as designed - it detected the contamination pattern repeatedly and consistently. The failure was downstream of detection: the facility's change control and corrective action systems did not act on what the EM data was showing them.</p>
+      </div>
+      <div class="reg">EU GMP Annex 1 Section 9 (2022) &nbsp;·&nbsp; 21 CFR 211.42 and 211.113 &nbsp;·&nbsp; FDA Aseptic Guidance 2004 &nbsp;·&nbsp; USP 1116 &nbsp;·&nbsp; ISO 14644-1:2015 &nbsp;·&nbsp; PDA TR 13</div>
+    </div>
+    <div class="trigger-sources">
+      <div class="src-chip">EU GMP Annex 1 2022</div>
+      <div class="src-chip">FDA Aseptic Guide 2004</div>
+      <div class="src-chip">USP 1116</div>
+      <div class="src-chip">ISO 14644-1:2015</div>
+      <div class="src-chip">PDA TR 13</div>
+    </div>
+  </div>
+
+  <!-- GRADE ROW -->
+  <div class="grade-row">
+    <div class="grade-card">
+      <h4>Grade A / ISO 5</h4>
+      <p>Local zone for high-risk operations: aseptic filling, stoppering, open ampoules, open vials. Unidirectional airflow required. Continuous particle monitoring mandatory per Annex 1 2022.</p>
+      <div class="grade-stats">
+        <div class="grade-stat"><span>Particles 0.5&mu;m at rest</span><strong>3,520/m3</strong></div>
+        <div class="grade-stat"><span>Particles 0.5&mu;m in op</span><strong>3,520/m3</strong></div>
+        <div class="grade-stat"><span>Viable settle plates</span><strong>&lt;1 CFU/4hr</strong></div>
+      </div>
+    </div>
+    <div class="grade-card">
+      <h4>Grade B / ISO 7</h4>
+      <p>Background environment for Grade A aseptic preparation and filling. Personnel in Grade A and B must be fully gowned. Continuous monitoring required for Grade A in Grade B background.</p>
+      <div class="grade-stats">
+        <div class="grade-stat"><span>Particles 0.5&mu;m at rest</span><strong>3,520/m3</strong></div>
+        <div class="grade-stat"><span>Particles 0.5&mu;m in op</span><strong>352,000/m3</strong></div>
+        <div class="grade-stat"><span>Viable settle plates</span><strong>5 CFU/4hr</strong></div>
+      </div>
+    </div>
+    <div class="grade-card">
+      <h4>Grade C / ISO 8</h4>
+      <p>Clean area for less critical stages of aseptic product manufacture. Preparation of solutions to be filtered. Filling of terminally sterilised products.</p>
+      <div class="grade-stats">
+        <div class="grade-stat"><span>Particles 0.5&mu;m at rest</span><strong>352,000/m3</strong></div>
+        <div class="grade-stat"><span>Particles 0.5&mu;m in op</span><strong>3,520,000/m3</strong></div>
+        <div class="grade-stat"><span>Viable settle plates</span><strong>50 CFU/4hr</strong></div>
+      </div>
+    </div>
+    <div class="grade-card">
+      <h4>Grade D / ISO 8</h4>
+      <p>Clean area for handling components after washing. Preparation of components and materials to be autoclaved or depyrogenated. Defined monitoring frequency based on risk assessment.</p>
+      <div class="grade-stats">
+        <div class="grade-stat"><span>Particles 0.5&mu;m at rest</span><strong>3,520,000/m3</strong></div>
+        <div class="grade-stat"><span>Viable settle plates</span><strong>100 CFU/4hr</strong></div>
+        <div class="grade-stat"><span>Frequency</span><strong>Risk-based</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOUR PHASES -->
+  <div class="phases-grid">
+
+    <!-- PHASE 1 -->
+    <div class="phase-col ph1">
+      <div class="phase-header">
+        <div class="phase-num">Phase 1</div>
+        Programme Design and Qualification
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">1</span>Develop Contamination Control Strategy</div>
+          <div class="node-body">EU GMP Annex 1 2022 requires a formal CCS documenting the holistic approach to contamination prevention across facility design, personnel practices, cleaning and disinfection, environmental monitoring and CAPA. The CCS must be a living document updated when significant changes occur.</div>
+          <div class="best-practice">
+            <div class="bp-label">&#10003; Best practice - CCS as a living reference</div>
+            <p>Treat the CCS as the master index connecting every other GMP system - facility design, EM, cleaning validation, CAPA - into one traceable document. When you update any one component, cross-reference the CCS update in the same change control record. A CCS written once and never touched again is not a living document, regardless of what the cover page says.</p>
+          </div>
+          <div class="node-reg">EU GMP Annex 1 2022 Section 2.2 &nbsp;·&nbsp; 21 CFR 211.42</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">2</span>Risk-based sampling location selection</div>
+          <div class="node-body">Select monitoring locations based on documented risk assessment per ICH Q9(R1) 2023. Criteria: proximity to critical operations, frequency of human intervention, airflow pattern analysis, historical contamination data, equipment design including dead legs. Sampling locations must include worst-case positions not representative positions.</div>
+          <div class="reg-text">
+            <div class="rt-label">EU GMP Annex 1 2022 Section 9 - regulatory basis</div>
+            <p>Monitoring locations must be selected using a documented risk assessment that considers proximity to critical operations, frequency of human intervention, airflow patterns and historical contamination data. Worst-case positions must be included, not just locations that are convenient or typically clean.</p>
+          </div>
+          <div class="node-reg">EU GMP Annex 1 2022 Section 9 &nbsp;·&nbsp; ICH Q9(R1) 2023 &nbsp;·&nbsp; USP 1116</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">3</span>Set alert and action limits from historical data</div>
+          <div class="node-body">Alert limits set at the 90th percentile of historical baseline data. Action limits set at the 95th percentile. Both must be set below the regulatory specification limit for the grade. Limits derived from the facility's own historical data, not adopted from generic guideline values.</div>
+          <div class="best-practice">
+            <div class="bp-label">&#10003; Best practice - facility-specific limit setting</div>
+            <p>Derive alert and action limits exclusively from your own facility's historical baseline data using a documented statistical method, not from generic industry reference values. A May 2026 case illustrates the risk of importing published guideline numbers as facility limits without validating them against actual site performance - the imported limits were too loose to catch a genuine developing trend.</p>
+          </div>
+          <div class="node-reg">EU GMP Annex 1 2022 &nbsp;·&nbsp; USP 1116 &nbsp;·&nbsp; PDA TR 13</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">4</span>Qualify monitoring equipment and methods</div>
+          <div class="node-body">Particle counters calibrated per ISO 21501-4, probe placement qualified, isokinetic sampling velocity confirmed for UDAF zones. Microbial sampling methods qualified using appropriate growth promotion testing. All methods documented with analyst training records.</div>
+          <div class="node-reg">ISO 14644-1:2015 &nbsp;·&nbsp; ISO 21501-4 &nbsp;·&nbsp; EU GMP Annex 1 2022 Section 9</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase-col ph2">
+      <div class="phase-header">
+        <div class="phase-num">Phase 2</div>
+        Sampling and Testing
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">5</span>Execute monitoring at defined frequency</div>
+          <div class="node-body">Grade A: continuous particle monitoring during critical operations, viable monitoring at each session. Grade B: defined-frequency particle monitoring, settle plates for full duration of critical operations. Grade C and D: periodic risk-based monitoring. All monitoring conducted operational and at-rest for Grade A and B.</div>
+          <div class="node-reg">EU GMP Annex 1 2022 Section 9.2 to 9.5 &nbsp;·&nbsp; FDA Aseptic Guidance 2004</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">6</span>Incubate and read microbial samples</div>
+          <div class="node-body">Dual-temperature incubation to recover mesophiles and psychrophiles per PDA TR 13. Record all results including zero counts. Organisms recovered identified to genus and species level for Grade A and B using validated methods.</div>
+          <div class="best-practice">
+            <div class="bp-label">&#10003; Best practice - complete result reporting</div>
+            <p>Record every result including zero counts and within-limit results, not only exceedances. Selective non-reporting of clean results distorts trend data and can appear as data manipulation during inspection. Identify all Grade A and B isolates to species level even when the count itself is well within limits.</p>
+          </div>
+          <div class="node-reg">PDA TR 13 &nbsp;·&nbsp; EU GMP Annex 1 2022 &nbsp;·&nbsp; USP 1116</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-decision">
+          <div class="decision-q">Do results exceed alert limit or action limit?</div>
+          <div class="d-opts">
+            <span class="opt-mid">ALERT &#8594; Investigate</span>
+            <span class="opt-n">ACTION &#8594; Escalate</span>
+            <span class="opt-y">WITHIN LIMITS &#8594; Record and trend</span>
+          </div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-critical">
+          <div class="node-title" style="color:#FC8181">&#9888; Do not do this after an exceedance</div>
+          <div class="node-body" style="font-size:0.68rem">Do not invalidate a result without objective evidence of sampling, incubation or identification error &nbsp;&#8901;&nbsp; do not treat a passing resample as resolving the original exceedance &nbsp;&#8901;&nbsp; do not increase monitoring frequency as a substitute for root cause investigation &nbsp;&#8901;&nbsp; do not release product on an unresolved exceedance without documented QA risk assessment.</div>
+        </div>
+        <div class="arrow">&#8595; within limits</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">7</span>Record results and assess batch impact</div>
+          <div class="node-body">All results recorded in the EM database with location, date, operator, incubation conditions and organism identification. Assess whether results affect batch disposition. Results retained as part of the batch record for the corresponding production period.</div>
+          <div class="node-reg">21 CFR 211.194 &nbsp;·&nbsp; ALCOA+ &nbsp;·&nbsp; EU GMP Annex 1 2022</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase-col ph3">
+      <div class="phase-header">
+        <div class="phase-num">Phase 3</div>
+        Review and Trending
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">8</span>Periodic trend analysis</div>
+          <div class="node-body">Monthly trend review of all EM data against historical baseline and alert/action limits. Identify upward trends before limits are exceeded. Trending must be location-specific and organism-specific, not just total count trending.</div>
+          <div class="best-practice">
+            <div class="bp-label">&#10003; Best practice - trend signals below the limit</div>
+            <p>A result at 78% of the action limit is a trend signal, not a success. Three consecutive results in the 70% to 80% range at the same location require root cause investigation before a limit exceedance actually occurs. Waiting for the exceedance itself means the programme is reactive rather than the early-warning system Annex 1 requires it to be.</p>
+          </div>
+          <div class="node-reg">EU GMP Annex 1 2022 Section 9.33 &nbsp;·&nbsp; USP 1116 &nbsp;·&nbsp; PDA TR 13</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">9</span>Organism identification and disinfectant efficacy</div>
+          <div class="node-body">Organisms from Grade A and B identified to species level. Build a facility organism profile. Confirm disinfectant rotation is effective against the facility's own resident organisms, not just panel organisms. Resistant organism emergence must trigger disinfectant programme reassessment.</div>
+          <div class="wl-case">
+            <div class="wl-label">&#9888; Warning letter case - German 2026 sterile site</div>
+            <p>A sterile site was cited for 47 microbial recoveries at ISO 5 filling lines over 27 months. The organism recovered was consistent across the majority of events, indicating a stable contamination source rather than random events - a pattern that was visible in the site's own EM data throughout the 27-month period. Disinfectant efficacy against the recovered organism was never specifically reassessed despite the repeat recoveries.</p>
+          </div>
+          <div class="node-reg">EU GMP Annex 1 2022 &nbsp;·&nbsp; GMPify Disinfectant Validation course</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">10</span>APQR and management review submission</div>
+          <div class="node-body">EM trend data submitted to APQR and management review per ICH Q10 Section 3.2.1. Present exceedance rate by grade, location-specific trending, organism profile changes, disinfectant efficacy and any proposed limit updates. Conclusions must address systemic patterns, not just individual events.</div>
+          <div class="reg-text">
+            <div class="rt-label">ICH Q10 Sections 3.2.1 and 3.2.4 - regulatory basis</div>
+            <p>Environmental monitoring trend data, including exceedance rates, organism profile changes and disinfectant efficacy assessment, is expected to be submitted to management review and incorporated into the Annual Product Quality Review as part of ongoing pharmaceutical quality system performance monitoring.</p>
+          </div>
+          <div class="node-reg">ICH Q10 Sections 3.2.1 and 3.2.4 &nbsp;·&nbsp; 21 CFR 211.180(e)</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase-col ph4">
+      <div class="phase-header">
+        <div class="phase-num">Phase 4</div>
+        Programme Maintenance
+      </div>
+      <div class="phase-body">
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">11</span>Periodic limit review and update</div>
+          <div class="node-body">Alert and action limits reviewed periodically and updated when the historical baseline changes significantly. If facility improvements reduce the typical contamination burden, limits should tighten to reflect the new baseline. Limit review documented with supporting data and QA approval.</div>
+          <div class="node-reg">EU GMP Annex 1 2022 &nbsp;·&nbsp; USP 1116 &nbsp;·&nbsp; PDA TR 13</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">12</span>Equipment requalification schedule</div>
+          <div class="node-body">Particle counters requalified annually per ISO 21501-4. Requalification also triggered by repair, relocation, calibration failure, or changes to monitored area design or HVAC. Qualification status tracked in the equipment management system with due dates monitored.</div>
+          <div class="wl-case">
+            <div class="wl-label">&#9888; Warning letter case - the uncorrected design flaw</div>
+            <p>The German 2026 warning letter's most serious finding was not the 47 recoveries themselves, but that a known equipment design flaw contributing to the contamination had been identified internally and never corrected across the full 27-month period. The EM programme was functioning exactly as designed - it detected the problem repeatedly. The facility's change control and equipment requalification systems failed to act on what EM was telling them.</p>
+          </div>
+          <div class="node-reg">ISO 14644-2 &nbsp;·&nbsp; ISO 21501-4 &nbsp;·&nbsp; EU GMP Annex 15</div>
+        </div>
+        <div class="arrow">&#8595;</div>
+
+        <div class="node node-action">
+          <div class="node-title"><span class="step-num">13</span>CCS review and update</div>
+          <div class="node-body">The CCS must be reviewed and updated when significant changes occur to facility, equipment, processes, personnel practices or product portfolio. Annual review documented even when no updates are required. CCS review feeds into management review and the APQR for sterile products.</div>
+          <div class="reg-text">
+            <div class="rt-label">EU GMP Annex 1 2022 Section 2.2 - regulatory basis</div>
+            <p>The Contamination Control Strategy is expected to be reviewed at a minimum annually and whenever significant changes occur to facility, equipment, personnel practices or product portfolio, with the review documented even in years when no CCS updates are required.</p>
+          </div>
+          <div class="node-reg">EU GMP Annex 1 2022 Section 2.2 &nbsp;·&nbsp; ICH Q10 Section 3.2.4</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM GRID -->
+  <div class="bottom-grid">
+
+    <div class="voe-box">
+      <h3>&#9888; German 2026 Warning Letter - Full Design Flaw Timeline</h3>
+      <div class="voe-steps">
+        <div class="voe-step"><strong>Months 1 to 9 - First recoveries begin</strong>The organism is first recovered at an ISO 5 filling line location. The event is treated as isolated. No location-specific trend investigation is opened.</div>
+        <div class="voe-step"><strong>Months 10 to 18 - Recoveries continue at the same location</strong>Repeat recoveries of the same organism at the same location appear in the EM trend data. No root cause investigation into equipment design is opened despite the pattern.</div>
+        <div class="voe-step"><strong>Months 19 to 27 - Recoveries reach 47 total events</strong>An internal engineering assessment identifies a specific equipment design flaw as the likely contributing factor. The flaw is not corrected.</div>
+        <div class="voe-step"><strong>2026 - Warning letter issued</strong>Inspection finds the identified design flaw was known internally and never corrected. The EM programme detected the problem consistently. The corrective action system did not act on it.</div>
+        <div class="voe-step"><strong>The lesson</strong>An EM programme that generates accurate trend data but does not drive equipment or facility corrective action is not a contamination control programme. It is a documentation exercise. The value of environmental monitoring depends entirely on whether contamination signals lead to corrective action.</div>
+      </div>
+    </div>
+
+    <div class="elements-box">
+      <h3>Contamination Control Strategy - Required Components (EU GMP Annex 1 2022 Section 2.2)</h3>
+      <div class="elements-grid">
+        <div class="el-item"><strong>Facility design and engineering controls</strong>HVAC design, pressure differentials, airflow patterns, UDAF in Grade A zones, cleanroom classification, material and personnel flow routes.</div>
+        <div class="el-item"><strong>Equipment design and maintenance</strong>Equipment qualification status, maintenance programme, cleaning validation, container closure integrity, filter integrity, barrier technology.</div>
+        <div class="el-item"><strong>Personnel practices and gowning</strong>Gowning qualification, requalification intervals, aseptic technique training, personnel monitoring, health monitoring, access controls.</div>
+        <div class="el-item"><strong>Cleaning and disinfection programme</strong>Approved agents, rotation programme, contact times, concentrations, validated efficacy against facility organisms, sporicidal rotation.</div>
+        <div class="el-item"><strong>Environmental monitoring programme</strong>Monitoring locations, frequencies, alert and action limits, organism ID requirements, exceedance response and trending.</div>
+        <div class="el-item"><strong>Materials management and supply chain</strong>Raw material and component testing, supplier qualification, sterilisation processes, container closure integrity, endotoxin testing.</div>
+        <div class="el-item"><strong>Process design and validation</strong>Aseptic process simulation, sterilisation validation, filter validation, process controls, in-process testing.</div>
+        <div class="el-item" style="grid-column:1/-1"><strong>CAPA and change control integration</strong>How EM exceedances feed into the CAPA system, how facility or process changes trigger CCS reassessment, and the annual CCS review and update process.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RULES -->
+  <div class="rules-row">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Set alert and action limits equal to regulatory specification limits. Monitor representative locations rather than worst-case locations. Fail to identify recovered organisms to species level in Grade A and B. Continue manufacturing after action limit exceedances without investigation and batch disposition assessment.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Alert vs action response</h4>
+      <p>Alert: investigate, increase monitoring, document conclusion. Do not automatically hold batch. Action: immediate QA notification, batch hold assessment, formal investigation before resuming, root cause analysis, CAPA with defined effectiveness criterion, three consecutive satisfactory results before reducing monitoring frequency.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Annex 1 2022 key changes</h4>
+      <p>Mandatory CCS document for all sterile manufacturers. Continuous particle monitoring in Grade A mandatory. Organism identification to species level in Grade A and B. Enhanced barrier technology expectations. Alignment with PIC/S and WHO GMP. Effective August 2023.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>EU GMP Annex 1 2022 - sterile manufacturing requirements including CCS. 21 CFR 211.42 and 211.113 - top cited 2024 sterile manufacturer 483 provisions. USP 1116 - microbiological control of aseptic environments. ISO 14644-1:2015 - cleanroom classification. PDA TR 13 - EM fundamentals.</p>
+    </div>
+  </div>
+
+  <!-- SITE ANNOTATION -->
+  <div class="annotation-section">
+    <h3>Site-Specific Annotation - Personalise This Map for Your Quality System</h3>
+    <div class="annotation-grid">
+      <div class="annotation-field">
+        <label>Site / Facility Name</label>
+        <input type="text" placeholder="e.g. Acme Pharma Ltd - Dublin Sterile Manufacturing Site">
+      </div>
+      <div class="annotation-field">
+        <label>EM SOP Reference</label>
+        <input type="text" placeholder="e.g. SOP-QA-0027 Rev 4">
+      </div>
+      <div class="annotation-field">
+        <label>EM Programme Owner Role</label>
+        <input type="text" placeholder="e.g. Head of Microbiology or designated EM Lead">
+      </div>
+      <div class="annotation-field">
+        <label>EM / LIMS Tracking System</label>
+        <input type="text" placeholder="e.g. LabWare LIMS - Environmental Monitoring module">
+      </div>
+      <div class="annotation-field">
+        <label>Alert and Action Limit Review Frequency at This Site</label>
+        <input type="text" placeholder="e.g. Annual limit review, quarterly trend review">
+      </div>
+      <div class="annotation-field">
+        <label>Grade A/B Organism ID Turnaround at This Site</label>
+        <input type="text" placeholder="e.g. Species-level ID within 5 working days">
+      </div>
+      <div class="annotation-field" style="grid-column:1/-1">
+        <label>Site-Specific Notes or Process Deviations from Standard Framework</label>
+        <textarea placeholder="e.g. All Grade A action limit exceedances require Site Head notification within 4 hours. Repeat recoveries of the same organism at the same location within 90 days require automatic escalation to the CCS owner regardless of whether the action limit was formally exceeded."></textarea>
+      </div>
+    </div>
+    <div class="annotation-note">Annotations are stored in your browser session only. To save permanently complete annotations then use your browser Print function (Ctrl+P or Cmd+P) to save as PDF with your site-specific information included.</div>
+  </div>
+
+</div>
+
+<div class="footer-bar">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;·&nbsp;
+    Environmental Monitoring Programme Workflow - Enhanced Subscriber Edition &nbsp;·&nbsp;
+    Built from EU GMP Annex 1 2022, 21 CFR 211.42 and 211.113, FDA Aseptic Guidance 2004, USP 1116, ISO 14644-1:2015, PDA TR 13 &nbsp;·&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="footer-badge">Subscriber Exclusive</div>
+    <div class="footer-badge">Enhanced Edition</div>
+    <div class="footer-badge">Issue 5 of 10</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+<script>
+function setMode(mode) {
+  const wrap = document.getElementById('map-wrap');
+  const btnRef = document.getElementById('btn-reference');
+  const btnAss = document.getElementById('btn-assessment');
+  const hint = document.getElementById('mode-hint');
+  if (mode === 'assessment') {
+    wrap.classList.add('kc-mode');
+    btnRef.classList.remove('active'); btnRef.classList.add('inactive');
+    btnAss.classList.remove('inactive'); btnAss.classList.add('active');
+    hint.style.display = 'block';
+    document.querySelectorAll('.phase-body .node-action').forEach(node => {
+      if (!node.querySelector('.kc-overlay')) {
+        const overlay = document.createElement('div');
+        overlay.className = 'kc-overlay';
+        overlay.innerHTML = '<span>Click to reveal this step</span>';
+        overlay.onclick = function(e) { e.stopPropagation(); node.classList.add('revealed'); };
+        node.style.position = 'relative';
+        node.appendChild(overlay);
+      }
+      node.classList.remove('revealed');
+    });
+  } else {
+    wrap.classList.remove('kc-mode');
+    btnAss.classList.remove('active'); btnAss.classList.add('inactive');
+    btnRef.classList.remove('inactive'); btnRef.classList.add('active');
+    hint.style.display = 'none';
+    document.querySelectorAll('.node-action').forEach(n => n.classList.remove('revealed'));
+  }
+}
+</script>
+</body>
+</html>
