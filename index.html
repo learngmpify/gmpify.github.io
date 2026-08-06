@@ -268,9 +268,19 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
 
   /* Footer */
   .footer-inner{grid-template-columns:1fr;gap:24px}
-  .footer-col h4{font-size:0.82rem}
-  .footer-col a{font-size:0.82rem}
-}
+/* COURSE CATALOG TABS */
+.cat-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 32px}
+.cat-tab{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--light);font-size:0.82rem;font-weight:600;padding:8px 16px;border-radius:20px;cursor:pointer;transition:all .2s}
+.cat-tab:hover{border-color:rgba(0,194,168,0.4)}
+.cat-tab.active{background:var(--teal);color:var(--navy);border-color:var(--teal)}
+.cat-tab .cat-count{font-size:0.72rem;opacity:0.75;margin-left:3px}
+.cat-panel{display:none}
+.cat-panel.active{display:block}
+.catalog-stats{display:flex;gap:28px;flex-wrap:wrap;margin:20px 0 8px}
+.catalog-stat-val{font-size:1.6rem;font-weight:800;color:var(--white)}
+.catalog-stat-lbl{font-size:0.76rem;color:var(--mid)}
+.reg-list-2col{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:768px){.reg-list-2col{grid-template-columns:1fr}}
 </style>
 <!-- Google Analytics GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S5X9XQYNPG"></script>
@@ -293,10 +303,8 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
         <li><a href="#why">Why GMPify</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="blog.html">Blog</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="tools.html" style="color:var(--gold);font-weight:600">Tools</a></li>
-        <li><a href="gmp-maps.html" style="color:#F97316;font-weight:600">GMP Maps</a></li>
-        <li><a href="cannabis.html" style="color:#4ade80;font-weight:600">Cannabis</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/tools.html" style="color:var(--gold)">Tools</a></li>
         <li><a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="nav-cta">Start learning</a></li>
       </ul>
     </div>
@@ -310,10 +318,9 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
   <a href="#why">Why GMPify</a>
   <a href="#pricing">Pricing</a>
   <a href="blog.html">Blog</a>
-  <a href="#about">About</a>
-  <a href="/tools.html" style="color:var(--gold)">Tools</a>
+  <a href="/about.html">About</a>
+  <a href="/tools.html">Tools</a>
   <a href="/cannabis.html" style="color:#4ade80">Cannabis</a>
-  
   <a href="https://learn.gmpify.com" class="nav-cta">Start learning</a>
 </div>
 
@@ -448,50 +455,164 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
 <!-- COURSES -->
 <section class="section" id="courses">
   <div class="container">
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start;">
-      <div>
-        <div class="section-label">Course catalog</div>
-        <h2 class="section-heading">A comprehensive GMP training library</h2>
-        <p class="section-sub" style="margin-bottom:28px;">From GMP Fundamentals for new operators through to advanced coverage of EU GMP Annex 1, Contamination Control Strategy and Computer Software Assurance.</p>
-        <a href="https://learn.gmpify.com/plus/catalog" class="btn-primary">Browse full GMP catalog &rarr;</a>
-      </div>
-      <div>
-        <ul class="reg-list">
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">GMP Fundamentals for Manufacturing Operators</div><div class="reg-tag">Free preview</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">21 CFR Part 210 - cGMP Foundations</div><div class="reg-tag">US FDA</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">21 CFR Part 211 - Six Module Series</div><div class="reg-tag">US FDA</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">FDA Data Integrity and cGMP Compliance</div><div class="reg-tag">US FDA</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">21 CFR Part 11 - Electronic Records</div><div class="reg-tag">US FDA</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">ICH Q9(R1) Quality Risk Management</div><div class="reg-tag">ICH</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">ICH Q10 Pharmaceutical Quality System</div><div class="reg-tag">ICH</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">ICH Q1A(R2) Stability Testing</div><div class="reg-tag">ICH</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">New ICH Q1 2025 Draft - What Is Changing</div><div class="reg-tag">ICH 2025</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">EU GMP Annex 1 (2022) - Sterile Manufacturing</div><div class="reg-tag">EU GMP</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Contamination Control Strategy (CCS)</div><div class="reg-tag">EU GMP</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Environmental Monitoring Programme Design</div><div class="reg-tag">Microbiology</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Pharmaceutical Microbiology Fundamentals</div><div class="reg-tag">Microbiology</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Microbiology for Pharmaceutical Water Systems</div><div class="reg-tag">Microbiology</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Rapid Microbiological Methods (RMM)</div><div class="reg-tag">Microbiology</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">AI and Machine Learning in GMP Manufacturing</div><div class="reg-tag">2026</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Computer Software Assurance (CSA) and GAMP 5</div><div class="reg-tag">2025</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Digital Manufacturing and Pharma 4.0</div><div class="reg-tag">Emerging</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Human Error Reduction in GMP Manufacturing</div><div class="reg-tag">Quality</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Inspection Readiness and FDA Observations</div><div class="reg-tag">US FDA</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">FDA Process Validation - General Principles</div><div class="reg-tag">US FDA</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Quality Culture and Quality Management Maturity</div><div class="reg-tag">Quality</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Responding to FDA Form 483 Observations</div><div class="reg-tag">US FDA</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Container Closure Systems and CCIT</div><div class="reg-tag">EU GMP</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Bioburden Monitoring and Control: USP 1119</div><div class="reg-tag">Microbiology</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Bacterial Endotoxins Testing: USP 85 and 161</div><div class="reg-tag">Microbiology</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">USP 61 and 62: Microbial Enumeration Tests</div><div class="reg-tag">Microbiology</div></li>
-          <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">USP 60: Burkholderia cepacia Complex Testing</div><div class="reg-tag">Microbiology</div></li>
-          <li class="reg-item"><div class="reg-dot" style="background:var(--gold)"></div><div class="reg-name">Additional topics added regularly</div><div class="reg-tag" style="color:var(--gold); background:rgba(245,166,35,0.1)">Ongoing</div></li>
-        </ul>
-        <div style="margin-top:24px; padding:16px; background:rgba(0,194,168,0.06); border-radius:8px; border:1px solid rgba(0,194,168,0.15);">
-          <div style="font-size:0.8rem; color:var(--teal); font-weight:600; margin-bottom:4px;">Always current</div>
-          <div style="font-size:0.8rem; color:var(--mid);">Courses are reviewed and updated whenever FDA issues new guidance or amends the CFR.</div>
-        </div>
-      </div>
+    <div class="section-label">Course catalog</div>
+    <h2 class="section-heading">A comprehensive GMP training library</h2>
+    <p class="section-sub">From GMP Fundamentals for new operators through advanced coverage of EU GMP Annex 1, Contamination Control Strategy, Computer Software Assurance and ten interactive procedural maps.</p>
+
+    <div class="catalog-stats">
+      <div><div class="catalog-stat-val">69</div><div class="catalog-stat-lbl">Courses and interactive maps</div></div>
+      <div><div class="catalog-stat-val">9</div><div class="catalog-stat-lbl">Categories</div></div>
+      <div><div class="catalog-stat-val">Always growing</div><div class="catalog-stat-lbl">New courses added regularly</div></div>
+    </div>
+
+    <a href="https://learn.gmpify.com/plus/catalog" class="btn-primary" style="display:inline-block;margin-bottom:8px;">Browse full GMP catalog &rarr;</a>
+
+    <!-- CATEGORY TABS -->
+    <div class="cat-tabs">
+      <button class="cat-tab active" id="tab-maps" onclick="showCategory('maps')">Procedural Maps <span class="cat-count">10</span></button>
+      <button class="cat-tab" id="tab-usfda" onclick="showCategory('usfda')">US FDA / 21 CFR <span class="cat-count">17</span></button>
+      <button class="cat-tab" id="tab-eugmp" onclick="showCategory('eugmp')">EU GMP <span class="cat-count">4</span></button>
+      <button class="cat-tab" id="tab-ich" onclick="showCategory('ich')">ICH Guidelines <span class="cat-count">5</span></button>
+      <button class="cat-tab" id="tab-quality" onclick="showCategory('quality')">Quality Systems <span class="cat-count">9</span></button>
+      <button class="cat-tab" id="tab-micro" onclick="showCategory('micro')">Microbiology <span class="cat-count">10</span></button>
+      <button class="cat-tab" id="tab-specialty" onclick="showCategory('specialty')">Specialty &amp; Emerging <span class="cat-count">5</span></button>
+      <button class="cat-tab" id="tab-essentials" onclick="showCategory('essentials')">Essentials Series <span class="cat-count">6</span></button>
+      <button class="cat-tab" id="tab-cannabis" onclick="showCategory('cannabis')">Cannabis <span class="cat-count">2</span></button>
+      <button class="cat-tab" id="tab-free" onclick="showCategory('free')">Free Preview <span class="cat-count">1</span></button>
+    </div>
+
+    <!-- PROCEDURAL MAPS -->
+    <div class="cat-panel active" id="maps">
+      <ul class="reg-list reg-list-2col">
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">OOS Investigation Procedural Map</div><div class="reg-tag">Enhanced</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">CAPA Lifecycle Map</div><div class="reg-tag">Enhanced</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Deviation Management and Root Cause Analysis Map</div><div class="reg-tag">Enhanced</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Change Control Decision Map</div><div class="reg-tag">Enhanced</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Environmental Monitoring Programme Workflow</div><div class="reg-tag">Enhanced</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">FDA 483 Response Workflow</div><div class="reg-tag">Enhanced</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Cleaning Validation Lifecycle Map</div><div class="reg-tag">Enhanced</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Batch Release Decision Flowchart</div><div class="reg-tag">Enhanced</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Supplier Qualification Workflow</div><div class="reg-tag">Enhanced</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Stability Study Design Map</div><div class="reg-tag">Enhanced</div></li>
+      </ul>
+    </div>
+
+    <!-- US FDA / 21 CFR -->
+    <div class="cat-panel" id="usfda">
+      <ul class="reg-list reg-list-2col">
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">GMP Fundamentals for Manufacturing Operators</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">21 CFR Part 210 - cGMP Foundations</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">21 CFR Part 211: Scope, Definition &amp; Personnel</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">21 CFR Part 211 Module 2: Buildings &amp; Equipment</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">21 CFR Part 211 Module 3: Components &amp; Containers</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">21 CFR Part 211 Module 4: Production &amp; Packaging</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">21 CFR Part 211 Module 5: Holding &amp; Distribution</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">21 CFR Part 211 Module 6: Records &amp; Reports</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">21 CFR Part 11 - Electronic Records and Signatures</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">FDA Data Integrity and cGMP Compliance</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">FDA Process Validation - General Principles and Practices</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">FDA QMSR - 21 CFR Part 820</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Responding to FDA Form 483 Observations</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">OOS Investigations - FDA Requirements</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Inspection Readiness and FDA Observations</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Contract Manufacturing Oversight</div><div class="reg-tag">US FDA</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Pharmaceutical Shipping and Transportation Documentation</div><div class="reg-tag">US FDA</div></li>
+      </ul>
+    </div>
+
+    <!-- EU GMP -->
+    <div class="cat-panel" id="eugmp">
+      <ul class="reg-list reg-list-2col">
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">EU GMP Annex 1 (2022) - Sterile Medicinal Products</div><div class="reg-tag" style="color:var(--gold);background:rgba(245,166,35,0.1)">New</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">EU GMP Chapter 1 &amp; Chapter 2 - Quality Management and Personnel</div><div class="reg-tag">EU GMP</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Contamination Control Strategy (CCS)</div><div class="reg-tag">EU GMP</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Container Closure Systems and CCIT</div><div class="reg-tag">EU GMP</div></li>
+      </ul>
+    </div>
+
+    <!-- ICH GUIDELINES -->
+    <div class="cat-panel" id="ich">
+      <ul class="reg-list reg-list-2col">
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">ICH Q9(R1) Quality Risk Management</div><div class="reg-tag">ICH</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">ICH Q10 Pharmaceutical Quality System</div><div class="reg-tag">ICH</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">ICH Q1A(R2) Stability Testing of New Drug Substances and Products</div><div class="reg-tag">ICH</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">New ICH Q1 2025 Draft - Stability Testing: What's Changing?</div><div class="reg-tag">ICH 2025</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">ICH Q12 Post-Approval Change Management</div><div class="reg-tag">ICH</div></li>
+      </ul>
+    </div>
+
+    <!-- QUALITY SYSTEMS -->
+    <div class="cat-panel" id="quality">
+      <ul class="reg-list reg-list-2col">
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">What Is GMP? A Plain Language Guide</div><div class="reg-tag">Quality</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Deviation Management &amp; Root Cause Analysis</div><div class="reg-tag">Quality</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">CAPA Systems: FDA Requirements &amp; Best Practice</div><div class="reg-tag">Quality</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Change Control in Pharmaceutical Manufacturing</div><div class="reg-tag">Quality</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Pharmaceutical Cleaning Validation</div><div class="reg-tag">Quality</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Annual Product Quality Review (APQR)</div><div class="reg-tag">Quality</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Human Error Reduction in GMP Manufacturing</div><div class="reg-tag">Quality</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">FDA Quality Management Maturity (QMM)</div><div class="reg-tag">Quality</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Quality Culture and Quality Management Maturity (QMM)</div><div class="reg-tag">Quality</div></li>
+      </ul>
+    </div>
+
+    <!-- MICROBIOLOGY -->
+    <div class="cat-panel" id="micro">
+      <ul class="reg-list reg-list-2col">
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Pharmaceutical Microbiology Fundamentals</div><div class="reg-tag">Microbiology</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Environmental Monitoring Program Design</div><div class="reg-tag">Microbiology</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Microbiology for Pharmaceutical Water Systems</div><div class="reg-tag">Microbiology</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Rapid Microbiological Methods (RMM)</div><div class="reg-tag">Microbiology</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Bioburden Monitoring and Control</div><div class="reg-tag">Microbiology</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Bacterial Endotoxins Testing: USP 85 and 161</div><div class="reg-tag">Microbiology</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">USP 61 and 62: Microbial Enumeration Tests</div><div class="reg-tag">Microbiology</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">USP 60: Burkholderia cepacia Complex Testing</div><div class="reg-tag">Microbiology</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Disinfectant Validation and Efficacy Testing</div><div class="reg-tag">Microbiology</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Contamination Control Strategies for ATMP Cleanrooms</div><div class="reg-tag">Microbiology</div></li>
+      </ul>
+    </div>
+
+    <!-- SPECIALTY & EMERGING -->
+    <div class="cat-panel" id="specialty">
+      <ul class="reg-list reg-list-2col">
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Nitrosamine Impurities: Risk Assessment and Control</div><div class="reg-tag">2026</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">AI and Machine Learning in GMP Manufacturing</div><div class="reg-tag">2026</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Artificial Intelligence in GMP Manufacturing</div><div class="reg-tag">2026</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Computer Software Assurance (CSA) and GAMP 5</div><div class="reg-tag">2025</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Digital Manufacturing and Pharma 4.0</div><div class="reg-tag">Emerging</div></li>
+      </ul>
+    </div>
+
+    <!-- ESSENTIALS SERIES -->
+    <div class="cat-panel" id="essentials">
+      <ul class="reg-list reg-list-2col">
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Pharmaceutical Quality Essentials</div><div class="reg-tag">Essentials</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">QC Lab Testing Fundamentals</div><div class="reg-tag">Essentials</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Pharmaceutical Water Systems Essentials</div><div class="reg-tag">Essentials</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Regulatory Affairs Essentials</div><div class="reg-tag">Essentials</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Biopharmaceutical Essentials</div><div class="reg-tag">Essentials</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Regulatory CMC Essentials</div><div class="reg-tag">Essentials</div></li>
+      </ul>
+    </div>
+
+    <!-- CANNABIS -->
+    <div class="cat-panel" id="cannabis">
+      <ul class="reg-list reg-list-2col">
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Cannabis Data Integrity: ALCOA and CTLS</div><div class="reg-tag" style="color:#4ade80;background:rgba(74,222,128,0.1)">Cannabis</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name">Cannabis Good Production Practice (cGMP)</div><div class="reg-tag" style="color:#4ade80;background:rgba(74,222,128,0.1)">Cannabis</div></li>
+      </ul>
+    </div>
+
+    <!-- FREE PREVIEW -->
+    <div class="cat-panel" id="free">
+      <ul class="reg-list reg-list-2col">
+        <li class="reg-item"><div class="reg-dot" style="background:var(--gold)"></div><div class="reg-name">GMP Fundamentals - Free Preview</div><div class="reg-tag" style="color:var(--gold);background:rgba(245,166,35,0.1)">Free preview</div></li>
+      </ul>
+    </div>
+
+    <div style="margin-top:28px; padding:16px; background:rgba(0,194,168,0.06); border-radius:8px; border:1px solid rgba(0,194,168,0.15);">
+      <div style="font-size:0.8rem; color:var(--teal); font-weight:600; margin-bottom:4px;">Always current</div>
+      <div style="font-size:0.8rem; color:var(--mid);">Courses are reviewed and updated whenever FDA issues new guidance or amends the CFR.</div>
     </div>
   </div>
 </section>
@@ -591,8 +712,6 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
         <div class="blog-date">July 2026</div>
         <a href="blog/fda-ema-ai-guiding-principles-annex-22-gmp-manufacturing.html" class="blog-read">Read more &rarr;</a>
       </div>
-        <a href="blog/fda-ai-warning-letter-2026.html" class="blog-read">Read more &rarr;</a>
-      </div>
       <div class="blog-card">
         <div class="blog-tag">FDA Regulations and Compliance</div>
         <h3>OOS Investigations: FDA Requirements and What Inspectors Find</h3>
@@ -600,16 +719,12 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
         <div class="blog-date">July 2026</div>
         <a href="blog/oos-investigations-fda-requirements-best-practice.html" class="blog-read">Read more &rarr;</a>
       </div>
-        <a href="blog/fda-483-top-observations-2025.html" class="blog-read">Read more &rarr;</a>
-      </div>
       <div class="blog-card">
-        <div class="blog-tag">GMP Fundamentals</div>
-        <h3>What Is GMP? A Plain-Language Guide to Good Manufacturing Practice</h3>
-        <p>GMP stands for Good Manufacturing Practice. What it means, why it exists, what 21 CFR Parts 210 and 211 and EU GMP require, and what happens when manufacturers fail to follow it.</p>
+        <div class="blog-tag">Quality Systems</div>
+        <h3>CAPA Systems: Why They Fail and What FDA Inspectors Find</h3>
+        <p>26 of 44 FDA warning letters in FY2025 cited CAPA deficiencies. Four citation patterns. What a compliant CAPA system actually requires.</p>
         <div class="blog-date">July 2026</div>
-        <a href="blog/what-is-gmp-pharmaceutical-plain-language-guide.html" class="blog-read">Read more &rarr;</a>
-      </div>
-        <a href="blog/contract-manufacturing-oversight-quality-agreements-cgmp.html" class="blog-read">Read more &rarr;</a>
+        <a href="blog/capa-systems-pharmaceutical-fda-inspection-failures.html" class="blog-read">Read more &rarr;</a>
       </div>
     </div>
     <div style="text-align:center; margin-top:32px;">
@@ -646,6 +761,7 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
         </p>
         <p style="font-size:0.78rem;color:var(--mid);margin-top:6px;">Copy and paste the address above if your email client does not open automatically.</p>
       </div>
+      <p style="margin-top:20px;"><a href="/about.html" style="font-weight:600;">Meet the team &rarr;</a></p>
     </div>
   </div>
 </section>
@@ -686,6 +802,7 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
         <ul>
           <li><a href="#why">Why GMPify</a></li>
           <li><a href="blog.html">Blog</a></li>
+          <li><a href="/about.html">About</a></li>
           <li><a href="mailto:training@gmpify.com?subject=GMPify%20Enquiry">Contact us</a></li>
           <li><a href="/privacy.html">Privacy Policy</a></li>
           <li><a href="/terms.html">Terms of Service</a></li>
@@ -710,6 +827,12 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
 
 
 <script>
+function showCategory(id){
+  document.querySelectorAll('.cat-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.cat-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
 function toggleMobileNav(){
   const menu = document.getElementById('navMobile');
   const btn = document.getElementById('navHamburger');
