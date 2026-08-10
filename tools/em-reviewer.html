@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="gmpify_favicon.ico">
+<title>Environmental Monitoring Programme Reviewer - GMPify</title>
+<meta name="description" content="Describe your environmental monitoring programme and get a structured gap analysis against EU GMP Annex 1 2022 and FDA aseptic guidance. Identify what inspectors will find before they arrive.">
+<style>
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2B3E;--navy-card:#112d41;--teal:#00C2A8;--gold:#F5A623;
+  --light:#CAD8E8;--mid:#6E90A0;--white:#fff;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --radius:8px;--green:#16A34A;--red:#DC2626;
+}
+body{font-family:var(--font);background:var(--navy);color:var(--light);line-height:1.6;min-height:100vh}
+a{color:var(--teal);text-decoration:none}
+nav{background:rgba(13,43,62,0.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,194,168,0.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;max-width:960px;margin:0 auto;padding:0 24px}
+.logo{font-size:1.4rem;font-weight:800;color:#fff}
+.logo span:first-child{color:var(--teal)}
+.nav-links{display:flex;gap:20px;list-style:none;align-items:center}
+.nav-links a{font-size:0.88rem;color:var(--light)}
+.nav-links a:hover{color:var(--teal)}
+.nav-cta{background:var(--teal);color:var(--navy)!important;padding:7px 18px;border-radius:6px;font-weight:700!important}
+.container{max-width:960px;margin:0 auto;padding:48px 24px 80px}
+.tool-header{text-align:center;margin-bottom:36px}
+.tool-tag{font-size:0.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
+.tool-header h1{font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;color:#fff;line-height:1.2;margin-bottom:14px}
+.tool-header p{font-size:0.97rem;color:var(--mid);max-width:620px;margin:0 auto;line-height:1.7}
+.info-note{background:rgba(0,194,168,0.06);border:1px solid rgba(0,194,168,0.2);border-radius:10px;padding:14px 18px;margin-bottom:28px;font-size:0.85rem;color:var(--mid)}
+.info-note strong{color:var(--light)}
+
+/* FORM */
+.form-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:28px;margin-bottom:20px}
+.form-card h2{font-size:1rem;font-weight:700;color:#fff;margin-bottom:18px}
+.form-group{margin-bottom:18px}
+label{display:block;font-size:0.78rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px}
+.required{color:var(--teal)}
+select,textarea,input[type=text]{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(202,216,232,0.2);border-radius:var(--radius);padding:11px 14px;color:#fff;font-family:var(--font);font-size:0.92rem;transition:border-color 0.2s}
+select:focus,textarea:focus,input:focus{outline:none;border-color:var(--teal)}
+select option{background:var(--navy-card);color:#fff}
+textarea{resize:vertical;line-height:1.6}
+
+/* FILE UPLOAD */
+.upload-zone{border:2px dashed rgba(202,216,232,0.2);border-radius:var(--radius);padding:32px 20px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--teal);background:rgba(0,194,168,0.04)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:2rem;margin-bottom:10px}
+.upload-zone h3{font-size:0.95rem;font-weight:600;color:#fff;margin-bottom:4px}
+.upload-zone p{font-size:0.82rem;color:var(--mid)}
+.file-selected{background:rgba(0,194,168,0.08);border-color:var(--teal);border-style:solid}
+.file-selected .upload-icon{color:var(--teal)}
+.file-name{font-size:0.88rem;color:var(--teal);font-weight:600;margin-top:8px}
+
+/* OR DIVIDER */
+.or-divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--mid);font-size:0.8rem}
+.or-divider::before,.or-divider::after{content:"";flex:1;height:1px;background:rgba(255,255,255,0.08)}
+
+/* BUTTONS */
+.btn-analyse{width:100%;background:var(--teal);color:var(--navy);border:none;padding:14px;border-radius:var(--radius);font-size:1rem;font-weight:700;cursor:pointer;transition:background 0.15s;margin-top:8px}
+.btn-analyse:hover{background:#00a892}
+.btn-analyse:disabled{background:rgba(255,255,255,0.08);color:var(--mid);cursor:not-allowed}
+.btn-clear{background:transparent;color:var(--mid);border:1px solid rgba(202,216,232,0.2);padding:10px 20px;border-radius:var(--radius);font-size:0.88rem;cursor:pointer;transition:all 0.15s;margin-top:8px;margin-left:10px}
+.btn-clear:hover{color:var(--light);border-color:rgba(202,216,232,0.4)}
+
+/* ERROR */
+.error-msg{background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);border-radius:var(--radius);padding:12px 16px;font-size:0.88rem;color:#f87171;margin-bottom:16px;display:none}
+.error-msg.show{display:block}
+
+/* LOADING */
+.loading{display:none;text-align:center;padding:50px 20px;background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;margin-bottom:20px}
+.loading.show{display:block}
+.loading-icon{font-size:2rem;margin-bottom:16px;animation:pulse 1.5s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.loading h2{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:6px}
+.loading p{font-size:0.88rem;color:var(--mid)}
+.loading-dots::after{content:'...';animation:dots 1.5s steps(4,end) infinite}
+@keyframes dots{0%,20%{content:'.'}40%{content:'..'}60%,100%{content:'...'}}
+
+/* RESULTS */
+.results{display:none}
+.results.show{display:block;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.results-header h2{font-size:1.3rem;font-weight:800;color:#fff}
+.results-actions{display:flex;gap:10px}
+.btn-copy{background:rgba(0,194,168,0.1);border:1px solid rgba(0,194,168,0.3);color:var(--teal);padding:8px 18px;border-radius:var(--radius);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.15s}
+.btn-copy:hover{background:rgba(0,194,168,0.2)}
+.btn-restart{background:transparent;border:1px solid rgba(202,216,232,0.2);color:var(--mid);padding:8px 18px;border-radius:var(--radius);font-size:0.85rem;cursor:pointer}
+.btn-restart:hover{color:var(--light)}
+
+/* SUMMARY CARD */
+.summary-card{background:rgba(0,194,168,0.06);border:1px solid rgba(0,194,168,0.2);border-radius:12px;padding:20px 24px;margin-bottom:20px}
+.summary-label{font-size:0.7rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.summary-text{font-size:0.95rem;color:var(--light);line-height:1.7}
+.score-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px}
+.score-pill{padding:5px 14px;border-radius:20px;font-size:0.8rem;font-weight:700}
+.score-high{background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.4);color:#f87171}
+.score-med{background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:#fbbf24}
+.score-low{background:rgba(22,163,74,0.15);border:1px solid rgba(22,163,74,0.4);color:#4ade80}
+
+/* GAP SECTIONS */
+.gap-section{margin-bottom:16px}
+.gap-section-head{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--navy-card);border-radius:var(--radius) var(--radius) 0 0;border:1px solid rgba(255,255,255,0.07);border-bottom:none;cursor:pointer}
+.gap-section-head:hover{background:rgba(255,255,255,0.03)}
+.gap-priority{font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0}
+.priority-critical{background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.4);color:#f87171}
+.priority-major{background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:#fbbf24}
+.priority-minor{background:rgba(22,163,74,0.15);border:1px solid rgba(22,163,74,0.4);color:#4ade80}
+.priority-observation{background:rgba(110,144,160,0.2);border:1px solid rgba(110,144,160,0.4);color:var(--mid)}
+.gap-title{font-size:0.95rem;font-weight:700;color:#fff;flex:1}
+.gap-toggle{font-size:0.75rem;color:var(--mid)}
+.gap-body{padding:16px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-top:none;border-radius:0 0 var(--radius) var(--radius)}
+.gap-body-label{font-size:0.68rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;margin-top:12px}
+.gap-body-label:first-child{margin-top:0}
+.gap-body-text{font-size:0.88rem;color:var(--light);line-height:1.7}
+.reg-cite{display:inline-block;background:rgba(0,194,168,0.08);border:1px solid rgba(0,194,168,0.2);border-radius:4px;padding:1px 7px;font-size:0.78rem;color:var(--teal);margin:2px 3px 2px 0}
+
+/* RECOMMENDATIONS */
+.rec-section{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:20px;margin-bottom:16px}
+.rec-section h3{font-size:0.92rem;font-weight:700;color:#fff;margin-bottom:12px}
+.rec-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:0.88rem;color:var(--light);line-height:1.6}
+.rec-item::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:7px}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(0,194,168,0.08),rgba(0,194,168,0.02));border:1px solid rgba(0,194,168,0.2);border-radius:12px;padding:24px 28px;margin-top:24px;text-align:center}
+.cta-box h3{font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px}
+.cta-box p{font-size:0.88rem;color:var(--mid);margin-bottom:16px}
+.btn-subscribe{display:inline-block;background:var(--teal);color:var(--navy);font-weight:700;padding:11px 28px;border-radius:var(--radius);font-size:0.9rem}
+.btn-subscribe:hover{background:#00a892;color:var(--navy)}
+.disclaimer{font-size:0.78rem;color:var(--mid);text-align:center;margin-top:12px;line-height:1.6}
+
+footer{padding:24px;border-top:1px solid rgba(255,255,255,0.07);max-width:960px;margin:0 auto}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.8rem;color:var(--mid)}
+@media(max-width:640px){.nav-links{display:none}.results-header{flex-direction:column}.results-actions{width:100%}.score-row{flex-direction:column}}
+
+
+/* EM-specific additional styles */
+.grade-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+.grade-card{background:rgba(255,255,255,0.04);border:1px solid rgba(202,216,232,0.15);border-radius:8px;padding:14px}
+.grade-card h4{font-size:0.82rem;font-weight:700;color:var(--teal);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.3px}
+.grade-label-a{color:#f87171}
+.grade-label-b{color:#fbbf24}
+.grade-label-c{color:#4ade80}
+.grade-label-d{color:var(--mid)}
+.ccs-card{background:rgba(0,194,168,0.05);border:1px solid rgba(0,194,168,0.2);border-radius:10px;padding:16px;margin-bottom:16px}
+.ccs-label{font-size:0.7rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.assess-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.assess-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px}
+.assess-card h4{font-size:0.8rem;font-weight:700;color:#fff;margin-bottom:8px}
+.assess-card p{font-size:0.82rem;color:var(--mid);line-height:1.6}
+@media(max-width:640px){.grade-grid{grid-template-columns:1fr}.assess-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav><div class="nav-inner">
+  <a href="https://www.gmpify.com" class="logo"><span>GMP</span><span>ify</span></a>
+    <ul class="nav-links">
+    <li><a href="https://gmpify-tools.netlify.app/training-assessment.html">GMP Assessment</a></li>
+    <li><a href="https://gmpify-tools.netlify.app">Reg Explainer</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/483-response-drafter.html">483 Drafter</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/sop-gap-analyser.html">SOP Analyser</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/em-reviewer.html">EM Reviewer</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/deviation-investigation.html">Deviation Tool</a></li>
+    <li><a href="https://www.gmpify.com" style="color:var(--teal)">&larr; Back to GMPify</a></li>
+    <li><a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="nav-cta">Subscribe</a></li>
+  </ul>
+</div></nav>
+
+<div class="container">
+
+  <div class="tool-header" id="toolHeader">
+    <div class="tool-tag">Subscriber tool</div>
+    <h1>Environmental Monitoring Programme Reviewer</h1>
+    <p>Describe your environmental monitoring programme and get a structured gap analysis against EU GMP Annex 1 2022 and FDA aseptic guidance - identifying what inspectors will find before they arrive.</p>
+  </div>
+
+  <div class="info-note" id="infoNote">
+    <strong>Built from EU GMP Annex 1 2022 Sections 4 and 9.</strong> Since full implementation in August 2023 regulatory inspection focus has intensified around whether EM programmes are risk-based, scientifically justified and continuously improved. The question is no longer whether you have an EM programme - it is whether you can demonstrate it is effective and data-driven.
+  </div>
+
+  <div id="formSection">
+
+    <div class="form-card">
+      <h2>Step 1 - Facility and classification</h2>
+
+      <div class="form-group">
+        <label>Facility type <span class="required">*</span></label>
+        <select id="facilityType">
+          <option value="">Select facility type</option>
+          <option>Sterile injectable - aseptic fill-finish</option>
+          <option>Sterile injectable - terminal sterilisation</option>
+          <option>Sterile ophthalmic manufacturing</option>
+          <option>Biological manufacturing - aseptic processing</option>
+          <option>Sterile API manufacturing</option>
+          <option>Contract sterile manufacturing (CMO/CDMO)</option>
+          <option>Isolator-based aseptic processing</option>
+          <option>RABS-based aseptic processing</option>
+          <option>Non-sterile oral solid dose with controlled areas</option>
+          <option>Contract testing laboratory - sterility and EM testing</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Regulatory markets <span class="required">*</span></label>
+        <div class="radio-group" id="regMarket">
+          <label class="radio-option" onclick="selectRadio(this,'regMarket')"><input type="radio" name="regMarket" value="EU GMP only">EU GMP only</label>
+          <label class="radio-option" onclick="selectRadio(this,'regMarket')"><input type="radio" name="regMarket" value="FDA only">FDA only</label>
+          <label class="radio-option" onclick="selectRadio(this,'regMarket')"><input type="radio" name="regMarket" value="Both FDA and EU GMP">Both FDA and EU GMP</label>
+          <label class="radio-option" onclick="selectRadio(this,'regMarket')"><input type="radio" name="regMarket" value="Multiple markets including WHO">Multiple markets including WHO</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Cleanroom grades present at the facility <span class="required">*</span></label>
+        <div class="grade-grid">
+          <div class="grade-card">
+            <h4 class="grade-label-a">Grade A / ISO 5</h4>
+            <div class="radio-group" id="gradeA" style="flex-direction:column;gap:6px">
+              <label class="radio-option" onclick="selectRadio(this,'gradeA')"><input type="radio" name="gradeA" value="Yes - open RABS or LAF">Yes - open RABS or LAF</label>
+              <label class="radio-option" onclick="selectRadio(this,'gradeA')"><input type="radio" name="gradeA" value="Yes - closed RABS">Yes - closed RABS</label>
+              <label class="radio-option" onclick="selectRadio(this,'gradeA')"><input type="radio" name="gradeA" value="Yes - isolator">Yes - isolator</label>
+              <label class="radio-option" onclick="selectRadio(this,'gradeA')"><input type="radio" name="gradeA" value="No Grade A present">Not present</label>
+            </div>
+          </div>
+          <div class="grade-card">
+            <h4 class="grade-label-b">Grade B / ISO 7 background</h4>
+            <div class="radio-group" id="gradeB" style="flex-direction:column;gap:6px">
+              <label class="radio-option" onclick="selectRadio(this,'gradeB')"><input type="radio" name="gradeB" value="Yes - Grade B present">Present</label>
+              <label class="radio-option" onclick="selectRadio(this,'gradeB')"><input type="radio" name="gradeB" value="No Grade B present">Not present</label>
+            </div>
+          </div>
+          <div class="grade-card">
+            <h4 class="grade-label-c">Grade C / ISO 8</h4>
+            <div class="radio-group" id="gradeC" style="flex-direction:column;gap:6px">
+              <label class="radio-option" onclick="selectRadio(this,'gradeC')"><input type="radio" name="gradeC" value="Yes - Grade C present">Present</label>
+              <label class="radio-option" onclick="selectRadio(this,'gradeC')"><input type="radio" name="gradeC" value="No Grade C present">Not present</label>
+            </div>
+          </div>
+          <div class="grade-card">
+            <h4 class="grade-label-d">Grade D / controlled areas</h4>
+            <div class="radio-group" id="gradeD" style="flex-direction:column;gap:6px">
+              <label class="radio-option" onclick="selectRadio(this,'gradeD')"><input type="radio" name="gradeD" value="Yes - Grade D present">Present</label>
+              <label class="radio-option" onclick="selectRadio(this,'gradeD')"><input type="radio" name="gradeD" value="No Grade D present">Not present</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>Step 2 - Monitoring parameters</h2>
+
+      <div class="form-group">
+        <label>Viable monitoring methods in use <span class="required">*</span></label>
+        <div class="radio-group" style="flex-wrap:wrap" id="viableMethods">
+          <label class="radio-option" onclick="selectRadioMulti(this)"><input type="checkbox" value="Active air sampling">Active air sampling</label>
+          <label class="radio-option" onclick="selectRadioMulti(this)"><input type="checkbox" value="Settle plates">Settle plates</label>
+          <label class="radio-option" onclick="selectRadioMulti(this)"><input type="checkbox" value="Surface contact plates">Surface contact plates</label>
+          <label class="radio-option" onclick="selectRadioMulti(this)"><input type="checkbox" value="Glove and finger dab plates">Glove and finger dab plates</label>
+          <label class="radio-option" onclick="selectRadioMulti(this)"><input type="checkbox" value="Personnel gown plates">Personnel gown plates</label>
+          <label class="radio-option" onclick="selectRadioMulti(this)"><input type="checkbox" value="Rapid microbiological methods">Rapid microbiological methods</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Non-viable particle monitoring <span class="required">*</span></label>
+        <div class="radio-group" id="nonViable">
+          <label class="radio-option" onclick="selectRadio(this,'nonViable')"><input type="radio" name="nonViable" value="Continuous real-time monitoring in Grade A and B">Continuous real-time in Grade A and B</label>
+          <label class="radio-option" onclick="selectRadio(this,'nonViable')"><input type="radio" name="nonViable" value="Periodic monitoring only">Periodic monitoring only</label>
+          <label class="radio-option" onclick="selectRadio(this,'nonViable')"><input type="radio" name="nonViable" value="Continuous in Grade A only">Continuous in Grade A only</label>
+          <label class="radio-option" onclick="selectRadio(this,'nonViable')"><input type="radio" name="nonViable" value="No non-viable monitoring">No non-viable monitoring</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>How are alert and action limits set?</label>
+        <div class="radio-group" id="limitSetting">
+          <label class="radio-option" onclick="selectRadio(this,'limitSetting')"><input type="radio" name="limitSetting" value="Based on historical data - 90th percentile alert 95th percentile action">Historical data - 90th/95th percentile</label>
+          <label class="radio-option" onclick="selectRadio(this,'limitSetting')"><input type="radio" name="limitSetting" value="Set at regulatory specification limits only">Set at regulatory spec limits only</label>
+          <label class="radio-option" onclick="selectRadio(this,'limitSetting')"><input type="radio" name="limitSetting" value="Combination of historical data and risk assessment">Historical data and risk assessment</label>
+          <label class="radio-option" onclick="selectRadio(this,'limitSetting')"><input type="radio" name="limitSetting" value="Not formally established">Not formally established</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Trending programme</label>
+        <div class="radio-group" id="trending">
+          <label class="radio-option" onclick="selectRadio(this,'trending')"><input type="radio" name="trending" value="Formal trend analysis reviewed monthly or more frequently">Formal trend analysis monthly or more frequent</label>
+          <label class="radio-option" onclick="selectRadio(this,'trending')"><input type="radio" name="trending" value="Trend analysis reviewed quarterly">Quarterly trend review</label>
+          <label class="radio-option" onclick="selectRadio(this,'trending')"><input type="radio" name="trending" value="Trend analysis reviewed annually only">Annual trend review only</label>
+          <label class="radio-option" onclick="selectRadio(this,'trending')"><input type="radio" name="trending" value="No formal trending programme">No formal trending programme</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>Step 3 - Programme details and CCS integration</h2>
+
+      <div class="form-group">
+        <label>Contamination Control Strategy (CCS) status</label>
+        <div class="radio-group" id="ccsStatus">
+          <label class="radio-option" onclick="selectRadio(this,'ccsStatus')"><input type="radio" name="ccsStatus" value="Documented CCS in place covering all contamination sources">Documented CCS covering all contamination sources</label>
+          <label class="radio-option" onclick="selectRadio(this,'ccsStatus')"><input type="radio" name="ccsStatus" value="CCS in development - partially documented">CCS in development - partially documented</label>
+          <label class="radio-option" onclick="selectRadio(this,'ccsStatus')"><input type="radio" name="ccsStatus" value="EM programme exists but no formal CCS document">EM programme exists but no formal CCS</label>
+          <label class="radio-option" onclick="selectRadio(this,'ccsStatus')"><input type="radio" name="ccsStatus" value="No CCS in place">No CCS in place</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Describe your EM programme in detail <span class="required">*</span></label>
+        <textarea id="emDetail" rows="6" maxlength="2000"
+          placeholder="Describe your current EM programme including: sampling locations and the rationale for their selection; monitoring frequency for each grade; how excursions are investigated and managed; how limits were established; any recent excursion trends; recent inspection history related to EM; and any specific concerns you have about your current programme."
+          oninput="updateCount(this,'detailCount')"></textarea>
+        <div class="char-count"><span id="detailCount">0</span>/2000</div>
+      </div>
+
+      <div class="form-group">
+        <label>Recent EM excursion history (optional)</label>
+        <div class="radio-group" id="excursionHistory">
+          <label class="radio-option" onclick="selectRadio(this,'excursionHistory')"><input type="radio" name="excursionHistory" value="No excursions in the last 12 months">No excursions in last 12 months</label>
+          <label class="radio-option" onclick="selectRadio(this,'excursionHistory')"><input type="radio" name="excursionHistory" value="Occasional alert level excursions - investigated and resolved">Occasional alert excursions - resolved</label>
+          <label class="radio-option" onclick="selectRadio(this,'excursionHistory')"><input type="radio" name="excursionHistory" value="Recurring excursions in specific locations">Recurring excursions in specific locations</label>
+          <label class="radio-option" onclick="selectRadio(this,'excursionHistory')"><input type="radio" name="excursionHistory" value="Recent action level excursions">Recent action level excursions</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="error-msg" id="errMsg"></div>
+    <button class="btn-analyse" id="analyseBtn" onclick="runAnalysis()">Review my EM programme</button>
+    <button class="btn-clear" onclick="clearAll()">Clear</button>
+    <p style="text-align:center;font-size:0.78rem;color:var(--mid);margin-top:10px;">Review takes 20 to 30 seconds.</p>
+
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loadingScreen">
+    <div class="loading-icon">&#x1F9EA;</div>
+    <h2>Reviewing your EM programme<span class="loading-dots"></span></h2>
+    <p id="loadingMsg">Analysing programme parameters against Annex 1 2022</p>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="resultsSection">
+
+    <div class="results-header">
+      <h2>EM Programme Review</h2>
+      <div class="results-actions">
+        <button class="btn-copy" onclick="copyResults()">Copy full report</button>
+        <button class="btn-restart" onclick="restart()">Review another programme</button>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-card">
+      <div class="summary-label">Programme assessment summary</div>
+      <div class="summary-text" id="summaryText"></div>
+      <div class="score-row" id="scoreRow"></div>
+    </div>
+
+    <!-- CCS Integration -->
+    <div class="ccs-card" id="ccsCard">
+      <div class="ccs-label">Contamination Control Strategy integration</div>
+      <div id="ccsText" style="font-size:0.88rem;color:var(--light);line-height:1.7"></div>
+    </div>
+
+    <!-- Three assessment cards -->
+    <div class="assess-grid" id="assessGrid"></div>
+
+    <!-- Gaps -->
+    <div id="gapsList"></div>
+
+    <!-- Priority actions -->
+    <div class="rec-section" id="recSection" style="display:none">
+      <h3>Priority actions before the next inspection</h3>
+      <div id="recList"></div>
+    </div>
+
+    <div class="disclaimer">
+      This review is a structured starting framework based on EU GMP Annex 1 2022 and current FDA aseptic guidance. All findings and recommendations should be reviewed by a qualified sterile manufacturing professional before implementing changes. Always verify against the current published version of the cited regulation or guidance.
+    </div>
+
+    <div class="cta-box">
+      <h3 id="ctaTitle">GMPify courses covering environmental monitoring</h3>
+      <p id="ctaText">Full catalog access from day one. Every course built from primary regulatory sources including EU GMP Annex 1 2022.</p>
+      <a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="btn-subscribe">Subscribe to access full catalog &rarr;</a>
+    </div>
+
+  </div>
+</div>
+
+<footer><div class="footer-inner">
+  <span>&copy; 2026 GMPify. <a href="https://www.gmpify.com/privacy.html">Privacy</a> &middot; <a href="https://www.gmpify.com/terms.html">Terms</a></span>
+  <span><a href="https://www.gmpify.com">gmpify.com</a> &middot; <a href="https://www.gmpify.com/blog.html">Blog</a> &middot; <a href="https://learn.gmpify.com">learn.gmpify.com</a></span>
+</div></footer>
+
+<script>
+const SYSTEM = `You are a senior pharmaceutical GMP regulatory expert with 27 years of experience in sterile pharmaceutical manufacturing and environmental monitoring programme design, working for GMPify Training.
+
+A pharmaceutical professional has submitted their environmental monitoring programme details for review against EU GMP Annex 1 2022 and FDA aseptic guidance requirements.
+
+Analyse the EM programme details provided and identify gaps, deficiencies and areas that would generate inspection findings. Base your analysis on EU GMP Annex 1 2022 Sections 4 and 9, FDA Guidance for Industry: Sterile Drug Products Produced by Aseptic Processing 2004, and current 2024-2026 inspection finding patterns.
+
+Respond ONLY with a valid JSON object. Critical formatting rules: no literal newlines inside string values - use a space instead. No trailing commas. Keep all string values on a single line. No em dashes - use hyphens instead.
+
+Return this exact JSON structure:
+
+{"summary":"2-3 sentence overall assessment of the EM programme. State what is adequate and what the most significant gaps are. Be specific.","overallRisk":"Critical or Major or Minor or Acceptable","criticalCount":0,"majorCount":0,"minorCount":0,"observationCount":0,"ccsIntegration":"Assessment of how well the EM programme integrates with the Contamination Control Strategy required under Annex 1 2022 Section 4","gaps":[{"priority":"Critical or Major or Minor or Observation","title":"Short descriptive title of the gap","regulatoryBasis":"Specific Annex 1 2022 section or FDA guidance reference","finding":"2-3 sentences describing exactly what is missing or inadequate and why it matters from a regulatory inspection perspective","inspectionPattern":"1-2 sentences describing how inspectors have cited this gap in recent 2024-2026 Annex 1 inspections","recommendation":"2-3 sentences of specific recommended action to address this gap"}],"alertActionLimitAssessment":"Assessment of whether alert and action limits are scientifically justified based on historical data per Annex 1 Section 9.9 - alert limits at 90th percentile of historical data action limits at 95th percentile both below regulatory specification limits","trendingAssessment":"Assessment of the trending programme - whether data is being trended adequately and whether adverse trends would be detected before exceedances occur","excursionManagement":"Assessment of the excursion investigation and CAPA process against Annex 1 requirements","priorityActions":["Specific action 1","Specific action 2","Specific action 3","Specific action 4","Specific action 5"],"relatedCourses":["Course name 1","Course name 2","Course name 3"]}`;
+
+function updateCount(el, id){ document.getElementById(id).textContent = el.value.length; }
+
+function selectRadio(label, groupId){
+  document.querySelectorAll(`#${groupId} .radio-option`).forEach(l => l.classList.remove('selected'));
+  label.classList.add('selected');
+}
+
+function selectRadioMulti(label){
+  label.classList.toggle('selected');
+}
+
+function getRadioValue(groupId){
+  const sel = document.querySelector(`#${groupId} .radio-option.selected input`);
+  return sel ? sel.value : 'Not specified';
+}
+
+function getMultiValues(containerId){
+  return [...document.querySelectorAll(`#${containerId} .radio-option.selected input`)]
+    .map(i => i.value).join(', ') || 'None selected';
+}
+
+function validate(){
+  if(!document.getElementById('facilityType').value) return 'Please select a facility type.';
+  if(!document.querySelector('#regMarket .radio-option.selected')) return 'Please select regulatory market(s).';
+  if(!document.querySelector('#gradeA .radio-option.selected')) return 'Please select your Grade A / ISO 5 status.';
+  const detail = document.getElementById('emDetail').value.trim();
+  if(detail.length < 50) return 'Please describe your EM programme in more detail (at least 50 characters).';
+  return null;
+}
+
+async function runAnalysis(){
+  const errEl = document.getElementById('errMsg');
+  errEl.classList.remove('show');
+  const err = validate();
+  if(err){ errEl.textContent = err; errEl.classList.add('show'); return; }
+
+  const facilityType = document.getElementById('facilityType').value;
+  const regMarket = getRadioValue('regMarket');
+  const gradeA = getRadioValue('gradeA');
+  const gradeB = getRadioValue('gradeB');
+  const gradeC = getRadioValue('gradeC');
+  const gradeD = getRadioValue('gradeD');
+  const viableMethods = getMultiValues('viableMethods');
+  const nonViable = getRadioValue('nonViable');
+  const limitSetting = getRadioValue('limitSetting');
+  const trending = getRadioValue('trending');
+  const ccsStatus = getRadioValue('ccsStatus');
+  const emDetail = document.getElementById('emDetail').value.trim();
+  const excursionHistory = getRadioValue('excursionHistory');
+
+  ['formSection','toolHeader','infoNote'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.style.display = 'none';
+  });
+
+  const loading = document.getElementById('loadingScreen');
+  loading.classList.add('show');
+
+  const msgs = [
+    'Analysing programme parameters against Annex 1 2022',
+    'Evaluating CCS integration and sampling rationale',
+    'Reviewing alert and action limit methodology',
+    'Assessing trending and excursion management',
+    'Identifying inspection risk areas',
+    'Generating priority recommendations'
+  ];
+  let mi = 0;
+  const mt = setInterval(() => {
+    document.getElementById('loadingMsg').textContent = msgs[++mi % msgs.length];
+  }, 4000);
+
+  const userPrompt = `Please review this environmental monitoring programme.
+
+Facility type: ${facilityType}
+Regulatory markets: ${regMarket}
+Grade A/ISO 5 status: ${gradeA}
+Grade B present: ${gradeB}
+Grade C present: ${gradeC}
+Grade D present: ${gradeD}
+Viable monitoring methods: ${viableMethods}
+Non-viable particle monitoring: ${nonViable}
+Alert and action limit setting method: ${limitSetting}
+Trending programme: ${trending}
+CCS status: ${ccsStatus}
+Recent excursion history: ${excursionHistory}
+
+EM programme description:
+${emDetail}`;
+
+  try {
+    const res = await fetch('/.netlify/functions/claude-proxy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 5000,
+        system: SYSTEM,
+        messages: [{ role: 'user', content: userPrompt }]
+      })
+    });
+
+    const data = await res.json();
+    clearInterval(mt);
+    if(!res.ok) throw new Error(data.error?.message || data.error || 'API error ' + res.status);
+
+    const raw = data.content?.map(b => b.type === 'text' ? b.text : '').join('').trim();
+    let jsonStr = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '');
+    const match = jsonStr.match(/\{[\s\S]*\}/);
+    if(!match) throw new Error('Could not parse response');
+    jsonStr = match[0]
+      .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ' ')
+      .replace(/("(?:[^"\\]|\\.)*")|[\r\n]+/g, (m, str) => str ? str : ' ')
+      .replace(/,\s*([\]\}])/g, '$1');
+
+    let parsed;
+    try { parsed = JSON.parse(jsonStr); }
+    catch(e) { throw new Error('The review response had a formatting issue. Please try again.'); }
+
+    loading.classList.remove('show');
+    showResults(parsed);
+
+  } catch(e) {
+    clearInterval(mt);
+    loading.classList.remove('show');
+    ['formSection','toolHeader','infoNote'].forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.style.display = 'block';
+    });
+    errEl.textContent = 'Something went wrong: ' + e.message + '. Please try again.';
+    errEl.classList.add('show');
+  }
+}
+
+function showResults(d){
+  // Summary
+  document.getElementById('summaryText').innerHTML = d.summary || '';
+
+  // Score pills
+  const scoreRow = document.getElementById('scoreRow');
+  scoreRow.innerHTML = '';
+  [
+    {count: d.criticalCount, label:'Critical', cls:'score-high'},
+    {count: d.majorCount, label:'Major', cls:'score-med'},
+    {count: d.minorCount, label:'Minor', cls:'score-low'},
+    {count: d.observationCount, label:'Observations', cls:'score-low'},
+  ].forEach(sc => {
+    if((sc.count||0) > 0){
+      const pill = document.createElement('span');
+      pill.className = `score-pill ${sc.cls}`;
+      pill.textContent = `${sc.count} ${sc.label}`;
+      scoreRow.appendChild(pill);
+    }
+  });
+  const risk = document.createElement('span');
+  risk.className = `score-pill ${d.overallRisk==='Critical'?'score-high':d.overallRisk==='Major'?'score-med':'score-low'}`;
+  risk.textContent = `Overall: ${d.overallRisk||'Major'}`;
+  scoreRow.appendChild(risk);
+
+  // CCS card
+  document.getElementById('ccsText').textContent = d.ccsIntegration || '';
+
+  // Three assessment cards
+  const assessGrid = document.getElementById('assessGrid');
+  assessGrid.innerHTML = '';
+  [
+    {title:'Alert and action limits', text: d.alertActionLimitAssessment},
+    {title:'Trending programme', text: d.trendingAssessment},
+    {title:'Excursion management', text: d.excursionManagement},
+  ].forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'assess-card';
+    div.innerHTML = `<h4>${item.title}</h4><p>${item.text||''}</p>`;
+    assessGrid.appendChild(div);
+  });
+
+  // Gaps
+  const gapsList = document.getElementById('gapsList');
+  gapsList.innerHTML = '';
+  const priorityMap = {Critical:'priority-critical',Major:'priority-major',Minor:'priority-minor',Observation:'priority-observation'};
+
+  (d.gaps||[]).forEach((gap,idx) => {
+    const div = document.createElement('div');
+    div.className = 'gap-section';
+    div.innerHTML = `
+      <div class="gap-section-head" onclick="toggleGap(${idx})">
+        <span class="gap-priority ${priorityMap[gap.priority]||'priority-observation'}">${gap.priority}</span>
+        <span class="gap-title">${gap.title}</span>
+        <span class="gap-toggle" id="toggle-${idx}">&#9660;</span>
+      </div>
+      <div class="gap-body" id="gap-body-${idx}">
+        <div class="gap-body-label">Regulatory basis</div>
+        <div class="gap-body-text"><span class="reg-cite">${gap.regulatoryBasis||''}</span></div>
+        <div class="gap-body-label">Finding</div>
+        <div class="gap-body-text">${gap.finding||''}</div>
+        <div class="gap-body-label">Current inspection pattern</div>
+        <div class="gap-body-text">${gap.inspectionPattern||''}</div>
+        <div class="gap-body-label">Recommended action</div>
+        <div class="gap-body-text" style="background:rgba(0,194,168,0.04);border:1px solid rgba(0,194,168,0.15);border-radius:6px;padding:10px 12px;">${gap.recommendation||''}</div>
+      </div>`;
+    gapsList.appendChild(div);
+  });
+
+  // Priority actions
+  if(d.priorityActions && d.priorityActions.length > 0){
+    const recSection = document.getElementById('recSection');
+    recSection.style.display = 'block';
+    const recList = document.getElementById('recList');
+    recList.innerHTML = '';
+    d.priorityActions.forEach(rec => {
+      const div = document.createElement('div');
+      div.className = 'rec-item';
+      div.textContent = rec;
+      recList.appendChild(div);
+    });
+  }
+
+  // CTA
+  if(d.relatedCourses && d.relatedCourses.length > 0){
+    document.getElementById('ctaText').textContent =
+      `Relevant GMPify courses: ${d.relatedCourses.join(', ')}. Full catalog access from day one.`;
+  }
+
+  document.getElementById('resultsSection').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleGap(idx){
+  const body = document.getElementById(`gap-body-${idx}`);
+  const toggle = document.getElementById(`toggle-${idx}`);
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  toggle.innerHTML = isOpen ? '&#9654;' : '&#9660;';
+}
+
+function copyResults(){
+  const summary = document.getElementById('summaryText').textContent;
+  const ccs = document.getElementById('ccsText').textContent;
+  const gaps = document.querySelectorAll('.gap-section');
+  let text = 'ENVIRONMENTAL MONITORING PROGRAMME REVIEW - GMPify\n\n';
+  text += 'SUMMARY\n' + summary + '\n\n';
+  text += 'CCS INTEGRATION\n' + ccs + '\n\n';
+  text += 'GAPS IDENTIFIED\n';
+  gaps.forEach(g => {
+    const title = g.querySelector('.gap-title')?.textContent || '';
+    const priority = g.querySelector('.gap-priority')?.textContent || '';
+    const finding = g.querySelectorAll('.gap-body-text')[1]?.textContent || '';
+    const rec = g.querySelectorAll('.gap-body-text')[3]?.textContent || '';
+    text += `\n[${priority}] ${title}\nFinding: ${finding}\nRecommendation: ${rec}\n`;
+  });
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy full report', 2000);
+  });
+}
+
+function clearAll(){
+  document.getElementById('facilityType').value = '';
+  document.getElementById('emDetail').value = '';
+  document.getElementById('detailCount').textContent = '0';
+  document.querySelectorAll('.radio-option').forEach(l => l.classList.remove('selected'));
+  document.getElementById('errMsg').classList.remove('show');
+  document.getElementById('resultsSection').classList.remove('show');
+}
+
+function restart(){
+  document.getElementById('resultsSection').classList.remove('show');
+  ['formSection','toolHeader','infoNote'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.style.display = 'block';
+  });
+  clearAll();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

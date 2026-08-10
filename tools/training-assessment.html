@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="gmpify_favicon.ico">
+<title>GMP Training Assessment - GMPify</title>
+<meta name="description" content="Find out exactly which GMP courses you need. Answer 10 questions and get a personalised training priority list built from your role, site type and regulatory focus.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2B3E;--navy-card:#112d41;--teal:#00C2A8;--gold:#F5A623;
+  --light:#CAD8E8;--mid:#6E90A0;--white:#fff;--orange:#B84A00;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --radius:8px;
+}
+body{font-family:var(--font);background:var(--navy);color:var(--light);line-height:1.6;min-height:100vh}
+a{color:var(--teal);text-decoration:none}
+nav{background:rgba(13,43,62,0.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,194,168,0.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;max-width:860px;margin:0 auto;padding:0 24px}
+.logo{font-size:1.4rem;font-weight:800;color:#fff}
+.logo span:first-child{color:var(--teal)}
+.nav-links{display:flex;gap:20px;list-style:none;align-items:center}
+.nav-links a{font-size:0.88rem;color:var(--light)}
+.nav-links a:hover{color:var(--teal)}
+.nav-cta{background:var(--teal);color:var(--navy)!important;padding:7px 18px;border-radius:6px;font-weight:700!important}
+.container{max-width:860px;margin:0 auto;padding:48px 24px 80px}
+
+/* HEADER */
+.tool-header{text-align:center;margin-bottom:40px}
+.tool-tag{font-size:0.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
+.tool-header h1{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;color:#fff;line-height:1.2;margin-bottom:14px}
+.tool-header p{font-size:1rem;color:var(--mid);max-width:580px;margin:0 auto;line-height:1.7}
+
+/* PROGRESS */
+.progress-wrap{margin-bottom:32px}
+.progress-label{display:flex;justify-content:space-between;font-size:0.78rem;color:var(--mid);margin-bottom:8px}
+.progress-bar{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--teal);border-radius:2px;transition:width 0.4s ease}
+
+/* QUESTION CARD */
+.question-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:32px;margin-bottom:20px;display:none}
+.question-card.active{display:block;animation:fadeIn 0.25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.q-number{font-size:0.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
+.q-text{font-size:1.05rem;font-weight:700;color:#fff;line-height:1.4;margin-bottom:20px}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:rgba(255,255,255,0.03);border:1px solid rgba(202,216,232,0.12);border-radius:var(--radius);cursor:pointer;transition:all 0.15s}
+.option:hover{border-color:rgba(0,194,168,0.4);background:rgba(0,194,168,0.05)}
+.option.selected{border-color:var(--teal);background:rgba(0,194,168,0.08)}
+.option-dot{width:18px;height:18px;border-radius:50%;border:2px solid rgba(202,216,232,0.3);flex-shrink:0;margin-top:2px;transition:all 0.15s}
+.option.selected .option-dot{border-color:var(--teal);background:var(--teal)}
+.option-text{font-size:0.93rem;color:var(--light);line-height:1.5}
+
+/* NAV BUTTONS */
+.btn-row{display:flex;gap:12px;justify-content:flex-end;margin-top:20px}
+.btn-next{background:var(--teal);color:var(--navy);border:none;padding:11px 28px;border-radius:var(--radius);font-size:0.92rem;font-weight:700;cursor:pointer;transition:background 0.15s}
+.btn-next:hover{background:#00a892}
+.btn-next:disabled{background:rgba(255,255,255,0.08);color:var(--mid);cursor:not-allowed}
+.btn-back{background:transparent;color:var(--mid);border:1px solid rgba(202,216,232,0.2);padding:10px 20px;border-radius:var(--radius);font-size:0.88rem;cursor:pointer;transition:all 0.15s}
+.btn-back:hover{color:var(--light);border-color:rgba(202,216,232,0.4)}
+
+/* LOADING */
+.loading-screen{display:none;text-align:center;padding:60px 20px}
+.loading-screen.show{display:block}
+.loading-icon{font-size:2.5rem;margin-bottom:20px;animation:pulse 1.5s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.loading-screen h2{font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:10px}
+.loading-screen p{font-size:0.92rem;color:var(--mid)}
+.loading-dots{display:inline-block}
+.loading-dots::after{content:'...';animation:dots 1.5s steps(4,end) infinite}
+@keyframes dots{0%,20%{content:'.'}40%{content:'..'}60%,100%{content:'...'}}
+
+/* RESULTS */
+.results-screen{display:none}
+.results-screen.show{display:block;animation:fadeIn 0.3s ease}
+.results-header{text-align:center;margin-bottom:36px}
+.results-header h2{font-size:1.8rem;font-weight:800;color:#fff;margin-bottom:10px}
+.results-header p{font-size:0.95rem;color:var(--mid);max-width:560px;margin:0 auto}
+.profile-card{background:rgba(0,194,168,0.06);border:1px solid rgba(0,194,168,0.2);border-radius:12px;padding:20px 24px;margin-bottom:28px}
+.profile-label{font-size:0.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.profile-text{font-size:0.95rem;color:var(--light);line-height:1.65}
+.courses-label{font-size:0.78rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:16px}
+.course-rec{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:20px 22px;margin-bottom:14px;position:relative}
+.course-rec-num{position:absolute;top:20px;right:20px;width:28px;height:28px;border-radius:50%;background:rgba(0,194,168,0.15);border:1px solid rgba(0,194,168,0.3);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;color:var(--teal)}
+.course-rec-priority{font-size:0.7rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px}
+.course-rec-title{font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px;padding-right:40px}
+.course-rec-why{font-size:0.88rem;color:var(--mid);line-height:1.6}
+.cta-section{background:linear-gradient(135deg,rgba(0,194,168,0.1),rgba(0,194,168,0.04));border:1px solid rgba(0,194,168,0.2);border-radius:14px;padding:28px 32px;margin-top:32px;text-align:center}
+.cta-section h3{font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:8px}
+.cta-section p{font-size:0.9rem;color:var(--mid);margin-bottom:20px;max-width:480px;margin-left:auto;margin-right:auto}
+.btn-subscribe{display:inline-block;background:var(--teal);color:var(--navy);font-weight:700;padding:13px 32px;border-radius:var(--radius);font-size:0.95rem;transition:background 0.15s;margin-bottom:10px}
+.btn-subscribe:hover{background:#00a892;color:var(--navy)}
+.btn-restart{display:block;font-size:0.82rem;color:var(--mid);margin-top:12px;cursor:pointer;background:none;border:none;text-decoration:underline}
+.btn-restart:hover{color:var(--light)}
+
+/* ERROR */
+.error-msg{background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);border-radius:var(--radius);padding:12px 16px;font-size:0.88rem;color:#f87171;margin-top:16px;display:none}
+.error-msg.show{display:block}
+
+footer{padding:24px;border-top:1px solid rgba(255,255,255,0.07);max-width:860px;margin:0 auto}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.8rem;color:var(--mid)}
+@media(max-width:600px){.nav-links{display:none}.btn-row{flex-wrap:wrap}.cta-section{padding:20px}}
+</style>
+</head>
+<body>
+
+<nav><div class="nav-inner">
+  <a href="https://gmpify.com" class="logo"><span>GMP</span><span>ify</span></a>
+    <ul class="nav-links">
+    <li><a href="https://gmpify-tools.netlify.app/training-assessment.html">GMP Assessment</a></li>
+    <li><a href="https://gmpify-tools.netlify.app">Reg Explainer</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/483-response-drafter.html">483 Drafter</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/sop-gap-analyser.html">SOP Analyser</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/em-reviewer.html">EM Reviewer</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/deviation-investigation.html">Deviation Tool</a></li>
+    <li><a href="https://www.gmpify.com" style="color:var(--teal)">&larr; Back to GMPify</a></li>
+    <li><a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="nav-cta">Subscribe</a></li>
+  </ul>
+</div></nav>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="tool-header" id="toolHeader">
+    <div class="tool-tag">Free assessment</div>
+    <h1>Find your GMP training priorities</h1>
+    <p>Answer 10 questions about your role, site and regulatory focus. Get a personalised list of the courses you need most - and why.</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap" id="progressWrap" style="display:none">
+    <div class="progress-label">
+      <span id="progressText">Question 1 of 10</span>
+      <span id="progressPct">10%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:10%"></div></div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questionsWrap"></div>
+
+  <!-- ERROR -->
+  <div class="error-msg" id="errMsg"></div>
+
+  <!-- LOADING -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-icon">&#x1F52C;</div>
+    <h2>Building your training plan<span class="loading-dots"></span></h2>
+    <p id="loadingMsg">Analysing your profile against current FDA and EU GMP enforcement data</p>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results-screen" id="resultsScreen">
+    <div class="results-header">
+      <h2>Your personalised GMP training plan</h2>
+      <p id="resultsSubtitle"></p>
+    </div>
+    <div class="profile-card">
+      <div class="profile-label">Your profile</div>
+      <div class="profile-text" id="profileSummary"></div>
+    </div>
+    <div class="courses-label">Your priority courses - in order</div>
+    <div id="courseList"></div>
+    <div class="cta-section">
+      <h3>Start your training today</h3>
+      <p>Full catalog access from day one. Every course built from primary regulatory sources. Certificate on completion of every course.</p>
+      <a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="btn-subscribe">Subscribe - from $69/month</a>
+      <br>
+      <button class="btn-restart" onclick="restart()">Retake the assessment</button>
+    </div>
+  </div>
+
+</div>
+
+<footer><div class="footer-inner">
+  <span>&copy; 2026 GMPify. <a href="https://gmpify.com/privacy.html">Privacy</a> &middot; <a href="https://gmpify.com/terms.html">Terms</a></span>
+  <span><a href="https://gmpify.com">gmpify.com</a> &middot; <a href="https://gmpify.com/blog.html">Blog</a> &middot; <a href="https://learn.gmpify.com">learn.gmpify.com</a></span>
+</div></footer>
+
+<script>
+const QUESTIONS = [
+  {
+    id:"role",
+    text:"What is your primary role?",
+    options:["Quality Assurance (QA) Manager or Specialist","Quality Control (QC) Laboratory Analyst or Supervisor","Validation Engineer or Scientist","Regulatory Affairs Professional","Manufacturing / Production Manager or Supervisor","Microbiology / Laboratory Professional","Independent Consultant","Other pharmaceutical professional"]
+  },
+  {
+    id:"experience",
+    text:"How many years of pharmaceutical GMP experience do you have?",
+    options:["Less than 2 years - new to the industry","2 to 5 years - building foundational knowledge","5 to 10 years - experienced professional","More than 10 years - senior professional"]
+  },
+  {
+    id:"site",
+    text:"What type of site or organisation do you work at?",
+    options:["Sterile injectable or aseptic manufacturing","Non-sterile finished dose (oral solids, liquids, topicals)","Biological or biopharmaceutical manufacturing","API or drug substance manufacturing","Contract manufacturing organisation (CMO or CDMO)","Contract research or testing laboratory (CRO or CRL)","Pharmaceutical consulting","Other"]
+  },
+  {
+    id:"market",
+    text:"Which regulatory markets does your site supply or operate in?",
+    options:["United States (FDA) only","European Union (EMA or national authority) only","Both US FDA and EU GMP","US, EU and other international markets (ICH regions)","I am not sure"]
+  },
+  {
+    id:"inspection",
+    text:"What is your current inspection situation?",
+    options:["FDA or EU inspection expected in the next 6 months","Inspection expected in 6 to 12 months","No inspection planned - building ongoing compliance","Recently inspected - working through findings","Not applicable to my current role"]
+  },
+  {
+    id:"gap",
+    text:"Where do you feel your biggest knowledge gap is right now?",
+    options:["US FDA regulations - 21 CFR Parts 210 and 211","EU GMP Annex 1 and sterile manufacturing requirements","Data integrity and electronic records (21 CFR Part 11)","ICH guidelines - Q9 Q10 Q1 stability","Microbiology - USP chapters and compendial testing","Computer software assurance and validation","Inspection readiness and 483 response","AI and emerging technology in GMP"]
+  },
+  {
+    id:"learning",
+    text:"What is your primary reason for seeking GMP training right now?",
+    options:["Prepare for an upcoming inspection","Address a specific 483 observation or warning letter finding","Close a personal knowledge gap for career development","Train my team or site on current regulatory expectations","Stay current with regulatory changes in 2025 and 2026","Fulfil annual training requirements"]
+  },
+  {
+    id:"priority",
+    text:"Which of these topics is most relevant to your work right now?",
+    options:["Deviation investigations and root cause analysis","Environmental monitoring and contamination control","Process validation and change control","Laboratory controls and out-of-specification investigations","Quality culture and management system maturity","Microbiological testing and compendial compliance","Container closure integrity and packaging","CAPA and 483 response strategy"]
+  },
+  {
+    id:"format",
+    text:"How much time can you realistically dedicate to training each week?",
+    options:["Less than 1 hour - very limited time","1 to 2 hours - occasional learning","2 to 4 hours - committed learner","More than 4 hours - intensive learning mode"]
+  },
+  {
+    id:"goal",
+    text:"What does success look like for you from a GMP training programme?",
+    options:["Pass an FDA or EU inspection with no major observations","Write better 483 responses and investigation reports","Feel genuinely confident explaining regulations to my team","Advance my career into a more senior quality role","Keep up with the pace of regulatory change in 2026","All of the above"]
+  }
+];
+
+const COURSE_CATALOG = `
+AVAILABLE GMPIFY COURSES:
+- GMP Fundamentals FREE PREVIEW (category: GMP Foundations)
+- GMP Fundamentals for Manufacturing Operators (category: GMP Foundations)
+- 21 CFR Part 210: cGMP Foundations (category: GMP Foundations)
+- 21 CFR Part 211 Module 1: Scope and Personnel (category: GMP Foundations)
+- 21 CFR Part 211 Module 2: Buildings and Equipment (category: GMP Foundations)
+- 21 CFR Part 211 Module 3: Components and Containers (category: GMP Foundations)
+- 21 CFR Part 211 Module 4: Production and Process Controls (category: GMP Foundations)
+- 21 CFR Part 211 Module 5: Holding Distribution and Lab Controls (category: GMP Foundations)
+- 21 CFR Part 211 Module 6: Records Reports and Returned Goods (category: GMP Foundations)
+- FDA Data Integrity and cGMP Compliance (category: FDA Regulations)
+- 21 CFR Part 11: Electronic Records and Signatures (category: FDA Regulations)
+- FDA Process Validation: General Principles (category: FDA Regulations)
+- Inspection Readiness and FDA Observations (category: FDA Regulations)
+- Human Error Reduction in GMP Manufacturing (category: FDA Regulations)
+- Responding to FDA Form 483 Observations (category: FDA Regulations)
+- ICH Q9(R1): Quality Risk Management (category: ICH Guidelines)
+- ICH Q10: Pharmaceutical Quality System (category: ICH Guidelines)
+- ICH Q1A(R2): Stability Testing (category: ICH Guidelines)
+- New ICH Q1 2025 Draft (category: ICH Guidelines)
+- EU GMP Annex 1 (2022): Sterile Manufacturing (category: EU GMP and Sterile)
+- Contamination Control Strategy: CCS (category: EU GMP and Sterile)
+- Environmental Monitoring Programme Design (category: EU GMP and Sterile)
+- Rapid Microbiological Methods: RMM (category: EU GMP and Sterile)
+- Container Closure Systems and CCIT (category: EU GMP and Sterile)
+- Pharmaceutical Microbiology Fundamentals (category: Microbiology)
+- Microbiology for Pharmaceutical Water Systems (category: Microbiology)
+- Bioburden Monitoring and Control: USP 1119 (category: Microbiology)
+- Bacterial Endotoxins Testing: USP 85 and 161 (category: Microbiology)
+- USP 61 and 62: Microbial Enumeration Tests (category: Microbiology)
+- USP 60: Burkholderia cepacia Complex Testing (category: Microbiology)
+- Quality Culture and Quality Management Maturity (category: Quality and Emerging)
+- Computer Software Assurance: CSA and GAMP 5 (category: Quality and Emerging)
+- AI and Machine Learning in GMP Manufacturing (category: Quality and Emerging)
+- Digital Manufacturing and Pharma 4.0 (category: Quality and Emerging)
+`;
+
+const SYSTEM = `You are a senior pharmaceutical GMP training advisor at GMPify - a pharmaceutical GMP training platform built from primary regulatory sources with 27 years of live pharmaceutical training experience.
+
+A pharmaceutical professional has completed a 10-question assessment. Based on their answers, recommend exactly 5 courses from the GMPify catalog, ordered by priority for their specific situation.
+
+The available courses are:
+${COURSE_CATALOG}
+
+Respond ONLY with a JSON object in this exact format - no preamble, no explanation, just the JSON:
+
+{
+  "profileSummary": "2-3 sentence description of this person's profile, role and training situation written directly to them (use 'you' and 'your'). Be specific to their answers.",
+  "subtitle": "One sentence summarising their training priority (e.g. 'Based on your role as QA Manager at a sterile site preparing for FDA inspection, here are your five priority courses.')",
+  "courses": [
+    {
+      "title": "Exact course name from the catalog",
+      "priority": "Immediate priority" or "High priority" or "Important",
+      "why": "2-3 sentences explaining specifically why THIS course matters for THIS person based on their assessment answers. Reference their role, site type, inspection timeline or specific gap where relevant."
+    }
+  ]
+}
+
+Recommend exactly 5 courses. Order them from most urgent to least urgent for this specific person. Never use em dashes. Be direct and specific - explain exactly why each course matters for their situation.`;
+
+let currentQ = 0;
+let answers = {};
+
+function init() {
+  const wrap = document.getElementById('questionsWrap');
+  wrap.innerHTML = '';
+  QUESTIONS.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'question-card' + (i === 0 ? ' active' : '');
+    card.id = 'q' + i;
+    card.innerHTML = `
+      <div class="q-number">Question ${i+1} of ${QUESTIONS.length}</div>
+      <div class="q-text">${q.text}</div>
+      <div class="options" id="opts${i}">
+        ${q.options.map((opt, j) => `
+          <div class="option" onclick="selectOption(${i}, ${j}, this)" data-val="${opt}">
+            <div class="option-dot"></div>
+            <div class="option-text">${opt}</div>
+          </div>`).join('')}
+      </div>
+      <div class="btn-row">
+        ${i > 0 ? `<button class="btn-back" onclick="goBack(${i})">Back</button>` : ''}
+        <button class="btn-next" id="next${i}" onclick="${i < QUESTIONS.length - 1 ? `goNext(${i})` : 'submitAssessment()'}" disabled>
+          ${i < QUESTIONS.length - 1 ? 'Next question' : 'Get my training plan'}
+        </button>
+      </div>`;
+    wrap.appendChild(card);
+  });
+  document.getElementById('progressWrap').style.display = 'block';
+  updateProgress();
+}
+
+function selectOption(qIdx, optIdx, el) {
+  document.querySelectorAll('#opts' + qIdx + ' .option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[QUESTIONS[qIdx].id] = el.dataset.val;
+  document.getElementById('next' + qIdx).disabled = false;
+}
+
+function goNext(i) {
+  document.getElementById('q' + i).classList.remove('active');
+  document.getElementById('q' + (i+1)).classList.add('active');
+  currentQ = i + 1;
+  updateProgress();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function goBack(i) {
+  document.getElementById('q' + i).classList.remove('active');
+  document.getElementById('q' + (i-1)).classList.add('active');
+  currentQ = i - 1;
+  updateProgress();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function updateProgress() {
+  const pct = Math.round(((currentQ + 1) / QUESTIONS.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `Question ${currentQ + 1} of ${QUESTIONS.length}`;
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+async function submitAssessment() {
+  document.getElementById('questionsWrap').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('toolHeader').style.display = 'none';
+  document.getElementById('errMsg').classList.remove('show');
+
+  const loading = document.getElementById('loadingScreen');
+  loading.classList.add('show');
+
+  const msgs = [
+    'Analysing your profile against current FDA and EU GMP enforcement data',
+    'Matching your role and site type to the GMPify catalog',
+    'Prioritising courses based on your inspection timeline',
+    'Building your personalised training plan'
+  ];
+  let mi = 0;
+  const mt = setInterval(() => {
+    document.getElementById('loadingMsg').textContent = msgs[++mi % msgs.length];
+  }, 2500);
+
+  const answerText = QUESTIONS.map(q => `${q.text}\nAnswer: ${answers[q.id] || 'Not answered'}`).join('\n\n');
+
+  try {
+    const res = await fetch('/.netlify/functions/claude-proxy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1500,
+        system: SYSTEM,
+        messages: [{ role: 'user', content: `Here are my assessment answers:\n\n${answerText}` }]
+      })
+    });
+
+    const data = await res.json();
+    clearInterval(mt);
+
+    if (!res.ok) throw new Error(data.error?.message || data.error || 'API error ' + res.status);
+
+    const raw = data.content?.map(b => b.type === 'text' ? b.text : '').join('').trim();
+    const match = raw.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('Could not parse response');
+    const parsed = JSON.parse(match[0]);
+
+    loading.classList.remove('show');
+    showResults(parsed);
+
+  } catch(e) {
+    clearInterval(mt);
+    loading.classList.remove('show');
+    document.getElementById('questionsWrap').style.display = 'block';
+    document.getElementById('progressWrap').style.display = 'block';
+    document.getElementById('toolHeader').style.display = 'block';
+    const err = document.getElementById('errMsg');
+    err.textContent = 'Something went wrong: ' + e.message + '. Please try again.';
+    err.classList.add('show');
+    document.getElementById('q' + (QUESTIONS.length-1)).classList.add('active');
+    currentQ = QUESTIONS.length - 1;
+  }
+}
+
+function showResults(data) {
+  document.getElementById('resultsSubtitle').textContent = data.subtitle || '';
+  document.getElementById('profileSummary').textContent = data.profileSummary || '';
+
+  const list = document.getElementById('courseList');
+  list.innerHTML = '';
+  (data.courses || []).forEach((c, i) => {
+    const div = document.createElement('div');
+    div.className = 'course-rec';
+    div.innerHTML = `
+      <div class="course-rec-num">${i+1}</div>
+      <div class="course-rec-priority">${c.priority || 'Priority'}</div>
+      <div class="course-rec-title">${c.title}</div>
+      <div class="course-rec-why">${c.why}</div>`;
+    list.appendChild(div);
+  });
+
+  document.getElementById('resultsScreen').classList.add('show');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function restart() {
+  answers = {};
+  currentQ = 0;
+  document.getElementById('resultsScreen').classList.remove('show');
+  document.getElementById('questionsWrap').style.display = 'block';
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('toolHeader').style.display = 'block';
+  document.querySelectorAll('.question-card').forEach((c, i) => {
+    c.classList.toggle('active', i === 0);
+  });
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('[id^=next]').forEach(b => b.disabled = true);
+  updateProgress();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+init();
+</script>
+
+</body>
+</html>

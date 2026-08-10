@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="gmpify_favicon.ico">
+<title>Deviation Investigation Framework Builder - GMPify</title>
+<meta name="description" content="Describe your manufacturing deviation and get a complete investigation framework - scope determination, root cause methodology, CAPA structure and effectiveness check criteria. Built from 27 years of pharmaceutical GMP training experience.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2B3E;--navy-card:#112d41;--teal:#00C2A8;--gold:#F5A623;
+  --light:#CAD8E8;--mid:#6E90A0;--white:#fff;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --radius:8px;--green:#16A34A;--red:#DC2626;--amber:#D97706;
+}
+body{font-family:var(--font);background:var(--navy);color:var(--light);line-height:1.6;min-height:100vh}
+a{color:var(--teal);text-decoration:none}
+nav{background:rgba(13,43,62,0.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,194,168,0.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;max-width:960px;margin:0 auto;padding:0 24px}
+.logo{font-size:1.4rem;font-weight:800;color:#fff}
+.logo span:first-child{color:var(--teal)}
+.nav-links{display:flex;gap:20px;list-style:none;align-items:center}
+.nav-links a{font-size:0.88rem;color:var(--light)}
+.nav-links a:hover{color:var(--teal)}
+.nav-cta{background:var(--teal);color:var(--navy)!important;padding:7px 18px;border-radius:6px;font-weight:700!important}
+.container{max-width:960px;margin:0 auto;padding:48px 24px 80px}
+.tool-header{text-align:center;margin-bottom:36px}
+.tool-tag{font-size:0.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
+.tool-header h1{font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;color:#fff;line-height:1.2;margin-bottom:14px}
+.tool-header p{font-size:0.97rem;color:var(--mid);max-width:640px;margin:0 auto;line-height:1.7}
+.info-note{background:rgba(0,194,168,0.06);border:1px solid rgba(0,194,168,0.2);border-radius:10px;padding:14px 18px;margin-bottom:28px;font-size:0.85rem;color:var(--mid)}
+.info-note strong{color:var(--light)}
+
+/* FORM */
+.form-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:28px;margin-bottom:20px}
+.form-card h2{font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px}
+.form-card .form-hint{font-size:0.82rem;color:var(--mid);margin-bottom:18px}
+.form-group{margin-bottom:18px}
+label{display:block;font-size:0.78rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px}
+.required{color:var(--teal)}
+select,textarea,input[type=text]{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(202,216,232,0.2);border-radius:var(--radius);padding:11px 14px;color:#fff;font-family:var(--font);font-size:0.92rem;transition:border-color 0.2s}
+select:focus,textarea:focus,input:focus{outline:none;border-color:var(--teal)}
+select option{background:var(--navy-card);color:#fff}
+textarea{resize:vertical;line-height:1.6}
+.char-count{font-size:0.75rem;color:var(--mid);text-align:right;margin-top:4px}
+
+/* RADIO GROUPS */
+.radio-group{display:flex;flex-wrap:wrap;gap:8px}
+.radio-option{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(202,216,232,0.15);border-radius:6px;padding:8px 14px;cursor:pointer;transition:all 0.15s;font-size:0.88rem;color:var(--light)}
+.radio-option:hover{border-color:rgba(0,194,168,0.4);background:rgba(0,194,168,0.05)}
+.radio-option input[type=radio]{display:none}
+.radio-option.selected{border-color:var(--teal);background:rgba(0,194,168,0.1);color:#fff}
+
+/* BUTTONS */
+.btn-generate{width:100%;background:var(--teal);color:var(--navy);border:none;padding:14px;border-radius:var(--radius);font-size:1rem;font-weight:700;cursor:pointer;transition:background 0.15s;margin-top:8px}
+.btn-generate:hover{background:#00a892}
+.btn-generate:disabled{background:rgba(255,255,255,0.08);color:var(--mid);cursor:not-allowed}
+.btn-clear{background:transparent;color:var(--mid);border:1px solid rgba(202,216,232,0.2);padding:10px 20px;border-radius:var(--radius);font-size:0.88rem;cursor:pointer;transition:all 0.15s;margin-top:8px;margin-left:10px}
+.btn-clear:hover{color:var(--light);border-color:rgba(202,216,232,0.4)}
+.error-msg{background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);border-radius:var(--radius);padding:12px 16px;font-size:0.88rem;color:#f87171;margin-bottom:16px;display:none}
+.error-msg.show{display:block}
+
+/* LOADING */
+.loading{display:none;text-align:center;padding:50px 20px;background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;margin-bottom:20px}
+.loading.show{display:block}
+.loading-icon{font-size:2.2rem;margin-bottom:16px;animation:spin 2s linear infinite;display:inline-block}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.loading h2{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:6px}
+.loading p{font-size:0.88rem;color:var(--mid)}
+.loading-bar{width:280px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;margin:20px auto 0;overflow:hidden}
+.loading-bar-fill{height:100%;background:var(--teal);border-radius:2px;animation:fill 25s linear forwards}
+@keyframes fill{from{width:0}to{width:95%}}
+
+/* RESULTS */
+.results{display:none}
+.results.show{display:block;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.results-header h2{font-size:1.3rem;font-weight:800;color:#fff}
+.results-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-copy{background:rgba(0,194,168,0.1);border:1px solid rgba(0,194,168,0.3);color:var(--teal);padding:8px 18px;border-radius:var(--radius);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.15s}
+.btn-copy:hover{background:rgba(0,194,168,0.2)}
+.btn-restart{background:transparent;border:1px solid rgba(202,216,232,0.2);color:var(--mid);padding:8px 18px;border-radius:var(--radius);font-size:0.85rem;cursor:pointer}
+.btn-restart:hover{color:var(--light)}
+
+/* FRAMEWORK SECTIONS */
+.framework-intro{background:rgba(0,194,168,0.06);border:1px solid rgba(0,194,168,0.2);border-radius:12px;padding:20px 24px;margin-bottom:20px}
+.fi-label{font-size:0.7rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.fi-text{font-size:0.95rem;color:var(--light);line-height:1.7}
+.fi-meta{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+.fi-pill{padding:5px 14px;border-radius:20px;font-size:0.8rem;font-weight:700}
+.pill-red{background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.4);color:#f87171}
+.pill-amber{background:rgba(217,119,6,0.15);border:1px solid rgba(217,119,6,0.4);color:#fbbf24}
+.pill-green{background:rgba(22,163,74,0.15);border:1px solid rgba(22,163,74,0.4);color:#4ade80}
+.pill-teal{background:rgba(0,194,168,0.12);border:1px solid rgba(0,194,168,0.35);color:var(--teal)}
+
+.fw-section{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:12px;margin-bottom:14px;overflow:hidden}
+.fw-section-head{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;transition:background 0.15s}
+.fw-section-head:hover{background:rgba(255,255,255,0.03)}
+.fw-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.82rem;font-weight:800;flex-shrink:0}
+.fw-section-title{font-size:0.97rem;font-weight:700;color:#fff;flex:1}
+.fw-toggle{font-size:0.75rem;color:var(--mid);transition:transform 0.2s}
+.fw-toggle.open{transform:rotate(180deg)}
+.fw-body{padding:0 18px 18px;display:none}
+.fw-body.open{display:block}
+
+.fw-subsection{margin-bottom:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05)}
+.fw-subsection:first-child{border-top:none;padding-top:4px}
+.fw-sub-label{font-size:0.72rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px}
+.fw-sub-text{font-size:0.88rem;color:var(--light);line-height:1.7}
+
+/* CHECKLIST */
+.checklist{list-style:none;margin-top:6px}
+.checklist li{display:flex;align-items:flex-start;gap:10px;font-size:0.88rem;color:var(--light);line-height:1.6;margin-bottom:8px;padding:8px 10px;background:rgba(255,255,255,0.02);border-radius:6px}
+.checklist li::before{content:"";width:16px;height:16px;border:2px solid rgba(0,194,168,0.5);border-radius:3px;flex-shrink:0;margin-top:2px}
+.checklist li.done::before{background:var(--teal);border-color:var(--teal);content:"checkmark"}
+
+/* TIMELINE */
+.timeline{margin-top:8px}
+.tl-item{display:flex;gap:12px;margin-bottom:12px}
+.tl-dot{width:10px;height:10px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:5px}
+.tl-dot.amber{background:var(--amber)}
+.tl-dot.red{background:var(--red)}
+.tl-content{flex:1}
+.tl-day{font-size:0.75rem;font-weight:700;color:var(--teal);margin-bottom:2px}
+.tl-day.amber{color:var(--amber)}
+.tl-day.red{color:#f87171}
+.tl-text{font-size:0.88rem;color:var(--light);line-height:1.6}
+
+/* RCA TOOLS */
+.rca-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.rca-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px}
+.rca-title{font-size:0.88rem;font-weight:700;color:#fff;margin-bottom:6px}
+.rca-text{font-size:0.83rem;color:var(--mid);line-height:1.6}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(0,194,168,0.08),rgba(0,194,168,0.02));border:1px solid rgba(0,194,168,0.2);border-radius:12px;padding:24px 28px;margin-top:24px;text-align:center}
+.cta-box h3{font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px}
+.cta-box p{font-size:0.88rem;color:var(--mid);margin-bottom:16px}
+.btn-subscribe{display:inline-block;background:var(--teal);color:var(--navy);font-weight:700;padding:11px 28px;border-radius:var(--radius);font-size:0.9rem}
+.btn-subscribe:hover{background:#00a892;color:var(--navy)}
+.disclaimer{font-size:0.78rem;color:var(--mid);text-align:center;margin-top:12px;line-height:1.6}
+
+footer{padding:24px;border-top:1px solid rgba(255,255,255,0.07);max-width:960px;margin:0 auto}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.8rem;color:var(--mid)}
+@media(max-width:640px){.nav-links{display:none}.results-header{flex-direction:column}.results-actions{width:100%}.rca-grid{grid-template-columns:1fr}.fi-meta{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<nav><div class="nav-inner">
+  <a href="https://www.gmpify.com" class="logo"><span>GMP</span><span>ify</span></a>
+    <ul class="nav-links">
+    <li><a href="https://gmpify-tools.netlify.app/training-assessment.html">GMP Assessment</a></li>
+    <li><a href="https://gmpify-tools.netlify.app">Reg Explainer</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/483-response-drafter.html">483 Drafter</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/sop-gap-analyser.html">SOP Analyser</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/em-reviewer.html">EM Reviewer</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/deviation-investigation.html">Deviation Tool</a></li>
+    <li><a href="https://www.gmpify.com" style="color:var(--teal)">&larr; Back to GMPify</a></li>
+    <li><a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="nav-cta">Subscribe</a></li>
+  </ul>
+</div></nav>
+
+<div class="container">
+
+  <div class="tool-header" id="toolHeader">
+    <div class="tool-tag">Subscriber tool</div>
+    <h1>Deviation Investigation Framework Builder</h1>
+    <p>Describe your manufacturing deviation and get a complete investigation framework - scope determination, root cause methodology, CAPA structure and effectiveness check criteria - tailored to your specific deviation type and regulatory context.</p>
+  </div>
+
+  <div class="info-note" id="infoNote">
+    <strong>Addresses the number one FDA 483 citation.</strong> Failure to thoroughly investigate unexplained discrepancies under 21 CFR 211.192 has been the top or second-ranked cGMP citation for four consecutive years. This tool generates a structured framework built from current FDA inspection expectations and real enforcement data.
+  </div>
+
+  <!-- FORM -->
+  <div id="formSection">
+
+    <div class="form-card">
+      <h2>Step 1 - Describe the deviation</h2>
+      <div class="form-hint">The more detail you provide, the more specific and useful your framework will be.</div>
+
+      <div class="form-group">
+        <label>Deviation type <span class="required">*</span></label>
+        <select id="devType">
+          <option value="">Select deviation type</option>
+          <optgroup label="Manufacturing Process">
+            <option>Process parameter out of range during manufacturing</option>
+            <option>Equipment malfunction or failure during production</option>
+            <option>Batch yield outside expected range</option>
+            <option>Cross-contamination event or risk</option>
+            <option>Environmental monitoring exceedance during manufacturing</option>
+            <option>Cleaning validation failure or cleaning residue found</option>
+            <option>Utility failure (water, HVAC, compressed air) during production</option>
+          </optgroup>
+          <optgroup label="Laboratory and Testing">
+            <option>Out-of-specification result - finished product</option>
+            <option>Out-of-specification result - in-process testing</option>
+            <option>Out-of-specification result - raw material or component</option>
+            <option>Out-of-trend result identified during stability testing</option>
+            <option>Analyst error or laboratory procedural deviation</option>
+            <option>Instrument calibration failure or out-of-calibration use</option>
+          </optgroup>
+          <optgroup label="Documentation and Data">
+            <option>Data entry error in batch record</option>
+            <option>SOP not followed - manufacturing step</option>
+            <option>SOP not followed - laboratory procedure</option>
+            <option>Incomplete or missing batch record documentation</option>
+            <option>Unauthorised change to a controlled document</option>
+          </optgroup>
+          <optgroup label="Materials and Components">
+            <option>Raw material or component failing specification</option>
+            <option>Mix-up of materials or components</option>
+            <option>Storage condition exceedance - temperature or humidity</option>
+            <option>Container closure integrity concern</option>
+          </optgroup>
+          <optgroup label="Sterile Manufacturing">
+            <option>Media fill failure or adverse trend</option>
+            <option>Sterility test failure</option>
+            <option>Environmental monitoring - viable exceedance ISO 5 or critical zone</option>
+            <option>Environmental monitoring - viable exceedance ISO 7 or 8</option>
+            <option>Aseptic technique breach or gowning violation</option>
+            <option>Intervention in critical zone - unplanned</option>
+          </optgroup>
+          <optgroup label="Other">
+            <option>Customer complaint with product quality impact</option>
+            <option>Supplier deviation affecting received materials</option>
+            <option>Other - describe below</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Describe the deviation in detail <span class="required">*</span></label>
+        <textarea id="devDetail" rows="5" maxlength="1500" placeholder="What happened? When was it discovered? What product, batch or equipment was involved? What was the expected result and what was observed? Include any immediate actions already taken." oninput="updateCount(this,'detailCount')"></textarea>
+        <div class="char-count"><span id="detailCount">0</span>/1500</div>
+      </div>
+
+      <div class="form-group">
+        <label>Product type</label>
+        <div class="radio-group" id="prodType">
+          <label class="radio-option" onclick="selectRadio(this,'prodType')"><input type="radio" name="prodType" value="Oral solid dose">Oral solid dose</label>
+          <label class="radio-option" onclick="selectRadio(this,'prodType')"><input type="radio" name="prodType" value="Sterile injectable">Sterile injectable</label>
+          <label class="radio-option" onclick="selectRadio(this,'prodType')"><input type="radio" name="prodType" value="Liquid oral">Liquid oral</label>
+          <label class="radio-option" onclick="selectRadio(this,'prodType')"><input type="radio" name="prodType" value="Topical or semi-solid">Topical or semi-solid</label>
+          <label class="radio-option" onclick="selectRadio(this,'prodType')"><input type="radio" name="prodType" value="Biological or biosimilar">Biological or biosimilar</label>
+          <label class="radio-option" onclick="selectRadio(this,'prodType')"><input type="radio" name="prodType" value="API or drug substance">API or drug substance</label>
+          <label class="radio-option" onclick="selectRadio(this,'prodType')"><input type="radio" name="prodType" value="Not applicable or unknown">Not specified</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Regulatory market</label>
+        <div class="radio-group" id="regMarket">
+          <label class="radio-option" onclick="selectRadio(this,'regMarket')"><input type="radio" name="regMarket" value="FDA (US)">FDA (US)</label>
+          <label class="radio-option" onclick="selectRadio(this,'regMarket')"><input type="radio" name="regMarket" value="EMA (EU)">EMA (EU)</label>
+          <label class="radio-option" onclick="selectRadio(this,'regMarket')"><input type="radio" name="regMarket" value="Both FDA and EMA">Both FDA and EMA</label>
+          <label class="radio-option" onclick="selectRadio(this,'regMarket')"><input type="radio" name="regMarket" value="Health Canada">Health Canada</label>
+          <label class="radio-option" onclick="selectRadio(this,'regMarket')"><input type="radio" name="regMarket" value="Multiple markets">Multiple markets</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>Step 2 - Investigation context</h2>
+      <div class="form-hint">This helps calibrate the depth and urgency of the framework.</div>
+
+      <div class="form-group">
+        <label>Has the batch been distributed?</label>
+        <div class="radio-group" id="distributed">
+          <label class="radio-option" onclick="selectRadio(this,'distributed')"><input type="radio" name="distributed" value="No - batch on hold">No - batch on hold</label>
+          <label class="radio-option" onclick="selectRadio(this,'distributed')"><input type="radio" name="distributed" value="Yes - batch distributed">Yes - distributed</label>
+          <label class="radio-option" onclick="selectRadio(this,'distributed')"><input type="radio" name="distributed" value="Partially distributed">Partially distributed</label>
+          <label class="radio-option" onclick="selectRadio(this,'distributed')"><input type="radio" name="distributed" value="Not applicable">Not applicable</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Is this a recurring deviation?</label>
+        <div class="radio-group" id="recurring">
+          <label class="radio-option" onclick="selectRadio(this,'recurring')"><input type="radio" name="recurring" value="First occurrence">First occurrence</label>
+          <label class="radio-option" onclick="selectRadio(this,'recurring')"><input type="radio" name="recurring" value="Second occurrence - same type">Second occurrence</label>
+          <label class="radio-option" onclick="selectRadio(this,'recurring')"><input type="radio" name="recurring" value="Recurring - three or more occurrences">Recurring (3 or more)</label>
+          <label class="radio-option" onclick="selectRadio(this,'recurring')"><input type="radio" name="recurring" value="Unknown - trend analysis required">Unknown</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Perceived patient safety impact</label>
+        <div class="radio-group" id="safetyImpact">
+          <label class="radio-option" onclick="selectRadio(this,'safetyImpact')"><input type="radio" name="safetyImpact" value="No direct patient safety impact identified">No direct impact identified</label>
+          <label class="radio-option" onclick="selectRadio(this,'safetyImpact')"><input type="radio" name="safetyImpact" value="Potential patient safety impact - under assessment">Potential impact - assessing</label>
+          <label class="radio-option" onclick="selectRadio(this,'safetyImpact')"><input type="radio" name="safetyImpact" value="Patient safety impact confirmed or likely">Impact confirmed or likely</label>
+          <label class="radio-option" onclick="selectRadio(this,'safetyImpact')"><input type="radio" name="safetyImpact" value="Unknown - assessment in progress">Unknown</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Any additional context (optional)</label>
+        <textarea id="addContext" rows="3" maxlength="600" placeholder="Recent process changes, known equipment issues, similar deviations at other sites, regulatory inspection history, or anything else relevant to the investigation..." oninput="updateCount(this,'contextCount')"></textarea>
+        <div class="char-count"><span id="contextCount">0</span>/600</div>
+      </div>
+    </div>
+
+    <div class="error-msg" id="errMsg"></div>
+    <button class="btn-generate" id="generateBtn" onclick="runGenerate()">Build my investigation framework</button>
+    <button class="btn-clear" onclick="clearAll()">Clear</button>
+    <p style="text-align:center;font-size:0.78rem;color:var(--mid);margin-top:10px;">Framework generation takes 20 to 35 seconds.</p>
+
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loadingScreen">
+    <div class="loading-icon">&#x2699;</div>
+    <h2 id="loadingTitle">Building your framework</h2>
+    <p id="loadingMsg">Analysing deviation type and regulatory context</p>
+    <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="resultsSection">
+
+    <div class="results-header">
+      <h2>Investigation Framework</h2>
+      <div class="results-actions">
+        <button class="btn-copy" onclick="copyFramework()">Copy full framework</button>
+        <button class="btn-restart" onclick="restart()">New deviation</button>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="framework-intro">
+      <div class="fi-label">Deviation summary and regulatory classification</div>
+      <div class="fi-text" id="summaryText"></div>
+      <div class="fi-meta" id="metaRow"></div>
+    </div>
+
+    <!-- Section 1: Scope -->
+    <div class="fw-section" id="sec1">
+      <div class="fw-section-head" onclick="toggleSection('sec1')">
+        <div class="fw-num" style="background:rgba(220,38,38,0.15);color:#f87171;">1</div>
+        <div class="fw-section-title">Scope determination and immediate actions</div>
+        <div class="fw-toggle" id="toggle-sec1">&#9660;</div>
+      </div>
+      <div class="fw-body" id="body-sec1"></div>
+    </div>
+
+    <!-- Section 2: Root cause -->
+    <div class="fw-section" id="sec2">
+      <div class="fw-section-head" onclick="toggleSection('sec2')">
+        <div class="fw-num" style="background:rgba(0,194,168,0.15);color:var(--teal);">2</div>
+        <div class="fw-section-title">Root cause analysis methodology</div>
+        <div class="fw-toggle" id="toggle-sec2">&#9660;</div>
+      </div>
+      <div class="fw-body" id="body-sec2"></div>
+    </div>
+
+    <!-- Section 3: CAPA -->
+    <div class="fw-section" id="sec3">
+      <div class="fw-section-head" onclick="toggleSection('sec3')">
+        <div class="fw-num" style="background:rgba(245,166,35,0.15);color:var(--gold);">3</div>
+        <div class="fw-section-title">CAPA structure and implementation</div>
+        <div class="fw-toggle" id="toggle-sec3">&#9660;</div>
+      </div>
+      <div class="fw-body" id="body-sec3"></div>
+    </div>
+
+    <!-- Section 4: Effectiveness -->
+    <div class="fw-section" id="sec4">
+      <div class="fw-section-head" onclick="toggleSection('sec4')">
+        <div class="fw-num" style="background:rgba(22,163,74,0.15);color:#4ade80;">4</div>
+        <div class="fw-section-title">Effectiveness check criteria</div>
+        <div class="fw-toggle" id="toggle-sec4">&#9660;</div>
+      </div>
+      <div class="fw-body" id="body-sec4"></div>
+    </div>
+
+    <!-- Section 5: Documentation -->
+    <div class="fw-section" id="sec5">
+      <div class="fw-section-head" onclick="toggleSection('sec5')">
+        <div class="fw-num" style="background:rgba(110,144,160,0.2);color:var(--mid);">5</div>
+        <div class="fw-section-title">Documentation requirements and investigation report</div>
+        <div class="fw-toggle" id="toggle-sec5">&#9660;</div>
+      </div>
+      <div class="fw-body" id="body-sec5"></div>
+    </div>
+
+    <!-- Section 6: Regulatory -->
+    <div class="fw-section" id="sec6">
+      <div class="fw-section-head" onclick="toggleSection('sec6')">
+        <div class="fw-num" style="background:rgba(37,99,235,0.15);color:#60a5fa;">6</div>
+        <div class="fw-section-title">Regulatory notifications and escalation criteria</div>
+        <div class="fw-toggle" id="toggle-sec6">&#9660;</div>
+      </div>
+      <div class="fw-body" id="body-sec6"></div>
+    </div>
+
+    <div class="disclaimer">
+      This framework is a structured starting point based on current cGMP requirements and FDA inspection expectations. All investigation conclusions, CAPA decisions and regulatory notification determinations must be made by qualified pharmaceutical professionals with site-specific knowledge. Always verify against your own SOPs and quality system requirements.
+    </div>
+
+    <div class="cta-box">
+      <h3 id="ctaTitle">GMPify courses relevant to this deviation</h3>
+      <p id="ctaText">Full catalog access from day one. Every course built from primary regulatory sources.</p>
+      <a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="btn-subscribe">Subscribe to access full catalog &rarr;</a>
+    </div>
+
+  </div>
+
+</div>
+
+<footer><div class="footer-inner">
+  <span>&copy; 2026 GMPify. <a href="https://www.gmpify.com/privacy.html">Privacy</a> &middot; <a href="https://www.gmpify.com/terms.html">Terms</a></span>
+  <span><a href="https://www.gmpify.com">gmpify.com</a> &middot; <a href="https://www.gmpify.com/blog.html">Blog</a> &middot; <a href="https://learn.gmpify.com">learn.gmpify.com</a></span>
+</div></footer>
+
+<script>
+const SYSTEM = `You are a senior pharmaceutical GMP regulatory expert with 27 years of pharmaceutical cGMP training experience working for GMPify. Generate a complete deviation investigation framework based on the deviation described.
+
+CRITICAL JSON RULES - you must follow these exactly:
+1. Return ONLY a single JSON object, nothing else
+2. Every string value must be on ONE line - never put a newline character inside a string value
+3. Use a space where you would normally use a newline within a string
+4. No trailing commas anywhere
+5. No em dashes anywhere - use a hyphen instead
+6. Keep string values concise - no more than 3 sentences per field
+
+Return this exact JSON structure with all fields populated:
+
+{"summary":"2-3 sentence overview of the deviation and key investigation challenge","deviationClass":"Critical or Major or Minor","regulatoryRef":"e.g. 21 CFR 211.192","investigationDays":"e.g. 30 days","recallRisk":"Yes or No or Assess","scopeImmediate":"What must happen in the first 24 hours - 3 to 4 specific actions","scopeBatchImpact":"How to determine which other batches may be affected and how far back to look","scopeOtherProducts":"Whether other products or equipment need assessment and the criteria for that determination","scopeChecklist":["action 1","action 2","action 3","action 4","action 5"],"rcaApproach":"Which root cause methodology is most appropriate and why - 5 Why fishbone or fault tree","rcaCategories":"The 3 to 4 most likely root cause categories for this specific deviation type based on FDA data","rcaDataToCollect":"Specific records and physical evidence to gather before conducting root cause analysis","rcaFdaFindings":"The most common FDA 483 finding related to root cause for this deviation type","rcaHumanError":"How to handle human error if identified - the systemic failure that enabled the error must be identified","capaCorrectiveActions":"Immediate corrective actions specific to this deviation - what needs to be fixed or contained now","capaPreventiveActions":"Preventive actions addressing the systemic root cause at process equipment training or quality system level","capaTimeline":[{"period":"Day 1 to 7","action":"specific action","color":"teal"},{"period":"Day 8 to 30","action":"specific action","color":"teal"},{"period":"Day 31 to 60","action":"specific action","color":"amber"},{"period":"Day 61 to 90","action":"specific action","color":"amber"},{"period":"Day 91 onward","action":"specific action","color":"green"}],"capaErrors":"The CAPA approaches FDA consistently rejects for this deviation type","effectivenessCriteria":"Specific measurable criteria for confirming CAPA effectiveness - must be more than absence of recurrence","effectivenessMonitoring":"Recommended monitoring period and rationale","effectivenessMetrics":["metric 1","metric 2","metric 3","metric 4"],"effectivenessEscalation":"What findings during monitoring would require the CAPA to be reopened","docRequiredElements":"All required elements of the investigation report per 21 CFR 211.192","docQualityUnit":"Specific Quality Unit responsibilities before investigation closure","docReportStructure":["Section 1: Deviation description and discovery","Section 2: Immediate containment actions","Section 3: Scope determination","Section 4: Root cause analysis","Section 5: CAPA plan","Section 6: Effectiveness criteria","Section 7: Quality Unit approval and batch disposition"],"docRetention":"Record retention requirements for this investigation","regNotification":"Whether regulatory notification is required and to which authorities","regAnnualReview":"How this deviation feeds into annual product review","regInspectionReadiness":"How to present this investigation to an FDA investigator - what they will look for","regEscalationCriteria":"Specific findings that would escalate this to a potential recall or serious breach notification","relatedCourses":["course 1","course 2","course 3"]}`;
+
+function updateCount(el, countId) {
+  document.getElementById(countId).textContent = el.value.length;
+}
+
+function selectRadio(label, groupId) {
+  document.querySelectorAll(`#${groupId} .radio-option`).forEach(l => l.classList.remove('selected'));
+  label.classList.add('selected');
+}
+
+function validate() {
+  const devType = document.getElementById('devType').value;
+  const devDetail = document.getElementById('devDetail').value.trim();
+  if (!devType) return 'Please select a deviation type.';
+  if (devDetail.length < 30) return 'Please describe the deviation in more detail (at least 30 characters).';
+  return null;
+}
+
+function getRadioValue(groupId) {
+  const sel = document.querySelector(`#${groupId} .radio-option.selected input`);
+  return sel ? sel.value : 'Not specified';
+}
+
+async function runGenerate() {
+  const errEl = document.getElementById('errMsg');
+  errEl.classList.remove('show');
+  const err = validate();
+  if (err) { errEl.textContent = err; errEl.classList.add('show'); return; }
+
+  const devType = document.getElementById('devType').value;
+  const devDetail = document.getElementById('devDetail').value.trim();
+  const prodType = getRadioValue('prodType');
+  const regMarket = getRadioValue('regMarket');
+  const distributed = getRadioValue('distributed');
+  const recurring = getRadioValue('recurring');
+  const safetyImpact = getRadioValue('safetyImpact');
+  const addContext = document.getElementById('addContext').value.trim();
+
+  document.getElementById('formSection').style.display = 'none';
+  document.getElementById('toolHeader').style.display = 'none';
+  document.getElementById('infoNote').style.display = 'none';
+
+  const loading = document.getElementById('loadingScreen');
+  loading.classList.add('show');
+
+  const msgs = [
+    'Analysing deviation type and regulatory context',
+    'Determining investigation scope and batch impact',
+    'Building root cause analysis methodology',
+    'Structuring CAPA requirements',
+    'Generating effectiveness check criteria',
+    'Finalising your investigation framework'
+  ];
+  let mi = 0;
+  const mt = setInterval(() => {
+    mi = (mi + 1) % msgs.length;
+    document.getElementById('loadingMsg').textContent = msgs[mi];
+  }, 4000);
+
+  const userPrompt = `Please build an investigation framework for this deviation.
+
+Deviation type: ${devType}
+Deviation description: ${devDetail}
+Product type: ${prodType}
+Regulatory market: ${regMarket}
+Batch distributed: ${distributed}
+Recurring deviation: ${recurring}
+Patient safety impact: ${safetyImpact}
+Additional context: ${addContext || 'None provided'}`;
+
+  try {
+    const res = await fetch('/.netlify/functions/claude-proxy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 5000,
+        system: SYSTEM,
+        messages: [{ role: 'user', content: userPrompt }]
+      })
+    });
+
+    const data = await res.json();
+    clearInterval(mt);
+
+    if (!res.ok) throw new Error(data.error?.message || data.error || 'API error ' + res.status);
+
+    const raw = data.content?.map(b => b.type === 'text' ? b.text : '').join('').trim();
+    const match = raw.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('Could not parse response');
+
+    let jsonStr = match[0];
+    // Strip markdown code fences if present
+    jsonStr = jsonStr.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '');
+    jsonStr = jsonStr.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ' ');
+    jsonStr = jsonStr.replace(/("(?:[^"\\]|\\.)*")|[\r\n]+/g, (m, str) => str ? str : ' ');
+    jsonStr = jsonStr.replace(/,\s*([\]\}])/g, '$1');
+
+    let parsed;
+    try {
+      parsed = JSON.parse(jsonStr);
+    } catch(e) {
+      throw new Error('The framework response had a formatting issue. Please try again.');
+    }
+
+    loading.classList.remove('show');
+    showFramework(parsed, devType);
+
+  } catch(e) {
+    clearInterval(mt);
+    loading.classList.remove('show');
+    document.getElementById('formSection').style.display = 'block';
+    document.getElementById('toolHeader').style.display = 'block';
+    document.getElementById('infoNote').style.display = 'block';
+    errEl.textContent = 'Something went wrong: ' + e.message + '. Please try again.';
+    errEl.classList.add('show');
+  }
+}
+
+function showFramework(d, devType) {
+  // Summary
+  document.getElementById('summaryText').textContent = d.summary || '';
+
+  // Meta pills
+  const metaRow = document.getElementById('metaRow');
+  metaRow.innerHTML = '';
+  const pills = [
+    { label: d.deviationClass || 'Major', cls: d.deviationClass === 'Critical' ? 'pill-red' : d.deviationClass === 'Minor' ? 'pill-green' : 'pill-amber' },
+    { label: d.regulatoryRef || '21 CFR 211.192', cls: 'pill-teal' },
+    { label: 'Investigate within ' + (d.investigationDays || '30 days'), cls: 'pill-amber' },
+    { label: 'Recall risk: ' + (d.recallRisk || 'Assess'), cls: d.recallRisk === 'Yes' ? 'pill-red' : d.recallRisk === 'No' ? 'pill-green' : 'pill-amber' }
+  ];
+  pills.forEach(p => {
+    const span = document.createElement('span');
+    span.className = `fi-pill ${p.cls}`;
+    span.textContent = p.label;
+    metaRow.appendChild(span);
+  });
+
+  // Section 1: Scope
+  document.getElementById('body-sec1').innerHTML = `
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Immediate actions - first 24 hours</div>
+      <div class="fw-sub-text">${d.scopeImmediate || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Batch impact assessment</div>
+      <div class="fw-sub-text">${d.scopeBatchImpact || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Other products and processes to assess</div>
+      <div class="fw-sub-text">${d.scopeOtherProducts || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Immediate actions checklist</div>
+      <ul class="checklist">${(d.scopeChecklist || []).map(i => `<li>${i}</li>`).join('')}</ul>
+    </div>`;
+
+  // Section 2: Root cause
+  document.getElementById('body-sec2').innerHTML = `
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Recommended methodology</div>
+      <div class="fw-sub-text">${d.rcaApproach || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Primary root cause categories to investigate</div>
+      <div class="fw-sub-text">${d.rcaCategories || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Data and records to gather before RCA</div>
+      <div class="fw-sub-text">${d.rcaDataToCollect || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Most common FDA finding for this deviation type</div>
+      <div class="fw-sub-text" style="background:rgba(220,38,38,0.05);border:1px solid rgba(220,38,38,0.15);border-radius:6px;padding:10px 12px;">${d.rcaFdaFindings || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">If human error is identified as apparent cause</div>
+      <div class="fw-sub-text">${d.rcaHumanError || ''}</div>
+    </div>`;
+
+  // Section 3: CAPA
+  const tlItems = (d.capaTimeline || []).map(item =>
+    `<div class="tl-item">
+      <div class="tl-dot ${item.color || 'teal'}"></div>
+      <div class="tl-content">
+        <div class="tl-day ${item.color || 'teal'}">${item.period || ''}</div>
+        <div class="tl-text">${item.action || ''}</div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('body-sec3').innerHTML = `
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Corrective actions</div>
+      <div class="fw-sub-text">${d.capaCorrectiveActions || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Preventive actions</div>
+      <div class="fw-sub-text">${d.capaPreventiveActions || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Implementation timeline</div>
+      <div class="timeline">${tlItems}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">CAPA approaches FDA rejects for this deviation type</div>
+      <div class="fw-sub-text" style="background:rgba(220,38,38,0.05);border:1px solid rgba(220,38,38,0.15);border-radius:6px;padding:10px 12px;">${d.capaErrors || ''}</div>
+    </div>`;
+
+  // Section 4: Effectiveness
+  document.getElementById('body-sec4').innerHTML = `
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Effectiveness criteria</div>
+      <div class="fw-sub-text">${d.effectivenessCriteria || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Monitoring period</div>
+      <div class="fw-sub-text">${d.effectivenessMonitoring || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Specific metrics to track</div>
+      <ul class="checklist">${(d.effectivenessMetrics || []).map(m => `<li>${m}</li>`).join('')}</ul>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Escalation triggers - when to reopen the CAPA</div>
+      <div class="fw-sub-text">${d.effectivenessEscalation || ''}</div>
+    </div>`;
+
+  // Section 5: Documentation
+  document.getElementById('body-sec5').innerHTML = `
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Required investigation report elements</div>
+      <div class="fw-sub-text">${d.docRequiredElements || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Quality Unit responsibilities</div>
+      <div class="fw-sub-text">${d.docQualityUnit || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Investigation report structure</div>
+      <ul class="checklist">${(d.docReportStructure || []).map(s => `<li>${s}</li>`).join('')}</ul>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Record retention</div>
+      <div class="fw-sub-text">${d.docRetention || ''}</div>
+    </div>`;
+
+  // Section 6: Regulatory
+  document.getElementById('body-sec6').innerHTML = `
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Regulatory notification requirement</div>
+      <div class="fw-sub-text" style="background:rgba(37,99,235,0.05);border:1px solid rgba(37,99,235,0.2);border-radius:6px;padding:10px 12px;">${d.regNotification || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Annual product review impact</div>
+      <div class="fw-sub-text">${d.regAnnualReview || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Inspection readiness</div>
+      <div class="fw-sub-text">${d.regInspectionReadiness || ''}</div>
+    </div>
+    <div class="fw-subsection">
+      <div class="fw-sub-label">Escalation criteria - recall or regulatory notification triggers</div>
+      <div class="fw-sub-text" style="background:rgba(220,38,38,0.05);border:1px solid rgba(220,38,38,0.15);border-radius:6px;padding:10px 12px;">${d.regEscalationCriteria || ''}</div>
+    </div>`;
+
+  // Open first section by default
+  toggleSection('sec1');
+
+  // CTA
+  if (d.relatedCourses && d.relatedCourses.length > 0) {
+    document.getElementById('ctaText').textContent =
+      `Relevant GMPify courses: ${d.relatedCourses.join(', ')}. Full catalog access from day one.`;
+  }
+
+  document.getElementById('resultsSection').classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleSection(secId) {
+  const body = document.getElementById(`body-${secId}`);
+  const toggle = document.getElementById(`toggle-${secId}`);
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  toggle.classList.toggle('open', !isOpen);
+}
+
+function copyFramework() {
+  const summary = document.getElementById('summaryText').textContent;
+  const sections = document.querySelectorAll('.fw-section');
+  let text = 'DEVIATION INVESTIGATION FRAMEWORK - GMPify\n\n';
+  text += 'SUMMARY\n' + summary + '\n\n';
+  sections.forEach(sec => {
+    const title = sec.querySelector('.fw-section-title')?.textContent || '';
+    const body = sec.querySelector('.fw-body');
+    if (!body) return;
+    text += `\n${title.toUpperCase()}\n`;
+    body.querySelectorAll('.fw-subsection').forEach(sub => {
+      const label = sub.querySelector('.fw-sub-label')?.textContent || '';
+      const content = sub.querySelector('.fw-sub-text, .checklist, .timeline')?.textContent || '';
+      text += `\n${label}\n${content.trim()}\n`;
+    });
+  });
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy full framework', 2000);
+  });
+}
+
+function clearAll() {
+  document.getElementById('devType').value = '';
+  document.getElementById('devDetail').value = '';
+  document.getElementById('addContext').value = '';
+  document.getElementById('detailCount').textContent = '0';
+  document.getElementById('contextCount').textContent = '0';
+  document.querySelectorAll('.radio-option').forEach(l => l.classList.remove('selected'));
+  document.getElementById('errMsg').classList.remove('show');
+  document.getElementById('resultsSection').classList.remove('show');
+}
+
+function restart() {
+  document.getElementById('resultsSection').classList.remove('show');
+  document.getElementById('formSection').style.display = 'block';
+  document.getElementById('toolHeader').style.display = 'block';
+  document.getElementById('infoNote').style.display = 'block';
+  clearAll();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>

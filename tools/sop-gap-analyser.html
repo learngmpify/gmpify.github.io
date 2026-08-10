@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="gmpify_favicon.ico">
+<title>SOP Gap Analyser - GMPify</title>
+<meta name="description" content="Upload your SOP and get a structured gap analysis against the relevant FDA, EU GMP, USP or ICH requirement. Built from 27 years of pharmaceutical GMP training experience.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2B3E;--navy-card:#112d41;--teal:#00C2A8;--gold:#F5A623;
+  --light:#CAD8E8;--mid:#6E90A0;--white:#fff;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --radius:8px;--green:#16A34A;--red:#DC2626;
+}
+body{font-family:var(--font);background:var(--navy);color:var(--light);line-height:1.6;min-height:100vh}
+a{color:var(--teal);text-decoration:none}
+nav{background:rgba(13,43,62,0.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,194,168,0.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;max-width:960px;margin:0 auto;padding:0 24px}
+.logo{font-size:1.4rem;font-weight:800;color:#fff}
+.logo span:first-child{color:var(--teal)}
+.nav-links{display:flex;gap:20px;list-style:none;align-items:center}
+.nav-links a{font-size:0.88rem;color:var(--light)}
+.nav-links a:hover{color:var(--teal)}
+.nav-cta{background:var(--teal);color:var(--navy)!important;padding:7px 18px;border-radius:6px;font-weight:700!important}
+.container{max-width:960px;margin:0 auto;padding:48px 24px 80px}
+.tool-header{text-align:center;margin-bottom:36px}
+.tool-tag{font-size:0.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
+.tool-header h1{font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;color:#fff;line-height:1.2;margin-bottom:14px}
+.tool-header p{font-size:0.97rem;color:var(--mid);max-width:620px;margin:0 auto;line-height:1.7}
+.info-note{background:rgba(0,194,168,0.06);border:1px solid rgba(0,194,168,0.2);border-radius:10px;padding:14px 18px;margin-bottom:28px;font-size:0.85rem;color:var(--mid)}
+.info-note strong{color:var(--light)}
+
+/* FORM */
+.form-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:28px;margin-bottom:20px}
+.form-card h2{font-size:1rem;font-weight:700;color:#fff;margin-bottom:18px}
+.form-group{margin-bottom:18px}
+label{display:block;font-size:0.78rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px}
+.required{color:var(--teal)}
+select,textarea,input[type=text]{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(202,216,232,0.2);border-radius:var(--radius);padding:11px 14px;color:#fff;font-family:var(--font);font-size:0.92rem;transition:border-color 0.2s}
+select:focus,textarea:focus,input:focus{outline:none;border-color:var(--teal)}
+select option{background:var(--navy-card);color:#fff}
+textarea{resize:vertical;line-height:1.6}
+
+/* FILE UPLOAD */
+.upload-zone{border:2px dashed rgba(202,216,232,0.2);border-radius:var(--radius);padding:32px 20px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--teal);background:rgba(0,194,168,0.04)}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:2rem;margin-bottom:10px}
+.upload-zone h3{font-size:0.95rem;font-weight:600;color:#fff;margin-bottom:4px}
+.upload-zone p{font-size:0.82rem;color:var(--mid)}
+.file-selected{background:rgba(0,194,168,0.08);border-color:var(--teal);border-style:solid}
+.file-selected .upload-icon{color:var(--teal)}
+.file-name{font-size:0.88rem;color:var(--teal);font-weight:600;margin-top:8px}
+
+/* OR DIVIDER */
+.or-divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--mid);font-size:0.8rem}
+.or-divider::before,.or-divider::after{content:"";flex:1;height:1px;background:rgba(255,255,255,0.08)}
+
+/* BUTTONS */
+.btn-analyse{width:100%;background:var(--teal);color:var(--navy);border:none;padding:14px;border-radius:var(--radius);font-size:1rem;font-weight:700;cursor:pointer;transition:background 0.15s;margin-top:8px}
+.btn-analyse:hover{background:#00a892}
+.btn-analyse:disabled{background:rgba(255,255,255,0.08);color:var(--mid);cursor:not-allowed}
+.btn-clear{background:transparent;color:var(--mid);border:1px solid rgba(202,216,232,0.2);padding:10px 20px;border-radius:var(--radius);font-size:0.88rem;cursor:pointer;transition:all 0.15s;margin-top:8px;margin-left:10px}
+.btn-clear:hover{color:var(--light);border-color:rgba(202,216,232,0.4)}
+
+/* ERROR */
+.error-msg{background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);border-radius:var(--radius);padding:12px 16px;font-size:0.88rem;color:#f87171;margin-bottom:16px;display:none}
+.error-msg.show{display:block}
+
+/* LOADING */
+.loading{display:none;text-align:center;padding:50px 20px;background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:14px;margin-bottom:20px}
+.loading.show{display:block}
+.loading-icon{font-size:2rem;margin-bottom:16px;animation:pulse 1.5s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.loading h2{font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:6px}
+.loading p{font-size:0.88rem;color:var(--mid)}
+.loading-dots::after{content:'...';animation:dots 1.5s steps(4,end) infinite}
+@keyframes dots{0%,20%{content:'.'}40%{content:'..'}60%,100%{content:'...'}}
+
+/* RESULTS */
+.results{display:none}
+.results.show{display:block;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.results-header h2{font-size:1.3rem;font-weight:800;color:#fff}
+.results-actions{display:flex;gap:10px}
+.btn-copy{background:rgba(0,194,168,0.1);border:1px solid rgba(0,194,168,0.3);color:var(--teal);padding:8px 18px;border-radius:var(--radius);font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.15s}
+.btn-copy:hover{background:rgba(0,194,168,0.2)}
+.btn-restart{background:transparent;border:1px solid rgba(202,216,232,0.2);color:var(--mid);padding:8px 18px;border-radius:var(--radius);font-size:0.85rem;cursor:pointer}
+.btn-restart:hover{color:var(--light)}
+
+/* SUMMARY CARD */
+.summary-card{background:rgba(0,194,168,0.06);border:1px solid rgba(0,194,168,0.2);border-radius:12px;padding:20px 24px;margin-bottom:20px}
+.summary-label{font-size:0.7rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.summary-text{font-size:0.95rem;color:var(--light);line-height:1.7}
+.score-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px}
+.score-pill{padding:5px 14px;border-radius:20px;font-size:0.8rem;font-weight:700}
+.score-high{background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.4);color:#f87171}
+.score-med{background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:#fbbf24}
+.score-low{background:rgba(22,163,74,0.15);border:1px solid rgba(22,163,74,0.4);color:#4ade80}
+
+/* GAP SECTIONS */
+.gap-section{margin-bottom:16px}
+.gap-section-head{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--navy-card);border-radius:var(--radius) var(--radius) 0 0;border:1px solid rgba(255,255,255,0.07);border-bottom:none;cursor:pointer}
+.gap-section-head:hover{background:rgba(255,255,255,0.03)}
+.gap-priority{font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0}
+.priority-critical{background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.4);color:#f87171}
+.priority-major{background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:#fbbf24}
+.priority-minor{background:rgba(22,163,74,0.15);border:1px solid rgba(22,163,74,0.4);color:#4ade80}
+.priority-observation{background:rgba(110,144,160,0.2);border:1px solid rgba(110,144,160,0.4);color:var(--mid)}
+.gap-title{font-size:0.95rem;font-weight:700;color:#fff;flex:1}
+.gap-toggle{font-size:0.75rem;color:var(--mid)}
+.gap-body{padding:16px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);border-top:none;border-radius:0 0 var(--radius) var(--radius)}
+.gap-body-label{font-size:0.68rem;font-weight:700;color:var(--mid);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;margin-top:12px}
+.gap-body-label:first-child{margin-top:0}
+.gap-body-text{font-size:0.88rem;color:var(--light);line-height:1.7}
+.reg-cite{display:inline-block;background:rgba(0,194,168,0.08);border:1px solid rgba(0,194,168,0.2);border-radius:4px;padding:1px 7px;font-size:0.78rem;color:var(--teal);margin:2px 3px 2px 0}
+
+/* RECOMMENDATIONS */
+.rec-section{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:20px;margin-bottom:16px}
+.rec-section h3{font-size:0.92rem;font-weight:700;color:#fff;margin-bottom:12px}
+.rec-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;font-size:0.88rem;color:var(--light);line-height:1.6}
+.rec-item::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--teal);flex-shrink:0;margin-top:7px}
+
+/* CTA */
+.cta-box{background:linear-gradient(135deg,rgba(0,194,168,0.08),rgba(0,194,168,0.02));border:1px solid rgba(0,194,168,0.2);border-radius:12px;padding:24px 28px;margin-top:24px;text-align:center}
+.cta-box h3{font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px}
+.cta-box p{font-size:0.88rem;color:var(--mid);margin-bottom:16px}
+.btn-subscribe{display:inline-block;background:var(--teal);color:var(--navy);font-weight:700;padding:11px 28px;border-radius:var(--radius);font-size:0.9rem}
+.btn-subscribe:hover{background:#00a892;color:var(--navy)}
+.disclaimer{font-size:0.78rem;color:var(--mid);text-align:center;margin-top:12px;line-height:1.6}
+
+footer{padding:24px;border-top:1px solid rgba(255,255,255,0.07);max-width:960px;margin:0 auto}
+.footer-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.8rem;color:var(--mid)}
+@media(max-width:640px){.nav-links{display:none}.results-header{flex-direction:column}.results-actions{width:100%}.score-row{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<nav><div class="nav-inner">
+  <a href="https://www.gmpify.com" class="logo"><span>GMP</span><span>ify</span></a>
+    <ul class="nav-links">
+    <li><a href="https://gmpify-tools.netlify.app/training-assessment.html">GMP Assessment</a></li>
+    <li><a href="https://gmpify-tools.netlify.app">Reg Explainer</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/483-response-drafter.html">483 Drafter</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/sop-gap-analyser.html">SOP Analyser</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/em-reviewer.html">EM Reviewer</a></li>
+    <li><a href="https://gmpify-tools.netlify.app/deviation-investigation.html">Deviation Tool</a></li>
+    <li><a href="https://www.gmpify.com" style="color:var(--teal)">&larr; Back to GMPify</a></li>
+    <li><a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="nav-cta">Subscribe</a></li>
+  </ul>
+</div></nav>
+
+<div class="container">
+
+  <div class="tool-header" id="toolHeader">
+    <div class="tool-tag">Subscriber tool</div>
+    <h1>SOP Gap Analyser</h1>
+    <p>Upload your SOP or paste its text. Select the regulatory standard to analyse against. Get a structured gap analysis identifying what is missing, what language FDA has cited as inadequate and specific recommended additions.</p>
+  </div>
+
+  <div class="info-note">
+    <strong>Built from primary regulatory sources.</strong> Gap analysis reflects current FDA inspection expectations, EU GMP requirements, USP chapters and ICH guidelines. All findings should be reviewed by a qualified regulatory professional before implementing changes.
+  </div>
+
+  <!-- FORM -->
+  <div id="formSection">
+    <div class="form-card">
+      <h2>Step 1 - Select the regulatory standard</h2>
+
+      <div class="form-group">
+        <label>Regulatory standard to analyse against <span class="required">*</span></label>
+        <select id="regStandard">
+          <option value="">Select a standard</option>
+          <optgroup label="FDA Regulations">
+            <option value="21 CFR 211.192 - Deviation and OOS Investigation Procedures">21 CFR 211.192 - Deviation and OOS Investigation Procedures</option>
+            <option value="21 CFR 211.68 - Automated, Mechanical and Electronic Equipment">21 CFR 211.68 - Automated, Mechanical and Electronic Equipment</option>
+            <option value="21 CFR 211.100 - Written Procedures and Deviations">21 CFR 211.100 - Written Procedures and Deviations</option>
+            <option value="21 CFR 211.160 - Laboratory Controls General Requirements">21 CFR 211.160 - Laboratory Controls General Requirements</option>
+            <option value="21 CFR 211.22 - Quality Unit Responsibilities">21 CFR 211.22 - Quality Unit Responsibilities</option>
+            <option value="21 CFR 211.113 - Control of Microbiological Contamination">21 CFR 211.113 - Control of Microbiological Contamination</option>
+            <option value="21 CFR Part 11 - Electronic Records and Signatures">21 CFR Part 11 - Electronic Records and Signatures</option>
+            <option value="FDA Data Integrity and cGMP Guidance 2018">FDA Data Integrity and cGMP Guidance 2018</option>
+            <option value="FDA OOS Investigation Guidance August 2024">FDA OOS Investigation Guidance August 2024</option>
+            <option value="FDA 483 Response Guidance March 2026">FDA 483 Response Guidance March 2026</option>
+          </optgroup>
+          <optgroup label="EU GMP">
+            <option value="EU GMP Annex 1 2022 - Manufacture of Sterile Medicinal Products">EU GMP Annex 1 2022 - Manufacture of Sterile Medicinal Products</option>
+            <option value="EU GMP Chapter 1 - Pharmaceutical Quality System">EU GMP Chapter 1 - Pharmaceutical Quality System</option>
+            <option value="EU GMP Chapter 4 - Documentation">EU GMP Chapter 4 - Documentation</option>
+            <option value="EU GMP Chapter 6 - Quality Control">EU GMP Chapter 6 - Quality Control</option>
+            <option value="EU GMP Annex 11 - Computerised Systems">EU GMP Annex 11 - Computerised Systems</option>
+          </optgroup>
+          <optgroup label="ICH Guidelines">
+            <option value="ICH Q10 - Pharmaceutical Quality System">ICH Q10 - Pharmaceutical Quality System</option>
+            <option value="ICH Q9(R1) - Quality Risk Management">ICH Q9(R1) - Quality Risk Management</option>
+            <option value="ICH Q12 - Post-Approval Change Management">ICH Q12 - Post-Approval Change Management</option>
+          </optgroup>
+          <optgroup label="USP Chapters">
+            <option value="USP 1207 - Package Integrity Evaluation Sterile Products">USP 1207 - Package Integrity Evaluation Sterile Products</option>
+            <option value="USP 85 - Bacterial Endotoxins Test">USP 85 - Bacterial Endotoxins Test</option>
+            <option value="USP 1111 - Microbiological Examination Acceptance Criteria">USP 1111 - Microbiological Examination Acceptance Criteria</option>
+          </optgroup>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>SOP title or reference <span class="required">*</span></label>
+        <input type="text" id="sopTitle" placeholder="e.g. SOP-QC-042 Out-of-Specification Investigation Procedure">
+      </div>
+
+      <div class="form-group">
+        <label>Site and product type (optional - improves analysis)</label>
+        <input type="text" id="siteContext" placeholder="e.g. Sterile injectable contract manufacturer, FDA-regulated">
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>Step 2 - Provide your SOP content</h2>
+
+      <div class="form-group">
+        <label>Upload SOP file (PDF, Word or text) <span class="required">*</span></label>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt" onchange="handleFileSelect(this)">
+          <div class="upload-icon" id="uploadIcon">&#x1F4C4;</div>
+          <h3 id="uploadTitle">Click to upload or drag and drop</h3>
+          <p id="uploadSubtitle">PDF, Word (.docx) or plain text - up to 10MB</p>
+          <div class="file-name" id="fileName" style="display:none"></div>
+        </div>
+      </div>
+
+      <div class="or-divider">or paste SOP text directly</div>
+
+      <div class="form-group">
+        <label>SOP text content</label>
+        <textarea id="sopText" rows="8" placeholder="Paste your SOP content here if you prefer not to upload a file..."></textarea>
+      </div>
+    </div>
+
+    <div class="error-msg" id="errMsg"></div>
+
+    <button class="btn-analyse" id="analyseBtn" onclick="runAnalysis()">Analyse my SOP</button>
+    <button class="btn-clear" onclick="clearAll()">Clear</button>
+    <p style="text-align:center;font-size:0.78rem;color:var(--mid);margin-top:10px;">Analysis takes 15 to 30 seconds depending on SOP length.</p>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loadingScreen">
+    <div class="loading-icon">&#x1F50D;</div>
+    <h2>Analysing your SOP<span class="loading-dots"></span></h2>
+    <p id="loadingMsg">Reading SOP content against regulatory requirements</p>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="results" id="resultsSection">
+
+    <div class="results-header">
+      <h2>SOP Gap Analysis</h2>
+      <div class="results-actions">
+        <button class="btn-copy" onclick="copyResults()">Copy full report</button>
+        <button class="btn-restart" onclick="restart()">Analyse another SOP</button>
+      </div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-label">Analysis summary</div>
+      <div class="summary-text" id="summaryText"></div>
+      <div class="score-row" id="scoreRow"></div>
+    </div>
+
+    <div id="gapsList"></div>
+
+    <div class="rec-section" id="recSection" style="display:none">
+      <h3>Priority recommendations</h3>
+      <div id="recList"></div>
+    </div>
+
+    <div class="disclaimer">
+      This gap analysis is a starting framework based on current regulatory requirements and FDA inspection data. All recommended changes should be reviewed by a qualified regulatory professional before implementation. Always verify against the current published version of the cited regulation or guidance.
+    </div>
+
+    <div class="cta-box">
+      <h3>GMPify courses covering this regulation</h3>
+      <p id="ctaText">Full catalog access from day one. Every course built from primary regulatory sources. Certificate on completion of every course.</p>
+      <a href="https://buy.stripe.com/6oUbJ2cfw4fCeJq4U14Ja00" class="btn-subscribe">Subscribe to access full catalog &rarr;</a>
+    </div>
+
+  </div>
+
+</div>
+
+<footer><div class="footer-inner">
+  <span>&copy; 2026 GMPify. <a href="https://www.gmpify.com/privacy.html">Privacy</a> &middot; <a href="https://www.gmpify.com/terms.html">Terms</a></span>
+  <span><a href="https://www.gmpify.com">gmpify.com</a> &middot; <a href="https://www.gmpify.com/blog.html">Blog</a> &middot; <a href="https://learn.gmpify.com">learn.gmpify.com</a></span>
+</div></footer>
+
+<script>
+const SYSTEM = `You are a senior pharmaceutical GMP regulatory expert with 27 years of live pharmaceutical training experience. You work for GMPify - a pharmaceutical GMP training platform built from primary regulatory sources.
+
+A pharmaceutical professional has submitted their SOP for gap analysis against a specific regulatory standard. Analyse the SOP content and identify gaps, missing elements, inadequate language and areas that would generate FDA 483 observations or regulatory findings.
+
+Respond ONLY with a valid JSON object. Critical formatting rules: (1) No literal newlines inside string values - use a space instead. (2) No trailing commas. (3) Escape any quotes inside strings with backslash. (4) Keep all string values on a single logical line. Here is the exact format:
+
+{
+  "summary": "2-3 sentence overall assessment of the SOP. State what the SOP covers adequately and what the most significant gaps are. Be direct and specific.",
+  "overallRisk": "Critical" or "Major" or "Minor" or "Acceptable",
+  "criticalCount": number,
+  "majorCount": number,
+  "minorCount": number,
+  "observationCount": number,
+  "gaps": [
+    {
+      "priority": "Critical" or "Major" or "Minor" or "Observation",
+      "title": "Short descriptive title of the gap",
+      "regulatoryBasis": "The specific regulation or guidance section this gap violates",
+      "finding": "2-3 sentences describing exactly what is missing or inadequate and why it matters from a regulatory perspective",
+      "fdaPattern": "1-2 sentences describing how FDA has cited this gap in 483 observations or warning letters - include a specific example where possible",
+      "recommendation": "2-3 sentences of specific recommended language or content to add to address this gap"
+    }
+  ],
+  "priorityRecommendations": [
+    "Specific action item 1 - what to add or change first",
+    "Specific action item 2",
+    "Specific action item 3",
+    "Specific action item 4",
+    "Specific action item 5"
+  ],
+  "relatedCourses": ["Course name 1", "Course name 2", "Course name 3"]
+}
+
+Be specific and regulatory-accurate. Reference actual CFR sections, guidance documents and FDA enforcement data. Never use em dashes. Never include literal newline characters inside JSON string values - use spaces instead. Keep each string value on a single line in the JSON output. Identify real gaps - do not report an SOP as acceptable unless it genuinely addresses all key requirements of the cited standard. If the SOP text is too short or vague to analyse meaningfully, note this in the summary and identify the missing sections as Critical gaps.`;
+
+let selectedFile = null;
+let sopContent = '';
+
+function handleFileSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+  selectedFile = file;
+  const zone = document.getElementById('uploadZone');
+  zone.classList.add('file-selected');
+  document.getElementById('uploadIcon').textContent = '✓';
+  document.getElementById('uploadTitle').textContent = 'File selected';
+  document.getElementById('uploadSubtitle').textContent = `${file.name} (${(file.size/1024).toFixed(0)} KB)`;
+  const fn = document.getElementById('fileName');
+  fn.textContent = file.name;
+  fn.style.display = 'block';
+  document.getElementById('sopText').placeholder = 'File selected above - you can also add context here if needed';
+}
+
+// Drag and drop
+const zone = document.getElementById('uploadZone');
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+zone.addEventListener('drop', e => {
+  e.preventDefault();
+  zone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('fileInput').files = dt.files;
+    handleFileSelect(document.getElementById('fileInput'));
+  }
+});
+
+async function extractTextFromFile(file) {
+  return new Promise((resolve, reject) => {
+    if (file.type === 'application/pdf') {
+      // For PDF: send as base64 to Claude's document API
+      const reader = new FileReader();
+      reader.onload = () => resolve({ type: 'pdf', data: reader.result.split(',')[1] });
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    } else {
+      // For text/docx: read as text
+      const reader = new FileReader();
+      reader.onload = () => resolve({ type: 'text', data: reader.result });
+      reader.onerror = reject;
+      reader.readAsText(file);
+    }
+  });
+}
+
+function validate() {
+  const reg = document.getElementById('regStandard').value;
+  const title = document.getElementById('sopTitle').value.trim();
+  const text = document.getElementById('sopText').value.trim();
+  if (!reg) return 'Please select a regulatory standard to analyse against.';
+  if (!title) return 'Please enter the SOP title or reference.';
+  if (!selectedFile && !text) return 'Please upload your SOP file or paste the SOP text.';
+  return null;
+}
+
+async function runAnalysis() {
+  const errEl = document.getElementById('errMsg');
+  errEl.classList.remove('show');
+
+  const validErr = validate();
+  if (validErr) {
+    errEl.textContent = validErr;
+    errEl.classList.add('show');
+    return;
+  }
+
+  const reg = document.getElementById('regStandard').value;
+  const title = document.getElementById('sopTitle').value.trim();
+  const context = document.getElementById('siteContext').value.trim();
+  const pastedText = document.getElementById('sopText').value.trim();
+
+  document.getElementById('formSection').style.display = 'none';
+  document.getElementById('toolHeader').style.display = 'none';
+  document.querySelector('.info-note').style.display = 'none';
+
+  const loading = document.getElementById('loadingScreen');
+  loading.classList.add('show');
+
+  const msgs = [
+    'Reading SOP content against regulatory requirements',
+    'Comparing against current FDA inspection data',
+    'Identifying gaps and inadequate language',
+    'Generating priority recommendations',
+    'Finalising your gap analysis report'
+  ];
+  let mi = 0;
+  const mt = setInterval(() => {
+    document.getElementById('loadingMsg').textContent = msgs[++mi % msgs.length];
+  }, 3000);
+
+  try {
+    let messages;
+    const userPrompt = `Please analyse this SOP for compliance gaps.
+
+SOP title: ${title}
+Regulatory standard to analyse against: ${reg}
+Site and product context: ${context || 'Not specified'}
+
+${pastedText ? `SOP text content:\n\n${pastedText}` : 'SOP content provided as file attachment above.'}`;
+
+    if (selectedFile && selectedFile.type === 'application/pdf') {
+      const fileData = await extractTextFromFile(selectedFile);
+      messages = [{
+        role: 'user',
+        content: [
+          { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: fileData.data } },
+          { type: 'text', text: userPrompt }
+        ]
+      }];
+    } else if (selectedFile) {
+      const fileData = await extractTextFromFile(selectedFile);
+      messages = [{
+        role: 'user',
+        content: `${userPrompt}\n\nSOP file content:\n\n${fileData.data}`
+      }];
+    } else {
+      messages = [{ role: 'user', content: userPrompt }];
+    }
+
+    const res = await fetch('/.netlify/functions/claude-proxy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 5000,
+        system: SYSTEM,
+        messages
+      })
+    });
+
+    const data = await res.json();
+    clearInterval(mt);
+
+    if (!res.ok) throw new Error(data.error?.message || data.error || 'API error ' + res.status);
+
+    const raw = data.content?.map(b => b.type === 'text' ? b.text : '').join('').trim();
+    const match = raw.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('Could not parse response');
+    // Clean the JSON string to handle common formatting issues
+    let jsonStr = match[0];
+    // Strip markdown code fences if present
+    jsonStr = jsonStr.replace(/^```(?:json)?\s*/i, '').replace(/\s*```\s*$/, '');
+    // Remove control characters that break JSON parsing
+    jsonStr = jsonStr.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, ' ');
+    // Fix unescaped newlines inside string values
+    jsonStr = jsonStr.replace(/("(?:[^"\\]|\\.)*")|([\r\n]+)/g, (m, str, nl) => str ? str : ' ');
+    // Remove trailing commas before ] or }
+    jsonStr = jsonStr.replace(/,\s*([\]\}])/g, '$1');
+    let parsed;
+    try {
+      parsed = JSON.parse(jsonStr);
+    } catch(jsonErr) {
+      // Fallback: try to extract what we can
+      console.error('JSON parse error:', jsonErr.message);
+      throw new Error('The analysis response had a formatting issue. Please try again - this occasionally happens with longer SOPs.');
+    }
+
+    loading.classList.remove('show');
+    showResults(parsed, reg, title);
+
+  } catch(e) {
+    clearInterval(mt);
+    loading.classList.remove('show');
+    document.getElementById('formSection').style.display = 'block';
+    document.getElementById('toolHeader').style.display = 'block';
+    document.querySelector('.info-note').style.display = 'block';
+    errEl.textContent = 'Something went wrong: ' + e.message + '. Please try again.';
+    errEl.classList.add('show');
+  }
+}
+
+function showResults(data, reg, sopTitle) {
+  // Summary
+  document.getElementById('summaryText').innerHTML =
+    `<strong>${sopTitle}</strong> analysed against <strong>${reg}</strong>.<br><br>${data.summary || ''}`;
+
+  // Score pills
+  const scoreRow = document.getElementById('scoreRow');
+  scoreRow.innerHTML = '';
+  const scores = [
+    { count: data.criticalCount, label: 'Critical', cls: 'score-high' },
+    { count: data.majorCount,   label: 'Major',    cls: 'score-med'  },
+    { count: data.minorCount,   label: 'Minor',    cls: 'score-low'  },
+    { count: data.observationCount, label: 'Observations', cls: 'score-low' },
+  ];
+  scores.forEach(sc => {
+    if ((sc.count || 0) > 0) {
+      const pill = document.createElement('span');
+      pill.className = `score-pill ${sc.cls}`;
+      pill.textContent = `${sc.count} ${sc.label}`;
+      scoreRow.appendChild(pill);
+    }
+  });
+  if (data.overallRisk) {
+    const risk = document.createElement('span');
+    risk.className = `score-pill ${data.overallRisk === 'Critical' ? 'score-high' : data.overallRisk === 'Major' ? 'score-med' : 'score-low'}`;
+    risk.textContent = `Overall: ${data.overallRisk}`;
+    scoreRow.appendChild(risk);
+  }
+
+  // Gaps
+  const gapsList = document.getElementById('gapsList');
+  gapsList.innerHTML = '';
+
+  const priorityMap = { Critical: 'priority-critical', Major: 'priority-major', Minor: 'priority-minor', Observation: 'priority-observation' };
+
+  (data.gaps || []).forEach((gap, idx) => {
+    const div = document.createElement('div');
+    div.className = 'gap-section';
+    div.innerHTML = `
+      <div class="gap-section-head" onclick="toggleGap(${idx})">
+        <span class="gap-priority ${priorityMap[gap.priority] || 'priority-observation'}">${gap.priority}</span>
+        <span class="gap-title">${gap.title}</span>
+        <span class="gap-toggle" id="toggle-${idx}">&#9660;</span>
+      </div>
+      <div class="gap-body" id="gap-body-${idx}">
+        <div class="gap-body-label">Regulatory basis</div>
+        <div class="gap-body-text"><span class="reg-cite">${gap.regulatoryBasis || ''}</span></div>
+        <div class="gap-body-label">Finding</div>
+        <div class="gap-body-text">${gap.finding || ''}</div>
+        <div class="gap-body-label">FDA enforcement pattern</div>
+        <div class="gap-body-text">${gap.fdaPattern || ''}</div>
+        <div class="gap-body-label">Recommended addition</div>
+        <div class="gap-body-text" style="background:rgba(0,194,168,0.04);border:1px solid rgba(0,194,168,0.15);border-radius:6px;padding:10px 12px;">${gap.recommendation || ''}</div>
+      </div>`;
+    gapsList.appendChild(div);
+  });
+
+  // Recommendations
+  if (data.priorityRecommendations && data.priorityRecommendations.length > 0) {
+    const recSection = document.getElementById('recSection');
+    recSection.style.display = 'block';
+    const recList = document.getElementById('recList');
+    recList.innerHTML = '';
+    data.priorityRecommendations.forEach(rec => {
+      const div = document.createElement('div');
+      div.className = 'rec-item';
+      div.textContent = rec;
+      recList.appendChild(div);
+    });
+  }
+
+  // CTA text
+  if (data.relatedCourses && data.relatedCourses.length > 0) {
+    document.getElementById('ctaText').textContent =
+      `Relevant GMPify courses: ${data.relatedCourses.join(', ')}. Full catalog access from day one.`;
+  }
+
+  document.getElementById('resultsSection').classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleGap(idx) {
+  const body = document.getElementById(`gap-body-${idx}`);
+  const toggle = document.getElementById(`toggle-${idx}`);
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  toggle.innerHTML = isOpen ? '&#9654;' : '&#9660;';
+}
+
+function copyResults() {
+  const summary = document.getElementById('summaryText').textContent;
+  const gaps = document.querySelectorAll('.gap-section');
+  let text = 'SOP GAP ANALYSIS - GMPify\n\n';
+  text += 'SUMMARY\n' + summary + '\n\n';
+  text += 'GAPS IDENTIFIED\n';
+  gaps.forEach(g => {
+    const title = g.querySelector('.gap-title')?.textContent || '';
+    const priority = g.querySelector('.gap-priority')?.textContent || '';
+    const finding = g.querySelectorAll('.gap-body-text')[1]?.textContent || '';
+    const rec = g.querySelectorAll('.gap-body-text')[3]?.textContent || '';
+    text += `\n[${priority}] ${title}\nFinding: ${finding}\nRecommendation: ${rec}\n`;
+  });
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy full report', 2000);
+  });
+}
+
+function clearAll() {
+  selectedFile = null;
+  document.getElementById('fileInput').value = '';
+  document.getElementById('uploadZone').classList.remove('file-selected');
+  document.getElementById('uploadIcon').textContent = '📄';
+  document.getElementById('uploadTitle').textContent = 'Click to upload or drag and drop';
+  document.getElementById('uploadSubtitle').textContent = 'PDF, Word (.docx) or plain text - up to 10MB';
+  document.getElementById('fileName').style.display = 'none';
+  document.getElementById('sopText').value = '';
+  document.getElementById('regStandard').value = '';
+  document.getElementById('sopTitle').value = '';
+  document.getElementById('siteContext').value = '';
+  document.getElementById('errMsg').classList.remove('show');
+  document.getElementById('resultsSection').classList.remove('show');
+}
+
+function restart() {
+  document.getElementById('resultsSection').classList.remove('show');
+  document.getElementById('formSection').style.display = 'block';
+  document.getElementById('toolHeader').style.display = 'block';
+  document.querySelector('.info-note').style.display = 'block';
+  clearAll();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
