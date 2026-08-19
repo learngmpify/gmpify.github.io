@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trending (Statistical Trend Analysis) Workflow | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* TRENDING METHODS BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* STATISTICAL METHODS BOX */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* TREND SIGNAL RESPONSE */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* DATA REQUIREMENTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* TRENDING APPLICATIONS BOX */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Trending <em>(Statistical Trend Analysis) Workflow</em></h1>
+    <div class="header-sub">EU GMP Annex 1 2022 &nbsp;|&nbsp; ICH Q10 &nbsp;|&nbsp; USP &lt;1116&gt; &nbsp;|&nbsp; PDA TR 13</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      EU GMP Annex 1 2022 &nbsp;·&nbsp; ICH Q10<br>
+      USP &lt;1116&gt; &nbsp;·&nbsp; PDA TR 13
+    </div>
+    <div class="stat-badge">
+      A result within limits can still be<br>
+      the first data point of a real trend
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Data Collection and Baseline</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Statistical Analysis and Limit Setting</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Ongoing Trend Review</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Signal Response and Adjustment</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128200;</div>
+    <div class="trigger-text">
+      <h3>Trending - Finding the Signal Before It Becomes an Exceedance</h3>
+      <p>Trending is the statistical analysis of data over time to detect meaningful patterns before they manifest as an individual limit exceedance. A single result within specification provides no information about direction; a series of results, viewed together, can reveal a process drifting toward a limit long before any single data point would trigger investigation on its own. EU GMP Annex 1 2022 and ICH Q10 both expect trending as a proactive quality tool applied across environmental, water, bioburden, and other GMP data streams, not merely a retrospective compliance exercise.</p>
+      <div class="reg">EU GMP Annex 1 2022 &nbsp;·&nbsp; ICH Q10 &nbsp;·&nbsp; USP &lt;1116&gt; &nbsp;·&nbsp; PDA TR 13</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-eu">EU GMP Annex 1 2022</div>
+      <div class="ref-chip chip-usp">ICH Q10</div>
+      <div class="ref-chip chip-iso">USP &lt;1116&gt;</div>
+      <div class="ref-chip chip-fda">PDA TR 13</div>
+    </div>
+  </div>
+
+  <!-- TRENDING METHODS BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-c">
+      <h4>Control Charts</h4>
+      <p>Shewhart-style charts plot individual results against a centerline and control limits derived from historical process variation, visually surfacing shifts and drift.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Best for: <span>Continuous data</span></div>
+        <div class="limit-row">Output: <span>Visual pattern detection</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Percentile-Based Limits</h4>
+      <p>Microbial count data is typically non-normal, so alert and action limits are frequently derived from percentiles of the historical dataset rather than a mean plus standard deviation approach.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Best for: <span>Microbial count data</span></div>
+        <div class="limit-row">Basis: <span>USP &lt;1116&gt; · PDA TR 13</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-a">
+      <h4>Run Rules</h4>
+      <p>Pattern-based rules, such as a defined number of consecutive increasing results or repeated near-limit results, flag a trend signal even when every individual result remains within limits.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Example: <span>7 consecutive increasing points</span></div>
+        <div class="limit-row">Purpose: <span>Early signal detection</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Excursion Rate Trending</h4>
+      <p>Frequency of alert or action level exceedances tracked over time as a rate, useful for count-based data streams like EM recoveries or deviation frequency.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Best for: <span>Event frequency data</span></div>
+        <div class="limit-row">Review: <span>Periodic (e.g. quarterly)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Data Collection and Baseline
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Aggregate data and confirm integrity</div>
+              <div class="node-body">Data pulled from the source system, whether LIMS, EM software, or paper records transcribed accurately, with completeness confirmed before any statistical work begins.</div>
+              <div class="node-reg">ALCOA+ principles</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Establish the baseline dataset</div>
+              <div class="node-body">A defined historical period, typically at least one year or a statistically meaningful number of data points, used to characterize normal process variation.</div>
+              <div class="node-reg">USP &lt;1116&gt; · PDA TR 13</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Exclude assignable-cause events from the baseline</div>
+              <div class="node-body">Data points tied to a documented, investigated, and resolved special cause excluded from baseline calculations so the baseline reflects genuine routine process performance.</div>
+              <div class="node-reg">PDA TR 13</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Select the appropriate statistical method</div>
+              <div class="node-body">Method selected based on data type. Continuous data such as conductivity may suit control charts; count data such as microbial recoveries typically require a non-normal, percentile-based approach.</div>
+              <div class="node-reg">USP &lt;1116&gt;</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Statistical Analysis and Limit Setting
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Calculate baseline statistics</div>
+              <div class="node-body">Mean and standard deviation calculated for normally distributed data; percentile-based statistics calculated for count or non-normal data using the established baseline dataset.</div>
+              <div class="node-reg">USP &lt;1116&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Derive alert and action limits</div>
+              <div class="node-body">Facility-specific alert and action limits derived from the baseline statistics, distinct from any compendial or regulatory ceiling limit that may also apply.</div>
+              <div class="node-reg">PDA TR 13</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Document rationale and obtain QA approval</div>
+              <div class="node-body">Limit-setting methodology and resulting values documented and formally approved before implementation, providing a defensible basis if the limits are later questioned.</div>
+              <div class="node-reg">21 CFR 211.22</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Do the newly calculated limits differ meaningfully from current limits?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Change control to update</span>
+                <span class="opt-n">NO &#8594; Maintain, document review</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Ongoing Trend Review
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Plot new results routinely</div>
+              <div class="node-body">Each new result plotted against the established chart or limits at a defined review frequency, such as monthly, keeping the trend picture current.</div>
+              <div class="node-reg">ICH Q10</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Apply run rules to detect signals</div>
+              <div class="node-body">Predefined pattern rules applied to the plotted data, flagging a trend signal even when no individual result exceeds its alert or action limit.</div>
+              <div class="node-reg">PDA TR 13</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Compare trends across related data streams</div>
+              <div class="node-body">Trends reviewed alongside related programmes, such as EM trends alongside water system trends for the same area, to identify correlated signals a single dataset would miss alone.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Signal Response and Adjustment
+          </div>
+          <div class="phase-body">
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">11</span>Investigate trend signals proactively</div>
+              <div class="node-body">A detected trend signal triggers investigation even without any individual limit exceedance, since the value of trending lies in acting before a limit is actually breached.</div>
+              <div class="node-reg">ICH Q10</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Determine root cause and corrective action</div>
+              <div class="node-body">Root cause investigation and corrective action follow the same rigor as an individual exceedance investigation, addressing the underlying driver of the trend.</div>
+              <div class="node-reg">21 CFR 211.192</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">13</span>Periodically reassess the baseline and limits</div>
+              <div class="node-body">Baseline and derived limits reassessed on a defined schedule, or following a significant process change, to confirm they still reflect current, genuinely in-control performance.</div>
+              <div class="node-reg">USP &lt;1116&gt;</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- STATISTICAL METHODS -->
+      <div class="limits-box">
+        <div class="limits-header">Statistical Method Selection</div>
+        <div class="limits-body">
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Normally Distributed Continuous Data</h4>
+            <p>Mean plus standard deviation approach, typically with alert at 2 standard deviations and action at 3 standard deviations, suits data such as conductivity or temperature readings.</p>
+            <div class="stat">Classical SPC methodology</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Non-Normal Microbial Count Data</h4>
+            <p>Percentile-based limits, often set at the 95th or 99th percentile of the baseline dataset, better reflect the naturally skewed distribution of microbial recovery data.</p>
+            <div class="stat">USP &lt;1116&gt; · PDA TR 13</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Low-Frequency Event Data</h4>
+            <p>For data streams with infrequent events, such as rare organism recoveries, rate-based trending over a longer rolling window may be more meaningful than point-by-point limits.</p>
+            <div class="stat">PDA TR 13</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TREND SIGNAL RESPONSE -->
+      <div class="exceed-box">
+        <h3>Trend Signal Response Steps</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Step 1 - Confirm the signal is genuine</strong>
+            Verify the underlying data is accurate and complete, ruling out a data entry or transcription error before treating the pattern as a real trend.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 2 - Characterize the pattern</strong>
+            Describe the specific nature of the signal, such as a gradual drift, a step change, or a cluster of near-limit results, to focus the investigation appropriately.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 3 - Correlate with related data and events</strong>
+            Cross-reference maintenance records, process changes, seasonal factors, and related monitoring programmes for a plausible contributing cause.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 4 - Determine whether action is warranted now</strong>
+            Assess whether the trend justifies immediate corrective action or continued closer observation, documenting the rationale either way.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 5 - Implement and verify effectiveness</strong>
+            Implement any corrective action and continue trending afterward to confirm the signal resolves and does not recur.
+          </div>
+        </div>
+      </div>
+
+      <!-- DATA REQUIREMENTS -->
+      <div class="trend-box">
+        <h3>Data Requirements for Meaningful Trending</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Sufficient baseline data points</strong>
+            Baseline dataset large enough to characterize genuine variation, generally spanning at least a full year to capture any seasonal effects.
+          </div>
+          <div class="trend-item">
+            <strong>Consistent data collection method</strong>
+            Sampling method, location, and technique held consistent across the trended dataset, since a method change can introduce an artificial trend.
+          </div>
+          <div class="trend-item">
+            <strong>Documented exclusion criteria</strong>
+            Clear, pre-defined criteria for excluding assignable-cause data points from baseline calculations, applied consistently rather than case by case.
+          </div>
+          <div class="trend-item">
+            <strong>Defined review frequency</strong>
+            A set cadence for trend review, such as monthly, ensures signals are caught in a timely manner rather than only at an annual review.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TRENDING APPLICATIONS -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Common GMP Trending Applications</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Environmental Monitoring Data</strong>
+        Viable and non-viable particle counts trended by location to detect gradual drift in classified area performance.
+      </div>
+      <div class="ccs-item">
+        <strong>Water System Data</strong>
+        Conductivity, TOC, and microbial results trended by use point to catch a slowly degrading utility before an action limit exceedance occurs.
+      </div>
+      <div class="ccs-item">
+        <strong>Bioburden Data</strong>
+        Finished product and raw material bioburden trended by product and supplier to identify a gradually rising baseline.
+      </div>
+      <div class="ccs-item">
+        <strong>Deviation and OOS Rate</strong>
+        Frequency of deviations and out-of-specification results trended over time, by area or by root cause category, to detect systemic issues.
+      </div>
+      <div class="ccs-item">
+        <strong>Complaint Data</strong>
+        Product complaint rate and type trended to detect quality issues emerging in the field before they are otherwise identified internally.
+      </div>
+      <div class="ccs-item">
+        <strong>Cleaning Validation Data</strong>
+        Residue and bioburden recovery data from cleaning verification trended by equipment train to confirm sustained cleaning effectiveness.
+      </div>
+      <div class="ccs-item">
+        <strong>Stability Data</strong>
+        Stability testing results trended across time points and batches to detect a shift in product degradation behavior.
+      </div>
+      <div class="ccs-item">
+        <strong>Change Control Impact</strong>
+        Relevant data streams reviewed for trend shifts following a significant change, confirming the change did not introduce an unintended drift.
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Apply a mean plus standard deviation approach to naturally skewed microbial count data without considering a percentile-based alternative. Review trends only at the point of an annual report. Exclude data points from a baseline without documented, investigated justification. Treat a run-rule signal as informational only, with no investigation.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Trending vs single-result review</h4>
+      <p>Reviewing each result individually against a fixed limit answers whether that one result is acceptable. Trending answers a different question: whether the pattern of results over time suggests the process is drifting, regardless of whether any single result has yet crossed a limit.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Statistical vs practical significance</h4>
+      <p>A statistically detected trend signal does not automatically mean a practically significant problem exists. The investigation step exists specifically to determine whether a detected pattern reflects a meaningful process shift worth acting on.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>EU GMP Annex 1 2022 - trending expectations for environmental and utility data. ICH Q10 - continuous improvement through process performance monitoring. USP &lt;1116&gt; - statistical methods for microbiological data. PDA TR 13 - environmental monitoring programme guidance.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Trending (Statistical Trend Analysis) Workflow &nbsp;&#183;&nbsp;
+    Built from EU GMP Annex 1 2022, ICH Q10, USP &lt;1116&gt;, PDA TR 13 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Microbiology Series - Map 7 of 9</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
