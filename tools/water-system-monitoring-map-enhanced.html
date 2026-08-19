@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Water System Monitoring Workflow - Enhanced Edition | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* WATER GRADE BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* LIMITS BOX */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* EXCURSION RESPONSE */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* SAMPLING BOX */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* QUALIFICATION PHASES BOX */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+
+  /* ===== ENHANCED EDITION ADDITIONS ===== */
+  .enh-badge{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.35);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--gold);text-align:right}
+
+  .regtext-box{background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .regtext-box h3{font-size:0.74rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .regtext-items{display:flex;flex-direction:column;gap:9px}
+  .regtext-item{background:rgba(255,255,255,0.04);border-left:3px solid var(--c1acc);border-radius:5px;padding:9px 12px}
+  .regtext-item .src{font-size:0.63rem;font-family:var(--mono);color:var(--c1acc);margin-bottom:3px}
+  .regtext-item p{font-size:0.7rem;color:var(--light);line-height:1.55}
+
+  .pattern-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .pattern-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .pattern-box .disclaimer{font-size:0.64rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px;font-style:italic}
+  .pattern-items{display:flex;flex-direction:column;gap:7px}
+  .pattern-item{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:8px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .pattern-item strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  .practice-box{background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .practice-box h3{font-size:0.74rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .practice-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .practice-item{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.16);border-radius:5px;padding:9px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .practice-item strong{color:var(--green);display:block;font-size:0.67rem;margin-bottom:2px}
+
+  .assess-box{background:rgba(56,189,248,0.05);border:1.5px solid rgba(56,189,248,0.22);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .assess-box summary{cursor:pointer;padding:12px 16px;font-size:0.78rem;font-weight:700;color:var(--white);list-style:none;display:flex;align-items:center;justify-content:space-between}
+  .assess-box summary::-webkit-details-marker{display:none}
+  .assess-box summary .arrow-icon{color:var(--c1acc);font-size:0.8rem;transition:transform 0.15s}
+  .assess-box[open] summary .arrow-icon{transform:rotate(90deg)}
+  .assess-body{padding:4px 16px 16px}
+  .assess-note{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px}
+  .assess-row{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .assess-row:last-child{border-bottom:none}
+  .assess-row input[type=checkbox]{margin-top:2px;width:15px;height:15px;accent-color:var(--c1acc);flex-shrink:0}
+  .assess-row label{font-size:0.71rem;color:var(--light);line-height:1.5}
+
+  .annotate-box{background:rgba(0,0,0,0.2);border:1.5px dashed rgba(255,255,255,0.16);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .annotate-box h3{font-size:0.74rem;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .annotate-box .sub{font-size:0.65rem;color:var(--mid);margin-bottom:12px}
+  .annotate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotate-field{display:flex;flex-direction:column;gap:4px}
+  .annotate-field label{font-size:0.66rem;font-family:var(--mono);color:var(--c1acc)}
+  .annotate-field textarea, .annotate-field input[type=text]{
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:6px;
+    color:var(--white);font-family:var(--font);font-size:0.72rem;padding:8px 10px;resize:vertical;
+  }
+  .annotate-field textarea:focus, .annotate-field input[type=text]:focus{outline:none;border-color:var(--c1acc)}
+
+  @media print {
+    body{background:#FFFFFF !important;color:#1A1A1A !important}
+    .header{background:#FFFFFF !important;border-bottom:2px solid #1A1A1A}
+    .logo span:first-child, .logo span:last-child, .header h1{color:#1A1A1A !important}
+    .header h1 em{color:#0A6E8C !important}
+    .header-sub, .stat-badge, .reg-badge, .enh-badge{color:#333 !important}
+    .legend{background:#F2F2F2 !important}
+    .map-wrap, .phase-body, .node-action, .node-decision, .limits-box, .exceed-box, .trend-box, .ccs-box,
+    .regtext-box, .pattern-box, .practice-box, .assess-box, .annotate-box, .rule-card{
+      background:#FAFAFA !important;color:#1A1A1A !important;border-color:#CCCCCC !important;
+    }
+    .node-title, .node-body, .limit-card p, .exceed-step, .trend-item, .ccs-item, .regtext-item p,
+    .pattern-item, .practice-item, .rule-card p, .assess-row label{color:#1A1A1A !important}
+    .assess-box summary{color:#1A1A1A !important}
+    .footer{color:#333 !important}
+    .assess-box summary .arrow-icon{display:none}
+    details.assess-box{display:block}
+    .assess-body{display:block !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Water System <em>Monitoring Workflow</em></h1>
+    <div class="header-sub">USP &lt;1231&gt; &nbsp;|&nbsp; USP &lt;645&gt; &nbsp;|&nbsp; EU GMP Annex 1 2022 &nbsp;|&nbsp; 21 CFR 211.42 &nbsp;|&nbsp; ICH Q7</div>
+  </div>
+  <div class="header-right">
+    <div class="enh-badge">Enhanced Edition &#183; Subscriber Content</div>
+    <div class="reg-badge">
+      USP &lt;1231&gt; Water for Pharmaceutical Purposes<br>
+      USP &lt;645&gt; Conductivity &nbsp;·&nbsp; EU GMP Annex 1 2022<br>
+      21 CFR 211.42 &nbsp;·&nbsp; ICH Q7 Section 4.3
+    </div>
+    <div class="stat-badge">
+      Water system deficiencies remain among<br>
+      the most frequently cited 483 observations
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Design and Qualification</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Sampling and Testing</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Trending and Review</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Maintenance and Recertification</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(245,166,35,0.4);border:1px solid #F5A623"></div>Alert limit</div>
+  <div class="legend-item"><div class="ls" style="background:rgba(229,62,62,0.4);border:1px solid #E53E3E"></div>Action limit</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128167;</div>
+    <div class="trigger-text">
+      <h3>Pharmaceutical Water Systems - Continuous Verification of a Critical Utility</h3>
+      <p>Water is the highest-volume material in most pharmaceutical processes and a direct or indirect component of nearly every product. USP &lt;1231&gt; establishes that water systems must be validated to reliably produce water of the appropriate chemical and microbial quality, and monitored continuously thereafter. Unlike raw materials tested batch to batch, water systems are qualified once and then relied upon continuously, making the ongoing monitoring and trending programme the primary control against system drift between qualification cycles.</p>
+      <div class="reg">USP &lt;1231&gt; &nbsp;·&nbsp; USP &lt;645&gt; &nbsp;·&nbsp; EU GMP Annex 1 2022 &nbsp;·&nbsp; 21 CFR 211.42 &nbsp;·&nbsp; ICH Q7 Section 4.3</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-usp">USP &lt;1231&gt;</div>
+      <div class="ref-chip chip-usp">USP &lt;645&gt;</div>
+      <div class="ref-chip chip-eu">EU GMP Annex 1 2022</div>
+      <div class="ref-chip chip-fda">21 CFR 211.42</div>
+      <div class="ref-chip chip-iso">ICH Q7</div>
+    </div>
+  </div>
+
+  <!-- WATER GRADE BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-c">
+      <h4>Potable Water</h4>
+      <p>Source feed water. Must meet EPA National Primary Drinking Water Regulations or EU Drinking Water Directive at minimum. Not itself a compendial pharmaceutical water grade.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Role: <span>Feed water only</span></div>
+        <div class="limit-row">Standard: <span>EPA / EU DWD</span></div>
+        <div class="limit-row">Testing: <span>Annual minimum</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Purified Water (PW)</h4>
+      <p>Used for most non-parenteral formulations, initial cleaning steps, and as feedwater for further purification. Produced by distillation, ion exchange, RO, or equivalent process.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Conductivity: <span>&lt;1.3 uS/cm (Stage 1, 25C)</span></div>
+        <div class="limit-row">TOC: <span>&lt;500 ppb</span></div>
+        <div class="limit-row">Bioburden action: <span>100 CFU/mL</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-a">
+      <h4>Water for Injection (WFI)</h4>
+      <p>Required for parenteral products and final rinse of equipment used in their manufacture. Requires distillation or a process proven equivalent per current USP.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Conductivity: <span>&lt;1.3 uS/cm (Stage 1, 25C)</span></div>
+        <div class="limit-row">Endotoxin: <span>&lt;0.25 EU/mL</span></div>
+        <div class="limit-row">Bioburden action: <span>10 CFU/100mL</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Pure Steam</h4>
+      <p>Used where direct product or product-contact surface contact with steam occurs, including sterilization of equipment and materials. Condensate must meet WFI quality.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Condensate quality: <span>Meets WFI limits</span></div>
+        <div class="limit-row">Non-condensable gas: <span>&lt;3.5%</span></div>
+        <div class="limit-row">Dryness value: <span>&gt;0.95</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Design and Qualification
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Define water grade requirements by use point</div>
+              <div class="node-body">Map every use point to its required water grade based on the product or process it supports. Parenteral manufacturing and final equipment rinse require WFI; most other uses can be satisfied by PW.</div>
+              <div class="node-reg">USP &lt;1231&gt; · ICH Q7 Section 4.3</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Design generation, storage, and distribution</div>
+              <div class="node-body">System design minimizes dead legs, uses continuously circulating loops, and includes appropriate sanitization access points. Storage tanks include hydrophobic vent filters and spray ball distribution.</div>
+              <div class="node-reg">USP &lt;1231&gt; · EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Select sanitization strategy</div>
+              <div class="node-body">Thermal sanitization, ozone, or chemical sanitization selected based on system design and materials of construction. Sanitization frequency and efficacy verification method defined before qualification begins.</div>
+              <div class="node-reg">USP &lt;1231&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Execute three-phase qualification</div>
+              <div class="node-body">Phase 1: two to four weeks of intensive daily sampling at every use point. Phase 2: additional two to four weeks confirming consistent performance. Phase 3: one year of routine sampling covering seasonal variation.</div>
+              <div class="node-reg">FDA Guide to Inspections of High Purity Water Systems</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Sampling and Testing
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Sample every use point on a rotating schedule</div>
+              <div class="node-body">All use points sampled at a defined frequency, with critical use points such as WFI outlets to parenteral filling sampled more frequently than lower-risk points.</div>
+              <div class="node-reg">USP &lt;1231&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Conduct chemical testing</div>
+              <div class="node-body">Conductivity tested per USP &lt;645&gt; three-stage methodology, either online or offline. Total organic carbon tested to detect organic contamination not captured by conductivity alone.</div>
+              <div class="node-reg">USP &lt;645&gt; · USP &lt;643&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Conduct microbial and endotoxin testing</div>
+              <div class="node-body">Bioburden testing performed per USP &lt;1231&gt; methodology. WFI additionally tested for bacterial endotoxin using the limulus amebocyte lysate method or an equivalent validated method.</div>
+              <div class="node-reg">USP &lt;1231&gt; · USP &lt;85&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Do results fall within alert and action limits at every use point?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Record and trend</span>
+                <span class="opt-n">NO &#8594; Investigate excursion</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Trending and Review
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Trend chemical and microbial data by use point</div>
+              <div class="node-body">Each use point trended independently over time. A result consistently near the alert limit at one location is a signal even while every individual result remains compliant.</div>
+              <div class="node-reg">USP &lt;1231&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Seasonal and long-term pattern review</div>
+              <div class="node-body">Phase 3 qualification and ongoing monitoring together capture seasonal variation in feedwater quality. Trends correlated against ambient temperature, feedwater source changes, and system age.</div>
+              <div class="node-reg">FDA Guide to Inspections of High Purity Water Systems</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Periodic system performance review</div>
+              <div class="node-body">Water system performance reviewed as part of APQR and management review, summarizing excursion rate, trending observations, and any changes made during the review period.</div>
+              <div class="node-reg">ICH Q10 Section 3.2.1</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Maintenance and Recertification
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Scheduled sanitization</div>
+              <div class="node-body">System sanitized at a defined frequency using the qualified method. Post-sanitization sampling confirms effective microbial reduction before the system returns to routine use.</div>
+              <div class="node-reg">USP &lt;1231&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Preventive maintenance programme</div>
+              <div class="node-body">Pre-filters, RO membranes, ion exchange resin, UV lamps, and other consumable components replaced on a defined preventive schedule tied to manufacturer specification and system performance data.</div>
+              <div class="node-reg">21 CFR 211.68</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Trigger-based requalification</div>
+              <div class="node-body">Requalification triggered by system modification, sanitization method change, repeated excursions at the same location, or extended system shutdown. Scope determined by risk assessment of the change.</div>
+              <div class="node-reg">EU GMP Annex 15 · Change control procedure</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- ALERT / ACTION LIMITS -->
+      <div class="limits-box">
+        <div class="limits-header">Alert and Action Limits (USP &lt;1231&gt;)</div>
+        <div class="limits-body">
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Conductivity - Stage 1 (USP &lt;645&gt;)</h4>
+            <p>Water passes if conductivity at the measured temperature does not exceed the Stage 1 limit. Stage 1 failure requires progression to Stage 2 and, if needed, Stage 3 with temperature compensation and pH adjustment.</p>
+            <div class="stat">USP &lt;645&gt; Table 1</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Purified Water - Microbial Action Limit</h4>
+            <p>Action limit of 100 CFU/mL. This is a level that should trigger investigation, not a specification that may routinely be approached.</p>
+            <div class="stat">USP &lt;1231&gt;</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">WFI - Microbial and Endotoxin Action Limits</h4>
+            <p>Bioburden action limit of 10 CFU/100mL. Endotoxin limit of 0.25 EU/mL. Both reflect the higher risk profile of water used for parenteral products.</p>
+            <div class="stat">USP &lt;1231&gt; · USP &lt;85&gt;</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXCURSION RESPONSE -->
+      <div class="exceed-box">
+        <h3>Excursion Response Steps</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Step 1 - Confirm result validity</strong>
+            Rule out sampling technique error, container contamination, or analytical error before concluding a genuine system excursion.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 2 - Assess impact on product and downstream use</strong>
+            Identify every batch and process step that used water from the affected use point since the last satisfactory result.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 3 - Resample the affected location and adjacent points</strong>
+            Confirm whether the excursion is isolated to one use point or reflects a broader system issue by sampling nearby locations and the return loop.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 4 - Investigate root cause</strong>
+            Review recent sanitization records, maintenance activity, filter and membrane age, and any recent system modifications.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 5 - Remediate and verify</strong>
+            Sanitize or repair as indicated by the investigation. Confirm return to control with successive satisfactory results before closing the investigation.
+          </div>
+        </div>
+      </div>
+
+      <!-- SAMPLING REQUIREMENTS -->
+      <div class="trend-box">
+        <h3>Sampling Requirements</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Every use point included</strong>
+            All points where water is drawn for manufacturing or cleaning use are included in the routine sampling plan, not only a representative subset.
+          </div>
+          <div class="trend-item">
+            <strong>First-draw sampling technique</strong>
+            Samples taken as water is actually used, without flushing beforehand, so results reflect the water quality a user point actually delivers.
+          </div>
+          <div class="trend-item">
+            <strong>Return loop and storage tank sampling</strong>
+            Storage tank and return loop sampled to monitor overall system performance independent of individual use point results.
+          </div>
+          <div class="trend-item">
+            <strong>Frequency risk-adjusted</strong>
+            Higher-risk use points, such as those feeding WFI directly to parenteral filling, are sampled more frequently than lower-risk points.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUALIFICATION PHASES -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Three-Phase Water System Qualification</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Phase 1 - Intensive Testing</strong>
+        Two to four weeks of daily sampling at every use point, covering all critical chemical and microbial parameters, to verify the system consistently produces water meeting specification.
+      </div>
+      <div class="ccs-item">
+        <strong>Phase 2 - Confirmation</strong>
+        An additional two to four weeks of continued daily sampling to confirm the performance demonstrated in Phase 1 is consistent and reproducible, not a single favorable data set.
+      </div>
+      <div class="ccs-item">
+        <strong>Phase 3 - Extended Verification</strong>
+        Approximately one year of routine sampling at reduced frequency, structured to capture seasonal variation in feedwater quality and confirm long-term system reliability.
+      </div>
+      <div class="ccs-item">
+        <strong>Sanitization Efficacy Verification</strong>
+        Every qualification phase includes verification that the chosen sanitization method reliably controls microbial bioburden between cycles.
+      </div>
+      <div class="ccs-item">
+        <strong>System Suitability Documentation</strong>
+        Piping and instrumentation diagrams, materials of construction, and welds documented and cross-referenced to the qualification protocol.
+      </div>
+      <div class="ccs-item">
+        <strong>Ongoing Monitoring Transition</strong>
+        Upon successful completion of Phase 3, the system transitions to routine ongoing monitoring at the established sampling frequency and locations.
+      </div>
+      <div class="ccs-item">
+        <strong>Change Control Integration</strong>
+        Any change to the qualified state of the system, including component replacement outside preventive maintenance, is evaluated through change control for requalification impact.
+      </div>
+      <div class="ccs-item">
+        <strong>Water System Review</strong>
+        Annual or periodic formal review of system performance, trending data, and any deviations, feeding into the site's APQR and management review process.
+      </div>
+    </div>
+  </div>
+
+  <!-- REGULATORY TEXT PANEL -->
+  <div class="regtext-box">
+    <h3>Regulatory Text - Source Provisions</h3>
+    <div class="regtext-items">
+      <div class="regtext-item">
+        <div class="src">21 CFR 211.42(c)</div>
+        <p>Operations shall be performed within specifically defined areas of adequate size, and there shall be separate or defined areas for the receipt, identification, storage, and withholding from use of components, drug product containers, closures, and labeling pending sampling and testing where facilities are relevant to water system control points.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">USP General Chapter &lt;1231&gt; (paraphrased - refer to the current USP-NF for complete official text)</div>
+        <p>Water systems should be validated to reliably produce water of an appropriate chemical and microbiological quality, with system suitability confirmed through a documented three-phase approach covering short-term intensive testing, confirmatory testing, and extended verification across seasonal variation.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">EU GMP Annex 1 2022, Section 6 (paraphrased - refer to the official Annex 1 text for exact wording)</div>
+        <p>Water systems should be designed, installed, commissioned, qualified, and maintained to prevent microbial contamination, with monitoring at a frequency and set of locations sufficient to detect adverse trends and confirm the system remains in a state of control.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSPECTION PATTERN PANEL -->
+  <div class="pattern-box">
+    <h3>Common Inspection Findings - Water Systems</h3>
+    <div class="disclaimer">Illustrative of recurring themes seen across published FDA 483s and warning letters. Not tied to a single specific citation.</div>
+    <div class="pattern-items">
+      <div class="pattern-item">
+        <strong>Incomplete use point sampling rotation</strong>
+        Routine sampling plans that cover only a subset of use points, or drift from the documented rotation schedule without a recorded rationale.
+      </div>
+      <div class="pattern-item">
+        <strong>Action limit treated as acceptable rather than investigative</strong>
+        Results at or near the microbial action limit closed without formal investigation, on the assumption that a single result below the limit resolves the concern.
+      </div>
+      <div class="pattern-item">
+        <strong>Missing trend analysis across use points</strong>
+        Results reviewed individually as they arrive, without a periodic trend review capable of surfacing a location drifting upward over successive results.
+      </div>
+      <div class="pattern-item">
+        <strong>Sanitization efficacy not verified</strong>
+        Sanitization cycles performed on schedule without post-sanitization sampling confirming the cycle achieved its intended microbial reduction.
+      </div>
+    </div>
+  </div>
+
+  <!-- BEST PRACTICE PANEL -->
+  <div class="practice-box">
+    <h3>Best Practice Guidance</h3>
+    <div class="practice-items">
+      <div class="practice-item">
+        <strong>Build the sampling point map into the P&ID</strong>
+        Cross-reference every sampling location to the system's piping and instrumentation diagram so new use points are automatically flagged for inclusion in the sampling plan when the system is modified.
+      </div>
+      <div class="practice-item">
+        <strong>Separate chemical online data from microbial offline data in trend review</strong>
+        Chemical parameters like conductivity can often be monitored continuously online while microbial results remain necessarily retrospective. Trend each independently rather than conflating real-time and lagging indicators.
+      </div>
+      <div class="practice-item">
+        <strong>Review Phase 3 data before finalizing the routine sampling frequency</strong>
+        Use the full year of Phase 3 qualification data, including any seasonal variation observed, to set a routine monitoring frequency that reflects actual system behavior rather than a generic default.
+      </div>
+      <div class="practice-item">
+        <strong>Tie preventive maintenance records to water quality trends</strong>
+        Correlate filter, membrane, and UV lamp replacement dates against chemical and microbial trend data to build a predictive maintenance schedule rather than a purely calendar-based one.
+      </div>
+    </div>
+  </div>
+
+  <!-- SELF-ASSESSMENT CHECKLIST -->
+  <details class="assess-box">
+    <summary>Self-Assessment Checklist - Is Your Water Programme Inspection Ready? <span class="arrow-icon">&#9654;</span></summary>
+    <div class="assess-body">
+      <div class="assess-note">For personal or team use during training. Responses are not saved or submitted.</div>
+      <div class="assess-row"><input type="checkbox" id="w1"><label for="w1">Every use point in the distribution system is included in the routine sampling plan.</label></div>
+      <div class="assess-row"><input type="checkbox" id="w2"><label for="w2">Action limit results trigger a documented investigation every time, without exception.</label></div>
+      <div class="assess-row"><input type="checkbox" id="w3"><label for="w3">Chemical and microbial data are trended by individual use point, not only as a system-wide average.</label></div>
+      <div class="assess-row"><input type="checkbox" id="w4"><label for="w4">Post-sanitization sampling confirms cycle effectiveness before the system returns to routine use.</label></div>
+      <div class="assess-row"><input type="checkbox" id="w5"><label for="w5">Phase 3 qualification data, including seasonal variation, informed the routine monitoring frequency.</label></div>
+      <div class="assess-row"><input type="checkbox" id="w6"><label for="w6">System modifications automatically trigger a documented requalification impact assessment.</label></div>
+      <div class="assess-row"><input type="checkbox" id="w7"><label for="w7">Preventive maintenance records are cross-referenced against water quality trend data.</label></div>
+    </div>
+  </details>
+
+  <!-- SITE ANNOTATION FIELDS -->
+  <div class="annotate-box">
+    <h3>Site Annotation</h3>
+    <div class="sub">Add your facility-specific references while reviewing this map. Not saved between sessions - copy notes into your own records before closing.</div>
+    <div class="annotate-grid">
+      <div class="annotate-field">
+        <label>SYSTEM ID</label>
+        <input type="text" placeholder="e.g. WFI Loop 1, Building 3">
+      </div>
+      <div class="annotate-field">
+        <label>LOCAL SOP REFERENCE</label>
+        <input type="text" placeholder="e.g. SOP-UTL-022 Rev 5">
+      </div>
+      <div class="annotate-field" style="grid-column: 1 / -1">
+        <label>NOTES</label>
+        <textarea rows="3" placeholder="Facility-specific observations, open questions, or follow-up items for QA."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Sample only a subset of use points rather than the complete distribution system. Treat the microbial action limit as a routine specification rather than an investigation trigger. Skip post-sanitization verification sampling. Continue using water from an unresolved excursion location without documented risk assessment.</p>
+    </div>
+    <div class="rule-card">
+      <h4>PW vs WFI vs Pure Steam</h4>
+      <p>Purified Water supports most non-parenteral uses. Water for Injection is required wherever water contacts a parenteral product or its primary contact surfaces. Pure Steam condensate must meet WFI quality when used in direct product or surface contact.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Qualification vs monitoring</h4>
+      <p>The three-phase qualification programme establishes that the system can reliably perform. The ongoing monitoring programme is the continuous verification that it continues to do so between requalification events.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>USP &lt;1231&gt; - water for pharmaceutical purposes. USP &lt;645&gt; - conductivity methodology. EU GMP Annex 1 2022 - water system expectations. 21 CFR 211.42 - facility and utility design. ICH Q7 Section 4.3 - water quality for API manufacture.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Water System Monitoring Workflow &nbsp;&#183;&nbsp;
+    Built from USP &lt;1231&gt;, USP &lt;645&gt;, EU GMP Annex 1 2022, 21 CFR 211.42, ICH Q7 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMP Maps - Enhanced Editions</div>
+    <div class="footer-badge">Microbiology Series - Map 2 of 9</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
