@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bioburden Testing Workflow | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* PRODUCT CATEGORY BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* LIMITS BOX */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* INVESTIGATION RESPONSE */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* SAMPLING BOX */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* METHOD VERIFICATION BOX */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Bioburden <em>Testing Workflow</em></h1>
+    <div class="header-sub">USP &lt;61&gt; &nbsp;|&nbsp; USP &lt;1111&gt; &nbsp;|&nbsp; EU GMP Annex 1 2022 &nbsp;|&nbsp; 21 CFR 211.113</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      USP &lt;61&gt; Microbiological Examination<br>
+      USP &lt;1111&gt; Acceptance Criteria &nbsp;·&nbsp; EU GMP Annex 1 2022<br>
+      21 CFR 211.113
+    </div>
+    <div class="stat-badge">
+      Acceptance criteria are set by route<br>
+      of administration, not one universal limit
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Sample and Method Selection</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Test Execution</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Result Interpretation and Trending</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Investigation and Release Decision</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#129440;</div>
+    <div class="trigger-text">
+      <h3>Bioburden Testing - Quantifying Microbial Load Against Route-Specific Limits</h3>
+      <p>Bioburden testing quantifies the total viable microbial population present in or on a nonsterile product, raw material, or in-process sample. USP &lt;61&gt; defines the test methodology while USP &lt;1111&gt; sets acceptance criteria that vary by the product's intended route of administration, since a limit appropriate for a topical cream is not appropriate for an oral aqueous suspension. Unlike sterility testing, bioburden testing does not require the complete absence of microorganisms, only that levels and specified organisms remain within the criteria appropriate to how the product will be used.</p>
+      <div class="reg">USP &lt;61&gt; &nbsp;·&nbsp; USP &lt;1111&gt; &nbsp;·&nbsp; EU GMP Annex 1 2022 &nbsp;·&nbsp; 21 CFR 211.113</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-usp">USP &lt;61&gt;</div>
+      <div class="ref-chip chip-usp">USP &lt;1111&gt;</div>
+      <div class="ref-chip chip-eu">EU GMP Annex 1 2022</div>
+      <div class="ref-chip chip-fda">21 CFR 211.113</div>
+    </div>
+  </div>
+
+  <!-- PRODUCT CATEGORY BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-c">
+      <h4>Oral Aqueous Preparations</h4>
+      <p>Aqueous solutions and suspensions for oral use. Lower acceptance limits reflect the higher risk profile of an aqueous matrix supporting microbial growth.</p>
+      <div class="grade-limits">
+        <div class="limit-row">TAMC: <span>10^2 CFU/mL or g</span></div>
+        <div class="limit-row">TYMC: <span>10^1 CFU/mL or g</span></div>
+        <div class="limit-row">Absence: <span>E. coli</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Oral Nonaqueous Preparations</h4>
+      <p>Tablets, capsules, and other nonaqueous oral dosage forms. Higher acceptance limits reflect the lower water activity that limits microbial proliferation.</p>
+      <div class="grade-limits">
+        <div class="limit-row">TAMC: <span>10^3 CFU/g</span></div>
+        <div class="limit-row">TYMC: <span>10^2 CFU/g</span></div>
+        <div class="limit-row">Absence: <span>E. coli</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-a">
+      <h4>Topical, Mucosal, Inhalation</h4>
+      <p>Cutaneous, nasal, otic, oromucosal, and inhalation products. Additional objectionable organism testing applies based on the route and site of application.</p>
+      <div class="grade-limits">
+        <div class="limit-row">TAMC: <span>10^2 CFU/g or mL</span></div>
+        <div class="limit-row">TYMC: <span>10^1 CFU/g or mL</span></div>
+        <div class="limit-row">Absence: <span>S. aureus, P. aeruginosa</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Special Populations</h4>
+      <p>Products labeled for use in infants, or applied to severely compromised skin, warrant consideration of stricter criteria per USP &lt;1111&gt; guidance notes.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Risk-based, per USP &lt;1111&gt;</span></div>
+        <div class="limit-row">Consideration: <span>Vulnerable populations</span></div>
+        <div class="limit-row">Approach: <span>Tighter internal limits</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Sample and Method Selection
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Identify the applicable USP &lt;1111&gt; category</div>
+              <div class="node-body">Route of administration determines which acceptance criteria table applies. This decision is made once per product and documented in the specification.</div>
+              <div class="node-reg">USP &lt;1111&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Select the enumeration method</div>
+              <div class="node-body">Pour plate, spread plate, or membrane filtration method selected per USP &lt;61&gt; based on product characteristics and expected bioburden level.</div>
+              <div class="node-reg">USP &lt;61&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Confirm method suitability</div>
+              <div class="node-body">Method suitability testing demonstrates the product does not inhibit recovery of challenge organisms at the chosen dilution, repeated whenever formulation changes.</div>
+              <div class="node-reg">USP &lt;61&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Prepare sample dilutions</div>
+              <div class="node-body">Sample homogenized and diluted per the validated protocol to bring expected colony counts into the statistically valid countable range.</div>
+              <div class="node-reg">USP &lt;61&gt;</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Test Execution
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Perform Total Aerobic Microbial Count</div>
+              <div class="node-body">TAMC quantifies total aerobic bacteria using Soybean-Casein Digest Agar, incubated at 30 to 35 degrees C for 3 to 5 days.</div>
+              <div class="node-reg">USP &lt;61&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Perform Total Yeast and Mold Count</div>
+              <div class="node-body">TYMC quantifies fungal organisms using Sabouraud Dextrose Agar, incubated at 20 to 25 degrees C for 5 to 7 days.</div>
+              <div class="node-reg">USP &lt;61&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Test for specified objectionable organisms</div>
+              <div class="node-body">Tests for E. coli, S. aureus, P. aeruginosa, Salmonella, or other organisms required by the product's USP &lt;1111&gt; category and any additional product-specific risk assessment.</div>
+              <div class="node-reg">USP &lt;62&gt; · USP &lt;1111&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Do TAMC, TYMC, and objectionable organism results meet the category criteria?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Record and trend</span>
+                <span class="opt-n">NO &#8594; Initiate investigation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Result Interpretation and Trending
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Calculate CFU per gram or milliliter</div>
+              <div class="node-body">Raw colony counts converted to CFU/g or CFU/mL accounting for dilution factor, with results reported using the statistically valid countable plate range.</div>
+              <div class="node-reg">USP &lt;61&gt;</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Trend results by product over time</div>
+              <div class="node-body">Individual batch results trended against the product's historical baseline to detect gradual upward drift even while remaining within acceptance criteria.</div>
+              <div class="node-reg">ICH Q10</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Compare across raw material lots and suppliers</div>
+              <div class="node-body">Bioburden data from raw materials trended by supplier and lot to identify a supply chain source of increasing microbial load before it affects finished product.</div>
+              <div class="node-reg">ICH Q7</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Investigation and Release Decision
+          </div>
+          <div class="phase-body">
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">11</span>Investigate any exceedance or objectionable organism finding</div>
+              <div class="node-body">Result exceeding acceptance criteria, or detection of a specified objectionable organism, triggers a full OOS investigation per 21 CFR 211.192 before a disposition decision is made.</div>
+              <div class="node-reg">21 CFR 211.192</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>QA release decision</div>
+              <div class="node-body">Quality unit reviews the complete bioburden data package, including any investigation findings, before authorizing batch release.</div>
+              <div class="node-reg">21 CFR 211.22</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">13</span>Retain documentation and update trend records</div>
+              <div class="node-body">Complete raw data, calculations, and any investigation records retained per site requirements, with results added to the product's ongoing trend dataset.</div>
+              <div class="node-reg">21 CFR 211.180</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- ACCEPTANCE CRITERIA -->
+      <div class="limits-box">
+        <div class="limits-header">Acceptance Criteria Structure (USP &lt;1111&gt;)</div>
+        <div class="limits-body">
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">TAMC - Total Aerobic Microbial Count</h4>
+            <p>Quantifies total viable aerobic bacteria. Acceptance criteria set independently for each USP &lt;1111&gt; product category based on route of administration.</p>
+            <div class="stat">USP &lt;61&gt; · USP &lt;1111&gt;</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">TYMC - Total Yeast and Mold Count</h4>
+            <p>Quantifies total viable fungal organisms. Consistently set at a lower numeric limit than TAMC across every product category.</p>
+            <div class="stat">USP &lt;61&gt; · USP &lt;1111&gt;</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Objectionable Organism Absence</h4>
+            <p>Specified organisms such as E. coli, S. aureus, and P. aeruginosa must be absent in the tested sample quantity, regardless of the overall count result.</p>
+            <div class="stat">USP &lt;1111&gt;</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INVESTIGATION RESPONSE -->
+      <div class="exceed-box">
+        <h3>OOS Investigation Response Steps</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Step 1 - Confirm result validity</strong>
+            Rule out contamination during sample handling, media quality issues, or incubation deviation before concluding a genuine product-related result.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 2 - Identify the recovered organism</strong>
+            Species-level identification informs whether the finding is consistent with an environmental, raw material, or process-related source.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 3 - Review raw material and process history</strong>
+            Examine raw material bioburden data, water system results, and any deviations from the batch's manufacturing history.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 4 - Assess batch and related batch impact</strong>
+            Determine whether other batches manufactured with the same raw material lot or process conditions require evaluation.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 5 - Reach and document a disposition decision</strong>
+            Conclude root cause and disposition with full documentation supporting the release, rejection, or rework decision.
+          </div>
+        </div>
+      </div>
+
+      <!-- SAMPLING REQUIREMENTS -->
+      <div class="trend-box">
+        <h3>Sampling Requirements</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Representative sampling</strong>
+            Samples drawn to represent the batch, with additional sampling of raw materials at receipt and in-process material at defined process stages where risk warrants it.
+          </div>
+          <div class="trend-item">
+            <strong>Aseptic sample handling</strong>
+            Sample collection and preparation performed to avoid introducing extraneous contamination that could produce a false elevated result.
+          </div>
+          <div class="trend-item">
+            <strong>Dilution scheme validated</strong>
+            Dilution series designed to bring expected counts into the countable range without introducing dilution-related recovery bias.
+          </div>
+          <div class="trend-item">
+            <strong>Retained samples for investigation</strong>
+            Sufficient sample retained where practical to support repeat testing if an initial result requires investigation.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- METHOD VERIFICATION -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Method Verification and Control Requirements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Method Suitability Test</strong>
+        Confirms the product formulation and chosen dilution do not inhibit recovery of low levels of challenge microorganisms, repeated on formulation change.
+      </div>
+      <div class="ccs-item">
+        <strong>Growth Promotion Testing</strong>
+        Each lot of agar media undergoes growth promotion testing with reference organisms before use in routine bioburden testing.
+      </div>
+      <div class="ccs-item">
+        <strong>Negative Control</strong>
+        Confirms the testing process, environment, and diluent did not introduce contamination independent of the sample itself.
+      </div>
+      <div class="ccs-item">
+        <strong>Statistically Valid Countable Range</strong>
+        Plates within the countable range, typically 25 to 250 colonies for standard plate methods, are used for CFU calculation to maintain statistical validity.
+      </div>
+      <div class="ccs-item">
+        <strong>Incubation Condition Control</strong>
+        Incubator temperature and duration monitored and documented to confirm conditions met the validated method throughout the incubation period.
+      </div>
+      <div class="ccs-item">
+        <strong>Analyst Qualification</strong>
+        Analysts performing bioburden testing are qualified through documented technique demonstration before performing routine testing.
+      </div>
+      <div class="ccs-item">
+        <strong>Equipment Calibration</strong>
+        Balances, pipettes, and incubators used in testing maintained on a routine calibration and preventive maintenance schedule.
+      </div>
+      <div class="ccs-item">
+        <strong>Reference Organism Traceability</strong>
+        Challenge organisms used in method suitability and growth promotion testing traceable to a recognized culture collection with documented passage history.
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Apply a single universal acceptance limit across all product categories regardless of route of administration. Skip method suitability testing after a formulation change. Report results from plates outside the statistically valid countable range without documented justification. Close an exceedance without root cause investigation.</p>
+    </div>
+    <div class="rule-card">
+      <h4>TAMC vs TYMC</h4>
+      <p>TAMC quantifies aerobic bacteria using conditions favoring bacterial growth. TYMC quantifies yeast and mold using conditions favoring fungal growth. Both are required and evaluated against separate acceptance criteria within the same product category.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Bioburden vs sterility testing</h4>
+      <p>Bioburden testing quantifies microbial load against a route-appropriate limit for nonsterile products. Sterility testing verifies the complete absence of viable organisms for products required to be sterile. The two tests serve different regulatory purposes and are not interchangeable.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>USP &lt;61&gt; - microbiological examination methodology. USP &lt;1111&gt; - acceptance criteria by product category. EU GMP Annex 1 2022 - microbial control expectations. 21 CFR 211.113 - control of microbiological contamination.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Bioburden Testing Workflow &nbsp;&#183;&nbsp;
+    Built from USP &lt;61&gt;, USP &lt;1111&gt;, EU GMP Annex 1 2022, 21 CFR 211.113 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Microbiology Series - Map 4 of 9</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
