@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contamination Control Strategy (CCS) Workflow | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* CCS CORE PRINCIPLES BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* CORE PRINCIPLES BOX */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* GAP REMEDIATION RESPONSE */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* CROSS-PROGRAMME INTEGRATION */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* EIGHT-COMPONENT FRAMEWORK BOX */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Contamination Control <em>Strategy (CCS) Workflow</em></h1>
+    <div class="header-sub">EU GMP Annex 1 2022 Section 2.2 &nbsp;|&nbsp; ICH Q9(R1) &nbsp;|&nbsp; ICH Q10</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      EU GMP Annex 1 2022 Section 2.2<br>
+      ICH Q9(R1) Quality Risk Management<br>
+      ICH Q10 Pharmaceutical Quality System
+    </div>
+    <div class="stat-badge">
+      A CCS is a living, site-wide document,<br>
+      not a single standalone programme
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Risk Assessment and Strategy Development</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Control Implementation</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Monitoring and Verification</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Review and Continuous Improvement</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128737;</div>
+    <div class="trigger-text">
+      <h3>Contamination Control Strategy - The Site-Wide Umbrella Over Every Individual Programme</h3>
+      <p>EU GMP Annex 1 2022 introduced the Contamination Control Strategy as a formal, documented requirement: a holistic, site-wide analysis of every contamination source and route, and the controls in place to manage each one. Where environmental monitoring, water system control, media fills, bioburden testing, and cleaning validation each address a specific piece of contamination risk, the CCS is the document that ties them together, demonstrates they were designed with a shared understanding of risk, and identifies any gaps between them.</p>
+      <div class="reg">EU GMP Annex 1 2022 Section 2.2 &nbsp;·&nbsp; ICH Q9(R1) &nbsp;·&nbsp; ICH Q10</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-eu">EU GMP Annex 1 2022</div>
+      <div class="ref-chip chip-iso">ICH Q9(R1)</div>
+      <div class="ref-chip chip-usp">ICH Q10</div>
+    </div>
+  </div>
+
+  <!-- CCS CORE PRINCIPLES BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-c">
+      <h4>Holistic, Site-Wide Scope</h4>
+      <p>Covers every contamination source across the facility, not a single room, line, or product, connecting individual programmes into one coherent risk picture.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Scope: <span>Entire facility</span></div>
+        <div class="limit-row">Not: <span>Single programme document</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Risk-Based Prioritization</h4>
+      <p>Controls prioritized according to a documented quality risk management process, concentrating resources on the highest-risk contamination routes first.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>ICH Q9(R1) QRM</span></div>
+        <div class="limit-row">Output: <span>Prioritized control list</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-a">
+      <h4>Living Document</h4>
+      <p>Reviewed and updated on a defined schedule and following significant changes, rather than authored once and left static.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Review: <span>At least annually</span></div>
+        <div class="limit-row">Trigger-based: <span>Following major changes</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Cross-Functional Ownership</h4>
+      <p>Developed and maintained with input from quality, manufacturing, facilities, and engineering, reflecting the reality that contamination control spans every function.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Owners: <span>QA, Ops, Facilities, Eng</span></div>
+        <div class="limit-row">Not: <span>QA-only document</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Risk Assessment and Strategy Development
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Conduct a facility-wide contamination risk assessment</div>
+              <div class="node-body">Formal quality risk management process applied across the entire facility to identify and rank every plausible contamination source and route.</div>
+              <div class="node-reg">ICH Q9(R1)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Map contamination sources and routes</div>
+              <div class="node-body">Personnel, materials, environment, equipment, and utilities each mapped as potential contamination vectors, with existing controls identified against each.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Identify critical control points across the framework</div>
+              <div class="node-body">Points where contamination risk is highest and control is most critical identified across all eight CCS elements, forming the backbone of the strategy document.</div>
+              <div class="node-reg">EU GMP Annex 1 2022 Section 2.2</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Draft the CCS document integrating existing programmes</div>
+              <div class="node-body">Existing EM, water system, personnel monitoring, media fill, bioburden, and cleaning validation programmes referenced and integrated rather than duplicated within the CCS document.</div>
+              <div class="node-reg">ICH Q10</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Control Implementation
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Implement facility, equipment, and utility controls</div>
+              <div class="node-body">Physical and engineering controls addressing identified risks put in place, including HVAC design, pressure cascades, and utility system controls.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Implement personnel and gowning controls</div>
+              <div class="node-body">Gowning qualification, aseptic technique training, and personnel flow controls implemented to address the personnel-related contamination routes identified in the risk assessment.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Implement material and component controls</div>
+              <div class="node-body">Raw material and container-closure bioburden control, vendor qualification, and incoming material controls implemented to address supply chain contamination routes.</div>
+              <div class="node-reg">ICH Q7</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Is every identified critical control point addressed by a documented control?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Proceed to monitoring</span>
+                <span class="opt-n">NO &#8594; Gap remediation required</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Monitoring and Verification
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Execute monitoring per CCS-defined frequencies</div>
+              <div class="node-body">Environmental, utility, and personnel monitoring executed at the frequency and locations justified within the CCS risk assessment, not set independently by each individual programme.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Verify control effectiveness through trend review</div>
+              <div class="node-body">Individual programme trends reviewed against the CCS's stated risk priorities to confirm the highest-risk areas are performing as the strategy predicted.</div>
+              <div class="node-reg">ICH Q10</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Correlate data across programmes at the CCS level</div>
+              <div class="node-body">EM, water, media fill, and bioburden data reviewed together rather than in isolation, surfacing patterns no single programme would reveal alone.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Review and Continuous Improvement
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Periodic CCS review</div>
+              <div class="node-body">Formal review conducted at least annually, incorporating new monitoring data, deviations, investigations, and any relevant inspection findings from the review period.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Update the CCS following significant changes</div>
+              <div class="node-body">New equipment, facility modifications, process changes, or new products trigger a CCS update outside the routine annual review cycle.</div>
+              <div class="node-reg">EU GMP Annex 15</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">13</span>Track continuous improvement actions</div>
+              <div class="node-body">Improvement opportunities identified through the review process tracked to closure, with the CCS updated to reflect completed improvements.</div>
+              <div class="node-reg">ICH Q10 Section 4</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- CORE PRINCIPLES -->
+      <div class="limits-box">
+        <div class="limits-header">What Distinguishes a CCS from a Standalone Programme</div>
+        <div class="limits-body">
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Integration, Not Duplication</h4>
+            <p>The CCS references and connects existing programmes rather than recreating their content, adding the cross-programme risk view those individual documents cannot provide alone.</p>
+            <div class="stat">EU GMP Annex 1 2022</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Documented Risk Rationale</h4>
+            <p>Every monitoring frequency, alert limit, and control decision within the CCS traces back to a documented risk assessment rather than an inherited historical practice.</p>
+            <div class="stat">ICH Q9(R1)</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Ownership Beyond Quality</h4>
+            <p>Facilities, engineering, and manufacturing leadership actively participate in CCS development and review, since contamination control depends on decisions made throughout the organization.</p>
+            <div class="stat">ICH Q10</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GAP REMEDIATION -->
+      <div class="exceed-box">
+        <h3>Gap Remediation Response Steps</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Step 1 - Document the identified gap</strong>
+            Record the specific critical control point lacking an adequate documented control, and the risk level associated with the gap.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 2 - Assess interim risk mitigation</strong>
+            Determine whether an interim control or enhanced monitoring is needed while a permanent control is developed and implemented.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 3 - Assign ownership and timeline</strong>
+            Assign a responsible owner and realistic timeline for closing the gap, tracked through the site's change control or CAPA system.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 4 - Implement and verify the permanent control</strong>
+            Implement the control and verify its effectiveness through monitoring data before considering the gap closed.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 5 - Update the CCS document</strong>
+            Update the CCS to reflect the new control and close the gap in the tracking record, maintaining the document as an accurate current-state reference.
+          </div>
+        </div>
+      </div>
+
+      <!-- CROSS-PROGRAMME INTEGRATION -->
+      <div class="trend-box">
+        <h3>Programmes Integrated Under the CCS</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Environmental monitoring</strong>
+            Viable and non-viable particle monitoring across classified areas, referenced within the CCS as the primary environmental verification programme.
+          </div>
+          <div class="trend-item">
+            <strong>Water system monitoring</strong>
+            Chemical and microbial water quality control, connected to the CCS as a utility-level contamination control input.
+          </div>
+          <div class="trend-item">
+            <strong>Media fills and personnel qualification</strong>
+            Aseptic process simulation and personnel gowning qualification, representing the process and personnel elements of the strategy.
+          </div>
+          <div class="trend-item">
+            <strong>Bioburden and cleaning validation</strong>
+            Material and equipment-level microbial control programmes, feeding raw material and cleanliness verification data into the overall CCS picture.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- EIGHT-COMPONENT FRAMEWORK -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Eight-Component CCS Framework (EU GMP Annex 1 2022 Section 2.2)</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>1. Facility and Equipment Design</strong>
+        Layout, airflow, pressure cascades, and equipment design considered as primary engineering controls against contamination.
+      </div>
+      <div class="ccs-item">
+        <strong>2. Personnel</strong>
+        Gowning qualification, aseptic technique training, and behavioral controls governing how personnel interact with classified environments.
+      </div>
+      <div class="ccs-item">
+        <strong>3. Utilities</strong>
+        Water systems, HVAC, and process gases evaluated and controlled as contamination vectors requiring their own qualification and monitoring.
+      </div>
+      <div class="ccs-item">
+        <strong>4. Raw Material and Component Control</strong>
+        Incoming material bioburden control, vendor qualification, and container-closure system control addressing supply chain contamination risk.
+      </div>
+      <div class="ccs-item">
+        <strong>5. Process Design and Risk Management</strong>
+        Process steps evaluated for inherent contamination risk, with design choices made to minimize open product exposure wherever feasible.
+      </div>
+      <div class="ccs-item">
+        <strong>6. Environmental and Utility Monitoring</strong>
+        Ongoing verification programmes providing the data used to confirm the designed controls continue performing as intended.
+      </div>
+      <div class="ccs-item">
+        <strong>7. Cleaning and Disinfection</strong>
+        Validated cleaning and disinfectant rotation programmes addressing surface-level contamination control across classified areas.
+      </div>
+      <div class="ccs-item">
+        <strong>8. Change Control and Continuous Improvement</strong>
+        Formal mechanism ensuring changes to any of the above elements are evaluated for CCS impact, and that lessons learned feed back into the strategy.
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Treat the CCS as a compilation document assembled once for an inspection rather than a living strategy. Leave the CCS solely owned by quality without cross-functional input. Set monitoring frequencies independently of the CCS risk assessment. Skip CCS review following a significant facility or process change.</p>
+    </div>
+    <div class="rule-card">
+      <h4>CCS vs individual programme</h4>
+      <p>Environmental monitoring, water testing, and media fills each verify one piece of contamination control. The CCS is the document that demonstrates these pieces were designed together, based on a shared risk assessment, and identifies where gaps between them may exist.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Living document vs static file</h4>
+      <p>A CCS that is not reviewed and updated on a defined schedule, and following significant changes, no longer reflects the facility's actual contamination control state and loses its value as a risk management tool.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>EU GMP Annex 1 2022 Section 2.2 - contamination control strategy requirements. ICH Q9(R1) - quality risk management methodology. ICH Q10 - pharmaceutical quality system expectations for continuous improvement.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Contamination Control Strategy (CCS) Workflow &nbsp;&#183;&nbsp;
+    Built from EU GMP Annex 1 2022 Section 2.2, ICH Q9(R1), ICH Q10 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Microbiology Series - Map 6 of 9</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
