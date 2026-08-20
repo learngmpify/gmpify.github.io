@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complaint Handling Workflow - Enhanced Edition | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* COMPLAINT CLASSIFICATION BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* SEVERITY CLASSIFICATION BOX */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* REGULATORY ESCALATION RESPONSE */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* DOCUMENTATION REQUIREMENTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* COMPLAINT FILE ELEMENTS BOX */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+
+  /* ===== ENHANCED EDITION ADDITIONS ===== */
+  .enh-badge{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.35);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--gold);text-align:right}
+
+  .regtext-box{background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .regtext-box h3{font-size:0.74rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .regtext-items{display:flex;flex-direction:column;gap:9px}
+  .regtext-item{background:rgba(255,255,255,0.04);border-left:3px solid var(--c1acc);border-radius:5px;padding:9px 12px}
+  .regtext-item .src{font-size:0.63rem;font-family:var(--mono);color:var(--c1acc);margin-bottom:3px}
+  .regtext-item p{font-size:0.7rem;color:var(--light);line-height:1.55}
+
+  .pattern-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .pattern-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .pattern-box .disclaimer{font-size:0.64rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px;font-style:italic}
+  .pattern-items{display:flex;flex-direction:column;gap:7px}
+  .pattern-item{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:8px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .pattern-item strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  .practice-box{background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .practice-box h3{font-size:0.74rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .practice-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .practice-item{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.16);border-radius:5px;padding:9px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .practice-item strong{color:var(--green);display:block;font-size:0.67rem;margin-bottom:2px}
+
+  .assess-box{background:rgba(56,189,248,0.05);border:1.5px solid rgba(56,189,248,0.22);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .assess-box summary{cursor:pointer;padding:12px 16px;font-size:0.78rem;font-weight:700;color:var(--white);list-style:none;display:flex;align-items:center;justify-content:space-between}
+  .assess-box summary::-webkit-details-marker{display:none}
+  .assess-box summary .arrow-icon{color:var(--c1acc);font-size:0.8rem;transition:transform 0.15s}
+  .assess-box[open] summary .arrow-icon{transform:rotate(90deg)}
+  .assess-body{padding:4px 16px 16px}
+  .assess-note{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px}
+  .assess-row{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .assess-row:last-child{border-bottom:none}
+  .assess-row input[type=checkbox]{margin-top:2px;width:15px;height:15px;accent-color:var(--c1acc);flex-shrink:0}
+  .assess-row label{font-size:0.71rem;color:var(--light);line-height:1.5}
+
+  .annotate-box{background:rgba(0,0,0,0.2);border:1.5px dashed rgba(255,255,255,0.16);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .annotate-box h3{font-size:0.74rem;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .annotate-box .sub{font-size:0.65rem;color:var(--mid);margin-bottom:12px}
+  .annotate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotate-field{display:flex;flex-direction:column;gap:4px}
+  .annotate-field label{font-size:0.66rem;font-family:var(--mono);color:var(--c1acc)}
+  .annotate-field textarea, .annotate-field input[type=text]{
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:6px;
+    color:var(--white);font-family:var(--font);font-size:0.72rem;padding:8px 10px;resize:vertical;
+  }
+  .annotate-field textarea:focus, .annotate-field input[type=text]:focus{outline:none;border-color:var(--c1acc)}
+
+  @media print {
+    body{background:#FFFFFF !important;color:#1A1A1A !important}
+    .header{background:#FFFFFF !important;border-bottom:2px solid #1A1A1A}
+    .logo span:first-child, .logo span:last-child, .header h1{color:#1A1A1A !important}
+    .header h1 em{color:#0A6E8C !important}
+    .header-sub, .stat-badge, .reg-badge, .enh-badge{color:#333 !important}
+    .legend{background:#F2F2F2 !important}
+    .map-wrap, .phase-body, .node-action, .node-decision, .limits-box, .exceed-box, .trend-box, .ccs-box,
+    .regtext-box, .pattern-box, .practice-box, .assess-box, .annotate-box, .rule-card{
+      background:#FAFAFA !important;color:#1A1A1A !important;border-color:#CCCCCC !important;
+    }
+    .node-title, .node-body, .limit-card p, .exceed-step, .trend-item, .ccs-item, .regtext-item p,
+    .pattern-item, .practice-item, .rule-card p, .assess-row label{color:#1A1A1A !important}
+    .assess-box summary{color:#1A1A1A !important}
+    .footer{color:#333 !important}
+    .assess-box summary .arrow-icon{display:none}
+    details.assess-box{display:block}
+    .assess-body{display:block !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Complaint <em>Handling Workflow</em></h1>
+    <div class="header-sub">21 CFR 211.198 &nbsp;|&nbsp; EU GMP Chapter 8 &nbsp;|&nbsp; ICH Q10</div>
+  </div>
+  <div class="header-right">
+    <div class="enh-badge">Enhanced Edition &#183; Subscriber Content</div>
+    <div class="reg-badge">
+      21 CFR 211.198 Complaint Files<br>
+      EU GMP Chapter 8 &nbsp;·&nbsp; ICH Q10
+    </div>
+    <div class="stat-badge">
+      Complaints are a direct line into<br>
+      real-world product performance
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Receipt and Initial Triage</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Investigation and Classification</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Root Cause and Impact Assessment</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Response, CAPA, and Closure</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128172;</div>
+    <div class="trigger-text">
+      <h3>Complaint Handling - Turning Field Feedback Into Quality System Input</h3>
+      <p>Every product complaint is a report from someone who actually used the product, making it one of the few quality data sources generated entirely outside the manufacturing facility. 21 CFR 211.198 requires a written procedure for complaint handling, complete documentation, and review to determine whether an investigation is warranted. Complaints range from cosmetic packaging issues with no quality implication to reports suggesting a genuine product defect with safety implications, and the handling process must be able to correctly distinguish between them, often within hours rather than days.</p>
+      <div class="reg">21 CFR 211.198 &nbsp;·&nbsp; EU GMP Chapter 8 &nbsp;·&nbsp; ICH Q10</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-fda">21 CFR 211.198</div>
+      <div class="ref-chip chip-eu">EU GMP Chapter 8</div>
+      <div class="ref-chip chip-usp">ICH Q10</div>
+    </div>
+  </div>
+
+  <!-- COMPLAINT CLASSIFICATION BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-a">
+      <h4>Critical Complaints</h4>
+      <p>Reports suggesting a potential safety or efficacy impact, such as an adverse event, mislabeling of active ingredient, or suspected contamination.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Response: <span>Immediate escalation</span></div>
+        <div class="limit-row">Timeline: <span>Same-day notification</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Major Complaints</h4>
+      <p>Reports of a genuine quality defect without an immediate apparent safety impact, such as a dosage form defect or out-of-specification finding.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Response: <span>Formal investigation</span></div>
+        <div class="limit-row">Timeline: <span>Defined SOP target</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-c">
+      <h4>Minor Complaints</h4>
+      <p>Cosmetic, labeling, or packaging issues with no product quality or safety implication, such as a smudged label or minor carton damage.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Response: <span>Documented review</span></div>
+        <div class="limit-row">Timeline: <span>Routine handling</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Regulatory Reportable</h4>
+      <p>Complaints meeting the threshold for a Field Alert Report, adverse event report, or other formal regulatory notification requirement.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Response: <span>Regulatory notification</span></div>
+        <div class="limit-row">Timeline: <span>Statutory deadline</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Receipt and Initial Triage
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Log the complaint upon receipt</div>
+              <div class="node-body">Every complaint logged immediately with all available details, including product name, lot number, description of the issue, and complainant contact information.</div>
+              <div class="node-reg">21 CFR 211.198</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Verify complaint completeness</div>
+              <div class="node-body">Follow up with the complainant if key identifying details are missing, since incomplete information can prevent an effective investigation later.</div>
+              <div class="node-reg">EU GMP Chapter 8</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Perform initial severity triage</div>
+              <div class="node-body">Complaint assessed against pre-defined criteria to assign an initial severity classification, driving the urgency and depth of the response that follows.</div>
+              <div class="node-reg">21 CFR 211.198</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Does the complaint indicate a potential safety issue or regulatory reporting trigger?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Escalate immediately</span>
+                <span class="opt-n">NO &#8594; Proceed to standard investigation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Investigation and Classification
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Retrieve retained sample and batch records</div>
+              <div class="node-body">Retained sample from the implicated lot retrieved where available, alongside the complete batch manufacturing and QC record for that lot.</div>
+              <div class="node-reg">21 CFR 211.170 · 211.198</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Classify the complaint per defined criteria</div>
+              <div class="node-body">Final classification assigned as critical, major, or minor based on the complete information gathered, which may differ from the initial triage assessment.</div>
+              <div class="node-reg">21 CFR 211.198</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Assess sample availability for examination</div>
+              <div class="node-body">Determine whether the complainant's returned sample, if any, is available for physical or laboratory examination, which substantially strengthens the investigation's evidentiary basis.</div>
+              <div class="node-reg">EU GMP Chapter 8</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Perform lab testing or physical examination</div>
+              <div class="node-body">Returned sample tested or physically examined where available, with results documented and compared against the retained sample from the same lot.</div>
+              <div class="node-reg">21 CFR 211.198</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Root Cause and Impact Assessment
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Correlate with manufacturing and QC records</div>
+              <div class="node-body">Complaint details correlated against the implicated batch's manufacturing history, QC results, and any deviations recorded during production.</div>
+              <div class="node-reg">21 CFR 211.198</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">9</span>Assess batch and related-batch impact</div>
+              <div class="node-body">Determine whether other batches sharing the same materials, equipment, or process conditions may also be affected, including whether the finding warrants recall consideration.</div>
+              <div class="node-reg">EU GMP Chapter 8</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Determine root cause with objective evidence</div>
+              <div class="node-body">Root cause conclusion supported by the batch record review, any sample testing performed, and correlation with related quality data.</div>
+              <div class="node-reg">ICH Q10</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Response, CAPA, and Closure
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Communicate outcome to the complainant</div>
+              <div class="node-body">Response communicated to the complainant summarizing the investigation outcome, in a manner and timeframe consistent with the site's complaint handling procedure.</div>
+              <div class="node-reg">EU GMP Chapter 8</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Implement CAPA and update trends</div>
+              <div class="node-body">Corrective and preventive actions implemented as warranted, with the complaint added to the site's ongoing complaint trend dataset by product and issue type.</div>
+              <div class="node-reg">ICH Q10</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">13</span>QA review and final closure</div>
+              <div class="node-body">Quality unit reviews the complete complaint file and formally closes it, with the record retained per 21 CFR 211.198 documentation requirements.</div>
+              <div class="node-reg">21 CFR 211.198</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- SEVERITY CLASSIFICATION -->
+      <div class="limits-box">
+        <div class="limits-header">Severity Classification Considerations</div>
+        <div class="limits-body">
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Safety and Efficacy Signals</h4>
+            <p>Any complaint suggesting a potential adverse event, wrong active ingredient, or other safety-relevant issue is treated as critical and escalated immediately, regardless of how it was initially reported.</p>
+            <div class="stat">21 CFR 211.198</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Quality Defects Without Immediate Safety Impact</h4>
+            <p>Genuine product defects, such as an appearance abnormality or a suspected specification failure, classified as major and formally investigated even absent an apparent safety concern.</p>
+            <div class="stat">EU GMP Chapter 8</div>
+          </div>
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Cosmetic and Non-Quality Issues</h4>
+            <p>Packaging or labeling issues with no bearing on product quality classified as minor, though still logged and trended to catch any recurring pattern.</p>
+            <div class="stat">21 CFR 211.198</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REGULATORY ESCALATION RESPONSE -->
+      <div class="exceed-box">
+        <h3>Regulatory Escalation Response Steps</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Step 1 - Notify quality and medical/regulatory affairs immediately</strong>
+            Escalate without delay for any complaint suggesting a potential safety signal or regulatory reporting trigger.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 2 - Assess regulatory reporting obligations</strong>
+            Determine whether the complaint meets the threshold for a Field Alert Report, adverse event report, or other formal regulatory notification.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 3 - Evaluate recall or market action need</strong>
+            Assess batch and related-batch scope to determine whether a field correction, recall, or other market action is warranted.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 4 - Meet statutory notification deadlines</strong>
+            Ensure any required regulatory notification is submitted within the applicable statutory timeframe, tracked independently from the broader investigation timeline.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 5 - Document the escalation decision fully</strong>
+            Record the rationale for the escalation decision and any regulatory notification made, or the rationale for determining notification was not required.
+          </div>
+        </div>
+      </div>
+
+      <!-- DOCUMENTATION REQUIREMENTS -->
+      <div class="trend-box">
+        <h3>Documentation Requirements</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Complete complaint identification</strong>
+            Product name, lot number, complainant information, and a clear description of the issue captured for every complaint received.
+          </div>
+          <div class="trend-item">
+            <strong>Investigation findings and conclusion</strong>
+            Findings from batch record review, sample testing, and root cause analysis documented within the complaint file itself.
+          </div>
+          <div class="trend-item">
+            <strong>Response and closure record</strong>
+            Communication sent to the complainant and the final closure rationale retained as part of the complete complaint file.
+          </div>
+          <div class="trend-item">
+            <strong>Retention per regulatory requirement</strong>
+            Complaint files retained for the period specified by applicable regulation, commonly matching or exceeding the product's shelf life plus one year.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COMPLAINT FILE ELEMENTS -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Complaint File and Programme Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Standardized Complaint Log Fields</strong>
+        Product, lot, complainant, description, classification, and outcome captured consistently across every complaint for meaningful trending.
+      </div>
+      <div class="ccs-item">
+        <strong>Batch Traceability</strong>
+        Every complaint linked to the specific batch or lot involved, enabling correlation against manufacturing and QC records.
+      </div>
+      <div class="ccs-item">
+        <strong>Trending by Product and Issue Type</strong>
+        Complaints trended periodically by product and category to detect a recurring pattern that individual complaints alone would not reveal.
+      </div>
+      <div class="ccs-item">
+        <strong>Regulatory Reportability Assessment</strong>
+        A documented assessment against applicable regulatory reporting criteria performed for every complaint, not only those that appear obviously severe.
+      </div>
+      <div class="ccs-item">
+        <strong>Sample Retention and Testing Capability</strong>
+        Process in place for requesting and testing a complainant's returned sample when available and relevant to the investigation.
+      </div>
+      <div class="ccs-item">
+        <strong>Closure Timeline Tracking</strong>
+        Target and actual closure timelines tracked for every complaint, supporting both individual case management and programme-level performance review.
+      </div>
+      <div class="ccs-item">
+        <strong>Annual Product Review Linkage</strong>
+        Complaint trend summary included as a standing input to the product's annual product review.
+      </div>
+      <div class="ccs-item">
+        <strong>Cross-Functional Review</strong>
+        Complaints reviewed by quality alongside relevant functions such as manufacturing, regulatory affairs, and medical affairs as appropriate to the complaint type.
+      </div>
+    </div>
+  </div>
+
+  <!-- REGULATORY TEXT PANEL -->
+  <div class="regtext-box">
+    <h3>Regulatory Text - Source Provisions</h3>
+    <div class="regtext-items">
+      <div class="regtext-item">
+        <div class="src">21 CFR 211.198(a)</div>
+        <p>Written procedures describing the handling of all written and oral complaints regarding a drug product shall be established and followed, including provisions for review by the quality control unit of any complaint involving the possible failure of a drug product to meet any of its specifications.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">21 CFR 211.198(b)</div>
+        <p>A written record of each complaint shall be maintained in a file designated for drug product complaints, including the name and strength of the drug product, lot number, name of complainant, nature of the complaint, and reply to the complainant.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">ICH Q10, Section 3.2.1 (paraphrased - refer to the current official guidance for exact wording)</div>
+        <p>Complaint data should be evaluated for trends as part of process performance and product quality monitoring, feeding into the broader continual improvement activities of the pharmaceutical quality system.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSPECTION PATTERN PANEL -->
+  <div class="pattern-box">
+    <h3>Common Inspection Findings - Complaint Handling</h3>
+    <div class="disclaimer">Illustrative of recurring themes seen across published FDA 483s and warning letters. Not tied to a single specific citation.</div>
+    <div class="pattern-items">
+      <div class="pattern-item">
+        <strong>Regulatory reportability not formally assessed</strong>
+        Complaints closed without a documented assessment against Field Alert Report or adverse event reporting criteria, even for complaints with plausible safety relevance.
+      </div>
+      <div class="pattern-item">
+        <strong>Complainant sample not requested when relevant</strong>
+        Investigations relying solely on the retained sample and written description, without attempting to obtain the complainant's actual returned product when testing could meaningfully inform the outcome.
+      </div>
+      <div class="pattern-item">
+        <strong>Complaint trending not linked to CAPA or APR</strong>
+        Complaint data compiled into periodic reports without clear evidence that identified trends triggered CAPA consideration or fed into the annual product review.
+      </div>
+      <div class="pattern-item">
+        <strong>Classification inconsistently applied</strong>
+        Similar complaints classified differently across cases without a documented, consistently applied classification rationale.
+      </div>
+    </div>
+  </div>
+
+  <!-- BEST PRACTICE PANEL -->
+  <div class="practice-box">
+    <h3>Best Practice Guidance</h3>
+    <div class="practice-items">
+      <div class="practice-item">
+        <strong>Build a standing regulatory reportability decision tree</strong>
+        Maintain a documented decision tree mapping complaint characteristics to specific regulatory reporting obligations, so the assessment is applied consistently regardless of who handles the complaint.
+      </div>
+      <div class="practice-item">
+        <strong>Default to requesting the complainant's sample</strong>
+        Make sample return requests the standard practice rather than the exception, reserving non-request only for complaint types where testing clearly could not inform the outcome.
+      </div>
+      <div class="practice-item">
+        <strong>Route complaint trends directly into CAPA review meetings</strong>
+        Present complaint trend data as a standing agenda item in the same forum that reviews deviations and CAPA, rather than as a separate, disconnected reporting stream.
+      </div>
+      <div class="practice-item">
+        <strong>Cross-train complaint handlers on classification criteria</strong>
+        Provide shared training and calibration exercises so classification decisions remain consistent across different staff members handling complaints over time.
+      </div>
+    </div>
+  </div>
+
+  <!-- SELF-ASSESSMENT CHECKLIST -->
+  <details class="assess-box">
+    <summary>Self-Assessment Checklist - Is Your Complaint Programme Inspection Ready? <span class="arrow-icon">&#9654;</span></summary>
+    <div class="assess-body">
+      <div class="assess-note">For personal or team use during training. Responses are not saved or submitted.</div>
+      <div class="assess-row"><input type="checkbox" id="cp1"><label for="cp1">Every complaint receives a documented regulatory reportability assessment.</label></div>
+      <div class="assess-row"><input type="checkbox" id="cp2"><label for="cp2">Complainant sample return is requested as standard practice where testing could inform the outcome.</label></div>
+      <div class="assess-row"><input type="checkbox" id="cp3"><label for="cp3">Complaint classification criteria are documented and applied consistently across staff.</label></div>
+      <div class="assess-row"><input type="checkbox" id="cp4"><label for="cp4">Complaint trends are reviewed in the same forum as deviations and CAPA, not separately.</label></div>
+      <div class="assess-row"><input type="checkbox" id="cp5"><label for="cp5">Complaint files retain complete documentation per 21 CFR 211.198 for the required retention period.</label></div>
+      <div class="assess-row"><input type="checkbox" id="cp6"><label for="cp6">Critical complaints trigger same-day escalation to quality and relevant functions.</label></div>
+      <div class="assess-row"><input type="checkbox" id="cp7"><label for="cp7">Complaint trend summaries are a standing input to the annual product review.</label></div>
+    </div>
+  </details>
+
+  <!-- SITE ANNOTATION FIELDS -->
+  <div class="annotate-box">
+    <h3>Site Annotation</h3>
+    <div class="sub">Add your facility-specific references while reviewing this map. Not saved between sessions - copy notes into your own records before closing.</div>
+    <div class="annotate-grid">
+      <div class="annotate-field">
+        <label>PRODUCT / COMPLAINT TYPE</label>
+        <input type="text" placeholder="e.g. Product X, Packaging Defect">
+      </div>
+      <div class="annotate-field">
+        <label>LOCAL SOP REFERENCE</label>
+        <input type="text" placeholder="e.g. SOP-QA-041 Rev 5">
+      </div>
+      <div class="annotate-field" style="grid-column: 1 / -1">
+        <label>NOTES</label>
+        <textarea rows="3" placeholder="Facility-specific observations, open questions, or follow-up items for QA."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Close a complaint without a documented regulatory reportability assessment. Delay escalation of a potential safety signal pending routine investigation timelines. Skip requesting the complainant's sample when testing could meaningfully inform the investigation. Trend complaints only at the point of the annual product review.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Complaint vs deviation</h4>
+      <p>A deviation is identified internally during manufacturing or testing. A complaint originates externally, from someone who has already used or received the product, which often means the affected material has already left the facility's control.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Trend vs individual complaint</h4>
+      <p>Reviewing each complaint individually answers whether that specific report warrants action. Trending complaints by product and type answers a different question: whether a pattern exists that no individual complaint alone would reveal.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR 211.198 - complaint files, written procedures, and documentation requirements. EU GMP Chapter 8 - complaints and product recall expectations. ICH Q10 - complaint handling as a pharmaceutical quality system element supporting continual improvement.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Complaint Handling Workflow &nbsp;&#183;&nbsp;
+    Built from 21 CFR 211.198, EU GMP Chapter 8, ICH Q10 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMP Maps - Enhanced Editions</div>
+    <div class="footer-badge">Quality Systems Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
