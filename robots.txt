@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.gmpify.com/sitemap.xml
+Sitemap: https://gmpify.com/sitemap.xml
