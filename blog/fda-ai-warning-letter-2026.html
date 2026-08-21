@@ -9,11 +9,11 @@
 <meta name="description" content="On April 2, 2026, FDA issued the first warning letter citing AI misuse in pharmaceutical manufacturing. What Purolea Cosmetics Lab did wrong, what 21 CFR 211.22(c) requires, and what every quality system must do now.">
 <meta property="og:title" content="What the FDA AI Warning Letter Means for Your Quality System - GMPify">
 <meta property="og:description" content="FDA issued its first-ever enforcement action citing AI misuse in pharmaceutical manufacturing. Here is what every QA team needs to know.">
-<meta property="og:url" content="https://www.gmpify.com/blog/fda-ai-warning-letter-2026.html">
+<meta property="og:url" content="https://gmpify.com/blog/fda-ai-warning-letter-2026.html">
 <meta property="og:type" content="article">
-<meta property="og:image" content="https://www.gmpify.com/gmpify_social_banner.png">
+<meta property="og:image" content="https://gmpify.com/gmpify_social_banner.png">
 <title>What the FDA AI Warning Letter Means for Your Quality System - GMPify</title>
-<link rel="canonical" href="https://www.gmpify.com/blog/fda-ai-warning-letter-2026.html">
+<link rel="canonical" href="https://gmpify.com/blog/fda-ai-warning-letter-2026.html">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -25,17 +25,17 @@
   "author": {
     "@type": "Organization",
     "name": "GMPify Training",
-    "url": "https://www.gmpify.com"
+    "url": "https://gmpify.com"
   },
   "publisher": {
     "@type": "Organization",
     "name": "GMPify",
-    "url": "https://www.gmpify.com",
-    "logo": {"@type": "ImageObject","url": "https://www.gmpify.com/gmpify_logo.png"}
+    "url": "https://gmpify.com",
+    "logo": {"@type": "ImageObject","url": "https://gmpify.com/gmpify_logo.png"}
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "https://www.gmpify.com/blog/fda-ai-warning-letter-2026.html"
+    "@id": "https://gmpify.com/blog/fda-ai-warning-letter-2026.html"
   },
   "keywords": "FDA AI warning letter, pharmaceutical AI compliance, 21 CFR 211.22, Purolea Cosmetics Lab, AI in GMP manufacturing, cGMP AI"
 }
@@ -112,10 +112,21 @@ nav{background:rgba(13,43,62,0.97);backdrop-filter:blur(8px);position:sticky;top
 /* FOOTER */
 footer{padding:36px 0 24px;border-top:1px solid rgba(255,255,255,0.07);margin-top:0}
 .footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.8rem;color:var(--mid)}
+
+/* MOBILE NAV */
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
+.nav-hamburger span{display:block;width:24px;height:2px;background:var(--light);border-radius:2px;transition:all .2s}
+.nav-mobile{display:none;position:fixed;top:60px;left:0;right:0;background:rgba(13,43,62,0.98);backdrop-filter:blur(12px);padding:20px 24px;border-bottom:1px solid rgba(0,194,168,0.15);z-index:99;flex-direction:column;gap:0}
+.nav-mobile.open{display:flex}
+.nav-mobile a{display:block;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);color:var(--light);font-size:1rem;font-weight:500}
+.nav-mobile a:last-child{border-bottom:none}
+.nav-mobile .nav-cta{background:var(--teal);color:var(--navy);padding:12px 20px;border-radius:8px;text-align:center;font-weight:700;margin-top:12px;border-bottom:none!important}
+
 @media(max-width:860px){
   .post-layout{grid-template-columns:1fr}
   .sidebar{position:static}
   .nav-links{display:none}
+  .nav-hamburger{display:flex}
   .post-cta{flex-direction:column}
 }
 </style>
@@ -131,12 +142,29 @@ footer{padding:36px 0 24px;border-top:1px solid rgba(255,255,255,0.07);margin-to
         <li><a href="/#why">Why GMPify</a></li>
         <li><a href="/#pricing">Pricing</a></li>
         <li><a href="/blog.html" style="color:var(--teal);">Blog</a></li>
-        <li><a href="/#about">About</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/tools.html">Tools</a></li>
+        <li><a href="/gmp-maps.html" style="color:#F97316">GMP Maps</a></li>
+        <li><a href="/cannabis.html" style="color:#4ade80">Cannabis</a></li>
         <li><a href="https://learn.gmpify.com" class="nav-cta">Start learning</a></li>
       </ul>
     </div>
   </div>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="nav-mobile" id="navMobile">
+  <a href="/#courses">Courses</a>
+  <a href="/#why">Why GMPify</a>
+  <a href="/#pricing">Pricing</a>
+  <a href="/blog.html" style="color:var(--teal)">Blog</a>
+  <a href="/about.html">About</a>
+  <a href="/tools.html">Tools</a>
+  <a href="/gmp-maps.html" style="color:#F97316">GMP Maps</a>
+  <a href="/cannabis.html" style="color:#4ade80">Cannabis</a>
+  <a href="https://learn.gmpify.com" class="nav-cta">Start learning</a>
+</div>
 
 <div class="container">
   <div class="breadcrumb">
@@ -315,5 +343,27 @@ footer{padding:36px 0 24px;border-top:1px solid rgba(255,255,255,0.07);margin-to
   </div>
 </footer>
 
+<script>
+function toggleMobileNav(){
+  const menu = document.getElementById('navMobile');
+  const btn = document.getElementById('navHamburger');
+  const isOpen = menu.classList.contains('open');
+  menu.classList.toggle('open', !isOpen);
+  btn.setAttribute('aria-expanded', !isOpen);
+}
+document.addEventListener('click', function(e){
+  const menu = document.getElementById('navMobile');
+  const btn = document.getElementById('navHamburger');
+  if(menu && btn && !menu.contains(e.target) && !btn.contains(e.target)){
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', false);
+  }
+});
+document.querySelectorAll('.nav-mobile a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('navMobile').classList.remove('open');
+  });
+});
+</script>
 </body>
 </html>
