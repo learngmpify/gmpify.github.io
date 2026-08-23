@@ -78,6 +78,20 @@ footer a{color:var(--teal)}
 .toc h3{font-size:0.9rem;font-weight:700;color:var(--white);margin-bottom:12px;text-transform:uppercase;letter-spacing:1px}
 .toc ol{margin:0 0 0 1.2rem}
 .toc li{font-size:0.88rem;margin-bottom:6px}
+
+/* MOBILE NAV */
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
+.nav-hamburger span{display:block;width:24px;height:2px;background:var(--light);border-radius:2px;transition:all .2s}
+.nav-mobile{display:none;position:fixed;top:60px;left:0;right:0;background:rgba(13,43,62,0.98);backdrop-filter:blur(12px);padding:20px 24px;border-bottom:1px solid rgba(0,194,168,0.15);z-index:99;flex-direction:column;gap:0}
+.nav-mobile.open{display:flex}
+.nav-mobile a{display:block;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);color:var(--light);font-size:1rem;font-weight:500}
+.nav-mobile a:last-child{border-bottom:none}
+.nav-mobile .nav-cta{background:var(--teal);color:var(--navy);padding:12px 20px;border-radius:8px;text-align:center;font-weight:700;margin-top:12px;border-bottom:none!important}
+
+@media(max-width:860px){
+  .nav-links{display:none}
+  .nav-hamburger{display:flex}
+}
 </style>
 </head>
 <body>
@@ -90,14 +104,29 @@ footer a{color:var(--teal)}
         <li><a href="/#why">Why GMPify</a></li>
         <li><a href="/#pricing">Pricing</a></li>
         <li><a href="/blog.html">Blog</a></li>
-        <li><a href="/#about">About</a></li>
+        <li><a href="/about.html">About</a></li>
         <li><a href="/tools.html" style="color:var(--gold);font-weight:600">Tools</a></li>
+        <li><a href="/gmp-maps.html" style="color:#F97316;font-weight:600">GMP Maps</a></li>
         <li><a href="/cannabis.html" style="color:#4ade80;font-weight:600">Cannabis</a></li>
         <li><a href="https://learn.gmpify.com" class="nav-cta">Start learning</a></li>
       </ul>
     </div>
   </div>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="nav-mobile" id="navMobile">
+  <a href="/#courses">Courses</a>
+  <a href="/#why">Why GMPify</a>
+  <a href="/#pricing">Pricing</a>
+  <a href="/blog.html">Blog</a>
+  <a href="/about.html">About</a>
+  <a href="/tools.html" style="color:var(--gold)">Tools</a>
+  <a href="/gmp-maps.html" style="color:#F97316">GMP Maps</a>
+  <a href="/cannabis.html" style="color:#4ade80">Cannabis</a>
+  <a href="https://learn.gmpify.com" class="nav-cta">Start learning</a>
+</div>
 
 <div class="container">
   <div class="breadcrumb">
@@ -359,5 +388,27 @@ footer a{color:var(--teal)}
     <p>&copy; 2026 GMPify Training &middot; <a href="/privacy.html">Privacy</a> &middot; <a href="/terms.html">Terms</a> &middot; <a href="mailto:training@gmpify.com">training@gmpify.com</a></p>
   </div>
 </footer>
+<script>
+function toggleMobileNav(){
+  const menu = document.getElementById('navMobile');
+  const btn = document.getElementById('navHamburger');
+  const isOpen = menu.classList.contains('open');
+  menu.classList.toggle('open', !isOpen);
+  btn.setAttribute('aria-expanded', !isOpen);
+}
+document.addEventListener('click', function(e){
+  const menu = document.getElementById('navMobile');
+  const btn = document.getElementById('navHamburger');
+  if(menu && btn && !menu.contains(e.target) && !btn.contains(e.target)){
+    menu.classList.remove('open');
+    btn.setAttribute('aria-expanded', false);
+  }
+});
+document.querySelectorAll('.nav-mobile a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('navMobile').classList.remove('open');
+  });
+});
+</script>
 </body>
 </html>
