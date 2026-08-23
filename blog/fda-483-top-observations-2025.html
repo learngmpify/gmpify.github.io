@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="../gmpify_favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon_32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon_16x16.png">
+<meta name="description" content="The same four CFR sections have topped FDA 483 observations for four consecutive years. FDA sent 303 drug warning letters in FY2025 - a 59% increase. Here is what every pharmaceutical QA team needs to know.">
+<meta property="og:title" content="FDA's Top Four 483 Observations - Four Years Running - GMPify">
+<meta property="og:description" content="FDA sent 303 drug warning letters in FY2025 - a 59% increase. The same four CFR violations top every inspection year from 2021 through 2024. Here is why sites keep failing them.">
+<meta property="og:url" content="https://www.gmpify.com/blog/fda-483-top-observations-2025.html">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://www.gmpify.com/gmpify_social_banner.png">
+<title>FDA's Top Four 483 Observations - Four Years Running - GMPify</title>
+<link rel="canonical" href="https://www.gmpify.com/blog/fda-483-top-observations-2025.html">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "FDA's Top Four 483 Observations - Four Years Running",
+  "description": "The same four CFR sections have topped FDA 483 observations for four consecutive years. FDA sent 303 drug warning letters in FY2025. Here is what every pharmaceutical QA team needs to know.",
+  "datePublished": "2026-06-19",
+  "dateModified": "2026-06-19",
+  "author": {
+    "@type": "Organization",
+    "name": "GMPify Training",
+    "url": "https://www.gmpify.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GMPify",
+    "url": "https://www.gmpify.com",
+    "logo": {"@type": "ImageObject","url": "https://www.gmpify.com/gmpify_logo.png"}
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.gmpify.com/blog/fda-483-top-observations-2025.html"
+  },
+  "keywords": "FDA 483 observations, FDA warning letters 2025, 21 CFR 211.22, 21 CFR 211.192, pharmaceutical GMP inspection, CGMP violations"
+}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2B3E;--navy-card:#112d41;--teal:#00C2A8;--gold:#F5A623;
+  --light:#CAD8E8;--mid:#6E90A0;--white:#fff;--orange:#B84A00;
+  --crimson:#8B0000;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif
+}
+body{font-family:var(--font);background:var(--navy);color:var(--light);line-height:1.6}
+a{color:var(--teal);text-decoration:none}
+.container{max-width:1100px;margin:0 auto;padding:0 24px}
+nav{background:rgba(13,43,62,0.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,194,168,0.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-size:1.4rem;font-weight:800;letter-spacing:-0.5px;color:var(--white)}
+.logo span:first-child{color:var(--teal)}
+.logo span:last-child{color:var(--white)}
+.nav-links{display:flex;gap:24px;list-style:none;align-items:center}
+.nav-links a{font-size:0.88rem;font-weight:500;color:var(--light);transition:color .2s}
+.nav-links a:hover{color:var(--teal)}
+.nav-cta{background:var(--teal);color:var(--navy)!important;padding:7px 18px;border-radius:6px;font-weight:700!important}
+.post-layout{display:grid;grid-template-columns:1fr 320px;gap:56px;padding:56px 0 80px;align-items:start}
+.breadcrumb{padding:20px 0 0;font-size:0.82rem;color:var(--mid)}
+.breadcrumb a{color:var(--mid)}
+.breadcrumb a:hover{color:var(--teal)}
+.post-header{margin-bottom:36px}
+.post-tag{font-size:0.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px}
+.post-header h1{font-size:clamp(1.7rem,3.5vw,2.4rem);font-weight:800;color:var(--white);line-height:1.25;margin-bottom:14px}
+.post-meta{font-size:0.82rem;color:var(--mid);display:flex;gap:16px;flex-wrap:wrap;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,0.08)}
+.post-body{font-size:0.97rem;color:var(--light);line-height:1.75}
+.post-body h2{font-size:1.3rem;font-weight:800;color:var(--white);margin:36px 0 14px;line-height:1.3}
+.post-body h3{font-size:1.05rem;font-weight:700;color:var(--white);margin:28px 0 10px}
+.post-body p{margin-bottom:18px}
+.post-body ul,.post-body ol{margin:0 0 18px 20px;display:flex;flex-direction:column;gap:8px}
+.post-body li{font-size:0.97rem;color:var(--light);line-height:1.65}
+.post-body strong{color:var(--white);font-weight:700}
+.post-body a{color:var(--teal);text-decoration:underline}
+/* STAT CARDS */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:28px 0}
+.stat-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:18px;text-align:center}
+.stat-val{font-size:2rem;font-weight:800;color:var(--white);line-height:1}
+.stat-lbl{font-size:0.78rem;color:var(--mid);margin-top:6px}
+/* OBSERVATION CARDS */
+.obs-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:24px;margin:20px 0}
+.obs-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:14px}
+.obs-number{background:var(--crimson);color:var(--white);font-size:1rem;font-weight:800;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.obs-title{flex:1}
+.obs-cfr{font-size:0.72rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.obs-name{font-size:1rem;font-weight:700;color:var(--white);line-height:1.3}
+.obs-count{font-size:0.82rem;color:var(--gold);margin-top:4px;font-weight:600}
+.obs-body{font-size:0.9rem;color:var(--light);line-height:1.65}
+/* CALLOUTS */
+.callout{border-radius:10px;padding:20px 24px;margin:28px 0}
+.callout-warning{background:rgba(139,0,0,0.12);border:1px solid rgba(139,0,0,0.4)}
+.callout-warning .callout-label{color:#e74c3c;font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.callout-info{background:rgba(0,194,168,0.08);border:1px solid rgba(0,194,168,0.25)}
+.callout-info .callout-label{color:var(--teal);font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.callout-gold{background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.3)}
+.callout-gold .callout-label{color:var(--gold);font-size:0.75rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.callout p{margin-bottom:0;font-size:0.93rem}
+/* SIDEBAR */
+.sidebar{position:sticky;top:80px;display:flex;flex-direction:column;gap:24px}
+.sidebar-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:20px}
+.sidebar-card h3{font-size:0.9rem;font-weight:700;color:var(--white);margin-bottom:10px}
+.sidebar-card p{font-size:0.82rem;color:var(--mid);line-height:1.55;margin-bottom:14px}
+.btn-sidebar{display:block;text-align:center;background:var(--teal);color:var(--navy);font-weight:700;padding:10px 18px;border-radius:6px;font-size:0.85rem;transition:background .2s}
+.btn-sidebar:hover{background:#00a892;color:var(--navy)}
+.btn-sidebar-outline{display:block;text-align:center;border:1.5px solid var(--orange);color:var(--orange);font-weight:700;padding:9px 18px;border-radius:6px;font-size:0.85rem;transition:all .2s}
+.btn-sidebar-outline:hover{background:rgba(184,74,0,0.08)}
+.related-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.related-list li a{font-size:0.83rem;color:var(--light);line-height:1.4;display:block;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);transition:color .2s}
+.related-list li a:hover{color:var(--teal)}
+/* POST CTA */
+.post-cta{background:linear-gradient(135deg,rgba(0,194,168,0.1),rgba(0,194,168,0.04));border:1px solid rgba(0,194,168,0.2);border-radius:12px;padding:28px 32px;margin:48px 0 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+.post-cta-text h3{font-size:1.05rem;font-weight:700;color:var(--white);margin-bottom:6px}
+.post-cta-text p{font-size:0.88rem;color:var(--mid);max-width:480px;margin-bottom:0}
+.btn-cta{background:var(--teal);color:var(--navy);font-weight:700;padding:11px 24px;border-radius:8px;font-size:0.9rem;white-space:nowrap;flex-shrink:0}
+.btn-cta:hover{background:#00a892;color:var(--navy)}
+footer{padding:36px 0 24px;border-top:1px solid rgba(255,255,255,0.07);margin-top:0}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.8rem;color:var(--mid)}
+@media(max-width:860px){
+  .post-layout{grid-template-columns:1fr}
+  .sidebar{position:static}
+  .nav-links{display:none}
+  .post-cta{flex-direction:column}
+  .stat-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <a href="/" class="logo"><span>GMP</span><span>ify</span></a>
+      <ul class="nav-links">
+        <li><a href="/#courses">Courses</a></li>
+        <li><a href="/#why">Why GMPify</a></li>
+        <li><a href="/#pricing">Pricing</a></li>
+        <li><a href="/blog.html" style="color:var(--teal);">Blog</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="https://learn.gmpify.com" class="nav-cta">Start learning</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="breadcrumb">
+    <a href="/">Home</a> &rsaquo; <a href="/blog.html">Blog</a> &rsaquo; FDA Top Four 483 Observations
+  </div>
+
+  <div class="post-layout">
+
+    <article>
+      <header class="post-header">
+        <div class="post-tag">Inspection Readiness</div>
+        <h1>FDA's Top Four 483 Observations - Four Years Running</h1>
+        <div class="post-meta">
+          <span>GMPify Training</span>
+          <span>&middot;</span>
+          <span>June 19, 2026</span>
+          <span>&middot;</span>
+          <span>7 min read</span>
+          <span>&middot;</span>
+          <span>Sources: FDA FY2024 483 data | RAPS | Pharmaceutical Online | Certainty Software 2026</span>
+        </div>
+      </header>
+
+      <div class="post-body">
+
+        <p>FDA is not finding new problems in pharmaceutical manufacturing inspections. It is finding the same ones, year after year, at the same sites, in the same quality systems.</p>
+
+        <p>The data makes this uncomfortably clear. <strong>The same four CFR sections have held the top four positions in FDA 483 observations for four consecutive years</strong> - FY2021, FY2022, FY2023 and FY2024. In FY2025, FDA sent 303 drug warning letters - a 59% increase from the 190 issued in FY2024. Drug Form 483s are at five-year highs.</p>
+
+        <p>These are not random regulatory events. They are a signal. And for pharmaceutical quality professionals, the message is both sobering and actionable: the problems are known, they are documented and they are preventable.</p>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-val" style="color:var(--crimson);">303</div>
+            <div class="stat-lbl">Drug warning letters in FY2025 - a 59% increase from FY2024</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" style="color:var(--gold);">4</div>
+            <div class="stat-lbl">Consecutive years the same four CFR sections top the list</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val" style="color:var(--teal);">50%+</div>
+            <div class="stat-lbl">Of firms that received warning letters had already received 483 findings</div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-label">The pattern that should concern every quality team</div>
+          <p>Research from the International Journal of Medical and Pharmaceutical Research found that firms with weak 483 responses have a greater than 50% chance of receiving a warning letter. Half of all firms that received warning letters in FY2023 and FY2024 had already received 483 findings and failed to fix them at the root.</p>
+        </div>
+
+        <h2>The top four observations - and why they keep recurring</h2>
+
+        <p>Here are the four CFR sections that have topped FDA 483 data for four consecutive fiscal years, with the FY2024 citation counts where available from published data.</p>
+
+        <div class="obs-card">
+          <div class="obs-header">
+            <div class="obs-number">1</div>
+            <div class="obs-title">
+              <div class="obs-cfr">21 CFR 211.22(d)</div>
+              <div class="obs-name">Failure of the quality unit to review and approve procedures and ensure they are followed</div>
+              <div class="obs-count">184 citations in FY2024 - the top observation four years running</div>
+            </div>
+          </div>
+          <div class="obs-body">
+            <p><strong>What it requires:</strong> The quality control unit must have the responsibility and authority to approve or reject all procedures that affect the identity, strength, quality and purity of drug products. The quality unit must also ensure those procedures are actually followed.</p>
+            <p><strong>Why sites keep failing it:</strong> Two distinct problems drive this observation. The first is procedures that exist but are not reviewed and approved by a genuinely independent quality function - quality units that rubber-stamp rather than critically evaluate. The second is the gap between approved procedures and actual practice on the manufacturing floor - SOPs that are written correctly but not consistently followed, and a quality system that does not detect or address the gap.</p>
+            <p><strong>What good looks like:</strong> A quality unit that actively reviews procedures against actual practice, conducts unannounced floor observations, reviews batch records for procedural compliance and acts on deviations from approved procedures as soon as they are identified. Not at the next management review. Now.</p>
+          </div>
+        </div>
+
+        <div class="obs-card">
+          <div class="obs-header">
+            <div class="obs-number">2</div>
+            <div class="obs-title">
+              <div class="obs-cfr">21 CFR 211.192</div>
+              <div class="obs-name">Failure to thoroughly investigate unexplained discrepancies or failures</div>
+              <div class="obs-count">116 citations in FY2024</div>
+            </div>
+          </div>
+          <div class="obs-body">
+            <p><strong>What it requires:</strong> Any unexplained discrepancy or the failure of a batch or any of its components to meet any of its specifications must be thoroughly investigated. The investigation must extend to other batches of the same drug product and other drug products that may have been associated with the specific failure or discrepancy.</p>
+            <p><strong>Why sites keep failing it:</strong> The single most common driver of this observation is the use of <strong>"human error"</strong> as a root cause conclusion. Human error describes what happened - not why it happened. FDA has made clear in numerous warning letters and guidance documents that attributing a deviation to human error without identifying the underlying systemic cause is not a thorough investigation under 211.192. It is the beginning of one.</p>
+            <p>The second driver is investigations that are closed too quickly, with CAPAs that prescribe retraining without evidence that training was the actual gap, and effectiveness checks that are completed on paper rather than verified in practice.</p>
+            <p><strong>What good looks like:</strong> An investigation that follows the chain of why - asking what systemic condition made the error possible, not just who made it. A CAPA that addresses the systemic cause. An effectiveness check that verifies the condition has actually changed, not just that training was completed.</p>
+          </div>
+        </div>
+
+        <div class="obs-card">
+          <div class="obs-header">
+            <div class="obs-number">3</div>
+            <div class="obs-title">
+              <div class="obs-cfr">21 CFR 211.68</div>
+              <div class="obs-name">Failure to validate automatic, mechanical and electronic equipment</div>
+              <div class="obs-count">Consistently in the top four across all four years</div>
+            </div>
+          </div>
+          <div class="obs-body">
+            <p><strong>What it requires:</strong> Automatic, mechanical and electronic equipment used in the manufacture, processing, packing or holding of a drug product shall be routinely calibrated, inspected or checked according to a written program designed to assure proper performance. Computer or related systems used to create, modify, maintain or transmit electronic records must be validated.</p>
+            <p><strong>Why sites keep failing it:</strong> Three recurring patterns drive this observation. First, computerised systems placed in GxP use without adequate validation - including, increasingly, AI tools as confirmed by the April 2026 Purolea warning letter. Second, validation documentation that was completed at implementation but never updated to reflect system changes, upgrades or new intended uses. Third, calibration programmes that exist on paper but are not executed on schedule, or where out-of-calibration findings are not properly investigated.</p>
+            <p><strong>What good looks like:</strong> A current, complete computerised system inventory with validated status confirmed for each system. A change control process that evaluates every system change for validation impact before implementation. A calibration programme that is executed on schedule and where out-of-tolerance findings trigger impact assessments for data generated since the last confirmed calibration.</p>
+          </div>
+        </div>
+
+        <div class="obs-card">
+          <div class="obs-header">
+            <div class="obs-number">4</div>
+            <div class="obs-title">
+              <div class="obs-cfr">21 CFR 211.100(a)</div>
+              <div class="obs-name">Failure to have written procedures for production and process controls</div>
+              <div class="obs-count">Consistently in the top four across all four years</div>
+            </div>
+          </div>
+          <div class="obs-body">
+            <p><strong>What it requires:</strong> There must be written procedures for production and process control designed to assure that the drug products produced have the identity, strength, quality and purity they purport or are represented to possess. These procedures must be followed and any deviations must be recorded and justified.</p>
+            <p><strong>Why sites keep failing it:</strong> This observation appears in two forms. The first is missing procedures - manufacturing steps or process controls that are performed but not documented in an approved written procedure. The second, and more common, is procedures that exist but are not followed, with deviations from the procedure not being recorded or justified. The Purolea warning letter is an extreme example of the second form - process validation was required under 211.100 but was not performed because the AI agent used by the company never indicated it was necessary.</p>
+            <p><strong>What good looks like:</strong> A procedure inventory that maps to every manufacturing step performed. A floor verification programme that confirms procedures are being followed as written. A deviation management system that captures and investigates every departure from procedure - including minor departures that might otherwise go unrecorded.</p>
+          </div>
+        </div>
+
+        <h2>Why the same four observations appear every year</h2>
+
+        <p>The persistence of these four observations across four consecutive fiscal years is not a coincidence. It reflects a structural problem in how many pharmaceutical quality systems address regulatory findings.</p>
+
+        <p>The pattern is well documented. A site receives a 483 observation. It responds with a CAPA. The CAPA prescribes retraining, a procedure update and a management review. The CAPA is closed. The underlying systemic condition that caused the observation is not changed. At the next inspection, the same observation appears. In FY2023 and FY2024, more than half of all firms that received warning letters had already received 483 findings and failed to resolve them at the root.</p>
+
+        <p>In March 2026, FDA posted three CDER warning letters on a single day. All three cited weak CAPA responses as the basis for escalation from 483 to warning letter. The agency is not issuing these letters because it enjoys doing so. It is issuing them because sites are not fixing the problems.</p>
+
+        <div class="callout callout-info">
+          <div class="callout-label">The geography observation</div>
+          <p>More than 62% of FDA drug quality inspections in FY2024 targeted foreign manufacturing sites. The regulatory principle is unchanged: whether the facility is in the US, India or Germany, FDA expects the same standards of documentation, oversight and control. Geography is not a compliance strategy.</p>
+        </div>
+
+        <h2>What to do with this information</h2>
+
+        <p>Each of the four observations maps directly to a specific quality system capability. If your site has received any of these observations - or if you suspect you are vulnerable to them - here is where to focus.</p>
+
+        <ul>
+          <li><strong>For 211.22(d):</strong> Assess whether your quality unit is genuinely independent and genuinely critical. Conduct an unannounced floor walk and compare what you observe to your approved procedures. The gap between the two is your 211.22(d) exposure.</li>
+          <li><strong>For 211.192:</strong> Pull your last ten deviation investigations and check the root cause conclusions. Count how many say "human error" or "operator error" without a systemic cause identified. Each one is a potential 211.192 observation waiting to be cited.</li>
+          <li><strong>For 211.68:</strong> Audit your computerised system inventory. Confirm the validated status of every GxP system. Identify any system that has been changed, upgraded or used for a new purpose since its last validation. That is your 211.68 exposure.</li>
+          <li><strong>For 211.100(a):</strong> Conduct a procedure gap assessment. Identify every manufacturing step performed and confirm a current, approved procedure exists for each one. Then verify the procedures are being followed as written.</li>
+        </ul>
+
+        <div class="callout callout-gold">
+          <div class="callout-label">The bottom line</div>
+          <p>FDA is not finding new problems. It is finding the same ones it has always found. The difference between sites that receive warning letters and sites that do not is rarely the quality of the procedures - it is the quality of the quality system that governs them. These four observations are entirely preventable. They persist not because they are hard to fix but because they are not being fixed at the root.</p>
+        </div>
+
+        <h2>Key regulatory references</h2>
+        <ul>
+          <li>21 CFR 211.22(d) - Responsibilities of quality control unit</li>
+          <li>21 CFR 211.192 - Records of investigations</li>
+          <li>21 CFR 211.68 - Automatic, mechanical and electronic equipment</li>
+          <li>21 CFR 211.100(a) - Written procedures, deviations</li>
+          <li>FDA FY2024 Inspectional Observation Data - fda.gov</li>
+          <li>RAPS FY2024 483 analysis</li>
+        </ul>
+
+        <div class="post-cta">
+          <div class="post-cta-text">
+            <h3>Our Inspection Readiness course covers all four observations in depth</h3>
+            <p>What each CFR section requires, why sites keep failing it, inspection data current to FY2025, and how to build a quality system that prevents citations rather than responds to them. Certificate on completion.</p>
+          </div>
+          <a href="https://learn.gmpify.com" class="btn-cta">View course &rarr;</a>
+        </div>
+
+      </div>
+    </article>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="sidebar-card">
+        <h3>Related course</h3>
+        <p>Inspection Readiness and FDA Observations &mdash; covering the top four 483 observations with data current to FY2025.</p>
+        <a href="https://learn.gmpify.com" class="btn-sidebar">View course &rarr;</a>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Also relevant</h3>
+        <p>Human Error Reduction in GMP Manufacturing &mdash; why human error is never a root cause under 21 CFR 211.192 and what investigators expect instead.</p>
+        <a href="https://learn.gmpify.com" class="btn-sidebar">View course &rarr;</a>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Try a free module</h3>
+        <p>Start with our GMP Fundamentals for Manufacturing Operators preview. No login required.</p>
+        <a href="https://learn.gmpify.com/course/gmp-fundamentals-free-preview" class="btn-sidebar-outline">Start free &rarr;</a>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Key regulatory references</h3>
+        <ul class="related-list">
+          <li><a href="https://www.ecfr.gov/current/title-21/chapter-I/subchapter-C/part-211/subpart-B/section-211.22" target="_blank" rel="noopener">21 CFR 211.22(d) &rarr;</a></li>
+          <li><a href="https://www.ecfr.gov/current/title-21/chapter-I/subchapter-C/part-211/subpart-K/section-211.192" target="_blank" rel="noopener">21 CFR 211.192 &rarr;</a></li>
+          <li><a href="https://www.ecfr.gov/current/title-21/chapter-I/subchapter-C/part-211/subpart-D/section-211.68" target="_blank" rel="noopener">21 CFR 211.68 &rarr;</a></li>
+          <li><a href="https://www.ecfr.gov/current/title-21/chapter-I/subchapter-C/part-211/subpart-F/section-211.100" target="_blank" rel="noopener">21 CFR 211.100(a) &rarr;</a></li>
+          <li><a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/inspection-references/inspection-observations" target="_blank" rel="noopener">FDA Inspection Observations Data &rarr;</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Full subscription</h3>
+        <p>30 on-demand GMP courses built from primary regulatory sources. From $69/month.</p>
+        <a href="https://learn.gmpify.com" class="btn-sidebar">Browse catalog &rarr;</a>
+      </div>
+
+    </aside>
+
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>&copy; 2026 GMPify. All rights reserved. &nbsp;&middot;&nbsp;
+        <a href="/privacy.html" style="color:var(--mid);">Privacy Policy</a> &nbsp;&middot;&nbsp;
+        <a href="/terms.html" style="color:var(--mid);">Terms of Service</a>
+      </span>
+      <span>
+        <a href="/" style="color:var(--mid);">gmpify.com</a> &nbsp;&middot;&nbsp;
+        <a href="/blog.html" style="color:var(--mid);">Blog</a> &nbsp;&middot;&nbsp;
+        <a href="https://learn.gmpify.com" style="color:var(--mid);">learn.gmpify.com</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
