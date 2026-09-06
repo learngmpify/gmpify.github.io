@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Process Validation Workflow | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* VALIDATION APPROACHES BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* VALIDATION STAGE REQUIREMENTS BOX */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* PPQ FAILURE RESPONSE */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* SAMPLING AND STATISTICAL REQUIREMENTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* VALIDATION LIFECYCLE ELEMENTS BOX */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Process <em>Validation Workflow</em></h1>
+    <div class="header-sub">FDA Process Validation Guidance 2011 &nbsp;|&nbsp; EU GMP Annex 15 &nbsp;|&nbsp; ICH Q8/Q9/Q10/Q11</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      FDA Process Validation Guidance 2011<br>
+      EU GMP Annex 15 &nbsp;·&nbsp; ICH Q8/Q9/Q10/Q11
+    </div>
+    <div class="stat-badge">
+      Validation is a lifecycle, not a<br>
+      one-time event completed before launch
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Process Design (Stage 1)</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Process Qualification (Stage 2)</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Continued Process Verification (Stage 3)</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Documentation and Change Management</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#9881;&#65039;</div>
+    <div class="trigger-text">
+      <h3>Process Validation - A Three-Stage Lifecycle, Not a Single Event</h3>
+      <p>FDA's 2011 Process Validation Guidance reframed validation as a continuous lifecycle spanning three distinct stages: Process Design, where the commercial process is defined based on development knowledge; Process Qualification, where the design is confirmed capable of reproducible commercial manufacturing; and Continued Process Verification, where ongoing data confirms the process remains in a state of control throughout commercial production. This lifecycle model replaced the older view of validation as three consecutive successful batches completed once before launch and then left largely unexamined.</p>
+      <div class="reg">FDA Process Validation Guidance 2011 &nbsp;·&nbsp; EU GMP Annex 15 &nbsp;·&nbsp; ICH Q8/Q9/Q10/Q11</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-fda">FDA PV Guidance 2011</div>
+      <div class="ref-chip chip-eu">EU GMP Annex 15</div>
+      <div class="ref-chip chip-iso">ICH Q8/Q9/Q10/Q11</div>
+    </div>
+  </div>
+
+  <!-- VALIDATION APPROACHES BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-c">
+      <h4>Traditional (Prospective) Validation</h4>
+      <p>Process qualification completed and evaluated before the product is released for commercial distribution, the most common approach for new products and processes.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Timing: <span>Before commercial release</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Concurrent Validation</h4>
+      <p>Product released for distribution based on monitoring and testing of the specific batches used for qualification, applied only under justified, documented circumstances.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Timing: <span>Justified exception basis</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-a">
+      <h4>Retrospective Validation</h4>
+      <p>Validation based on accumulated historical production and testing data for an already-marketed process, now largely discouraged in favor of prospective or lifecycle approaches.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Status: <span>Legacy, largely discouraged</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Continuous Process Verification</h4>
+      <p>An alternative approach, often PAT-enabled, where process performance is continuously monitored and evaluated throughout commercial manufacture in place of discrete PPQ batches.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>ICH Q8, continuous monitoring</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Process Design (Stage 1)
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Define the Quality Target Product Profile and CQAs</div>
+              <div class="node-body">QTPP established describing the product's intended performance, with Critical Quality Attributes identified as the measurable properties that must fall within an appropriate range to ensure quality.</div>
+              <div class="node-reg">ICH Q8</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Identify Critical Process Parameters</div>
+              <div class="node-body">CPPs identified through risk assessment and development data as the process inputs whose variability has a direct, meaningful impact on a CQA.</div>
+              <div class="node-reg">ICH Q8 · ICH Q9(R1)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Establish the design space and control strategy</div>
+              <div class="node-body">Multidimensional combination of process parameters demonstrated to assure quality established where applicable, with an overall control strategy defined based on process understanding.</div>
+              <div class="node-reg">ICH Q8 · ICH Q10</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Finalize process design documentation</div>
+              <div class="node-body">Process design and control strategy formally documented, providing the technical basis for the qualification protocols developed in the next stage.</div>
+              <div class="node-reg">FDA PV Guidance 2011</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Process Qualification (Stage 2)
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Qualify facility, utilities, and equipment</div>
+              <div class="node-body">Installation Qualification and Operational Qualification completed for all facility, utility, and equipment elements supporting the process before performance qualification begins.</div>
+              <div class="node-reg">EU GMP Annex 15</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Execute Process Performance Qualification runs</div>
+              <div class="node-body">PPQ batches manufactured under actual production conditions, using qualified equipment, trained personnel, and approved procedures exactly as commercial production would occur.</div>
+              <div class="node-reg">FDA PV Guidance 2011</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Sample and test extensively during PPQ</div>
+              <div class="node-body">Enhanced sampling and testing performed during PPQ runs relative to routine production, providing statistically meaningful evidence of reproducibility.</div>
+              <div class="node-reg">FDA PV Guidance 2011</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Do PPQ results meet the pre-defined acceptance criteria?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Proceed to continued verification</span>
+                <span class="opt-n">NO &#8594; Investigate and revise</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Continued Process Verification (Stage 3)
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Establish the ongoing monitoring plan</div>
+              <div class="node-body">Monitoring plan defined specifying which CPPs and CQAs are tracked routinely, at what frequency, and against what statistical criteria during commercial production.</div>
+              <div class="node-reg">FDA PV Guidance 2011</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Collect and trend routine production data</div>
+              <div class="node-body">Data from every commercial batch collected and trended over time, providing the ongoing evidence base that the process remains in its validated state.</div>
+              <div class="node-reg">ICH Q10</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">10</span>Detect and respond to process drift</div>
+              <div class="node-body">Statistical signals of process drift or increased variation investigated promptly, even where individual batch results remain within specification.</div>
+              <div class="node-reg">ICH Q10</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Documentation and Change Management
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Compile and approve the validation report</div>
+              <div class="node-body">Complete validation report compiled covering all three stages and formally approved by the quality unit before commercial release depends on the validated process.</div>
+              <div class="node-reg">EU GMP Annex 15</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Evaluate changes through change control</div>
+              <div class="node-body">Any proposed change to the validated process evaluated through change control for its potential impact on validated state, with revalidation scope determined accordingly.</div>
+              <div class="node-reg">EU GMP Annex 15</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">13</span>Conduct periodic review of validated state</div>
+              <div class="node-body">Validated state reviewed periodically, incorporating CPV data, deviation history, and any accumulated process knowledge since the last review.</div>
+              <div class="node-reg">ICH Q10</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- VALIDATION STAGE REQUIREMENTS -->
+      <div class="limits-box">
+        <div class="limits-header">Three-Stage Requirements Summary</div>
+        <div class="limits-body">
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Stage 1 - Process Design</h4>
+            <p>Establishes the scientific and risk-based foundation the commercial process is built on, using development-phase knowledge and data.</p>
+            <div class="stat">FDA PV Guidance 2011</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Stage 2 - Process Qualification</h4>
+            <p>Confirms the process design is capable of reproducible commercial manufacturing, through facility/equipment qualification and PPQ batch execution.</p>
+            <div class="stat">FDA PV Guidance 2011</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Stage 3 - Continued Process Verification</h4>
+            <p>Provides ongoing assurance during commercial production that the process remains in a state of control, continuing for the entire product lifecycle.</p>
+            <div class="stat">FDA PV Guidance 2011</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PPQ FAILURE RESPONSE -->
+      <div class="exceed-box">
+        <h3>PPQ Failure Response Steps</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Step 1 - Secure all PPQ data and samples</strong>
+            Preserve complete batch records, testing data, and retained samples from the failed PPQ run before further action.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 2 - Investigate the specific failure mode</strong>
+            Determine which CQA or CPP failed to meet acceptance criteria and at what point in the process the deviation occurred.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 3 - Assess process design adequacy</strong>
+            Evaluate whether the Stage 1 process design and control strategy require revision based on what the PPQ failure revealed.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 4 - Revise and re-qualify as needed</strong>
+            Implement necessary process, equipment, or procedural changes and repeat PPQ execution with the revised approach.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 5 - Document the full investigation and resolution</strong>
+            Maintain a complete record connecting the original failure, root cause, corrective action, and successful re-qualification outcome.
+          </div>
+        </div>
+      </div>
+
+      <!-- SAMPLING AND STATISTICAL REQUIREMENTS -->
+      <div class="trend-box">
+        <h3>Sampling and Statistical Requirements</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Justified PPQ batch number</strong>
+            Number of PPQ batches justified based on process complexity and variability, rather than defaulting to a fixed number without rationale.
+          </div>
+          <div class="trend-item">
+            <strong>Enhanced sampling during PPQ</strong>
+            Sampling plan during PPQ runs more extensive than routine production sampling, providing the statistical confidence needed to demonstrate reproducibility.
+          </div>
+          <div class="trend-item">
+            <strong>Statistical confidence in conclusions</strong>
+            Acceptance criteria and conclusions drawn from PPQ data supported by an appropriate statistical basis, not solely a pass/fail check against specification.
+          </div>
+          <div class="trend-item">
+            <strong>CPV data statistically evaluated</strong>
+            Stage 3 monitoring data evaluated using statistical methods capable of detecting meaningful drift, not simply reviewed batch by batch in isolation.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- VALIDATION LIFECYCLE ELEMENTS -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Validation Lifecycle Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Quality Target Product Profile (QTPP)</strong>
+        Prospective summary of the quality characteristics a drug product should possess to ensure the desired quality, safety, and efficacy.
+      </div>
+      <div class="ccs-item">
+        <strong>Critical Quality Attributes (CQAs)</strong>
+        Physical, chemical, biological, or microbiological properties that must be controlled within an appropriate range to ensure product quality.
+      </div>
+      <div class="ccs-item">
+        <strong>Critical Process Parameters (CPPs)</strong>
+        Process parameters whose variability has a direct and significant impact on a critical quality attribute.
+      </div>
+      <div class="ccs-item">
+        <strong>Design Space</strong>
+        Multidimensional combination of input variables and process parameters demonstrated to provide assurance of quality, where established.
+      </div>
+      <div class="ccs-item">
+        <strong>Control Strategy</strong>
+        Planned set of controls derived from product and process understanding that assures process performance and product quality.
+      </div>
+      <div class="ccs-item">
+        <strong>IQ / OQ / PQ</strong>
+        Installation, Operational, and Performance Qualification providing the documented evidence that equipment and systems function as intended.
+      </div>
+      <div class="ccs-item">
+        <strong>Revalidation Triggers</strong>
+        Defined events, such as significant process, equipment, or raw material changes, that trigger a formal revalidation assessment.
+      </div>
+      <div class="ccs-item">
+        <strong>CPV Data Sources</strong>
+        In-process data, release testing, stability data, complaint trends, and deviation history feeding into the ongoing Stage 3 monitoring picture.
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Treat validation as complete once PPQ batches pass, without an ongoing Stage 3 monitoring plan. Set the PPQ batch number as a fixed default without complexity-based justification. Implement a process change without evaluating revalidation impact through change control. Rely solely on pass/fail specification checks without statistical evaluation of PPQ data.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Traditional vs continuous verification</h4>
+      <p>Traditional validation relies on a discrete set of PPQ batches completed before commercial release. Continuous process verification, often enabled by process analytical technology, continuously evaluates process performance throughout commercial manufacture, providing an alternative pathway to the same lifecycle assurance.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Qualification vs validation</h4>
+      <p>Qualification, covering IQ, OQ, and PQ, establishes that equipment and facilities function as designed and intended. Validation is the broader concept establishing that the entire manufacturing process, using that qualified equipment, reliably produces a product meeting its predetermined quality attributes.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>FDA Process Validation Guidance 2011 - three-stage lifecycle framework. EU GMP Annex 15 - qualification and validation requirements. ICH Q8 - pharmaceutical development and design space. ICH Q9(R1) - risk-based CPP identification. ICH Q10 - lifecycle management and continual improvement. ICH Q11 - development and manufacture of drug substances.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Process Validation Workflow &nbsp;&#183;&nbsp;
+    Built from FDA Process Validation Guidance 2011, EU GMP Annex 15, ICH Q8/Q9/Q10/Q11 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Manufacturing Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
