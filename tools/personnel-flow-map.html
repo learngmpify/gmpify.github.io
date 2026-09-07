@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personnel Flow Workflow | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* GOWNING LEVEL BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* GOWNING LEVEL REQUIREMENTS BOX */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* GOWNING BREACH RESPONSE */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* PERSONNEL MONITORING REQUIREMENTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* MOVEMENT CONTROL ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Personnel Flow <em>Workflow</em></h1>
+    <div class="header-sub">EU GMP Annex 1 2022 &nbsp;|&nbsp; EU GMP Chapter 2 &nbsp;|&nbsp; 21 CFR 211.28 &nbsp;|&nbsp; ICH Q7</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      EU GMP Annex 1 2022 &nbsp;·&nbsp; EU GMP Chapter 2<br>
+      21 CFR 211.28 &nbsp;·&nbsp; ICH Q7
+    </div>
+    <div class="stat-badge">
+      Personnel are the single largest source<br>
+      of contamination in a classified area
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Personnel Qualification and Training</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Gowning Procedure and Progression</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Area Access and Movement Control</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Monitoring, Degowning and Exit Control</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128100;</div>
+    <div class="trigger-text">
+      <h3>Personnel Flow - Controlling the Largest Contamination Source in the Room</h3>
+      <p>Personnel shed skin cells, hair, and microorganisms continuously, making people the single largest source of particulate and microbial contamination in most classified manufacturing environments. Personnel flow describes the controlled, progressive path individuals take through gowning stages, airlocks, and classified areas, designed so that movement itself, not just training and vigilance, structurally limits contamination and cross-contamination risk. EU GMP Annex 1 2022 and Chapter 2 both expect this flow to be documented, qualified, and enforced through physical design as well as procedure.</p>
+      <div class="reg">EU GMP Annex 1 2022 &nbsp;·&nbsp; EU GMP Chapter 2 &nbsp;·&nbsp; 21 CFR 211.28 &nbsp;·&nbsp; ICH Q7</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-eu">EU GMP Annex 1 2022</div>
+      <div class="ref-chip chip-eu">EU GMP Chapter 2</div>
+      <div class="ref-chip chip-fda">21 CFR 211.28</div>
+      <div class="ref-chip chip-iso">ICH Q7</div>
+    </div>
+  </div>
+
+  <!-- GOWNING LEVEL BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-c">
+      <h4>Grade D Gowning</h4>
+      <p>Basic protective clothing appropriate for the lowest classification supporting areas, typically the entry point into the gowning progression.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Typical use: <span>Warehouse, low-risk support areas</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Grade C Gowning</h4>
+      <p>Enhanced protective clothing covering more of the body, worn in areas supporting less critical aseptic processing stages.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Typical use: <span>Solution preparation, filtration</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-a">
+      <h4>Grade B Gowning</h4>
+      <p>Near-complete body coverage including sterile gloves and full head covering, worn in the background environment supporting Grade A operations.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Typical use: <span>Background to aseptic filling</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Grade A / Aseptic Gowning</h4>
+      <p>Complete sterile gowning with no exposed skin, worn in the highest-risk zone directly supporting open product exposure during aseptic operations.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Typical use: <span>Aseptic filling zone</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Personnel Qualification and Training
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Complete initial gowning qualification training</div>
+              <div class="node-body">Personnel trained on the correct gowning sequence and technique for each classification level they will be authorized to enter.</div>
+              <div class="node-reg">21 CFR 211.28</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Perform gowning qualification assessment</div>
+              <div class="node-body">Gowning technique assessed through both visual observation and microbial monitoring, confirming the individual can gown correctly and consistently.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Establish a personnel monitoring baseline</div>
+              <div class="node-body">Initial monitoring results establish a documented baseline for the individual, supporting later trend comparison during routine monitoring.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Grant area access authorization</div>
+              <div class="node-body">Access authorization granted specifically for the classification levels the individual has successfully qualified for, not blanket facility-wide access.</div>
+              <div class="node-reg">EU GMP Chapter 2</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Gowning Procedure and Progression
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Don gowning in sequence, lowest to highest</div>
+              <div class="node-body">Gowning donned progressively through each classification level, from Grade D through Grade A, never skipping stages in the sequence.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Perform hand hygiene at each transition</div>
+              <div class="node-body">Hand washing and disinfection performed at each gowning stage transition, consistent with the defined procedure for that specific airlock.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Verify gowning integrity before proceeding</div>
+              <div class="node-body">Gowning checked for correct fit, no exposed skin or hair, and no visible defects before proceeding to the next stage of the airlock sequence.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Does gowning pass visual and self-check inspection?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Proceed to area entry</span>
+                <span class="opt-n">NO &#8594; Re-gown or exit for correction</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Area Access and Movement Control
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Enter through the matching classification airlock</div>
+              <div class="node-body">Entry made only through the airlock specifically designed and pressure-controlled for the classification level being entered.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Follow the unidirectional movement path</div>
+              <div class="node-body">Movement follows the designated one-way path through the facility, avoiding backtracking into lower-classified areas once higher classification gowning is worn.</div>
+              <div class="node-reg">EU GMP Chapter 2</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Restrict simultaneous multi-zone access</div>
+              <div class="node-body">Personnel do not move between different product zones without first regowning, preventing cross-contamination between concurrent operations.</div>
+              <div class="node-reg">EU GMP Chapter 2</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Monitoring, Degowning and Exit Control
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Perform personnel monitoring at defined points</div>
+              <div class="node-body">Fingertip and gown plate sampling performed at defined intervals and upon exit, providing ongoing evidence of gowning technique effectiveness.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Degown in reverse sequence</div>
+              <div class="node-body">Gowning removed in the reverse order it was donned, exiting through the appropriate airlock back toward the lower classification level.</div>
+              <div class="node-reg">EU GMP Annex 1 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Investigate any personnel monitoring excursion</div>
+              <div class="node-body">A personnel monitoring result exceeding alert or action limits triggers investigation into gowning technique, training adequacy, and potential retraining need.</div>
+              <div class="node-reg">21 CFR 211.192</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- GOWNING LEVEL REQUIREMENTS -->
+      <div class="limits-box">
+        <div class="limits-header">Gowning Qualification Requirements</div>
+        <div class="limits-body">
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Initial Qualification</h4>
+            <p>Documented demonstration of correct gowning technique through both visual assessment and microbial monitoring before independent area access is granted.</p>
+            <div class="stat">EU GMP Annex 1 2022</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Periodic Requalification</h4>
+            <p>Gowning qualification reassessed on a defined periodic schedule, confirming technique remains consistent over time rather than assuming initial qualification is permanent.</p>
+            <div class="stat">EU GMP Annex 1 2022</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Level-Specific Authorization</h4>
+            <p>Access authorization tied specifically to the classification levels an individual has qualified for, not granted as blanket facility-wide access.</p>
+            <div class="stat">EU GMP Chapter 2</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GOWNING BREACH RESPONSE -->
+      <div class="exceed-box">
+        <h3>Gowning Breach Response Steps</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Step 1 - Exit the classified area immediately</strong>
+            Leave the area through the correct exit path the moment a gowning breach, such as exposed skin or a torn glove, is identified.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 2 - Notify quality and the area supervisor</strong>
+            Report the breach promptly so the potential impact on any in-progress operation can be assessed without delay.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 3 - Assess product and process impact</strong>
+            Determine whether any product or process step in progress at the time of the breach requires investigation.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 4 - Correlate with environmental and personnel monitoring</strong>
+            Review EM and personnel monitoring data from the same time period and location for any corroborating signal.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 5 - Document and evaluate retraining need</strong>
+            Fully document the event and assess whether the individual requires gowning retraining or requalification before returning to the area.
+          </div>
+        </div>
+      </div>
+
+      <!-- PERSONNEL MONITORING REQUIREMENTS -->
+      <div class="trend-box">
+        <h3>Personnel Monitoring Requirements</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Sampling at multiple gown locations</strong>
+            Fingertips, forearms, chest, and other gown locations sampled to build a complete picture of gowning effectiveness across the body.
+          </div>
+          <div class="trend-item">
+            <strong>Sampling upon exit from Grade A/B areas</strong>
+            Personnel monitoring performed as individuals exit the highest-risk classification areas, capturing the cumulative exposure of the session.
+          </div>
+          <div class="trend-item">
+            <strong>Individual trending over time</strong>
+            Each individual's monitoring results trended over successive sessions to detect a gradual decline in gowning technique.
+          </div>
+          <div class="trend-item">
+            <strong>Correlation with environmental monitoring</strong>
+            Personnel monitoring data reviewed alongside environmental monitoring results from the same session to build a complete contamination picture.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MOVEMENT CONTROL ELEMENTS -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Personnel Movement Control Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Airlock Design and Pressure Cascade</strong>
+        Airlocks designed with appropriate pressure differentials supporting directional airflow and preventing contamination migration between classification levels.
+      </div>
+      <div class="ccs-item">
+        <strong>One-Way Personnel Flow</strong>
+        Facility layout designed so personnel movement generally proceeds in one direction through increasing classification levels, minimizing backtracking.
+      </div>
+      <div class="ccs-item">
+        <strong>Cross-Flow Prevention</strong>
+        Physical design or procedural control preventing personnel gowned for one product or area from directly entering a different concurrent operation.
+      </div>
+      <div class="ccs-item">
+        <strong>Product-Dedicated Personnel</strong>
+        Personnel dedicated to a single product or process during a shift where cross-contamination risk between products is elevated.
+      </div>
+      <div class="ccs-item">
+        <strong>Visitor and Contractor Control</strong>
+        Visitors and contractors subject to the same gowning and access control requirements as regular personnel, with appropriate escort where required.
+      </div>
+      <div class="ccs-item">
+        <strong>Hand Hygiene Stations</strong>
+        Hand washing and disinfection stations positioned at every gowning transition point, stocked and functioning at all times.
+      </div>
+      <div class="ccs-item">
+        <strong>Restricted Zone Signage</strong>
+        Clear, consistent signage identifying classification level and access requirements at every entry point throughout the facility.
+      </div>
+      <div class="ccs-item">
+        <strong>Training Frequency and Refresher Schedule</strong>
+        Defined schedule for gowning refresher training, ensuring technique does not silently degrade over long periods of routine, unsupervised practice.
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Grant facility-wide access authorization regardless of which specific areas an individual actually qualified for. Allow personnel to move between concurrent product zones without regowning. Skip periodic gowning requalification once initial qualification is achieved. Continue an operation after a known gowning breach without impact assessment.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Personnel flow vs material flow</h4>
+      <p>Personnel flow and material flow are designed around different risk logics. Personnel movement is governed by gowning level and classification access; material movement is governed by quality status and processing stage. Both must be addressed, since controlling one does not automatically control the other.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Gowning qualification vs training</h4>
+      <p>Training conveys the correct gowning procedure and technique. Qualification is the documented, tested confirmation that an individual can actually perform that technique correctly and consistently, verified through both observation and microbial monitoring rather than assumed from training completion alone.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>EU GMP Annex 1 2022 - gowning and personnel flow expectations for contamination control. EU GMP Chapter 2 - personnel qualification and hygiene requirements. 21 CFR 211.28 - personnel clothing and hygiene requirements. ICH Q7 - personnel controls for API manufacturing.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Personnel Flow Workflow &nbsp;&#183;&nbsp;
+    Built from EU GMP Annex 1 2022, EU GMP Chapter 2, 21 CFR 211.28, ICH Q7 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Manufacturing Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
