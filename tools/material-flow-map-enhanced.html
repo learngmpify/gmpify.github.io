@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Material Flow Workflow - Enhanced Edition | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* MATERIAL STATUS BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* MATERIAL STATUS CLASSIFICATION BOX */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* MIX-UP PREVENTION RESPONSE */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* STORAGE CONDITION REQUIREMENTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* UNIDIRECTIONAL FLOW DESIGN ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+
+  /* ===== ENHANCED EDITION ADDITIONS ===== */
+  .enh-badge{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.35);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--gold);text-align:right}
+
+  .regtext-box{background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .regtext-box h3{font-size:0.74rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .regtext-items{display:flex;flex-direction:column;gap:9px}
+  .regtext-item{background:rgba(255,255,255,0.04);border-left:3px solid var(--c1acc);border-radius:5px;padding:9px 12px}
+  .regtext-item .src{font-size:0.63rem;font-family:var(--mono);color:var(--c1acc);margin-bottom:3px}
+  .regtext-item p{font-size:0.7rem;color:var(--light);line-height:1.55}
+
+  .pattern-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .pattern-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .pattern-box .disclaimer{font-size:0.64rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px;font-style:italic}
+  .pattern-items{display:flex;flex-direction:column;gap:7px}
+  .pattern-item{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:8px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .pattern-item strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  .practice-box{background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .practice-box h3{font-size:0.74rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .practice-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .practice-item{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.16);border-radius:5px;padding:9px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .practice-item strong{color:var(--green);display:block;font-size:0.67rem;margin-bottom:2px}
+
+  .assess-box{background:rgba(56,189,248,0.05);border:1.5px solid rgba(56,189,248,0.22);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .assess-box summary{cursor:pointer;padding:12px 16px;font-size:0.78rem;font-weight:700;color:var(--white);list-style:none;display:flex;align-items:center;justify-content:space-between}
+  .assess-box summary::-webkit-details-marker{display:none}
+  .assess-box summary .arrow-icon{color:var(--c1acc);font-size:0.8rem;transition:transform 0.15s}
+  .assess-box[open] summary .arrow-icon{transform:rotate(90deg)}
+  .assess-body{padding:4px 16px 16px}
+  .assess-note{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px}
+  .assess-row{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .assess-row:last-child{border-bottom:none}
+  .assess-row input[type=checkbox]{margin-top:2px;width:15px;height:15px;accent-color:var(--c1acc);flex-shrink:0}
+  .assess-row label{font-size:0.71rem;color:var(--light);line-height:1.5}
+
+  .annotate-box{background:rgba(0,0,0,0.2);border:1.5px dashed rgba(255,255,255,0.16);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .annotate-box h3{font-size:0.74rem;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .annotate-box .sub{font-size:0.65rem;color:var(--mid);margin-bottom:12px}
+  .annotate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotate-field{display:flex;flex-direction:column;gap:4px}
+  .annotate-field label{font-size:0.66rem;font-family:var(--mono);color:var(--c1acc)}
+  .annotate-field textarea, .annotate-field input[type=text]{
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:6px;
+    color:var(--white);font-family:var(--font);font-size:0.72rem;padding:8px 10px;resize:vertical;
+  }
+  .annotate-field textarea:focus, .annotate-field input[type=text]:focus{outline:none;border-color:var(--c1acc)}
+
+  @media print {
+    body{background:#FFFFFF !important;color:#1A1A1A !important}
+    .header{background:#FFFFFF !important;border-bottom:2px solid #1A1A1A}
+    .logo span:first-child, .logo span:last-child, .header h1{color:#1A1A1A !important}
+    .header h1 em{color:#0A6E8C !important}
+    .header-sub, .stat-badge, .reg-badge, .enh-badge{color:#333 !important}
+    .legend{background:#F2F2F2 !important}
+    .map-wrap, .phase-body, .node-action, .node-decision, .limits-box, .exceed-box, .trend-box, .ccs-box,
+    .regtext-box, .pattern-box, .practice-box, .assess-box, .annotate-box, .rule-card{
+      background:#FAFAFA !important;color:#1A1A1A !important;border-color:#CCCCCC !important;
+    }
+    .node-title, .node-body, .limit-card p, .exceed-step, .trend-item, .ccs-item, .regtext-item p,
+    .pattern-item, .practice-item, .rule-card p, .assess-row label{color:#1A1A1A !important}
+    .assess-box summary{color:#1A1A1A !important}
+    .footer{color:#333 !important}
+    .assess-box summary .arrow-icon{display:none}
+    details.assess-box{display:block}
+    .assess-body{display:block !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Material Flow <em>Workflow</em></h1>
+    <div class="header-sub">EU GMP Chapter 3 &nbsp;|&nbsp; EU GMP Chapter 5 &nbsp;|&nbsp; 21 CFR 211.80-211.87 &nbsp;|&nbsp; ICH Q7</div>
+  </div>
+  <div class="header-right">
+    <div class="enh-badge">Enhanced Edition &#183; Subscriber Content</div>
+    <div class="reg-badge">
+      EU GMP Chapter 3 &nbsp;·&nbsp; EU GMP Chapter 5<br>
+      21 CFR 211.80-211.87 &nbsp;·&nbsp; ICH Q7
+    </div>
+    <div class="stat-badge">
+      Material status must be unambiguous<br>
+      at every point from receipt to use
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Receipt and Incoming Control</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Quarantine, Sampling and Testing</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Release and Warehouse Storage</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Dispensing, Staging and Production Flow</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128230;</div>
+    <div class="trigger-text">
+      <h3>Material Flow - Designing Movement to Prevent Mix-Ups by Default</h3>
+      <p>Material flow describes the controlled, unidirectional path materials take through a facility, from receipt through quarantine, testing, release, storage, dispensing, and into production, with rejected and returned material flowing separately. EU GMP Chapters 3 and 5 and 21 CFR 211.80 through 211.87 collectively expect this flow to be designed so that the physical layout and status labeling system make an accidental mix-up structurally difficult, not merely something personnel are trained to avoid through vigilance alone.</p>
+      <div class="reg">EU GMP Chapter 3 &nbsp;·&nbsp; EU GMP Chapter 5 &nbsp;·&nbsp; 21 CFR 211.80-211.87 &nbsp;·&nbsp; ICH Q7</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-eu">EU GMP Chapter 3</div>
+      <div class="ref-chip chip-eu">EU GMP Chapter 5</div>
+      <div class="ref-chip chip-fda">21 CFR 211.80-87</div>
+      <div class="ref-chip chip-iso">ICH Q7</div>
+    </div>
+  </div>
+
+  <!-- MATERIAL STATUS BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-b">
+      <h4>Quarantine / Under Test</h4>
+      <p>Material received but not yet tested and released, physically segregated and clearly labeled to prevent inadvertent use before disposition.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Access: <span>Restricted, no production use</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Approved / Released</h4>
+      <p>Material that has passed all required testing and quality unit review, formally released and available for use in production.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Access: <span>Available for production use</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-a">
+      <h4>Rejected</h4>
+      <p>Material that failed testing or quality review, segregated from approved material and pending disposition such as return or destruction.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Access: <span>Segregated, no production use</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-c">
+      <h4>Returned / Recalled</h4>
+      <p>Material returned from a customer or recalled from the field, held separately pending investigation and disposition decision.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Access: <span>Segregated, investigation pending</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Receipt and Incoming Control
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Receive and verify against documentation</div>
+              <div class="node-body">Incoming shipment verified against the purchase order and supplier shipping documentation before acceptance into the facility.</div>
+              <div class="node-reg">21 CFR 211.80</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Inspect container integrity and transport conditions</div>
+              <div class="node-body">Containers inspected for damage or tampering, and any temperature or condition monitoring devices reviewed for excursions during transport.</div>
+              <div class="node-reg">21 CFR 211.80</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Assign a unique receipt identifier and quarantine status</div>
+              <div class="node-body">Unique internal lot or receipt number assigned, with material immediately labeled with quarantine status pending sampling and testing.</div>
+              <div class="node-reg">21 CFR 211.82</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Segregate into the quarantine area</div>
+              <div class="node-body">Material physically moved into a defined quarantine area, separated from released material to prevent any possibility of premature use.</div>
+              <div class="node-reg">EU GMP Chapter 3</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Quarantine, Sampling and Testing
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Sample per the approved sampling plan</div>
+              <div class="node-body">Representative samples drawn according to a documented, statistically justified sampling plan appropriate to the material and its risk profile.</div>
+              <div class="node-reg">21 CFR 211.84</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Perform incoming QC testing and identity verification</div>
+              <div class="node-body">Identity testing performed at minimum on every container, with additional testing per the material specification and risk classification.</div>
+              <div class="node-reg">21 CFR 211.84</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Review supplier certificate of analysis</div>
+              <div class="node-body">Supplier CoA reviewed against in-house testing results, with any discrepancy investigated before the material proceeds toward release.</div>
+              <div class="node-reg">ICH Q7</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Does the material meet all acceptance criteria?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Release for use</span>
+                <span class="opt-n">NO &#8594; Reject and initiate disposition</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Release and Warehouse Storage
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Update status and relabel</div>
+              <div class="node-body">Material status formally updated to released in the inventory system, with physical labeling updated to reflect the new status before relocation.</div>
+              <div class="node-reg">21 CFR 211.82</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Store per condition requirements</div>
+              <div class="node-body">Released material stored in the appropriate warehouse location meeting its required temperature, humidity, and segregation conditions.</div>
+              <div class="node-reg">21 CFR 211.80</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Maintain rotation and reconcile inventory</div>
+              <div class="node-body">First-in-first-out or first-expired-first-out rotation maintained, with periodic inventory reconciliation confirming system records match physical stock.</div>
+              <div class="node-reg">ICH Q7</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Dispensing, Staging and Production Flow
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Dispense per batch record requirements</div>
+              <div class="node-body">Materials weighed or measured in a controlled dispensing area per the specific batch record, with second-person verification of identity and quantity.</div>
+              <div class="node-reg">21 CFR 211.101</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Stage for production with maintained traceability</div>
+              <div class="node-body">Dispensed materials staged for the specific batch, clearly labeled and segregated from materials staged for any other concurrent batch.</div>
+              <div class="node-reg">EU GMP Chapter 5</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Manage waste and return flow separately</div>
+              <div class="node-body">Rejected material, waste, and returns routed through a distinct physical and documentary flow, never intersecting with the approved material path.</div>
+              <div class="node-reg">21 CFR 211.87</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- MATERIAL STATUS CLASSIFICATION -->
+      <div class="limits-box">
+        <div class="limits-header">Material Status Labeling Requirements</div>
+        <div class="limits-body">
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Unambiguous Visual Status</h4>
+            <p>Status distinguishable at a glance, commonly through color-coded labels or tags, so personnel can identify material status without reading detailed documentation.</p>
+            <div class="stat">EU GMP Chapter 5</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">System and Physical Status Match</h4>
+            <p>Inventory system status and physical label status kept synchronized at all times, with any discrepancy investigated immediately upon discovery.</p>
+            <div class="stat">21 CFR 211.82</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Full Traceability to Source</h4>
+            <p>Every material lot traceable back to its original receipt, supplier, and all testing and status changes throughout its life in the facility.</p>
+            <div class="stat">21 CFR 211.84</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MIX-UP PREVENTION RESPONSE -->
+      <div class="exceed-box">
+        <h3>Unidentified or Mislabeled Material Response Steps</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Step 1 - Immediately quarantine the material</strong>
+            Physically segregate and label the material as quarantined the moment an identification or labeling discrepancy is discovered.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 2 - Halt any related production activity</strong>
+            Stop any batch operation using material from the same receipt or lot until the discrepancy is resolved.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 3 - Investigate the point of failure</strong>
+            Trace back through the material's documented history to determine where the identification or labeling error occurred.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 4 - Assess batch impact</strong>
+            Determine whether any batch already used material from the affected lot, and evaluate the impact on those batches.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 5 - Correct, re-verify, and document</strong>
+            Correct the identification or labeling error, re-verify material identity through testing if warranted, and fully document the event.
+          </div>
+        </div>
+      </div>
+
+      <!-- STORAGE CONDITION REQUIREMENTS -->
+      <div class="trend-box">
+        <h3>Storage Condition Requirements</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Temperature and humidity monitoring</strong>
+            Storage areas continuously monitored against the specific condition requirements of the materials held within them.
+          </div>
+          <div class="trend-item">
+            <strong>Segregation by status and material type</strong>
+            Physical segregation maintained not only by approval status but also between materials that could be confused due to similar appearance or packaging.
+          </div>
+          <div class="trend-item">
+            <strong>Pest and environmental control</strong>
+            Warehouse areas maintained under an active pest control programme and protected from environmental conditions that could compromise material quality.
+          </div>
+          <div class="trend-item">
+            <strong>Restricted access to quarantine and rejected areas</strong>
+            Physical or procedural access controls limiting who can move material into or out of quarantine and rejected storage areas.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- UNIDIRECTIONAL FLOW DESIGN ELEMENTS -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Unidirectional Flow Design Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Segregated Receiving and Shipping</strong>
+        Physically separate receiving and shipping areas preventing incoming and outgoing material streams from crossing paths.
+      </div>
+      <div class="ccs-item">
+        <strong>Dedicated Quarantine Area</strong>
+        Distinct, clearly demarcated quarantine zone separate from released material storage, minimizing the chance of accidental use.
+      </div>
+      <div class="ccs-item">
+        <strong>Controlled Dispensing Booth or Area</strong>
+        Dedicated dispensing area, often with local exhaust or laminar airflow, where materials are weighed and verified before entering production.
+      </div>
+      <div class="ccs-item">
+        <strong>Personnel and Material Flow Separation</strong>
+        Personnel movement paths designed separately from material movement paths where practical, reducing cross-contamination and mix-up opportunities.
+      </div>
+      <div class="ccs-item">
+        <strong>Color-Coded Status Labeling System</strong>
+        Consistent color scheme applied facility-wide so status is immediately recognizable regardless of which area or shift is involved.
+      </div>
+      <div class="ccs-item">
+        <strong>FIFO/FEFO Rotation Enforcement</strong>
+        Physical layout and system controls supporting consistent first-in-first-out or first-expired-first-out material rotation.
+      </div>
+      <div class="ccs-item">
+        <strong>Cleaning Between Material Types</strong>
+        Defined cleaning procedures for shared handling equipment, such as pallet jacks or scales, between different material types or lots.
+      </div>
+      <div class="ccs-item">
+        <strong>Separate Reject and Return Flow Path</strong>
+        Dedicated physical route and documentation trail for rejected and returned material, kept distinct from the approved material pathway at every point.
+      </div>
+    </div>
+  </div>
+
+  <!-- REGULATORY TEXT PANEL -->
+  <div class="regtext-box">
+    <h3>Regulatory Text - Source Provisions</h3>
+    <div class="regtext-items">
+      <div class="regtext-item">
+        <div class="src">21 CFR 211.82(a)</div>
+        <p>Upon receipt and before acceptance, each container or grouping of containers of components, drug product containers, and closures shall be examined visually for appropriate labeling as to contents, container damage, or broken seals that may indicate contamination.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">21 CFR 211.87</div>
+        <p>Returned drug products shall be identified and held, and if the conditions under which returned drug products have been held, stored, or shipped before or during their return are questionable, the returned drug products shall be destroyed unless examination, testing, or other investigations prove the product meets appropriate standards.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">EU GMP Chapter 5, Section 13 (paraphrased - refer to the official Chapter 5 text for exact wording)</div>
+        <p>At all times during processing, all materials, containers, major items of equipment, and where appropriate rooms used should be labeled or otherwise identified with an indication of the product or material being processed, its strength where applicable, and the batch number.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSPECTION PATTERN PANEL -->
+  <div class="pattern-box">
+    <h3>Common Inspection Findings - Material Flow</h3>
+    <div class="disclaimer">Illustrative of recurring themes seen across published FDA 483s and warning letters. Not tied to a single specific citation.</div>
+    <div class="pattern-items">
+      <div class="pattern-item">
+        <strong>Quarantine and released material co-mingled</strong>
+        Physical storage areas containing both quarantined and released material with labels as the only distinguishing control, rather than genuine physical segregation.
+      </div>
+      <div class="pattern-item">
+        <strong>System status lagging physical status</strong>
+        Inventory system showing a material as quarantined after it had already been physically relabeled and moved to released storage, or vice versa.
+      </div>
+      <div class="pattern-item">
+        <strong>Dispensing without independent verification</strong>
+        Material weighed and dispensed by a single operator with no documented second-person check of identity and quantity against the batch record.
+      </div>
+      <div class="pattern-item">
+        <strong>Returned material handling not risk-assessed</strong>
+        Returned product accepted back into usable inventory without a documented assessment of storage and shipping conditions during the time it was out of the facility's control.
+      </div>
+    </div>
+  </div>
+
+  <!-- BEST PRACTICE PANEL -->
+  <div class="practice-box">
+    <h3>Best Practice Guidance</h3>
+    <div class="practice-items">
+      <div class="practice-item">
+        <strong>Physically wall off quarantine from released storage</strong>
+        Use genuine physical barriers, not just floor markings or signage, to separate quarantine areas from released material storage wherever facility layout allows.
+      </div>
+      <div class="practice-item">
+        <strong>Trigger a status reconciliation check at shift change</strong>
+        Build a routine check into shift handoff procedures confirming system and physical status match for any material moved during the prior shift.
+      </div>
+      <div class="practice-item">
+        <strong>Make second-person dispensing verification a hard system control</strong>
+        Where the dispensing system allows, require electronic sign-off from a second operator before a dispensing transaction can be finalized.
+      </div>
+      <div class="practice-item">
+        <strong>Document a formal returned goods risk assessment for every return</strong>
+        Require a written assessment of storage and transport conditions for every returned product before any consideration of restocking, referencing 21 CFR 211.87 criteria explicitly.
+      </div>
+    </div>
+  </div>
+
+  <!-- SELF-ASSESSMENT CHECKLIST -->
+  <details class="assess-box">
+    <summary>Self-Assessment Checklist - Is Your Material Flow Programme Inspection Ready? <span class="arrow-icon">&#9654;</span></summary>
+    <div class="assess-body">
+      <div class="assess-note">For personal or team use during training. Responses are not saved or submitted.</div>
+      <div class="assess-row"><input type="checkbox" id="mf1"><label for="mf1">Quarantine and released material are physically segregated, not just label-differentiated.</label></div>
+      <div class="assess-row"><input type="checkbox" id="mf2"><label for="mf2">System status and physical status are reconciled routinely, such as at shift change.</label></div>
+      <div class="assess-row"><input type="checkbox" id="mf3"><label for="mf3">Dispensing requires documented second-person verification of identity and quantity.</label></div>
+      <div class="assess-row"><input type="checkbox" id="mf4"><label for="mf4">Returned goods receive a documented risk assessment before any restocking consideration.</label></div>
+      <div class="assess-row"><input type="checkbox" id="mf5"><label for="mf5">Rejected and returned material flows through a distinct physical and documentary path.</label></div>
+      <div class="assess-row"><input type="checkbox" id="mf6"><label for="mf6">FIFO or FEFO rotation is enforced consistently, not left to operator discretion.</label></div>
+      <div class="assess-row"><input type="checkbox" id="mf7"><label for="mf7">Warehouse storage conditions are continuously monitored against material-specific requirements.</label></div>
+    </div>
+  </details>
+
+  <!-- SITE ANNOTATION FIELDS -->
+  <div class="annotate-box">
+    <h3>Site Annotation</h3>
+    <div class="sub">Add your facility-specific references while reviewing this map. Not saved between sessions - copy notes into your own records before closing.</div>
+    <div class="annotate-grid">
+      <div class="annotate-field">
+        <label>WAREHOUSE / AREA</label>
+        <input type="text" placeholder="e.g. Raw Material Warehouse, Bay 3">
+      </div>
+      <div class="annotate-field">
+        <label>LOCAL SOP REFERENCE</label>
+        <input type="text" placeholder="e.g. SOP-WH-007 Rev 3">
+      </div>
+      <div class="annotate-field" style="grid-column: 1 / -1">
+        <label>NOTES</label>
+        <textarea rows="3" placeholder="Facility-specific observations, open questions, or follow-up items for QA."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Store quarantined and released material in the same physical area, relying on labels alone to prevent mix-up. Allow inventory system status to lag behind physical status changes. Dispense materials without second-person verification of identity and quantity. Route rejected material through the same physical path as approved material.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Material flow vs personnel flow</h4>
+      <p>Material flow and personnel flow are related but distinct design considerations. Materials move according to their quality status and processing stage; personnel move according to gowning level and area classification. A well-designed facility addresses both without assuming that controlling one automatically controls the other.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Quarantine vs rejected</h4>
+      <p>Quarantine status means disposition has not yet been determined; the material could still be released pending successful testing. Rejected status means a disposition decision has already been made against the material's use. Confusing the two statuses risks either premature use or unnecessary disposal.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>EU GMP Chapter 3 - premises and equipment design expectations. EU GMP Chapter 5 - production and material handling controls. 21 CFR 211.80-211.87 - components, containers, and closures handling requirements. ICH Q7 - material management for API manufacturing.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Material Flow Workflow &nbsp;&#183;&nbsp;
+    Built from EU GMP Chapter 3, EU GMP Chapter 5, 21 CFR 211.80-211.87, ICH Q7 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMP Maps - Enhanced Editions</div>
+    <div class="footer-badge">Manufacturing Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
