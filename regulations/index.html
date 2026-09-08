@@ -1,1 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/gmpify_favicon.png">
+<meta name="description" content="Free plain-language explanations of the most-cited FDA, EU GMP and ICH regulations in pharmaceutical manufacturing, what they require, what inspectors look for, and common violations.">
+<meta property="og:title" content="GMP Regulation Library - Plain-Language 21 CFR, EU GMP and ICH Explanations | GMPify">
+<meta property="og:description" content="Free plain-language explanations of the most-cited FDA, EU GMP and ICH regulations in pharmaceutical manufacturing, what they require, what inspectors look for, and common violations.">
+<meta property="og:url" content="https://gmpify.com/regulations/">
+<meta property="og:type" content="article">
+<title>GMP Regulation Library - Plain-Language 21 CFR, EU GMP and ICH Explanations | GMPify</title>
+<link rel="canonical" href="https://gmpify.com/regulations/">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2B3E;--navy-card:#112d41;--teal:#00C2A8;--gold:#F5A623;
+  --light:#CAD8E8;--mid:#6E90A0;--white:#fff;--orange:#B84A00;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif
+}
+body{font-family:var(--font);background:var(--navy);color:var(--light);line-height:1.6}
+a{color:var(--teal);text-decoration:none}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+nav{background:rgba(13,43,62,0.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,194,168,0.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;max-width:1100px;margin:0 auto;padding:0 24px}
+.logo{font-size:1.4rem;font-weight:800;letter-spacing:-0.5px;color:var(--white)}
+.logo span:first-child{color:var(--teal)}
+.logo span:last-child{color:var(--white)}
+.nav-links{display:flex;gap:24px;list-style:none;align-items:center}
+.nav-links li{margin-right:24px}
+.nav-links li:last-child{margin-right:0}
+.nav-links a{font-size:0.88rem;font-weight:500;color:var(--light)}
+.nav-links a:hover{color:var(--teal)}
+.nav-cta{background:var(--teal);color:var(--navy)!important;padding:7px 18px;border-radius:6px;font-weight:700!important}
+.breadcrumb{font-size:0.82rem;color:var(--mid);margin:28px 0 16px}
+.breadcrumb a{color:var(--mid)}
+.breadcrumb a:hover{color:var(--teal)}
+.reg-hero{padding:8px 0 32px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.reg-tag{font-size:0.75rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.reg-hero h1{font-size:clamp(1.5rem,3.2vw,2.1rem);font-weight:800;color:var(--white);line-height:1.3;margin-bottom:12px}
+.reg-hero .reg-sub{font-size:1rem;color:var(--mid)}
+.reg-section{padding:28px 0;border-bottom:1px solid rgba(255,255,255,0.07)}
+.reg-section:last-of-type{border-bottom:none}
+.reg-section h2{font-size:1.05rem;font-weight:800;color:var(--white);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.reg-section p{font-size:0.96rem;color:var(--light);line-height:1.75;margin-bottom:12px}
+.reg-section ul{margin:0 0 12px 20px;font-size:0.94rem;color:var(--light);line-height:1.8}
+.violation-box{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.25);border-radius:8px;padding:16px 20px}
+.violation-box h2{color:#FC8181}
+.related-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.related-tags a{background:rgba(0,194,168,0.08);border:1px solid rgba(0,194,168,0.2);border-radius:16px;padding:5px 14px;font-size:0.82rem;color:var(--teal)}
+.related-tags a:hover{background:rgba(0,194,168,0.15)}
+.disclaimer{font-size:0.78rem;color:var(--mid);font-style:italic;margin-top:8px}
+.ai-cta{background:linear-gradient(135deg,rgba(0,194,168,0.1),rgba(0,194,168,0.03));border:1px solid rgba(0,194,168,0.2);border-radius:12px;padding:24px 28px;margin:32px 0}
+.ai-cta h3{font-size:1rem;font-weight:800;color:var(--white);margin-bottom:8px}
+.ai-cta p{font-size:0.88rem;color:var(--mid);margin-bottom:14px}
+.btn-primary{display:inline-block;background:var(--teal);color:var(--navy);font-weight:700;padding:10px 22px;border-radius:8px;font-size:0.88rem}
+.btn-primary:hover{background:#00a892;color:var(--navy)}
+.index-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0 40px}
+.index-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:16px 20px}
+.index-card a{font-weight:700;color:var(--white);font-size:0.95rem}
+.index-card a:hover{color:var(--teal)}
+.index-card p{font-size:0.82rem;color:var(--mid);margin-top:6px}
+.index-cat{font-size:0.7rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:24px;margin-top:8px}
+footer{padding:40px 0 28px;border-top:1px solid rgba(255,255,255,0.07);margin-top:48px}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.8rem;color:var(--mid);max-width:1100px;margin:0 auto;padding:0 24px}
+@media(max-width:768px){.nav-links{display:none}.index-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo"><span>GMP</span><span>ify</span></a>
+    <ul class="nav-links">
+      <li><a href="/#courses">Courses</a></li>
+      <li><a href="/blog.html">Blog</a></li>
+      <li><a href="/gmp-maps.html">GMP Maps</a></li>
+      <li><a href="/regulations/">Regulations</a></li>
+      <li><a href="https://learn.gmpify.com" class="nav-cta">Start learning</a></li>
+    </ul>
+  </div>
+</nav>
 
+<div class="container">
+  <div class="breadcrumb"><a href="/">GMPify</a> &nbsp;/&nbsp; Regulations</div>
+  <div class="reg-hero">
+    <div class="reg-tag">GMPify Regulation Library</div>
+    <h1>Pharmaceutical GMP Regulations, Explained</h1>
+    <p class="reg-sub">Plain-language explanations of the FDA, EU GMP and ICH provisions that matter most, what they require, what inspectors look for, and the most common violation pattern for each. Built from the same primary-source approach as every GMPify course.</p>
+  </div>
+  <div class="index-cat">US FDA</div><div class="index-grid"><div class="index-card">
+        <a href="/regulations/21-cfr-211-192.html">21 CFR 211.192</a>
+        <p>Production Record Review - Investigation of Discrepancies and Failures</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-22-d.html">21 CFR 211.22(d)</a>
+        <p>Quality Control Unit Responsibilities and Independence</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-100-a.html">21 CFR 211.100(a)</a>
+        <p>Written Procedures - Establishment and Adherence</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-160-b.html">21 CFR 211.160(b)</a>
+        <p>Laboratory Controls - Scientifically Sound Specifications and Methods</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-198.html">21 CFR 211.198</a>
+        <p>Complaint Files</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-314-81-b-1.html">21 CFR 314.81(b)(1)</a>
+        <p>Field Alert Report Requirements</p>
+      </div></div><div class="index-cat">EU GMP</div><div class="index-grid"><div class="index-card">
+        <a href="/regulations/eu-gmp-annex-1-section-9.html">EU GMP Annex 1, Section 9</a>
+        <p>Environmental and Process Monitoring - Aseptic Processing</p>
+      </div></div><div class="index-cat">ICH Guidelines</div><div class="index-grid"><div class="index-card">
+        <a href="/regulations/ich-q9-r1.html">ICH Q9(R1)</a>
+        <p>Quality Risk Management</p>
+      </div><div class="index-card">
+        <a href="/regulations/ich-q2-r2.html">ICH Q2(R2)</a>
+        <p>Validation of Analytical Procedures</p>
+      </div></div>
+  <div class="ai-cta">
+    <h3>Need a citation that's not listed yet?</h3>
+    <p>GMPify's Regulation Explainer tool gives subscribers an AI-powered, on-demand analysis of any 21 CFR, EU GMP, USP or ICH reference.</p>
+    <a href="https://gmpify-tools.netlify.app/" class="btn-primary">Try the Regulation Explainer &rarr;</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <span>&copy; 2026 GMPify. All rights reserved. &nbsp;&middot;&nbsp; <a href="/privacy.html" style="color:var(--mid);">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="/terms.html" style="color:var(--mid);">Terms of Service</a></span>
+    <span><a href="/" style="color:var(--mid);">gmpify.com</a> &middot; <a href="https://learn.gmpify.com" style="color:var(--mid);">learn.gmpify.com</a></span>
+  </div>
+</footer>
+</body>
+</html>
