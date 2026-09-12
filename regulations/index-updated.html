@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/gmpify_favicon.png">
+<meta name="description" content="Free plain-language explanations of the most-cited FDA, EU GMP and ICH regulations in pharmaceutical manufacturing, what they require, what inspectors look for, and common violations.">
+<meta property="og:title" content="GMP Regulation Library - Plain-Language 21 CFR, EU GMP and ICH Explanations | GMPify">
+<meta property="og:description" content="Free plain-language explanations of the most-cited FDA, EU GMP and ICH regulations in pharmaceutical manufacturing, what they require, what inspectors look for, and common violations.">
+<meta property="og:url" content="https://gmpify.com/regulations/">
+<meta property="og:type" content="article">
+<title>GMP Regulation Library - Plain-Language 21 CFR, EU GMP and ICH Explanations | GMPify</title>
+<link rel="canonical" href="https://gmpify.com/regulations/">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2B3E;--navy-card:#112d41;--teal:#00C2A8;--gold:#F5A623;
+  --light:#CAD8E8;--mid:#6E90A0;--white:#fff;--orange:#B84A00;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif
+}
+body{font-family:var(--font);background:var(--navy);color:var(--light);line-height:1.6}
+a{color:var(--teal);text-decoration:none}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+nav{background:rgba(13,43,62,0.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,194,168,0.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;max-width:1100px;margin:0 auto;padding:0 24px}
+.logo{font-size:1.4rem;font-weight:800;letter-spacing:-0.5px;color:var(--white)}
+.logo span:first-child{color:var(--teal)}
+.logo span:last-child{color:var(--white)}
+.nav-links{display:flex;gap:24px;list-style:none;align-items:center}
+.nav-links li{margin-right:24px}
+.nav-links li:last-child{margin-right:0}
+.nav-links a{font-size:0.88rem;font-weight:500;color:var(--light)}
+.nav-links a:hover{color:var(--teal)}
+.nav-cta{background:var(--teal);color:var(--navy)!important;padding:7px 18px;border-radius:6px;font-weight:700!important}
+.breadcrumb{font-size:0.82rem;color:var(--mid);margin:28px 0 16px}
+.breadcrumb a{color:var(--mid)}
+.breadcrumb a:hover{color:var(--teal)}
+.reg-hero{padding:8px 0 32px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.reg-tag{font-size:0.75rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.reg-hero h1{font-size:clamp(1.5rem,3.2vw,2.1rem);font-weight:800;color:var(--white);line-height:1.3;margin-bottom:12px}
+.reg-hero .reg-sub{font-size:1rem;color:var(--mid)}
+.reg-section{padding:28px 0;border-bottom:1px solid rgba(255,255,255,0.07)}
+.reg-section:last-of-type{border-bottom:none}
+.reg-section h2{font-size:1.05rem;font-weight:800;color:var(--white);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.reg-section p{font-size:0.96rem;color:var(--light);line-height:1.75;margin-bottom:12px}
+.reg-section ul{margin:0 0 12px 20px;font-size:0.94rem;color:var(--light);line-height:1.8}
+.violation-box{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.25);border-radius:8px;padding:16px 20px}
+.violation-box h2{color:#FC8181}
+.related-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.related-tags a{background:rgba(0,194,168,0.08);border:1px solid rgba(0,194,168,0.2);border-radius:16px;padding:5px 14px;font-size:0.82rem;color:var(--teal)}
+.related-tags a:hover{background:rgba(0,194,168,0.15)}
+.disclaimer{font-size:0.78rem;color:var(--mid);font-style:italic;margin-top:8px}
+.ai-cta{background:linear-gradient(135deg,rgba(0,194,168,0.1),rgba(0,194,168,0.03));border:1px solid rgba(0,194,168,0.2);border-radius:12px;padding:24px 28px;margin:32px 0}
+.ai-cta h3{font-size:1rem;font-weight:800;color:var(--white);margin-bottom:8px}
+.ai-cta p{font-size:0.88rem;color:var(--mid);margin-bottom:14px}
+.btn-primary{display:inline-block;background:var(--teal);color:var(--navy);font-weight:700;padding:10px 22px;border-radius:8px;font-size:0.88rem}
+.btn-primary:hover{background:#00a892;color:var(--navy)}
+.index-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0 40px}
+.index-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:16px 20px}
+.index-card a{font-weight:700;color:var(--white);font-size:0.95rem}
+.index-card a:hover{color:var(--teal)}
+.index-card p{font-size:0.82rem;color:var(--mid);margin-top:6px}
+.index-cat{font-size:0.7rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:24px;margin-top:8px}
+footer{padding:40px 0 28px;border-top:1px solid rgba(255,255,255,0.07);margin-top:48px}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.8rem;color:var(--mid);max-width:1100px;margin:0 auto;padding:0 24px}
+@media(max-width:768px){.nav-links{display:none}.index-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo"><span>GMP</span><span>ify</span></a>
+    <ul class="nav-links">
+      <li><a href="/#courses">Courses</a></li>
+      <li><a href="/blog.html">Blog</a></li>
+      <li><a href="/gmp-maps.html">GMP Maps</a></li>
+      <li><a href="/regulations/">Regulations</a></li>
+      <li><a href="https://learn.gmpify.com" class="nav-cta">Start learning</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="breadcrumb"><a href="/">GMPify</a> &nbsp;/&nbsp; Regulations</div>
+  <div class="reg-hero">
+    <div class="reg-tag">GMPify Regulation Library</div>
+    <h1>Pharmaceutical GMP Regulations, Explained</h1>
+    <p class="reg-sub">Plain-language explanations of the FDA, EU GMP and ICH provisions that matter most, what they require, what inspectors look for, and the most common violation pattern for each. Built from the same primary-source approach as every GMPify course.</p>
+  </div>
+  <div class="index-cat">US FDA</div><div class="index-grid"><div class="index-card">
+        <a href="/regulations/21-cfr-211-192.html">21 CFR 211.192</a>
+        <p>Production Record Review - Investigation of Discrepancies and Failures</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-22-d.html">21 CFR 211.22(d)</a>
+        <p>Quality Control Unit Responsibilities and Independence</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-100-a.html">21 CFR 211.100(a)</a>
+        <p>Written Procedures - Establishment and Adherence</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-160-b.html">21 CFR 211.160(b)</a>
+        <p>Laboratory Controls - Scientifically Sound Specifications and Methods</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-198.html">21 CFR 211.198</a>
+        <p>Complaint Files</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-314-81-b-1.html">21 CFR 314.81(b)(1)</a>
+        <p>Field Alert Report Requirements</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-63.html">21 CFR 211.63</a>
+        <p>Equipment Design, Size and Location</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-65.html">21 CFR 211.65</a>
+        <p>Equipment Construction - Contact Surfaces</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-68.html">21 CFR 211.68</a>
+        <p>Automatic, Mechanical and Electronic Equipment</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-84.html">21 CFR 211.84</a>
+        <p>Testing and Approval or Rejection of Components</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-113.html">21 CFR 211.113</a>
+        <p>Control of Microbiological Contamination</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-165.html">21 CFR 211.165</a>
+        <p>Testing and Release for Distribution</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-188.html">21 CFR 211.188</a>
+        <p>Batch Production and Control Records</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-180.html">21 CFR 211.180</a>
+        <p>General Requirements - Records Retention and Annual Review</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-42.html">21 CFR 211.42</a>
+        <p>Design and Construction Features of Buildings and Facilities</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-67.html">21 CFR 211.67</a>
+        <p>Equipment Cleaning and Maintenance</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-166.html">21 CFR 211.166</a>
+        <p>Stability Testing</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-194.html">21 CFR 211.194</a>
+        <p>Laboratory Records</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-820-100.html">21 CFR 820.100</a>
+        <p>Corrective and Preventive Action (QMSR)</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-25.html">21 CFR 211.25</a>
+        <p>Personnel Qualifications</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-34.html">21 CFR 211.34</a>
+        <p>Consultants</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-94.html">21 CFR 211.94</a>
+        <p>Drug Product Containers and Closures</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-122.html">21 CFR 211.122</a>
+        <p>Labeling Issuance and Control</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-125.html">21 CFR 211.125</a>
+        <p>Labeling Reconciliation</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-130.html">21 CFR 211.130</a>
+        <p>Packaging and Label Operations</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-150.html">21 CFR 211.150</a>
+        <p>Distribution Procedures</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-170.html">21 CFR 211.170</a>
+        <p>Reserve Samples</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-204.html">21 CFR 211.204</a>
+        <p>Returned Drug Products</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-208.html">21 CFR 211.208</a>
+        <p>Drug Product Salvaging</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-46.html">21 CFR 211.46</a>
+        <p>Ventilation, Air Filtration, Air Heating and Cooling</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-48.html">21 CFR 211.48</a>
+        <p>Plumbing</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-72.html">21 CFR 211.72</a>
+        <p>Filters</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-80.html">21 CFR 211.80</a>
+        <p>General Requirements - Component and Container Receipt</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-87.html">21 CFR 211.87</a>
+        <p>Retesting of Approved Components, Containers and Closures</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-142.html">21 CFR 211.142</a>
+        <p>Warehousing Procedures</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-182.html">21 CFR 211.182</a>
+        <p>Equipment Cleaning and Use Log</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-part-11.html">21 CFR Part 11</a>
+        <p>Electronic Records and Electronic Signatures</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-28.html">21 CFR 211.28</a>
+        <p>Personnel Responsibilities - Gowning and Health</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-56.html">21 CFR 211.56</a>
+        <p>Sanitation</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-58.html">21 CFR 211.58</a>
+        <p>Maintenance</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-103.html">21 CFR 211.103</a>
+        <p>Calculation of Yield</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-115.html">21 CFR 211.115</a>
+        <p>Reprocessing</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-137.html">21 CFR 211.137</a>
+        <p>Expiration Dating</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-101.html">21 CFR 211.101</a>
+        <p>Charge-in of Components</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-105.html">21 CFR 211.105</a>
+        <p>Equipment Identification</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-211-134.html">21 CFR 211.134</a>
+        <p>Drug Product Inspection</p>
+      </div><div class="index-card">
+        <a href="/regulations/21-cfr-210-3.html">21 CFR 210.3</a>
+        <p>Definitions</p>
+      </div></div><div class="index-cat">EU GMP</div><div class="index-grid"><div class="index-card">
+        <a href="/regulations/eu-gmp-annex-1-section-9.html">EU GMP Annex 1, Section 9</a>
+        <p>Environmental and Process Monitoring - Aseptic Processing</p>
+      </div><div class="index-card">
+        <a href="/regulations/eu-gmp-annex-15.html">EU GMP Annex 15</a>
+        <p>Qualification and Validation</p>
+      </div><div class="index-card">
+        <a href="/regulations/eu-gmp-chapter-8.html">EU GMP Chapter 8</a>
+        <p>Complaints, Quality Defects and Product Recalls</p>
+      </div><div class="index-card">
+        <a href="/regulations/eu-gmp-chapter-1.html">EU GMP Chapter 1</a>
+        <p>Pharmaceutical Quality System</p>
+      </div><div class="index-card">
+        <a href="/regulations/eu-gmp-annex-11.html">EU GMP Annex 11</a>
+        <p>Computerised Systems</p>
+      </div><div class="index-card">
+        <a href="/regulations/eu-gmp-annex-16.html">EU GMP Annex 16</a>
+        <p>Certification by a Qualified Person and Batch Release</p>
+      </div><div class="index-card">
+        <a href="/regulations/eu-gmp-annex-13.html">EU GMP Annex 13</a>
+        <p>Investigational Medicinal Products</p>
+      </div><div class="index-card">
+        <a href="/regulations/eu-gmp-annex-19.html">EU GMP Annex 19</a>
+        <p>Reference and Retention Samples</p>
+      </div></div><div class="index-cat">ICH Guidelines</div><div class="index-grid"><div class="index-card">
+        <a href="/regulations/ich-q9-r1.html">ICH Q9(R1)</a>
+        <p>Quality Risk Management</p>
+      </div><div class="index-card">
+        <a href="/regulations/ich-q2-r2.html">ICH Q2(R2)</a>
+        <p>Validation of Analytical Procedures</p>
+      </div><div class="index-card">
+        <a href="/regulations/ich-q10.html">ICH Q10</a>
+        <p>Pharmaceutical Quality System</p>
+      </div><div class="index-card">
+        <a href="/regulations/ich-q1a-r2.html">ICH Q1A(R2)</a>
+        <p>Stability Testing of New Drug Substances and Products</p>
+      </div><div class="index-card">
+        <a href="/regulations/ich-q7.html">ICH Q7</a>
+        <p>Good Manufacturing Practice for Active Pharmaceutical Ingredients</p>
+      </div><div class="index-card">
+        <a href="/regulations/ich-q12.html">ICH Q12</a>
+        <p>Technical and Regulatory Considerations for Pharmaceutical Product Lifecycle Management</p>
+      </div><div class="index-card">
+        <a href="/regulations/ich-q8-r2.html">ICH Q8(R2)</a>
+        <p>Pharmaceutical Development</p>
+      </div><div class="index-card">
+        <a href="/regulations/ich-q3b-r2.html">ICH Q3B(R2)</a>
+        <p>Impurities in New Drug Products</p>
+      </div><div class="index-card">
+        <a href="/regulations/ich-q5c.html">ICH Q5C</a>
+        <p>Quality of Biotechnological Products - Stability Testing</p>
+      </div></div><div class="index-cat">USP General Chapters</div><div class="index-grid"><div class="index-card">
+        <a href="/regulations/usp-71.html">USP <71></a>
+        <p>Sterility Tests</p>
+      </div><div class="index-card">
+        <a href="/regulations/usp-1116.html">USP <1116></a>
+        <p>Microbiological Control and Monitoring of Aseptic Processing Environments</p>
+      </div><div class="index-card">
+        <a href="/regulations/usp-1058.html">USP <1058></a>
+        <p>Analytical Instrument Qualification</p>
+      </div><div class="index-card">
+        <a href="/regulations/usp-1225.html">USP <1225></a>
+        <p>Validation of Compendial Procedures</p>
+      </div><div class="index-card">
+        <a href="/regulations/usp-85.html">USP <85></a>
+        <p>Bacterial Endotoxins Test</p>
+      </div></div>
+  <div class="ai-cta">
+    <h3>Need a citation that's not listed yet?</h3>
+    <p>GMPify's Regulation Explainer tool gives subscribers an AI-powered, on-demand analysis of any 21 CFR, EU GMP, USP or ICH reference.</p>
+    <a href="https://gmpify-tools.netlify.app/" class="btn-primary">Try the Regulation Explainer &rarr;</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <span>&copy; 2026 GMPify. All rights reserved. &nbsp;&middot;&nbsp; <a href="/privacy.html" style="color:var(--mid);">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="/terms.html" style="color:var(--mid);">Terms of Service</a></span>
+    <span><a href="/" style="color:var(--mid);">gmpify.com</a> &middot; <a href="https://learn.gmpify.com" style="color:var(--mid);">learn.gmpify.com</a></span>
+  </div>
+</footer>
+</body>
+</html>
