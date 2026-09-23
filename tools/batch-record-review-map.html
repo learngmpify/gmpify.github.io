@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batch Record Review Workflow | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* REVIEW TIER BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* REVIEW TIER REQUIREMENTS */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* INCOMPLETE DOCUMENTATION RESPONSE */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* DATA INTEGRITY REQUIREMENTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* BATCH RECORD CONTENT ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Batch Record <em>Review Workflow</em></h1>
+    <div class="header-sub">21 CFR 211.188 &nbsp;|&nbsp; 21 CFR 211.192 &nbsp;|&nbsp; 21 CFR 211.194 &nbsp;|&nbsp; EU GMP Chapter 4</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      21 CFR 211.188 &nbsp;·&nbsp; 21 CFR 211.192<br>
+      21 CFR 211.194 &nbsp;·&nbsp; EU GMP Chapter 4
+    </div>
+    <div class="stat-badge">
+      The batch record is the batch's complete,<br>
+      contemporaneous story, not a formality
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Batch Record Preparation and Issuance</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Real-Time Execution Documentation</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Review and Reconciliation</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Release Decision and Retention</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128203;</div>
+    <div class="trigger-text">
+      <h3>Batch Record Review - The Complete, Contemporaneous Story of a Batch</h3>
+      <p>The batch production record is the primary documentary evidence that a specific batch was manufactured according to its approved procedure, and its review is the final gate confirming that evidence is complete and coherent before the batch can be released. 21 CFR 211.188 requires batch production and control records for each batch, 211.192 requires investigation of any unexplained discrepancy, and 211.194 sets the standard for laboratory records supporting the batch. Together they expect a record built contemporaneously, step by step, rather than reconstructed from memory once production has already finished.</p>
+      <div class="reg">21 CFR 211.188 &nbsp;·&nbsp; 21 CFR 211.192 &nbsp;·&nbsp; 21 CFR 211.194 &nbsp;·&nbsp; EU GMP Chapter 4</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-fda">21 CFR 211.188</div>
+      <div class="ref-chip chip-fda">21 CFR 211.192</div>
+      <div class="ref-chip chip-fda">21 CFR 211.194</div>
+      <div class="ref-chip chip-eu">EU GMP Chapter 4</div>
+    </div>
+  </div>
+
+  <!-- REVIEW TIER BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-c">
+      <h4>First-Person Review (Production)</h4>
+      <p>Initial review performed by production personnel or supervisor confirming the record is complete and internally consistent immediately after execution.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Timing: <span>Immediately post-execution</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Second-Person Verification</h4>
+      <p>Independent verification of critical steps performed contemporaneously by a second qualified individual during execution, not only at final review.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Timing: <span>Contemporaneous with execution</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-a">
+      <h4>Exception / Deviation Review</h4>
+      <p>Focused review of any deviation, blank field, or discrepancy identified during the record, requiring documented investigation before proceeding.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Trigger: <span>Any identified discrepancy</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Final Quality Unit Review</h4>
+      <p>Comprehensive final review by the quality unit, independent of production, forming the basis for the batch disposition decision.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Timing: <span>Before batch release</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Batch Record Preparation and Issuance
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Issue a controlled, numbered blank record</div>
+              <div class="node-body">Blank batch record issued as a controlled document with a unique identifier, tracked from the master document control system.</div>
+              <div class="node-reg">21 CFR 211.188</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Verify current approved master version</div>
+              <div class="node-body">Issued record confirmed to match the currently approved master batch record revision, preventing use of an outdated or superseded version.</div>
+              <div class="node-reg">EU GMP Chapter 4</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Reconcile against the document control log</div>
+              <div class="node-body">Issued record logged and reconciled against the document control system, supporting complete traceability of every copy issued.</div>
+              <div class="node-reg">21 CFR 211.188</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Assign batch number and cross-references</div>
+              <div class="node-body">Unique batch number assigned and cross-referenced to relevant material lots and equipment identifiers before execution begins.</div>
+              <div class="node-reg">21 CFR 211.188</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Real-Time Execution Documentation
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Document each step contemporaneously</div>
+              <div class="node-body">Each step recorded at the time it is actually performed, never completed in a batch afterward or reconstructed from memory.</div>
+              <div class="node-reg">21 CFR 211.188</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Record actual values, not checkmarks</div>
+              <div class="node-body">Actual observed weights, temperatures, times, and other values recorded directly, rather than a simple checkmark implying compliance without evidence.</div>
+              <div class="node-reg">21 CFR 211.188</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Apply the correction procedure for errors</div>
+              <div class="node-body">Any documentation error corrected with a single line strike-through, initials, date, and reason, preserving the original entry's legibility.</div>
+              <div class="node-reg">EU GMP Chapter 4</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Are all critical steps documented with required second-person verification?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Proceed to review</span>
+                <span class="opt-n">NO &#8594; Complete missing verification</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Review and Reconciliation
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Perform first-level supervisor review</div>
+              <div class="node-body">Production supervisor reviews the record for completeness and internal consistency before it advances to quality unit review.</div>
+              <div class="node-reg">21 CFR 211.188</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Reconcile yields and material usage</div>
+              <div class="node-body">Actual material usage and product yield reconciled against theoretical values, with any variance outside expected range flagged for explanation.</div>
+              <div class="node-reg">21 CFR 211.103</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Investigate discrepancies and blank fields</div>
+              <div class="node-body">Any deviation, unexplained discrepancy, or blank field investigated and documented before the record proceeds toward final review.</div>
+              <div class="node-reg">21 CFR 211.192</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Release Decision and Retention
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Perform final QA batch record review</div>
+              <div class="node-body">Quality unit performs a comprehensive final review of the complete record, independent of the production function that executed the batch.</div>
+              <div class="node-reg">21 CFR 211.192</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Make the batch disposition decision</div>
+              <div class="node-body">Formal disposition decision made, releasing, rejecting, or placing the batch on hold pending further investigation, based on the complete reviewed record.</div>
+              <div class="node-reg">21 CFR 211.192</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Retain the completed record per requirements</div>
+              <div class="node-body">Completed batch record retained for the required retention period, remaining retrievable to support any future investigation or inspection.</div>
+              <div class="node-reg">21 CFR 211.180</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- REVIEW TIER REQUIREMENTS -->
+      <div class="limits-box">
+        <div class="limits-header">Review Tier Requirements</div>
+        <div class="limits-body">
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Contemporaneous Second-Person Verification</h4>
+            <p>Critical steps verified by a second qualified individual at the time the step is performed, not reconstructed during final review.</p>
+            <div class="stat">21 CFR 211.188</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Independent Quality Unit Review</h4>
+            <p>Final batch record review performed by personnel independent of the production function that executed the batch.</p>
+            <div class="stat">21 CFR 211.192</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Documented Discrepancy Resolution</h4>
+            <p>Every identified discrepancy formally investigated and documented before the batch disposition decision is made.</p>
+            <div class="stat">21 CFR 211.192</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INCOMPLETE DOCUMENTATION RESPONSE -->
+      <div class="exceed-box">
+        <h3>Missing or Incomplete Documentation Response Steps</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Step 1 - Identify the specific gap</strong>
+            Determine precisely which field, step, or verification is missing or incomplete in the record.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 2 - Determine whether contemporaneous completion is still possible</strong>
+            Assess whether the missing information can still be legitimately obtained, or whether the window for contemporaneous documentation has passed.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 3 - Never backfill from memory as if contemporaneous</strong>
+            Where the record cannot be completed contemporaneously, address the gap through a documented deviation rather than an undated retrospective entry.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 4 - Assess batch quality impact</strong>
+            Evaluate whether the missing documentation raises a genuine question about the batch's quality or whether it is a documentation-only gap.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 5 - Document root cause and corrective action</strong>
+            Investigate why the gap occurred and implement corrective action addressing the underlying documentation practice.
+          </div>
+        </div>
+      </div>
+
+      <!-- DATA INTEGRITY REQUIREMENTS -->
+      <div class="trend-box">
+        <h3>Data Integrity Requirements (ALCOA+)</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Attributable and legible</strong>
+            Every entry attributable to a specific, identifiable individual and legible enough to be read without ambiguity.
+          </div>
+          <div class="trend-item">
+            <strong>Contemporaneous and original</strong>
+            Entries made at the time the activity occurred, preserved in their original form rather than transcribed or recreated later.
+          </div>
+          <div class="trend-item">
+            <strong>Accurate and complete</strong>
+            Recorded values accurate to what actually occurred, with no field left blank without a documented explanation.
+          </div>
+          <div class="trend-item">
+            <strong>Consistent, enduring, and available</strong>
+            Data consistent across related records, retained durably for the required period, and available for review or inspection when needed.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BATCH RECORD CONTENT ELEMENTS -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Batch Record Content Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Master vs Executed Record Distinction</strong>
+        Clear distinction maintained between the approved master batch record template and the specific executed record for an individual batch.
+      </div>
+      <div class="ccs-item">
+        <strong>Critical Step Sign-Off</strong>
+        Explicit sign-off required at each critical step, distinct from routine step completion, reflecting the elevated verification that step demands.
+      </div>
+      <div class="ccs-item">
+        <strong>Yield and Component Reconciliation</strong>
+        Complete reconciliation of components used and product yield obtained, documented and compared against theoretical expectations.
+      </div>
+      <div class="ccs-item">
+        <strong>Deviation Cross-Reference</strong>
+        Any deviation occurring during the batch cross-referenced by number within the batch record, linking the two records together.
+      </div>
+      <div class="ccs-item">
+        <strong>Equipment and Material Traceability</strong>
+        Specific equipment identifiers and material lot numbers used documented, supporting full traceability for the batch.
+      </div>
+      <div class="ccs-item">
+        <strong>Environmental Data Attachment</strong>
+        Relevant environmental monitoring data for the batch's manufacturing period attached or referenced within the record where applicable.
+      </div>
+      <div class="ccs-item">
+        <strong>Electronic vs Paper Record Controls</strong>
+        Electronic batch records subject to the same data integrity expectations as paper, plus audit trail and electronic signature requirements.
+      </div>
+      <div class="ccs-item">
+        <strong>Review Timeliness Standard</strong>
+        Defined internal timeline for completing batch record review, preventing indefinite delay between batch completion and release decision.
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Complete batch record entries after the fact and represent them as contemporaneous. Allow the same person to both execute and independently verify a critical step. Release a batch with an unresolved discrepancy or unexplained blank field. Treat electronic batch records as exempt from the correction and traceability standards applied to paper.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Contemporaneous vs retrospective documentation</h4>
+      <p>Contemporaneous documentation is recorded at the moment the activity happens, capturing what was actually observed. Retrospective documentation, reconstructed from memory after the fact, cannot provide the same evidentiary value and should never be presented as if it were contemporaneous.</p>
+    </div>
+    <div class="rule-card">
+      <h4>First-person vs second-person review</h4>
+      <p>First-person review is the individual confirming their own work is complete. Second-person verification is an independent check by someone else, providing a genuine control against individual error or oversight that self-review alone cannot provide.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR 211.188 - batch production and control record requirements. 21 CFR 211.192 - investigation of discrepancies and unexplained failures. 21 CFR 211.194 - laboratory record requirements. EU GMP Chapter 4 - documentation principles and record-keeping expectations.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Batch Record Review Workflow &nbsp;&#183;&nbsp;
+    Built from 21 CFR 211.188, 21 CFR 211.192, 21 CFR 211.194, EU GMP Chapter 4 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Manufacturing Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
