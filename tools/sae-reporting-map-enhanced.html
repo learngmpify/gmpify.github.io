@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAE Reporting Workflow - Enhanced Edition | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* SAE TIMELINE BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* TIMELINE REQUIREMENTS */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* CAUSALITY CATEGORIES */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* NOTIFICATION RECIPIENTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* SAE REPORTING QUALITY ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+
+  /* ===== ENHANCED EDITION ADDITIONS ===== */
+  .enh-badge{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.35);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--gold);text-align:right}
+
+  /* REGULATORY TEXT PANEL */
+  .regtext-box{background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .regtext-box h3{font-size:0.74rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .regtext-items{display:flex;flex-direction:column;gap:9px}
+  .regtext-item{background:rgba(255,255,255,0.04);border-left:3px solid var(--c1acc);border-radius:5px;padding:9px 12px}
+  .regtext-item .src{font-size:0.63rem;font-family:var(--mono);color:var(--c1acc);margin-bottom:3px}
+  .regtext-item p{font-size:0.7rem;color:var(--light);line-height:1.55}
+
+  /* INSPECTION PATTERN PANEL */
+  .pattern-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .pattern-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .pattern-box .disclaimer{font-size:0.64rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px;font-style:italic}
+  .pattern-items{display:flex;flex-direction:column;gap:7px}
+  .pattern-item{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:8px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .pattern-item strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* BEST PRACTICE PANEL */
+  .practice-box{background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .practice-box h3{font-size:0.74rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .practice-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .practice-item{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.16);border-radius:5px;padding:9px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .practice-item strong{color:var(--green);display:block;font-size:0.67rem;margin-bottom:2px}
+
+  /* SELF-ASSESSMENT CHECKLIST */
+  .assess-box{background:rgba(56,189,248,0.05);border:1.5px solid rgba(56,189,248,0.22);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .assess-box summary{cursor:pointer;padding:12px 16px;font-size:0.78rem;font-weight:700;color:var(--white);list-style:none;display:flex;align-items:center;justify-content:space-between}
+  .assess-box summary::-webkit-details-marker{display:none}
+  .assess-box summary .arrow-icon{color:var(--c1acc);font-size:0.8rem;transition:transform 0.15s}
+  .assess-box[open] summary .arrow-icon{transform:rotate(90deg)}
+  .assess-body{padding:4px 16px 16px}
+  .assess-note{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px}
+  .assess-row{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .assess-row:last-child{border-bottom:none}
+  .assess-row input[type=checkbox]{margin-top:2px;width:15px;height:15px;accent-color:var(--c1acc);flex-shrink:0}
+  .assess-row label{font-size:0.71rem;color:var(--light);line-height:1.5}
+
+  /* SITE ANNOTATION FIELDS */
+  .annotate-box{background:rgba(0,0,0,0.2);border:1.5px dashed rgba(255,255,255,0.16);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .annotate-box h3{font-size:0.74rem;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .annotate-box .sub{font-size:0.65rem;color:var(--mid);margin-bottom:12px}
+  .annotate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotate-field{display:flex;flex-direction:column;gap:4px}
+  .annotate-field label{font-size:0.66rem;font-family:var(--mono);color:var(--c1acc)}
+  .annotate-field textarea, .annotate-field input[type=text]{
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:6px;
+    color:var(--white);font-family:var(--font);font-size:0.72rem;padding:8px 10px;resize:vertical;
+  }
+  .annotate-field textarea:focus, .annotate-field input[type=text]:focus{outline:none;border-color:var(--c1acc)}
+
+  /* PRINT OPTIMIZATION */
+  @media print {
+    body{background:#FFFFFF !important;color:#1A1A1A !important}
+    .header{background:#FFFFFF !important;border-bottom:2px solid #1A1A1A}
+    .logo span:first-child, .logo span:last-child, .header h1{color:#1A1A1A !important}
+    .header h1 em{color:#0A6E8C !important}
+    .header-sub, .stat-badge, .reg-badge, .enh-badge{color:#333 !important}
+    .legend{background:#F2F2F2 !important}
+    .map-wrap, .phase-body, .node-action, .node-decision, .limits-box, .exceed-box, .trend-box, .ccs-box,
+    .regtext-box, .pattern-box, .practice-box, .assess-box, .annotate-box, .rule-card{
+      background:#FAFAFA !important;color:#1A1A1A !important;border-color:#CCCCCC !important;
+    }
+    .node-title, .node-body, .limit-card p, .exceed-step, .trend-item, .ccs-item, .regtext-item p,
+    .pattern-item, .practice-item, .rule-card p, .assess-row label{color:#1A1A1A !important}
+    .assess-box summary{color:#1A1A1A !important}
+    .footer{color:#333 !important}
+    .assess-box summary .arrow-icon{display:none}
+    details.assess-box{display:block}
+    .assess-body{display:block !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>SAE <em>Reporting Workflow</em></h1>
+    <div class="header-sub">ICH E2A &nbsp;|&nbsp; 21 CFR 312.32 &nbsp;|&nbsp; EU CTR 536/2014 Art. 41-43 &nbsp;|&nbsp; ICH E2B(R3)</div>
+  </div>
+  <div class="header-right">
+    <div class="enh-badge">Enhanced Edition &#183; Subscriber Content</div>
+    <div class="reg-badge">
+      ICH E2A Clinical Safety Data Management<br>
+      21 CFR 312.32 &nbsp;·&nbsp; EU CTR 536/2014 Art. 41-43 &nbsp;·&nbsp; ICH E2B(R3)
+    </div>
+    <div class="stat-badge">
+      Every SAE report protects future subjects<br>
+      from an unrecognized risk
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Event Identification and Initial Assessment</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Sponsor Evaluation and SUSAR Determination</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Regulatory Reporting and Notification</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Follow-Up and Case Closure</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128680;</div>
+    <div class="trigger-text">
+      <h3>SAE Reporting - Protecting Subjects Through Timely Safety Escalation</h3>
+      <p>A serious adverse event report is the mechanism by which a single subject's experience becomes protective knowledge for every other subject in a trial, and every future patient who takes the product. ICH E2A defines the seriousness criteria, causality framework, and expedited reporting principles that apply across regions, while 21 CFR 312.32 and EU CTR 536/2014 set the specific regulatory timelines sponsors must meet. This map details the pathway from event identification through sponsor determination, expedited regulatory submission, and case follow-up to closure.</p>
+      <div class="reg">ICH E2A &nbsp;·&nbsp; 21 CFR 312.32 &nbsp;·&nbsp; EU CTR 536/2014 Art. 41-43 &nbsp;·&nbsp; ICH E2B(R3)</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-iso">ICH E2A</div>
+      <div class="ref-chip chip-fda">21 CFR 312.32</div>
+      <div class="ref-chip chip-eu">EU CTR 536/2014</div>
+      <div class="ref-chip chip-iso">ICH E2B(R3)</div>
+    </div>
+  </div>
+
+  <!-- SAE TIMELINE BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-a">
+      <h4>Fatal / Life-Threatening SUSAR</h4>
+      <p>Unexpected, serious, related event that is fatal or life-threatening. Shortest reporting clock of any category.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Initial report: <span>7 calendar days</span></div>
+        <div class="limit-row">Follow-up: <span>+8 calendar days</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Other SUSAR</h4>
+      <p>Unexpected, serious, related event that is not fatal or life-threatening. Standard expedited timeline.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Initial report: <span>15 calendar days</span></div>
+        <div class="limit-row">Follow-up: <span>As available</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-c">
+      <h4>Expected Serious AE</h4>
+      <p>Serious and related, but consistent with the reference safety information. Not expedited.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Reporting route: <span>Periodic (DSUR)</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Non-Serious AE</h4>
+      <p>Does not meet seriousness criteria. Captured in the safety database only.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Reporting route: <span>Routine periodic only</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Event Identification and Initial Assessment
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Identify and document the adverse event</div>
+              <div class="node-body">Investigator or site staff identifies the event through subject report, clinical observation, or laboratory finding, and documents it in the source record.</div>
+              <div class="node-reg">ICH E6(R2)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Determine seriousness per ICH E2A criteria</div>
+              <div class="node-body">Event evaluated against the seriousness criteria: results in death, is life-threatening, requires hospitalization or prolongs existing hospitalization, results in persistent disability, is a congenital anomaly, or is another medically important event.</div>
+              <div class="node-reg">ICH E2A Section II.A</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Investigator makes initial causality assessment</div>
+              <div class="node-body">Investigator records their assessment of the relationship between the event and the investigational product using the trial's defined causality categories.</div>
+              <div class="node-reg">ICH E2A Section III.B</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Submit initial SAE report to sponsor</div>
+              <div class="node-body">Site submits the initial SAE report to the sponsor within 24 hours of becoming aware of the event, per the protocol and site agreement.</div>
+              <div class="node-reg">ICH E6(R2) Section 4.11</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Sponsor Evaluation and SUSAR Determination
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Sponsor medical reviewer evaluates the case</div>
+              <div class="node-body">Sponsor pharmacovigilance or medical safety function reviews seriousness and causality independently of the site's initial assessment.</div>
+              <div class="node-reg">ICH E2A Section III.C</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Determine expectedness against reference safety information</div>
+              <div class="node-body">Event compared against the current investigator's brochure or reference safety information to determine whether it is a listed, expected event.</div>
+              <div class="node-reg">ICH E2A Section III.A</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Is the event a Suspected Unexpected Serious Adverse Reaction (SUSAR)?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Expedited regulatory reporting</span>
+                <span class="opt-n">NO &#8594; Routine safety database entry</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Regulatory Reporting and Notification
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Submit expedited report to regulatory authorities</div>
+              <div class="node-body">SUSAR submitted within the required timeline: 7 calendar days for fatal or life-threatening events, 15 calendar days for all other SUSARs.</div>
+              <div class="node-reg">21 CFR 312.32 &#183; EU CTR 536/2014 Art. 42</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Notify IRB, Ethics Committee, and investigators</div>
+              <div class="node-body">Relevant safety information distributed to the IRB or Ethics Committee and to investigators at all participating sites, per protocol requirements.</div>
+              <div class="node-reg">ICH E6(R2) Section 5.17</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">9</span>Update the reference safety information if needed</div>
+              <div class="node-body">Investigator's brochure or reference safety information revised when a new SUSAR pattern indicates the current safety profile is no longer accurate.</div>
+              <div class="node-reg">ICH E2A Section III.A</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Follow-Up and Case Closure
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Collect follow-up information</div>
+              <div class="node-body">Additional clinical information gathered until the event resolves, stabilizes, or the subject's condition is otherwise fully characterized.</div>
+              <div class="node-reg">ICH E2A Section IV</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Submit follow-up expedited reports</div>
+              <div class="node-body">Follow-up reports submitted as significant new information becomes available, within 8 additional calendar days for fatal or life-threatening events.</div>
+              <div class="node-reg">21 CFR 312.32(c)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Include the event in aggregate safety reporting</div>
+              <div class="node-body">Case summarized in the periodic Development Safety Update Report or equivalent aggregate report, providing cumulative safety context.</div>
+              <div class="node-reg">ICH E2F</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">13</span>Close the case record</div>
+              <div class="node-body">Case record closed in the safety database once resolution is documented and all required reports have been submitted and reconciled.</div>
+              <div class="node-reg">ICH E2B(R3)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- TIMELINE REQUIREMENTS -->
+      <div class="limits-box">
+        <div class="limits-header">SAE Reporting Timeline Requirements</div>
+        <div class="limits-body">
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Fatal or Life-Threatening SUSAR</h4>
+            <p>Initial report to regulatory authorities within 7 calendar days of sponsor awareness, followed by a complete follow-up report within 8 additional calendar days.</p>
+            <div class="stat">21 CFR 312.32(c)(1)(i)</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Other SUSAR</h4>
+            <p>Initial report submitted within 15 calendar days of sponsor awareness, with follow-up reports as new information becomes available.</p>
+            <div class="stat">21 CFR 312.32(c)(1)(ii)</div>
+          </div>
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Expected Serious Adverse Events</h4>
+            <p>Not subject to expedited timelines. Captured in the safety database and summarized in periodic aggregate reports.</p>
+            <div class="stat">ICH E2A Section III.A</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAUSALITY CATEGORIES -->
+      <div class="exceed-box">
+        <h3>Causality Assessment Categories (Overview)</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Unrelated</strong>
+            Event clearly explained by another cause, such as the underlying disease or a concomitant medication, with no plausible link to the investigational product.
+          </div>
+          <div class="exceed-step">
+            <strong>Unlikely</strong>
+            Temporal relationship exists but another explanation is more probable, and a causal link to the investigational product is not well supported.
+          </div>
+          <div class="exceed-step">
+            <strong>Possible</strong>
+            Reasonable temporal relationship exists and a causal link cannot be ruled out, though other explanations are also plausible.
+          </div>
+          <div class="exceed-step">
+            <strong>Probable / Definite</strong>
+            Strong temporal relationship, no more likely alternative explanation, and in definite cases a positive dechallenge or rechallenge supports the investigational product as the cause.
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTIFICATION RECIPIENTS -->
+      <div class="trend-box">
+        <h3>Regulatory Notification Recipients (Overview)</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>National regulatory authorities</strong>
+            FDA IND safety report or the applicable national competent authority, per the jurisdiction in which the trial is conducted.
+          </div>
+          <div class="trend-item">
+            <strong>EU safety database</strong>
+            SUSARs occurring in EU trials reported to the applicable EU/EEA pharmacovigilance database per EU CTR 536/2014.
+          </div>
+          <div class="trend-item">
+            <strong>IRB / Ethics Committee</strong>
+            Notified of SUSARs and other safety information relevant to the ongoing evaluation of subject risk at the site.
+          </div>
+          <div class="trend-item">
+            <strong>Participating investigators</strong>
+            All investigators across a multi-site trial informed of SUSARs that may affect their site's risk assessment or informed consent process.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SAE REPORTING QUALITY ELEMENTS -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>SAE Reporting Quality Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Initial 24-Hour Site Notification</strong>
+        Site reports the SAE to the sponsor within 24 hours of first becoming aware, regardless of completeness of information at that point.
+      </div>
+      <div class="ccs-item">
+        <strong>Investigator Causality Assessment</strong>
+        Documented, investigator-level judgment of the relationship between the event and the investigational product, recorded independent of the sponsor's later review.
+      </div>
+      <div class="ccs-item">
+        <strong>Sponsor Medical Review</strong>
+        Independent medical evaluation of seriousness, causality, and expectedness performed by qualified sponsor safety personnel.
+      </div>
+      <div class="ccs-item">
+        <strong>SUSAR Determination</strong>
+        Formal classification combining seriousness, causality, and expectedness to determine whether expedited reporting is triggered.
+      </div>
+      <div class="ccs-item">
+        <strong>Expedited Regulatory Timelines</strong>
+        7-day and 15-day clocks met consistently, measured from the date the sponsor first becomes aware of a reportable event.
+      </div>
+      <div class="ccs-item">
+        <strong>IRB / EC Notification</strong>
+        Safety information relevant to subject risk communicated to the overseeing ethics body per protocol and applicable regulation.
+      </div>
+      <div class="ccs-item">
+        <strong>Follow-Up Reporting</strong>
+        New clinically significant information captured and submitted as supplemental reports until the case is resolved.
+      </div>
+      <div class="ccs-item">
+        <strong>Aggregate Safety Reporting</strong>
+        Individual case data rolled into periodic Development Safety Update Reports, providing cumulative trend context beyond single events.
+      </div>
+    </div>
+  </div>
+
+  <!-- REGULATORY TEXT PANEL -->
+  <div class="regtext-box">
+    <h3>Regulatory Text - Source Provisions</h3>
+    <div class="regtext-items">
+      <div class="regtext-item">
+        <div class="src">21 CFR 312.32(c)(1)(i)</div>
+        <p>The sponsor must notify FDA of any unexpected fatal or life-threatening suspected adverse reaction as soon as possible but in no case later than 7 calendar days after the sponsor's initial receipt of the information.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">21 CFR 312.32(c)(1)(ii)</div>
+        <p>The sponsor must notify FDA of any suspected adverse reaction that is both serious and unexpected as soon as possible but in no case later than 15 calendar days after the sponsor determines that the information qualifies for reporting.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">ICH E2A, Section II.C (paraphrased - refer to the official guideline for exact wording)</div>
+        <p>Expectedness is determined by whether the event is listed in the applicable reference safety information, such as the investigator's brochure, rather than by the event's clinical seriousness alone.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSPECTION PATTERN PANEL -->
+  <div class="pattern-box">
+    <h3>Common Inspection Findings - SAE Reporting</h3>
+    <div class="disclaimer">Illustrative of recurring themes seen across published FDA 483s and warning letters. Not tied to a single specific citation.</div>
+    <div class="pattern-items">
+      <div class="pattern-item">
+        <strong>Expedited reporting clock started late</strong>
+        Timeline measured from a document date rather than from the date the sponsor first received sufficient information to trigger the reporting obligation.
+      </div>
+      <div class="pattern-item">
+        <strong>Causality assessment not independently performed</strong>
+        Sponsor safety review adopting the site's causality assessment without a documented independent medical evaluation.
+      </div>
+      <div class="pattern-item">
+        <strong>Not all participating sites notified</strong>
+        Safety information distributed to some but not all investigators across a multi-site trial following a SUSAR determination.
+      </div>
+      <div class="pattern-item">
+        <strong>Follow-up information not pursued</strong>
+        Case left open with no evidence of active follow-up to obtain missing information needed to complete the safety assessment.
+      </div>
+    </div>
+  </div>
+
+  <!-- BEST PRACTICE PANEL -->
+  <div class="practice-box">
+    <h3>Best Practice Guidance</h3>
+    <div class="practice-items">
+      <div class="practice-item">
+        <strong>Define awareness date in the safety management plan</strong>
+        Document precisely what constitutes sponsor awareness for clock-start purposes, so the same standard applies consistently across all sites and reviewers.
+      </div>
+      <div class="practice-item">
+        <strong>Separate site and sponsor causality assessments</strong>
+        Keep the investigator's causality judgment and the sponsor's independent medical review as distinct, separately documented steps rather than one carrying forward the other.
+      </div>
+      <div class="practice-item">
+        <strong>Maintain a live distribution list for safety notifications</strong>
+        Keep an up-to-date list of all investigators and IRBs across a multi-site trial so SUSAR notifications reach every site without manual reconstruction each time.
+      </div>
+      <div class="practice-item">
+        <strong>Track open cases against a follow-up cadence</strong>
+        Review open SAE cases on a fixed cycle to confirm active follow-up is occurring, rather than waiting for the next scheduled report to notice a stalled case.
+      </div>
+    </div>
+  </div>
+
+  <!-- SELF-ASSESSMENT CHECKLIST -->
+  <details class="assess-box">
+    <summary>Self-Assessment Checklist - Is Your SAE Process Inspection Ready? <span class="arrow-icon">&#9654;</span></summary>
+    <div class="assess-body">
+      <div class="assess-note">For personal or team use during training. Responses are not saved or submitted.</div>
+      <div class="assess-row"><input type="checkbox" id="a1"><label for="a1">Sites submit initial SAE reports to the sponsor within 24 hours of becoming aware of an event.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a2"><label for="a2">Sponsor medical review of causality and expectedness is documented independently of the site's assessment.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a3"><label for="a3">SUSAR determination is formally recorded and drives the correct expedited timeline.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a4"><label for="a4">The 7-day and 15-day regulatory clocks are met consistently, measured from sponsor awareness.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a5"><label for="a5">All participating investigators and IRBs are notified of relevant SUSARs, not only the site where the event occurred.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a6"><label for="a6">Open cases are actively followed up rather than left pending until new information arrives unprompted.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a7"><label for="a7">Case data is reconciled into periodic aggregate safety reports on schedule.</label></div>
+    </div>
+  </details>
+
+  <!-- SITE ANNOTATION FIELDS -->
+  <div class="annotate-box">
+    <h3>Site Annotation</h3>
+    <div class="sub">Add your trial-specific references while reviewing this map. Not saved between sessions - copy notes into your own records before closing.</div>
+    <div class="annotate-grid">
+      <div class="annotate-field">
+        <label>PROTOCOL / STUDY ID</label>
+        <input type="text" placeholder="e.g. Protocol XYZ-201, Phase II">
+      </div>
+      <div class="annotate-field">
+        <label>LOCAL SOP REFERENCE</label>
+        <input type="text" placeholder="e.g. SOP-PV-004 Rev 3">
+      </div>
+      <div class="annotate-field" style="grid-column: 1 / -1">
+        <label>NOTES</label>
+        <textarea rows="3" placeholder="Site-specific observations, open questions, or follow-up items for the safety team."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Allow the 24-hour site notification clock to slip because information is incomplete. Delay SUSAR determination pending unrelated administrative review. Miss the 7 or 15 day expedited reporting deadline. Fail to notify all participating sites of a safety signal that could affect their risk assessment.</p>
+    </div>
+    <div class="rule-card">
+      <h4>SAE vs AE</h4>
+      <p>An adverse event is any untoward medical occurrence in a subject. A serious adverse event meets one or more specific seriousness criteria, such as death, hospitalization, or life-threatening risk. Seriousness, not severity, determines the regulatory reporting pathway.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Expedited vs periodic reporting</h4>
+      <p>Expedited reporting applies to SUSARs and follows fixed regulatory clocks measured in days. Periodic reporting, such as the DSUR, aggregates all safety data including expected events on a scheduled annual or protocol-defined cycle.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>ICH E2A - clinical safety data management definitions and standards. 21 CFR 312.32 - IND safety reporting requirements and timelines. EU CTR 536/2014 Art. 41-43 - EU safety reporting obligations. ICH E2B(R3) - electronic safety report data elements.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    SAE Reporting Workflow &nbsp;&#183;&nbsp;
+    Built from ICH E2A, 21 CFR 312.32, EU CTR 536/2014, ICH E2B(R3) &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Clinical Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
