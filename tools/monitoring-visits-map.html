@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitoring Visits Workflow | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* VISIT TYPE BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* VISIT TYPES AND PURPOSE */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* SDV APPROACH */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* FINDING CATEGORIES */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* MONITORING VISIT QUALITY ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Monitoring Visits <em>Workflow</em></h1>
+    <div class="header-sub">ICH E6(R2) Section 5.18 &nbsp;|&nbsp; 21 CFR 312.50 &nbsp;|&nbsp; FDA Risk-Based Monitoring Guidance 2013</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      ICH E6(R2) Section 5.18<br>
+      21 CFR 312.50 &nbsp;·&nbsp; FDA RBM Guidance 2013
+    </div>
+    <div class="stat-badge">
+      Monitoring is the sponsor's ongoing verification<br>
+      that the trial is what the data say it is
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Monitoring Plan Development</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Visit Preparation and Site Visits</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Routine Monitoring Visit Conduct</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Findings Follow-Up and Closeout</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128203;</div>
+    <div class="trigger-text">
+      <h3>Monitoring Visits - The Sponsor's Window Into Site Conduct</h3>
+      <p>Monitoring is the process by which a sponsor confirms that a trial is being conducted, recorded, and reported in accordance with the protocol, GCP, and applicable regulation, and that subject rights and safety are being protected. ICH E6(R2) requires a monitoring approach appropriate to the specific risks of the trial, ranging from on-site visits to centralized, risk-based methods. This map details the pathway from monitoring plan development through pre-study, initiation, routine, and closeout visits, and the follow-up cycle that closes each finding.</p>
+      <div class="reg">ICH E6(R2) Section 5.18 &nbsp;·&nbsp; 21 CFR 312.50 &nbsp;·&nbsp; FDA Risk-Based Monitoring Guidance 2013</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-iso">ICH E6(R2)</div>
+      <div class="ref-chip chip-fda">21 CFR 312.50</div>
+      <div class="ref-chip chip-fda">FDA RBM 2013</div>
+    </div>
+  </div>
+
+  <!-- VISIT TYPE BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-c">
+      <h4>Pre-Study Visit</h4>
+      <p>Assesses a candidate site's capability, facilities, and patient population before selection, ahead of any trial activity.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Timing: <span>Before site selection</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Site Initiation Visit</h4>
+      <p>Confirms the site is ready to enroll, with trained staff, regulatory documents in place, and supplies on hand.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Timing: <span>Before first enrollment</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-a">
+      <h4>Routine Monitoring Visit</h4>
+      <p>Ongoing visits verifying source data, protocol adherence, and safety reporting throughout active enrollment and follow-up.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Timing: <span>Per monitoring plan cadence</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Closeout Visit</h4>
+      <p>Confirms all queries resolved, product reconciled, and essential documents complete once the site's participation ends.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Timing: <span>End of site participation</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Monitoring Plan Development
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Develop the risk-based monitoring plan</div>
+              <div class="node-body">Monitoring approach defined based on trial risk, investigational product complexity, and site experience, per ICH E6(R2) and FDA RBM guidance.</div>
+              <div class="node-reg">ICH E6(R2) Section 5.18.3</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Define monitoring visit frequency and triggers</div>
+              <div class="node-body">Visit cadence set by enrollment rate, protocol complexity, and site performance, with triggers defined for unscheduled visits when risk indicators arise.</div>
+              <div class="node-reg">FDA RBM Guidance 2013</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Establish source data verification sampling strategy</div>
+              <div class="node-body">SDV approach defined, whether full verification or a targeted, risk-based sample focused on critical data points and safety information.</div>
+              <div class="node-reg">FDA RBM Guidance 2013</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Train monitors on protocol and monitoring plan</div>
+              <div class="node-body">Monitors trained on the specific protocol, investigational product handling, and the monitoring plan's visit and reporting requirements before the first visit.</div>
+              <div class="node-reg">ICH E6(R2) Section 5.18.1</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Visit Preparation and Site Visits
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Conduct pre-study site visit</div>
+              <div class="node-body">Candidate site evaluated for facilities, staff experience, patient population access, and capability to conduct the trial per protocol.</div>
+              <div class="node-reg">ICH E6(R2) Section 5.18</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Conduct site initiation visit</div>
+              <div class="node-body">Site staff trained on the protocol and procedures, regulatory documents confirmed complete, and supplies verified before enrollment opens.</div>
+              <div class="node-reg">ICH E6(R2) Section 5.18</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Prepare visit report and confirmation letter</div>
+              <div class="node-body">Written monitoring visit report completed after each visit, summarizing findings and actions, with a confirmation letter sent to the site.</div>
+              <div class="node-reg">ICH E6(R2) Section 5.18.6</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Does the visit identify a finding requiring corrective action?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Issue corrective action request</span>
+                <span class="opt-n">NO &#8594; Confirm site on track</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Routine Monitoring Visit Conduct
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Verify source data against case report forms</div>
+              <div class="node-body">Case report form entries checked against source documents per the sampling strategy, confirming accuracy, completeness, and traceability.</div>
+              <div class="node-reg">ICH E6(R2) Section 5.18.4</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Confirm protocol and GCP compliance</div>
+              <div class="node-body">Site practices reviewed against the protocol and GCP, including informed consent process, eligibility criteria application, and safety reporting timeliness.</div>
+              <div class="node-reg">ICH E6(R2) Section 5.18.4</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Reconcile investigational product accountability</div>
+              <div class="node-body">Investigational product receipt, dispensing, storage conditions, and return records reconciled against the accountability log.</div>
+              <div class="node-reg">21 CFR 312.50</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Findings Follow-Up and Closeout
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Track corrective actions to closure</div>
+              <div class="node-body">Findings tracked from identification through documented resolution, with verification at the subsequent visit before closure.</div>
+              <div class="node-reg">ICH E6(R2) Section 5.18.6</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Escalate unresolved findings</div>
+              <div class="node-body">Findings not resolved within the expected timeframe escalated per the sponsor's defined escalation pathway, up to and including site risk reassessment.</div>
+              <div class="node-reg">ICH E6(R2) Section 5.18</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Conduct closeout visit and final reconciliation</div>
+              <div class="node-body">Final visit confirms all queries resolved, investigational product reconciled, and essential documents complete before the site's participation ends.</div>
+              <div class="node-reg">ICH E6(R2) Section 5.18</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- VISIT TYPES AND PURPOSE -->
+      <div class="limits-box">
+        <div class="limits-header">Monitoring Visit Types and Purpose</div>
+        <div class="limits-body">
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Pre-Study and Initiation Visits</h4>
+            <p>Confirm site capability before selection and readiness before enrollment. Focused on infrastructure, staff training, and document completeness.</p>
+            <div class="stat">ICH E6(R2) Section 5.18</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Routine Monitoring Visits</h4>
+            <p>Ongoing verification of source data, protocol adherence, and product accountability, at a frequency set by the risk-based monitoring plan.</p>
+            <div class="stat">ICH E6(R2) Section 5.18.3</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Closeout Visits</h4>
+            <p>Final confirmation that all outstanding items are resolved and the site's records are complete before its participation formally ends.</p>
+            <div class="stat">ICH E6(R2) Section 5.18</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SDV APPROACH -->
+      <div class="exceed-box">
+        <h3>Source Data Verification Approach (Overview)</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>100% SDV</strong>
+            Every data point verified against source documents. Resource-intensive, typically reserved for high-risk trials or critical endpoints.
+          </div>
+          <div class="exceed-step">
+            <strong>Targeted / risk-based SDV</strong>
+            Verification focused on critical data points, such as eligibility, primary endpoints, and safety data, with reduced verification elsewhere.
+          </div>
+          <div class="exceed-step">
+            <strong>Centralized and remote monitoring</strong>
+            Statistical review of aggregated data across sites to identify outliers and trends, supplementing or partially replacing on-site visits.
+          </div>
+          <div class="exceed-step">
+            <strong>Sampling strategy documentation</strong>
+            The chosen approach and its rationale documented in the monitoring plan, so the level of verification applied is traceable and justified.
+          </div>
+        </div>
+      </div>
+
+      <!-- FINDING CATEGORIES -->
+      <div class="trend-box">
+        <h3>Common Monitoring Finding Categories (Overview)</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Source documentation gaps</strong>
+            Case report form entries without a supporting source document, or source records that are incomplete or not contemporaneous.
+          </div>
+          <div class="trend-item">
+            <strong>Protocol deviations</strong>
+            Departures from the approved protocol identified during source review, ranging from visit window issues to eligibility questions.
+          </div>
+          <div class="trend-item">
+            <strong>Product accountability discrepancies</strong>
+            Dispensing or return records that do not reconcile with the investigational product accountability log.
+          </div>
+          <div class="trend-item">
+            <strong>Regulatory document currency</strong>
+            Expired approvals, outdated delegation logs, or missing training records identified in the site's regulatory binder.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MONITORING VISIT QUALITY ELEMENTS -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Monitoring Visit Quality Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Risk-Based Monitoring Plan</strong>
+        Documented plan defining monitoring approach, visit frequency, and SDV sampling strategy scaled to trial and site risk.
+      </div>
+      <div class="ccs-item">
+        <strong>Visit Frequency Justification</strong>
+        Rationale for the chosen visit cadence, tied to enrollment rate, protocol complexity, and observed site performance.
+      </div>
+      <div class="ccs-item">
+        <strong>Source Data Verification</strong>
+        Case report form data checked against source documents per the defined sampling strategy at every routine visit.
+      </div>
+      <div class="ccs-item">
+        <strong>Regulatory Binder Review</strong>
+        Site regulatory documents, including approvals, delegation logs, and training records, confirmed current at each visit.
+      </div>
+      <div class="ccs-item">
+        <strong>Investigational Product Accountability</strong>
+        Dispensing, storage, and return records reconciled against the accountability log at every applicable visit.
+      </div>
+      <div class="ccs-item">
+        <strong>Informed Consent Verification</strong>
+        Consent documentation confirmed complete and properly dated relative to study procedures for every enrolled subject.
+      </div>
+      <div class="ccs-item">
+        <strong>Corrective Action Tracking</strong>
+        Findings tracked from identification through documented, verified resolution rather than closed on the site's word alone.
+      </div>
+      <div class="ccs-item">
+        <strong>Visit Report Documentation</strong>
+        Written report and site confirmation letter completed for every visit, forming part of the trial master file record.
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Skip a scheduled monitoring visit without documented justification and a revised plan. Close a finding without verifying the corrective action at the next visit. Apply a fixed SDV percentage without a documented risk-based rationale. Leave a site's regulatory binder unreviewed for multiple consecutive visits.</p>
+    </div>
+    <div class="rule-card">
+      <h4>On-site vs centralized monitoring</h4>
+      <p>On-site monitoring involves a monitor physically reviewing records at the site. Centralized monitoring uses statistical analysis of data across sites to identify risk signals remotely. Most modern monitoring plans blend both approaches based on trial risk.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Monitoring vs auditing</h4>
+      <p>Monitoring is an ongoing sponsor function verifying day-to-day trial conduct at the site level. Auditing is an independent, periodic sponsor quality function assessing whether monitoring and site processes themselves are working as intended.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>ICH E6(R2) Section 5.18 - monitoring requirements and risk-based approach. 21 CFR 312.50 - sponsor monitoring responsibilities. FDA Risk-Based Monitoring Guidance 2013 - risk-based monitoring methodology and rationale.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Monitoring Visits Workflow &nbsp;&#183;&nbsp;
+    Built from ICH E6(R2) Section 5.18, 21 CFR 312.50, FDA Risk-Based Monitoring Guidance 2013 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Clinical Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
