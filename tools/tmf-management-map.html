@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TMF Management Workflow | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* TMF STRUCTURE ZONES BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* TMF OWNERSHIP AND STRUCTURE */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* DOCUMENT QUALITY STANDARDS */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* COMPLETENESS METRICS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* TMF MANAGEMENT QUALITY ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>TMF Management <em>Workflow</em></h1>
+    <div class="header-sub">ICH E6(R2) Section 8 &nbsp;|&nbsp; TMF Reference Model &nbsp;|&nbsp; EU CTR 536/2014 &nbsp;|&nbsp; 21 CFR 312.57</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      ICH E6(R2) Section 8<br>
+      TMF Reference Model &nbsp;·&nbsp; EU CTR 536/2014 &nbsp;·&nbsp; 21 CFR 312.57
+    </div>
+    <div class="stat-badge">
+      A trial that isn't documented did not happen,<br>
+      however well it was actually conducted
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - TMF Structure and Planning</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Document Collection and Filing</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Quality Control and Completeness Review</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Archival and Retention</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128193;</div>
+    <div class="trigger-text">
+      <h3>TMF Management - Evidence That the Trial Was Conducted in Compliance</h3>
+      <p>The Trial Master File is the collection of essential documents that allows the conduct of a trial and the quality of the resulting data to be evaluated, and confirms compliance with GCP and applicable regulatory requirements. ICH E6(R2) Section 8 defines the essential document categories expected before, during, and after a trial, while the industry TMF Reference Model provides the standard taxonomy most sponsors and CROs build their filing structure around. This map details the pathway from TMF structure and planning through real-time filing, completeness review, and archival.</p>
+      <div class="reg">ICH E6(R2) Section 8 &nbsp;·&nbsp; TMF Reference Model &nbsp;·&nbsp; EU CTR 536/2014 &nbsp;·&nbsp; 21 CFR 312.57</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-iso">ICH E6(R2)</div>
+      <div class="ref-chip chip-usp">TMF Reference Model</div>
+      <div class="ref-chip chip-eu">EU CTR 536/2014</div>
+      <div class="ref-chip chip-fda">21 CFR 312.57</div>
+    </div>
+  </div>
+
+  <!-- TMF STRUCTURE ZONES BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-c">
+      <h4>Trial Management</h4>
+      <p>Trial-level oversight documents: protocol, trial management plan, monitoring plan, and committee records.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Owner: <span>Sponsor</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Central Trial Documents</h4>
+      <p>Documents applicable trial-wide: regulatory submissions, safety reports, and central lab or vendor agreements.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Owner: <span>Sponsor / CRO</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-a">
+      <h4>Site Management</h4>
+      <p>Site-level documents: regulatory approvals, delegation logs, training records, and monitoring visit reports.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Owner: <span>Site / Investigator</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>IP and Safety</h4>
+      <p>Investigational product accountability records and safety reporting documentation across the trial.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Owner: <span>Sponsor and Site</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            TMF Structure and Planning
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Establish the TMF structure and filing plan</div>
+              <div class="node-body">Filing structure built on a recognized taxonomy, typically the TMF Reference Model, defining zones, sections, and artifact types before the trial begins.</div>
+              <div class="node-reg">TMF Reference Model</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Assign TMF ownership and access roles</div>
+              <div class="node-body">Named TMF owner assigned with defined roles for filing, quality review, and approval, along with access controls appropriate to each role.</div>
+              <div class="node-reg">ICH E6(R2) Section 8</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Define the essential document index</div>
+              <div class="node-body">Trial-specific index built from the ICH E6(R2) essential document list, tailored to the protocol's specific vendors, committees, and regulatory pathway.</div>
+              <div class="node-reg">ICH E6(R2) Section 8</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Set up the investigator site file structure</div>
+              <div class="node-body">Site-level file structure established at each participating site, mirroring the sponsor TMF taxonomy for the site-owned document categories.</div>
+              <div class="node-reg">ICH E6(R2) Section 8</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Document Collection and Filing
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>File startup documents before enrollment</div>
+              <div class="node-body">Protocol, investigator's brochure, regulatory and IRB approvals, and signed agreements filed before the first subject is enrolled at any site.</div>
+              <div class="node-reg">ICH E6(R2) Section 8.2</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Collect and file documents continuously</div>
+              <div class="node-body">Monitoring reports, updated approvals, and safety documentation filed as they are generated, rather than accumulated for later batch filing.</div>
+              <div class="node-reg">ICH E6(R2) Section 8.1</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Version control superseded documents</div>
+              <div class="node-body">Superseded versions of protocols, IBs, and other controlled documents retained and clearly marked, with the current version identifiable at all times.</div>
+              <div class="node-reg">TMF Reference Model</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Is the document complete, legible, and correctly filed?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; File and index</span>
+                <span class="opt-n">NO &#8594; Return for correction</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Quality Control and Completeness Review
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Conduct periodic TMF completeness reviews</div>
+              <div class="node-body">Scheduled reviews assess the TMF against the essential document index, identifying missing, outdated, or misfiled documents.</div>
+              <div class="node-reg">ICH E6(R2) Section 8</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Reconcile sponsor TMF against site files</div>
+              <div class="node-body">Sponsor TMF and investigator site file compared to confirm both hold the required, consistent, and correctly versioned documentation.</div>
+              <div class="node-reg">TMF Reference Model</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Resolve missing or misfiled document findings</div>
+              <div class="node-body">Gaps identified during review tracked to resolution, with root cause addressed to prevent recurrence across other sites or documents.</div>
+              <div class="node-reg">ICH E6(R2) Section 8</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Archival and Retention
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Conduct final TMF completeness check</div>
+              <div class="node-body">Comprehensive review performed at trial closure confirming the TMF is complete before archival, with any final gaps resolved.</div>
+              <div class="node-reg">ICH E6(R2) Section 8</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Migrate and lock the TMF for archival</div>
+              <div class="node-body">TMF migrated to its archival system and locked against further edits, preserving the record exactly as it existed at trial completion.</div>
+              <div class="node-reg">EU CTR 536/2014</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Retain the TMF per required retention period</div>
+              <div class="node-body">TMF retained for the period required by applicable regulation, typically a minimum number of years following trial completion or product approval.</div>
+              <div class="node-reg">21 CFR 312.57 &#183; EU CTR 536/2014</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- TMF OWNERSHIP AND STRUCTURE -->
+      <div class="limits-box">
+        <div class="limits-header">TMF Ownership and Structure</div>
+        <div class="limits-body">
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Trial Master File (Sponsor)</h4>
+            <p>Sponsor-owned collection of trial-wide essential documents, held centrally regardless of how many sites or vendors are involved.</p>
+            <div class="stat">ICH E6(R2) Section 8</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Investigator Site File</h4>
+            <p>Site-owned subset of essential documents specific to that site's conduct of the trial, maintained by the investigator.</p>
+            <div class="stat">ICH E6(R2) Section 8</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Combined and Vendor-Held TMF</h4>
+            <p>Where a CRO or vendor holds part of the TMF, the sponsor retains ultimate responsibility for its completeness and accuracy.</p>
+            <div class="stat">ICH E6(R2) Section 5.2</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOCUMENT QUALITY STANDARDS -->
+      <div class="exceed-box">
+        <h3>Document Quality Standards (Overview)</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Legibility</strong>
+            Every filed document must be clearly readable, including scanned copies, with no illegible entries or cut-off pages.
+          </div>
+          <div class="exceed-step">
+            <strong>Completeness</strong>
+            Documents filed in full, including all pages, signatures, dates, and attachments referenced within the document itself.
+          </div>
+          <div class="exceed-step">
+            <strong>ALCOA+ principles</strong>
+            Filed records remain attributable, legible, contemporaneous, original, and accurate, consistent with data integrity expectations across the TMF.
+          </div>
+          <div class="exceed-step">
+            <strong>Contemporaneous filing</strong>
+            Documents filed at or near the time they are generated, avoiding the retrospective reconstruction risk of batch filing at closeout.
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPLETENESS METRICS -->
+      <div class="trend-box">
+        <h3>TMF Completeness Metrics (Overview)</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Filing timeliness</strong>
+            Measures the interval between document generation and filing, flagging documents filed outside the expected window.
+          </div>
+          <div class="trend-item">
+            <strong>Completeness percentage</strong>
+            Tracks the proportion of expected documents present against the essential document index at a given point in the trial.
+          </div>
+          <div class="trend-item">
+            <strong>Quality issue rate</strong>
+            Tracks documents returned for correction due to legibility, completeness, or misfiling issues, by site and by document type.
+          </div>
+          <div class="trend-item">
+            <strong>Reconciliation status</strong>
+            Tracks open discrepancies between the sponsor TMF and investigator site files pending resolution.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TMF MANAGEMENT QUALITY ELEMENTS -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>TMF Management Quality Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>TMF Reference Model Structure</strong>
+        Filing taxonomy built on a recognized industry standard, enabling consistent structure across trials and easier vendor or CRO alignment.
+      </div>
+      <div class="ccs-item">
+        <strong>Real-Time Filing Discipline</strong>
+        Documents filed as they are generated rather than reconstructed retrospectively, supporting contemporaneous, defensible records.
+      </div>
+      <div class="ccs-item">
+        <strong>Version Control</strong>
+        Current and superseded versions of controlled documents clearly distinguished, with the current version always identifiable.
+      </div>
+      <div class="ccs-item">
+        <strong>Access Control and Audit Trail</strong>
+        Role-based access to the TMF with a complete audit trail of who filed, modified, or approved each document.
+      </div>
+      <div class="ccs-item">
+        <strong>Periodic Completeness Reviews</strong>
+        Scheduled reviews against the essential document index throughout the trial, not only at closeout.
+      </div>
+      <div class="ccs-item">
+        <strong>Site-Sponsor Reconciliation</strong>
+        Sponsor TMF and investigator site files periodically compared to confirm consistency and identify gaps early.
+      </div>
+      <div class="ccs-item">
+        <strong>Archival Readiness</strong>
+        TMF structured and quality-controlled throughout the trial so final archival requires confirmation, not last-minute assembly.
+      </div>
+      <div class="ccs-item">
+        <strong>Retention Period Compliance</strong>
+        TMF retained in an accessible, unaltered state for the full period required by applicable regulation across all relevant jurisdictions.
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Wait until trial closeout to assemble the TMF from scratch. File a document without confirming it is legible and complete. Allow superseded and current document versions to be indistinguishable. Destroy or migrate TMF records before the required retention period has elapsed.</p>
+    </div>
+    <div class="rule-card">
+      <h4>TMF vs ISF</h4>
+      <p>The Trial Master File is the sponsor's complete, trial-wide collection of essential documents. The Investigator Site File is the site-specific subset maintained by the investigator. Together they should be reconcilable into one complete record of the trial.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Real-time vs retrospective filing</h4>
+      <p>Real-time filing captures documents as they are generated, supporting contemporaneous, defensible records. Retrospective filing reconstructs the TMF after the fact, increasing the risk of gaps, misdated entries, and inspection findings.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>ICH E6(R2) Section 8 - essential documents for the conduct of a clinical trial. TMF Reference Model - standard industry filing taxonomy. EU CTR 536/2014 - EU trial documentation and archival requirements. 21 CFR 312.57 - sponsor recordkeeping and retention.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    TMF Management Workflow &nbsp;&#183;&nbsp;
+    Built from ICH E6(R2) Section 8, TMF Reference Model, EU CTR 536/2014, 21 CFR 312.57 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Clinical Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
