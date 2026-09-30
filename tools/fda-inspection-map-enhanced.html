@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FDA Inspection Workflow - Enhanced Edition | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* INSPECTION TYPE BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* INSPECTION TYPES */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* KEY FDA FORMS */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* FRONT ROOM BACK ROOM */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* INSPECTION QUALITY ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+
+  /* ===== ENHANCED EDITION ADDITIONS ===== */
+  .enh-badge{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.35);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--gold);text-align:right}
+
+  /* REGULATORY TEXT PANEL */
+  .regtext-box{background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .regtext-box h3{font-size:0.74rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .regtext-items{display:flex;flex-direction:column;gap:9px}
+  .regtext-item{background:rgba(255,255,255,0.04);border-left:3px solid var(--c1acc);border-radius:5px;padding:9px 12px}
+  .regtext-item .src{font-size:0.63rem;font-family:var(--mono);color:var(--c1acc);margin-bottom:3px}
+  .regtext-item p{font-size:0.7rem;color:var(--light);line-height:1.55}
+
+  /* INSPECTION PATTERN PANEL */
+  .pattern-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .pattern-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .pattern-box .disclaimer{font-size:0.64rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px;font-style:italic}
+  .pattern-items{display:flex;flex-direction:column;gap:7px}
+  .pattern-item{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:8px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .pattern-item strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* BEST PRACTICE PANEL */
+  .practice-box{background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .practice-box h3{font-size:0.74rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .practice-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .practice-item{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.16);border-radius:5px;padding:9px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .practice-item strong{color:var(--green);display:block;font-size:0.67rem;margin-bottom:2px}
+
+  /* SELF-ASSESSMENT CHECKLIST */
+  .assess-box{background:rgba(56,189,248,0.05);border:1.5px solid rgba(56,189,248,0.22);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .assess-box summary{cursor:pointer;padding:12px 16px;font-size:0.78rem;font-weight:700;color:var(--white);list-style:none;display:flex;align-items:center;justify-content:space-between}
+  .assess-box summary::-webkit-details-marker{display:none}
+  .assess-box summary .arrow-icon{color:var(--c1acc);font-size:0.8rem;transition:transform 0.15s}
+  .assess-box[open] summary .arrow-icon{transform:rotate(90deg)}
+  .assess-body{padding:4px 16px 16px}
+  .assess-note{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px}
+  .assess-row{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .assess-row:last-child{border-bottom:none}
+  .assess-row input[type=checkbox]{margin-top:2px;width:15px;height:15px;accent-color:var(--c1acc);flex-shrink:0}
+  .assess-row label{font-size:0.71rem;color:var(--light);line-height:1.5}
+
+  /* SITE ANNOTATION FIELDS */
+  .annotate-box{background:rgba(0,0,0,0.2);border:1.5px dashed rgba(255,255,255,0.16);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .annotate-box h3{font-size:0.74rem;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .annotate-box .sub{font-size:0.65rem;color:var(--mid);margin-bottom:12px}
+  .annotate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotate-field{display:flex;flex-direction:column;gap:4px}
+  .annotate-field label{font-size:0.66rem;font-family:var(--mono);color:var(--c1acc)}
+  .annotate-field textarea, .annotate-field input[type=text]{
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:6px;
+    color:var(--white);font-family:var(--font);font-size:0.72rem;padding:8px 10px;resize:vertical;
+  }
+  .annotate-field textarea:focus, .annotate-field input[type=text]:focus{outline:none;border-color:var(--c1acc)}
+
+  /* PRINT OPTIMIZATION */
+  @media print {
+    body{background:#FFFFFF !important;color:#1A1A1A !important}
+    .header{background:#FFFFFF !important;border-bottom:2px solid #1A1A1A}
+    .logo span:first-child, .logo span:last-child, .header h1{color:#1A1A1A !important}
+    .header h1 em{color:#0A6E8C !important}
+    .header-sub, .stat-badge, .reg-badge, .enh-badge{color:#333 !important}
+    .legend{background:#F2F2F2 !important}
+    .map-wrap, .phase-body, .node-action, .node-decision, .limits-box, .exceed-box, .trend-box, .ccs-box,
+    .regtext-box, .pattern-box, .practice-box, .assess-box, .annotate-box, .rule-card{
+      background:#FAFAFA !important;color:#1A1A1A !important;border-color:#CCCCCC !important;
+    }
+    .node-title, .node-body, .limit-card p, .exceed-step, .trend-item, .ccs-item, .regtext-item p,
+    .pattern-item, .practice-item, .rule-card p, .assess-row label{color:#1A1A1A !important}
+    .assess-box summary{color:#1A1A1A !important}
+    .footer{color:#333 !important}
+    .assess-box summary .arrow-icon{display:none}
+    details.assess-box{display:block}
+    .assess-body{display:block !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>FDA Inspection <em>Workflow</em></h1>
+    <div class="header-sub">FD&amp;C Act Section 704 &nbsp;|&nbsp; 21 CFR Part 211 &nbsp;|&nbsp; FDA Investigations Operations Manual</div>
+  </div>
+  <div class="header-right">
+    <div class="enh-badge">Enhanced Edition &#183; Subscriber Content</div>
+    <div class="reg-badge">
+      FD&amp;C Act Section 704<br>
+      21 CFR Part 211 &nbsp;·&nbsp; FDA Investigations Operations Manual
+    </div>
+    <div class="stat-badge">
+      How a site performs in the room matters<br>
+      as much as what the records say
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Pre-Inspection Preparation</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Inspection Opening and Conduct</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Daily Wrap-Up and Response Management</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Close-Out and Post-Inspection Follow-Up</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#127963;&#65039;</div>
+    <div class="trigger-text">
+      <h3>FDA Inspection - Managing the On-Site Regulatory Review</h3>
+      <p>An FDA inspection is the agency's direct, on-site verification that a facility operates in compliance with GMP and applicable regulation. Authority for inspection comes from Section 704 of the Food, Drug, and Cosmetic Act, and FDA investigators conduct inspections per the methodology in the Investigations Operations Manual. How a site prepares for, manages, and responds during an inspection shapes both the outcome and any post-inspection regulatory action. This map details the pathway from continuous inspection readiness through opening, daily conduct, close-out, and follow-up.</p>
+      <div class="reg">FD&amp;C Act Section 704 &nbsp;·&nbsp; 21 CFR Part 211 &nbsp;·&nbsp; FDA Investigations Operations Manual</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-fda">FD&amp;C Act 704</div>
+      <div class="ref-chip chip-fda">21 CFR Part 211</div>
+      <div class="ref-chip chip-fda">FDA IOM</div>
+    </div>
+  </div>
+
+  <!-- INSPECTION TYPE BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-c">
+      <h4>Surveillance Inspection</h4>
+      <p>Routine, risk-based inspection conducted on a recurring cycle independent of any specific trigger.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Trigger: <span>Scheduled cycle</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-a">
+      <h4>For-Cause Inspection</h4>
+      <p>Triggered by a specific concern: a complaint, a recall, an adverse event pattern, or prior inspection findings.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Trigger: <span>Specific concern</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Pre-Approval Inspection</h4>
+      <p>Conducted in support of a pending marketing application, verifying the facility can produce the product as filed.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Trigger: <span>Pending application</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Follow-Up / Compliance Inspection</h4>
+      <p>Verifies that corrective actions from a prior inspection or warning letter have been effectively implemented.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Trigger: <span>Prior finding</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Pre-Inspection Preparation
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Maintain a continuous inspection-ready state</div>
+              <div class="node-body">Facility, documentation, and personnel maintained in a state ready for inspection at any time, rather than prepared reactively upon notice.</div>
+              <div class="node-reg">21 CFR Part 211</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Activate the inspection response plan</div>
+              <div class="node-body">Predefined response plan activated immediately upon investigator arrival, notifying designated roles and assembling the response team.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Verify credentials and document scope</div>
+              <div class="node-body">Investigator's credentials verified, and the stated scope and purpose of the inspection documented before the inspection proceeds.</div>
+              <div class="node-reg">FDA IOM</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Assemble front room and back room teams</div>
+              <div class="node-body">Front room team engages directly with the investigator, while the back room team retrieves documents and prepares information under front room direction.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Inspection Opening and Conduct
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Conduct opening meeting</div>
+              <div class="node-body">Notice of Inspection, Form FDA 482, presented and reviewed, with facility leadership introduced and the inspection's stated scope confirmed.</div>
+              <div class="node-reg">FD&amp;C Act Section 704</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Facilitate document and interview requests</div>
+              <div class="node-body">Requested documents retrieved and provided accurately and promptly, and interview requests facilitated with appropriate subject matter experts present.</div>
+              <div class="node-reg">FDA IOM</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Log all documents and questions</div>
+              <div class="node-body">Every document provided and every question asked logged in real time, creating an internal record parallel to the investigator's own notes.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Does the investigator identify an objectionable condition?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Document and prepare response</span>
+                <span class="opt-n">NO &#8594; Continue routine facilitation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Daily Wrap-Up and Response Management
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Conduct daily wrap-up meetings</div>
+              <div class="node-body">End-of-day discussion with the investigator to understand observations noted so far and clarify any open items before the next day begins.</div>
+              <div class="node-reg">FDA IOM</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Debrief the internal team</div>
+              <div class="node-body">Front room and back room teams debrief internally each evening, aligning on emerging themes and preparing for the following day.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Begin drafting responses in real time</div>
+              <div class="node-body">Preliminary response strategy and supporting evidence gathered for potential observations while the inspection is still underway.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Close-Out and Post-Inspection Follow-Up
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Attend the close-out meeting</div>
+              <div class="node-body">Final meeting held to review all observations, with a Form FDA 483 issued if the investigator identified objectionable conditions.</div>
+              <div class="node-reg">FDA IOM</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">12</span>Submit formal written response</div>
+              <div class="node-body">Written response to any Form FDA 483 submitted within 15 business days, addressing each observation with root cause and corrective action commitments.</div>
+              <div class="node-reg">FDA Guidance on 483 Responses</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">13</span>Implement and verify corrective actions</div>
+              <div class="node-body">Committed corrective actions implemented on schedule and their effectiveness verified, with the full record retained for the next inspection.</div>
+              <div class="node-reg">21 CFR Part 211</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- INSPECTION TYPES -->
+      <div class="limits-box">
+        <div class="limits-header">Inspection Types (Overview)</div>
+        <div class="limits-body">
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Surveillance</h4>
+            <p>Routine, unannounced inspection on a risk-based recurring cycle, covering the facility's general state of GMP compliance.</p>
+            <div class="stat">FDA IOM</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">For-Cause</h4>
+            <p>Triggered by a specific concern such as a complaint pattern, recall, or reported adverse event, with a narrower, targeted scope.</p>
+            <div class="stat">FDA IOM</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Pre-Approval Inspection</h4>
+            <p>Verifies the facility can reliably manufacture the product as described in a pending marketing application.</p>
+            <div class="stat">FDA IOM</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KEY FDA FORMS -->
+      <div class="exceed-box">
+        <h3>Key FDA Forms (Overview)</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Form FDA 482</strong>
+            Notice of Inspection, presented at the start of the inspection to establish the investigator's authority to inspect.
+          </div>
+          <div class="exceed-step">
+            <strong>Form FDA 483</strong>
+            Inspectional Observations, issued at close-out listing conditions the investigator considers objectionable.
+          </div>
+          <div class="exceed-step">
+            <strong>Form FDA 484</strong>
+            Receipt for Samples, issued when the investigator collects physical samples during the inspection.
+          </div>
+          <div class="exceed-step">
+            <strong>Establishment Inspection Report (EIR)</strong>
+            The investigator's complete internal report, not typically shared with the firm, that documents the full inspection and its classification.
+          </div>
+        </div>
+      </div>
+
+      <!-- FRONT ROOM / BACK ROOM -->
+      <div class="trend-box">
+        <h3>Front Room / Back Room Roles (Overview)</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Front room lead</strong>
+            Primary point of contact with the investigator, coordinating requests and managing the flow of the inspection.
+          </div>
+          <div class="trend-item">
+            <strong>Scribe / logger</strong>
+            Records every document requested, every document provided, and every question asked throughout the inspection.
+          </div>
+          <div class="trend-item">
+            <strong>Back room team</strong>
+            Retrieves and reviews documents before they reach the front room, and prepares subject matter experts for interviews.
+          </div>
+          <div class="trend-item">
+            <strong>Subject matter experts</strong>
+            Answer investigator questions within their area of expertise, briefed in advance on communication expectations.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INSPECTION QUALITY ELEMENTS -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Inspection Readiness Quality Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Continuous Inspection Readiness</strong>
+        Facility and documentation maintained in an audit-ready state at all times, not assembled reactively upon notice of an inspection.
+      </div>
+      <div class="ccs-item">
+        <strong>Document Request Log</strong>
+        Complete, real-time record of every document requested and provided, supporting an accurate internal account of the inspection.
+      </div>
+      <div class="ccs-item">
+        <strong>Subject Matter Expert Availability</strong>
+        Qualified personnel available and briefed to respond to investigator questions within their area without unnecessary delay.
+      </div>
+      <div class="ccs-item">
+        <strong>Daily Wrap-Up Discipline</strong>
+        End-of-day discussions held consistently to surface and clarify investigator observations before they harden into formal findings.
+      </div>
+      <div class="ccs-item">
+        <strong>Real-Time Response Drafting</strong>
+        Preliminary response strategy developed while the inspection is still underway, rather than starting from a blank page after close-out.
+      </div>
+      <div class="ccs-item">
+        <strong>483 Response Timeliness</strong>
+        Written response submitted within 15 business days, addressing each observation with root cause and a committed timeline.
+      </div>
+      <div class="ccs-item">
+        <strong>CAPA Tracking</strong>
+        Corrective actions committed in the 483 response tracked to documented, verified completion.
+      </div>
+      <div class="ccs-item">
+        <strong>Post-Inspection Trend Review</strong>
+        Observations reviewed against prior inspections to identify recurring themes requiring broader systemic correction.
+      </div>
+    </div>
+  </div>
+
+  <!-- REGULATORY TEXT PANEL -->
+  <div class="regtext-box">
+    <h3>Regulatory Text - Source Provisions</h3>
+    <div class="regtext-items">
+      <div class="regtext-item">
+        <div class="src">FD&amp;C Act, Section 704(a)(1) (paraphrased - refer to the official statute for exact wording)</div>
+        <p>FDA officers or employees are authorized to enter and inspect any factory, warehouse, or establishment in which drugs are manufactured, processed, packed, or held, for introduction into interstate commerce.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">21 CFR 211.180(c)</div>
+        <p>Written records required by this part shall be maintained so that data therein can be used for evaluating, at least annually, the quality standards of each drug product to determine the need for changes in specifications or manufacturing or control procedures.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">FDA Investigations Operations Manual, Chapter 5 (paraphrased - refer to the official manual for exact wording)</div>
+        <p>At the conclusion of the inspection, the investigator conducts a close-out discussion with management, presenting observations made during the inspection and providing an opportunity for management to respond before departure.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSPECTION PATTERN PANEL -->
+  <div class="pattern-box">
+    <h3>Common Inspection Findings - FDA Inspection Management</h3>
+    <div class="disclaimer">Illustrative of recurring themes seen across published FDA 483s and warning letters. Not tied to a single specific citation.</div>
+    <div class="pattern-items">
+      <div class="pattern-item">
+        <strong>Inconsistent answers across interviews</strong>
+        Different personnel giving conflicting accounts of the same procedure, suggesting inadequate internal alignment before the inspection.
+      </div>
+      <div class="pattern-item">
+        <strong>Delayed or incomplete document production</strong>
+        Requested records not retrievable promptly, raising questions about document control and record accessibility.
+      </div>
+      <div class="pattern-item">
+        <strong>Verbal commitments not reflected in the written response</strong>
+        Corrective actions discussed verbally during the inspection but omitted or altered in the formal 483 response.
+      </div>
+      <div class="pattern-item">
+        <strong>Prior 483 observations recur</strong>
+        The same or a closely related observation appearing across consecutive inspections, indicating the earlier CAPA was not effective.
+      </div>
+    </div>
+  </div>
+
+  <!-- BEST PRACTICE PANEL -->
+  <div class="practice-box">
+    <h3>Best Practice Guidance</h3>
+    <div class="practice-items">
+      <div class="practice-item">
+        <strong>Rehearse the front room and back room roles</strong>
+        Run periodic mock inspections so staff are comfortable with their assigned roles before a real inspection begins.
+      </div>
+      <div class="practice-item">
+        <strong>Never guess in an interview</strong>
+        Train personnel to say they will confirm and follow up rather than speculate when they are unsure of an answer.
+      </div>
+      <div class="practice-item">
+        <strong>Match the written response to what was said in the room</strong>
+        Review the daily wrap-up notes when drafting the formal response, so commitments made verbally are reflected accurately.
+      </div>
+      <div class="practice-item">
+        <strong>Close the loop on every prior observation</strong>
+        Verify past CAPA effectiveness proactively, well before the next inspection, rather than discovering a repeat finding in the room.
+      </div>
+    </div>
+  </div>
+
+  <!-- SELF-ASSESSMENT CHECKLIST -->
+  <details class="assess-box">
+    <summary>Self-Assessment Checklist - Is Your Site Inspection Ready? <span class="arrow-icon">&#9654;</span></summary>
+    <div class="assess-body">
+      <div class="assess-note">For personal or team use during training. Responses are not saved or submitted.</div>
+      <div class="assess-row"><input type="checkbox" id="a1"><label for="a1">An inspection response plan exists and designated roles know their responsibilities.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a2"><label for="a2">A document request log is used consistently to track every item requested and provided.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a3"><label for="a3">Subject matter experts are identified in advance and briefed on interview expectations.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a4"><label for="a4">Daily wrap-up meetings are held consistently during multi-day inspections.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a5"><label for="a5">483 responses are consistently submitted within the 15 business day window.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a6"><label for="a6">Corrective actions from prior inspections are verified as effective before the next inspection.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a7"><label for="a7">Mock inspections or similar readiness exercises are conducted on a regular cycle.</label></div>
+    </div>
+  </details>
+
+  <!-- SITE ANNOTATION FIELDS -->
+  <div class="annotate-box">
+    <h3>Site Annotation</h3>
+    <div class="sub">Add your site-specific references while reviewing this map. Not saved between sessions - copy notes into your own records before closing.</div>
+    <div class="annotate-grid">
+      <div class="annotate-field">
+        <label>SITE / FACILITY ID</label>
+        <input type="text" placeholder="e.g. Site 3, Sterile Manufacturing">
+      </div>
+      <div class="annotate-field">
+        <label>LOCAL SOP REFERENCE</label>
+        <input type="text" placeholder="e.g. SOP-QA-021 Rev 4">
+      </div>
+      <div class="annotate-field" style="grid-column: 1 / -1">
+        <label>NOTES</label>
+        <textarea rows="3" placeholder="Site-specific observations, open questions, or follow-up items for the inspection response team."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Provide a document to the investigator without first logging it and having it reviewed by the back room. Allow an untrained employee to answer investigator questions outside their expertise. Argue with or contradict the investigator's stated observations during the inspection itself. Miss the 15 business day window for the written 483 response.</p>
+    </div>
+    <div class="rule-card">
+      <h4>482 vs 483 vs 484 vs EIR</h4>
+      <p>Form 482 opens the inspection and establishes authority. Form 483 lists observations at close-out. Form 484 receipts any samples collected. The Establishment Inspection Report is the investigator's full internal record and is not issued to the firm at close-out.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Surveillance vs for-cause</h4>
+      <p>A surveillance inspection is routine and risk-based, covering the facility broadly. A for-cause inspection is triggered by a specific concern and is typically narrower in scope but more intensive around the triggering issue.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>FD&amp;C Act Section 704 - FDA's statutory authority to inspect. 21 CFR Part 211 - current good manufacturing practice requirements being verified. FDA Investigations Operations Manual - the methodology FDA investigators follow during an inspection.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    FDA Inspection Workflow &nbsp;&#183;&nbsp;
+    Built from FD&amp;C Act Section 704, 21 CFR Part 211, FDA Investigations Operations Manual &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Regulatory Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
