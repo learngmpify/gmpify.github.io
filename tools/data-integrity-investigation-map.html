@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Integrity Investigation Workflow | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* TRIGGER TYPE BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* TRIGGER TYPES */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* ALCOA+ BREACH CATEGORIES */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* KEY OUTPUTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* QUALITY ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Data Integrity Investigation <em>Workflow</em></h1>
+    <div class="header-sub">21 CFR Part 211 &nbsp;|&nbsp; FDA Data Integrity Guidance &nbsp;|&nbsp; ALCOA+ &nbsp;|&nbsp; EU GMP Annex 11</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      21 CFR Part 211 &nbsp;·&nbsp; FDA Data Integrity Guidance<br>
+      ALCOA+ &nbsp;·&nbsp; EU GMP Annex 11 / Chapter 4
+    </div>
+    <div class="stat-badge">
+      Every data integrity investigation must determine<br>
+      both root cause and full extent of impact
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Detection and Initial Assessment</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Investigation Scoping and Evidence Preservation</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Root Cause Analysis and Impact Assessment</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Remediation and Reporting</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128269;</div>
+    <div class="trigger-text">
+      <h3>Data Integrity Investigation - Verifying Trust in GMP Records</h3>
+      <p>A data integrity investigation is opened when an audit trail anomaly, an employee report, an inspection finding, or a routine periodic review raises a concern that GMP data may not be attributable, original, contemporaneous, accurate, complete, consistent, enduring, or available, the ALCOA+ principles that underpin every quality record. Unlike a standard deviation investigation, a data integrity investigation must determine not only root cause but the full extent of impact across time, systems, and product, since the question at stake is whether the data can be trusted at all. This map details the pathway from detection through investigation, root cause analysis, and remediation.</p>
+      <div class="reg">21 CFR Part 211 &nbsp;·&nbsp; FDA Data Integrity Guidance &nbsp;·&nbsp; ALCOA+</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-fda">21 CFR Part 211</div>
+      <div class="ref-chip chip-fda">FDA DI Guidance</div>
+      <div class="ref-chip chip-eu">EU GMP Annex 11</div>
+    </div>
+  </div>
+
+  <!-- TRIGGER TYPE BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-c">
+      <h4>Audit Trail Anomaly</h4>
+      <p>Detected through routine or targeted review of system audit trails, revealing unexplained changes or deletions.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Trigger: <span>System-detected anomaly</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-a">
+      <h4>Whistleblower / Employee Report</h4>
+      <p>Raised directly by an employee through the quality system or an anonymous reporting channel.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Trigger: <span>Internal report</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Inspection or Audit Finding</h4>
+      <p>Identified by a regulatory inspector or internal auditor reviewing records, metadata, or system access controls.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Trigger: <span>External or internal audit</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Routine Periodic Review</h4>
+      <p>Surfaced through scheduled periodic review of user access, audit trails, or data governance controls.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Trigger: <span>Scheduled governance review</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Detection and Initial Assessment
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Identify a data integrity anomaly or concern</div>
+              <div class="node-body">Anomaly identified through audit trail review, an employee report, an inspection finding, or a periodic governance review.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Secure and preserve the affected data and systems</div>
+              <div class="node-body">Affected records, audit trails, and system access immediately secured to prevent further alteration before the investigation proceeds.</div>
+              <div class="node-reg">21 CFR 211.68</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Notify quality leadership and initiate formal investigation</div>
+              <div class="node-body">Concern escalated to quality leadership immediately, opening a formal investigation record distinct from a routine deviation.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Assemble a cross-functional investigation team</div>
+              <div class="node-body">Quality, IT/system administration, and subject matter experts assembled, with independence from the area under investigation.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Investigation Scoping and Evidence Preservation
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Define investigation scope and boundaries</div>
+              <div class="node-body">Scope defined across the systems, time period, personnel, and products potentially affected by the anomaly.</div>
+              <div class="node-reg">FDA Data Integrity Guidance</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Preserve audit trails, metadata and original records</div>
+              <div class="node-body">Original electronic and paper records, complete audit trails, and associated metadata preserved for forensic review.</div>
+              <div class="node-reg">ALCOA+</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Interview involved personnel</div>
+              <div class="node-body">Structured, documented interviews conducted with personnel who generated, reviewed, or approved the records in question.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Does evidence indicate deliberate falsification?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Escalate to executive, legal and HR</span>
+                <span class="opt-n">NO &#8594; Continue as unintentional gap</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Root Cause Analysis and Impact Assessment
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Conduct root cause analysis</div>
+              <div class="node-body">Systemic root cause identified, distinguishing a technology or procedural gap from an isolated individual action.</div>
+              <div class="node-reg">Internal SOP / QRM</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Determine the full extent and time period of impact</div>
+              <div class="node-body">Investigation extended to determine how long the gap existed and every record, system, or batch it may have touched.</div>
+              <div class="node-reg">FDA Data Integrity Guidance</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Assess impact on product quality and batch disposition</div>
+              <div class="node-body">Quality impact assessed for every batch or record potentially affected, including batches already released to market.</div>
+              <div class="node-reg">21 CFR 211.192</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Remediation and Reporting
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Develop and implement CAPA addressing systemic gaps</div>
+              <div class="node-body">Corrective and preventive actions target the systemic gap, covering process, technology, training, and governance controls.</div>
+              <div class="node-reg">21 CFR Part 211</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Determine regulatory reporting obligations</div>
+              <div class="node-body">Impact assessment reviewed against Field Alert and other regulatory notification requirements for affected batches.</div>
+              <div class="node-reg">21 CFR 211.198</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Complete investigation report and close with quality oversight</div>
+              <div class="node-body">Final investigation report documenting root cause, full impact, CAPA, and reporting decisions approved by quality leadership.</div>
+              <div class="node-reg">21 CFR 211.192</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- TRIGGER TYPES -->
+      <div class="limits-box">
+        <div class="limits-header">Data Integrity Trigger Types (Overview)</div>
+        <div class="limits-body">
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Audit Trail Anomaly</h4>
+            <p>Unexplained changes, deletions, or timing inconsistencies surfaced through system audit trail review.</p>
+            <div class="stat">System-Generated</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Whistleblower Report</h4>
+            <p>Raised directly by an employee, often carrying the highest initial credibility and urgency.</p>
+            <div class="stat">Internal Report</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Inspection or Audit Finding</h4>
+            <p>Identified externally by a regulator or internally by an auditor reviewing records and access controls.</p>
+            <div class="stat">External / Internal Audit</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALCOA+ BREACH CATEGORIES -->
+      <div class="exceed-box">
+        <h3>ALCOA+ Breach Categories (Overview)</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Attributable / Original</strong>
+            The record cannot be tied to the person who generated it, or is not the first capture of the data.
+          </div>
+          <div class="exceed-step">
+            <strong>Contemporaneous / Accurate</strong>
+            The record was not made at the time of the activity, or does not accurately reflect what occurred.
+          </div>
+          <div class="exceed-step">
+            <strong>Complete / Consistent</strong>
+            The record is missing required elements, or is inconsistent with other records of the same activity.
+          </div>
+          <div class="exceed-step">
+            <strong>Enduring / Available</strong>
+            The record cannot be retrieved, reconstructed, or made available for review when required.
+          </div>
+        </div>
+      </div>
+
+      <!-- KEY OUTPUTS -->
+      <div class="trend-box">
+        <h3>Key Investigation Outputs (Overview)</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Investigation report</strong>
+            Formal record documenting root cause, full scope, and impact assessment for the data integrity concern.
+          </div>
+          <div class="trend-item">
+            <strong>Batch impact assessment</strong>
+            Disposition decision for every batch or record identified within the investigation's determined scope.
+          </div>
+          <div class="trend-item">
+            <strong>CAPA plan</strong>
+            Corrective and preventive actions addressing the systemic process, technology, or governance gap.
+          </div>
+          <div class="trend-item">
+            <strong>Regulatory notification</strong>
+            Field Alert Report or equivalent notification filed where the impact assessment warrants disclosure.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUALITY ELEMENTS -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Data Integrity Investigation Quality Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Immediate Data Preservation</strong>
+        Affected records, systems, and audit trails secured against further alteration the moment a concern is identified.
+      </div>
+      <div class="ccs-item">
+        <strong>Audit Trail Review Depth</strong>
+        Review extends across the full relevant time period and system, not only the specific record initially flagged.
+      </div>
+      <div class="ccs-item">
+        <strong>Investigation Objectivity</strong>
+        Investigation team maintains independence from the area under review throughout the process.
+      </div>
+      <div class="ccs-item">
+        <strong>Root Cause vs Individual Blame</strong>
+        Analysis distinguishes a systemic process or technology gap from an isolated individual action.
+      </div>
+      <div class="ccs-item">
+        <strong>Full Scope Determination</strong>
+        Scope extended to every system, time period, and product potentially affected by the same gap.
+      </div>
+      <div class="ccs-item">
+        <strong>Batch Impact Assessment</strong>
+        Every batch or record within scope receives a documented disposition decision, including released product.
+      </div>
+      <div class="ccs-item">
+        <strong>Regulatory Notification Timeliness</strong>
+        Reporting obligations assessed and, where warranted, filed within the required regulatory timeframe.
+      </div>
+      <div class="ccs-item">
+        <strong>CAPA Systemic Effectiveness</strong>
+        Corrective actions verified to close the systemic gap, not only to address the specific instance found.
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Allow continued access to a system under investigation before evidence is preserved. Treat a data integrity concern as a routine deviation with a narrower scope. Assume a finding is an isolated incident without checking the full time period and system. Close the investigation without a documented batch impact assessment.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Data integrity vs standard deviation</h4>
+      <p>A standard deviation investigation asks what happened to a specific batch or result. A data integrity investigation must additionally ask whether the underlying data can be trusted at all, requiring evidence preservation and a full-scope impact assessment that a routine deviation does not.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Falsification vs system error</h4>
+      <p>Deliberate falsification is a conduct issue requiring legal and HR escalation alongside the quality investigation. A system or procedural gap that unintentionally compromised ALCOA+ principles is addressed through root cause analysis and systemic CAPA without individual disciplinary escalation.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR Part 211 - cGMP requirements for records and data. FDA Data Integrity Guidance - agency expectations for investigating and remediating data integrity issues. ALCOA+ - the data quality attributes every GMP record must meet. EU GMP Annex 11 - equivalent expectations for computerized systems.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Data Integrity Investigation Workflow &nbsp;&#183;&nbsp;
+    Built from 21 CFR Part 211, FDA Data Integrity Guidance, ALCOA+, EU GMP Annex 11 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Regulatory Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
