@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warning Letter Response Workflow - Enhanced Edition | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* TRIGGER TYPE BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* TRIGGER TYPES */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* RESPONSE ADEQUACY CRITERIA */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* KEY OUTPUTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* QUALITY ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+
+  /* ===== ENHANCED EDITION ADDITIONS ===== */
+  .enh-badge{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.35);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--gold);text-align:right}
+
+  /* REGULATORY TEXT PANEL */
+  .regtext-box{background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .regtext-box h3{font-size:0.74rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .regtext-items{display:flex;flex-direction:column;gap:9px}
+  .regtext-item{background:rgba(255,255,255,0.04);border-left:3px solid var(--c1acc);border-radius:5px;padding:9px 12px}
+  .regtext-item .src{font-size:0.63rem;font-family:var(--mono);color:var(--c1acc);margin-bottom:3px}
+  .regtext-item p{font-size:0.7rem;color:var(--light);line-height:1.55}
+
+  /* INSPECTION PATTERN PANEL */
+  .pattern-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .pattern-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .pattern-box .disclaimer{font-size:0.64rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px;font-style:italic}
+  .pattern-items{display:flex;flex-direction:column;gap:7px}
+  .pattern-item{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:8px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .pattern-item strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* BEST PRACTICE PANEL */
+  .practice-box{background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .practice-box h3{font-size:0.74rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .practice-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .practice-item{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.16);border-radius:5px;padding:9px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .practice-item strong{color:var(--green);display:block;font-size:0.67rem;margin-bottom:2px}
+
+  /* SELF-ASSESSMENT CHECKLIST */
+  .assess-box{background:rgba(56,189,248,0.05);border:1.5px solid rgba(56,189,248,0.22);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .assess-box summary{cursor:pointer;padding:12px 16px;font-size:0.78rem;font-weight:700;color:var(--white);list-style:none;display:flex;align-items:center;justify-content:space-between}
+  .assess-box summary::-webkit-details-marker{display:none}
+  .assess-box summary .arrow-icon{color:var(--c1acc);font-size:0.8rem;transition:transform 0.15s}
+  .assess-box[open] summary .arrow-icon{transform:rotate(90deg)}
+  .assess-body{padding:4px 16px 16px}
+  .assess-note{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px}
+  .assess-row{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .assess-row:last-child{border-bottom:none}
+  .assess-row input[type=checkbox]{margin-top:2px;width:15px;height:15px;accent-color:var(--c1acc);flex-shrink:0}
+  .assess-row label{font-size:0.71rem;color:var(--light);line-height:1.5}
+
+  /* SITE ANNOTATION FIELDS */
+  .annotate-box{background:rgba(0,0,0,0.2);border:1.5px dashed rgba(255,255,255,0.16);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .annotate-box h3{font-size:0.74rem;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .annotate-box .sub{font-size:0.65rem;color:var(--mid);margin-bottom:12px}
+  .annotate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotate-field{display:flex;flex-direction:column;gap:4px}
+  .annotate-field label{font-size:0.66rem;font-family:var(--mono);color:var(--c1acc)}
+  .annotate-field textarea, .annotate-field input[type=text]{
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:6px;
+    color:var(--white);font-family:var(--font);font-size:0.72rem;padding:8px 10px;resize:vertical;
+  }
+  .annotate-field textarea:focus, .annotate-field input[type=text]:focus{outline:none;border-color:var(--c1acc)}
+
+  /* PRINT OPTIMIZATION */
+  @media print {
+    body{background:#FFFFFF !important;color:#1A1A1A !important}
+    .header{background:#FFFFFF !important;border-bottom:2px solid #1A1A1A}
+    .logo span:first-child, .logo span:last-child, .header h1{color:#1A1A1A !important}
+    .header h1 em{color:#0A6E8C !important}
+    .header-sub, .stat-badge, .reg-badge, .enh-badge{color:#333 !important}
+    .legend{background:#F2F2F2 !important}
+    .map-wrap, .phase-body, .node-action, .node-decision, .limits-box, .exceed-box, .trend-box, .ccs-box,
+    .regtext-box, .pattern-box, .practice-box, .assess-box, .annotate-box, .rule-card{
+      background:#FAFAFA !important;color:#1A1A1A !important;border-color:#CCCCCC !important;
+    }
+    .node-title, .node-body, .limit-card p, .exceed-step, .trend-item, .ccs-item, .regtext-item p,
+    .pattern-item, .practice-item, .rule-card p, .assess-row label{color:#1A1A1A !important}
+    .assess-box summary{color:#1A1A1A !important}
+    .footer{color:#333 !important}
+    .assess-box summary .arrow-icon{display:none}
+    details.assess-box{display:block}
+    .assess-body{display:block !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Warning Letter Response <em>Workflow</em></h1>
+    <div class="header-sub">FD&amp;C Act Section 705 &nbsp;|&nbsp; 21 CFR Part 7 &nbsp;|&nbsp; FDA Regulatory Procedures Manual Ch. 4</div>
+  </div>
+  <div class="header-right">
+    <div class="enh-badge">Enhanced Edition &#183; Subscriber Content</div>
+    <div class="reg-badge">
+      FD&amp;C Act Section 705 &nbsp;·&nbsp; 21 CFR Part 7<br>
+      RPM Chapter 4 &nbsp;·&nbsp; Compliance Program Guidance
+    </div>
+    <div class="stat-badge">
+      A Warning Letter is a formal escalation, not a<br>
+      routine inspection observation
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Warning Letter Receipt and Triage</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Investigation and Response Drafting</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Response Submission and FDA Review</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Follow-Up Verification and Closeout</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#9888;&#65039;</div>
+    <div class="trigger-text">
+      <h3>Warning Letter Response - Managing a Formal FDA Escalation</h3>
+      <p>An FDA Warning Letter is issued under FD&amp;C Act Section 705 when the agency determines that violations found during an inspection or investigation are of regulatory significance and were not adequately addressed, most often following an inadequate or absent response to a prior Form 483. The letter requires a written response within 15 business days and sets a substantially higher bar for root cause depth, global scope, and executive accountability than a routine 483 response. This map details the pathway from receipt through investigation, submission, and eventual close-out.</p>
+      <div class="reg">FD&amp;C Act Section 705 &nbsp;·&nbsp; 21 CFR Part 7 &nbsp;·&nbsp; RPM Chapter 4</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-fda">FD&amp;C Act 705</div>
+      <div class="ref-chip chip-fda">21 CFR Part 7</div>
+      <div class="ref-chip chip-fda">RPM Chapter 4</div>
+    </div>
+  </div>
+
+  <!-- TRIGGER TYPE BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-a">
+      <h4>Post-483 Escalation</h4>
+      <p>Issued when a prior Form 483 response was judged inadequate, untimely, or absent by the district office.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Trigger: <span>Inadequate 483 response</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Data Integrity Finding</h4>
+      <p>Issued where inspection findings point to unreliable, altered, or fabricated GMP records and data.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Trigger: <span>Data reliability concern</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-c">
+      <h4>Recurrent Violation Pattern</h4>
+      <p>Issued where the same or closely related violations recur across multiple inspection cycles at one site.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Trigger: <span>Repeat findings</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Significant Public Health Risk</h4>
+      <p>Issued directly where findings indicate a serious and immediate risk to product quality or patient safety.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Trigger: <span>Direct significant violation</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Warning Letter Receipt and Triage
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Receive and log the Warning Letter</div>
+              <div class="node-body">Letter received from the FDA district office or CDER/CBER, logged, and routed to quality, regulatory affairs, and executive leadership immediately.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Confirm the 15 business day response deadline</div>
+              <div class="node-body">Statutory response window calculated and calendared, with internal milestones set well ahead of the FDA deadline.</div>
+              <div class="node-reg">RPM Chapter 4</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Assemble the cross-functional response team</div>
+              <div class="node-body">Quality, regulatory affairs, legal, manufacturing, and site leadership convened, reflecting the escalated severity of the letter.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Conduct executive briefing and risk assessment</div>
+              <div class="node-body">Senior leadership briefed on the letter's contents and potential business impact, including supply, commercial, and reputational risk.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Investigation and Response Drafting
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Conduct a comprehensive root cause investigation</div>
+              <div class="node-body">Investigation scoped beyond the cited instance to identify the systemic process failure underlying each violation cited.</div>
+              <div class="node-reg">21 CFR Part 211</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Assess global impact across sites and products</div>
+              <div class="node-body">Investigation extended to other sites, product lines, and batches that share the same process, equipment, or systemic gap.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Draft the corrective and preventive action plan</div>
+              <div class="node-body">CAPA plan drafted with defined milestones, owners, and completion dates, addressing every violation cited in the letter.</div>
+              <div class="node-reg">Internal SOP</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Does the situation warrant an independent GMP consultant?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Engage third-party assessment</span>
+                <span class="opt-n">NO &#8594; Continue internal drafting</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Response Submission and FDA Review
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Finalize response with legal and QA review</div>
+              <div class="node-body">Draft response reviewed by legal counsel and quality leadership to confirm completeness, tone, and factual accuracy before submission.</div>
+              <div class="node-reg">RPM Chapter 4</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Submit the written response within 15 business days</div>
+              <div class="node-body">Formal response submitted to the issuing district office within the statutory window, addressing every cited violation individually.</div>
+              <div class="node-reg">FD&amp;C Act Section 705</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Respond to FDA requests for clarification</div>
+              <div class="node-body">Follow-up questions or requests for additional detail from the district office addressed promptly and completely.</div>
+              <div class="node-reg">RPM Chapter 4</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Follow-Up Verification and Closeout
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Implement committed corrective actions</div>
+              <div class="node-body">Every committed action implemented on the milestone schedule communicated to FDA, with effectiveness checks built into the plan.</div>
+              <div class="node-reg">21 CFR Part 211</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Provide periodic progress updates to FDA</div>
+              <div class="node-body">Status updates submitted at the intervals committed to in the response, documenting progress against each CAPA milestone.</div>
+              <div class="node-reg">RPM Chapter 4</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Receive close-out letter or further escalation</div>
+              <div class="node-body">FDA issues a close-out letter once satisfied, or escalates further through a follow-up inspection, Import Alert, or Consent Decree referral.</div>
+              <div class="node-reg">RPM Chapter 4</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- TRIGGER TYPES -->
+      <div class="limits-box">
+        <div class="limits-header">Warning Letter Trigger Types (Overview)</div>
+        <div class="limits-body">
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Post-483 Escalation</h4>
+            <p>The most common path: a prior Form 483 response judged inadequate, untimely, or unresponsive to root cause.</p>
+            <div class="stat">RPM Chapter 4</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Data Integrity Finding</h4>
+            <p>Findings pointing to unreliable or fabricated records typically draw the agency's most severe scrutiny.</p>
+            <div class="stat">Data Integrity Guidance</div>
+          </div>
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Recurrent Violation Pattern</h4>
+            <p>The same or closely related violation appearing across multiple inspections signals a systemic, unaddressed gap.</p>
+            <div class="stat">RPM Chapter 4</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESPONSE ADEQUACY CRITERIA -->
+      <div class="exceed-box">
+        <h3>Response Adequacy Criteria (Overview)</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Root cause, not symptom</strong>
+            Response must identify and address the true systemic root cause, not only the specific instance cited.
+          </div>
+          <div class="exceed-step">
+            <strong>Global scope</strong>
+            Corrective actions must extend to every site, product, and batch affected by the same underlying gap.
+          </div>
+          <div class="exceed-step">
+            <strong>Defined timelines and ownership</strong>
+            Every committed action must carry a named owner and a realistic, specific completion date.
+          </div>
+          <div class="exceed-step">
+            <strong>Inadequate response escalates further</strong>
+            A response judged insufficient on these criteria typically leads to further FDA action rather than closure.
+          </div>
+        </div>
+      </div>
+
+      <!-- KEY OUTPUTS -->
+      <div class="trend-box">
+        <h3>Key Closeout Outputs (Overview)</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Close-out letter</strong>
+            Formal FDA communication confirming the Warning Letter's violations have been adequately addressed.
+          </div>
+          <div class="trend-item">
+            <strong>Continued FDA oversight</strong>
+            Enhanced follow-up inspection scheduled to verify the corrective actions in practice at the site.
+          </div>
+          <div class="trend-item">
+            <strong>Import Alert</strong>
+            Possible outcome where the response is inadequate and the violation affects product entering commerce.
+          </div>
+          <div class="trend-item">
+            <strong>Consent Decree referral</strong>
+            Most severe outcome, referred where violations are unresolved or repeat across multiple Warning Letters.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUALITY ELEMENTS -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Warning Letter Response Quality Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Response Timeliness</strong>
+        Written response submitted within the 15 business day statutory window, with no extension assumed.
+      </div>
+      <div class="ccs-item">
+        <strong>Root Cause Depth</strong>
+        Investigation addresses the systemic failure behind each cited violation, not only the specific instance.
+      </div>
+      <div class="ccs-item">
+        <strong>Global CAPA Scope</strong>
+        Corrective actions extended to every site, product, and batch sharing the same underlying process gap.
+      </div>
+      <div class="ccs-item">
+        <strong>Legal and QA Alignment</strong>
+        Response reviewed jointly by legal counsel and quality leadership before submission to FDA.
+      </div>
+      <div class="ccs-item">
+        <strong>Executive Engagement</strong>
+        Senior leadership actively briefed and engaged, reflecting the escalated severity of a Warning Letter.
+      </div>
+      <div class="ccs-item">
+        <strong>Third-Party Assessment Use</strong>
+        Independent GMP consultants engaged where the scope or severity of findings warrants outside expertise.
+      </div>
+      <div class="ccs-item">
+        <strong>Progress Update Consistency</strong>
+        Periodic status updates submitted to FDA at the intervals committed to in the original response.
+      </div>
+      <div class="ccs-item">
+        <strong>Close-Out Verification</strong>
+        Every committed action verified as implemented and effective before considering the matter closed.
+      </div>
+    </div>
+  </div>
+
+  <!-- REGULATORY TEXT PANEL -->
+  <div class="regtext-box">
+    <h3>Regulatory Text - Source Provisions</h3>
+    <div class="regtext-items">
+      <div class="regtext-item">
+        <div class="src">FD&amp;C Act Section 705(b) (paraphrased - refer to the official statute for exact wording)</div>
+        <p>The Secretary shall notify a person in violation of this Act of such violation and afford that person an opportunity to present their views, prior to further enforcement action, except where the violation involves a significant risk to public health.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">21 CFR Part 7, Enforcement Policy</div>
+        <p>FDA's enforcement actions are intended to be commensurate with the violation, and a firm's response to agency communications, including its corrective action commitments, is a relevant factor in determining subsequent regulatory action.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">FDA Regulatory Procedures Manual, Chapter 4 (paraphrased - refer to the official manual for exact wording)</div>
+        <p>A Warning Letter response is evaluated for whether it identifies the root cause of the violation, commits to corrective actions that are global in scope where warranted, and provides a reasonable timetable for completion.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSPECTION PATTERN PANEL -->
+  <div class="pattern-box">
+    <h3>Common Response Findings - Warning Letter Management</h3>
+    <div class="disclaimer">Illustrative of recurring themes seen across published Warning Letters and FDA responses. Not tied to a single specific citation.</div>
+    <div class="pattern-items">
+      <div class="pattern-item">
+        <strong>Response addresses only the cited batch or line</strong>
+        Corrective action limited to the specific instance cited without extending to other sites or products sharing the same process.
+      </div>
+      <div class="pattern-item">
+        <strong>Root cause investigation stops at the proximate cause</strong>
+        Investigation identifies the immediate error but does not trace back to the systemic quality system failure that allowed it.
+      </div>
+      <div class="pattern-item">
+        <strong>Committed timelines lack specificity</strong>
+        CAPA milestones described in general terms without named owners or firm completion dates the agency can hold the firm to.
+      </div>
+      <div class="pattern-item">
+        <strong>Progress updates submitted late or inconsistently</strong>
+        Committed follow-up updates to FDA missed or delayed, undermining confidence in the firm's overall corrective action program.
+      </div>
+    </div>
+  </div>
+
+  <!-- BEST PRACTICE PANEL -->
+  <div class="practice-box">
+    <h3>Best Practice Guidance</h3>
+    <div class="practice-items">
+      <div class="practice-item">
+        <strong>Treat day one as day one of a 15 day clock</strong>
+        Begin the cross-functional response and investigation the same day the letter is received, not after initial internal discussion concludes.
+      </div>
+      <div class="practice-item">
+        <strong>Scope the investigation to the quality system, not the batch</strong>
+        Ask what process, procedure, or training gap allowed the violation, and where else that same gap could be operating undetected.
+      </div>
+      <div class="practice-item">
+        <strong>Write commitments FDA can verify</strong>
+        Give every CAPA item a named owner, a specific completion date, and a defined method of verification before submission.
+      </div>
+      <div class="practice-item">
+        <strong>Build the update cadence into the project plan</strong>
+        Calendar every committed progress update at the point of submission so none are missed during implementation.
+      </div>
+    </div>
+  </div>
+
+  <!-- SELF-ASSESSMENT CHECKLIST -->
+  <details class="assess-box">
+    <summary>Self-Assessment Checklist - Is Your Warning Letter Response Ready? <span class="arrow-icon">&#9654;</span></summary>
+    <div class="assess-body">
+      <div class="assess-note">For personal or team use during training. Responses are not saved or submitted.</div>
+      <div class="assess-row"><input type="checkbox" id="a1"><label for="a1">A cross-functional response team including legal counsel was assembled on the day the letter was received.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a2"><label for="a2">The root cause investigation traces back to the systemic quality system gap, not only the cited instance.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a3"><label for="a3">Corrective actions extend to every site, product, and batch sharing the same underlying process.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a4"><label for="a4">Every CAPA commitment has a named owner and a specific, realistic completion date.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a5"><label for="a5">The response was reviewed jointly by legal counsel and quality leadership before submission.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a6"><label for="a6">The response will be submitted within the 15 business day statutory window.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a7"><label for="a7">A calendar of committed progress updates to FDA has been built into the implementation plan.</label></div>
+    </div>
+  </details>
+
+  <!-- SITE ANNOTATION FIELDS -->
+  <div class="annotate-box">
+    <h3>Site Annotation</h3>
+    <div class="sub">Add your site-specific references while reviewing this map. Not saved between sessions - copy notes into your own records before closing.</div>
+    <div class="annotate-grid">
+      <div class="annotate-field">
+        <label>WARNING LETTER REFERENCE</label>
+        <input type="text" placeholder="e.g. WL #320-26-01, District Office">
+      </div>
+      <div class="annotate-field">
+        <label>LOCAL SOP REFERENCE</label>
+        <input type="text" placeholder="e.g. SOP-RA-045 Rev 1">
+      </div>
+      <div class="annotate-field" style="grid-column: 1 / -1">
+        <label>NOTES</label>
+        <textarea rows="3" placeholder="Site-specific observations, open questions, or follow-up items for the response team."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Miss the 15 business day response deadline without contacting the district office in advance. Submit a response that addresses only the cited instance rather than systemic root cause. Limit corrective actions to a single site when the same process runs elsewhere. Treat legal review as optional for a Warning Letter response.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Warning Letter vs 483 response</h4>
+      <p>A 483 response addresses inspectional observations on a voluntary basis with no fixed statutory deadline. A Warning Letter response is a mandatory statutory requirement under Section 705 with a fixed 15 business day deadline and a materially higher bar for root cause depth and global scope.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Escalation pathway</h4>
+      <p>Warning Letters most often follow an inadequate 483 response, but can also issue directly for data integrity findings or significant public health risk. An inadequate Warning Letter response can itself escalate to an Import Alert or Consent Decree referral.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>FD&amp;C Act Section 705 - statutory basis for the Warning Letter mechanism. 21 CFR Part 7 - FDA enforcement policy. FDA Regulatory Procedures Manual Chapter 4 - internal FDA procedures governing Warning Letter issuance and response evaluation.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Warning Letter Response Workflow &nbsp;&#183;&nbsp;
+    Built from FD&amp;C Act Section 705, 21 CFR Part 7, FDA Regulatory Procedures Manual Chapter 4 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Regulatory Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
