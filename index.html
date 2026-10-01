@@ -845,16 +845,26 @@ function showCategory(id, skipHash){
 }
 // Deep link support: a URL like gmpify.com/#courses?cat=cannabis opens
 // straight onto that category tab instead of always defaulting to Procedural Maps.
-(function(){
+function applyCategoryFromHash(scroll){
   var match = window.location.hash.match(/^#courses\?cat=([a-z]+)/i);
   if(match){
     showCategory(match[1], true);
-    document.addEventListener('DOMContentLoaded', function(){
+    if(scroll){
       var section = document.getElementById('courses');
       if(section){ section.scrollIntoView(); }
-    });
+    }
   }
-})();
+}
+applyCategoryFromHash(false);
+document.addEventListener('DOMContentLoaded', function(){
+  applyCategoryFromHash(true);
+});
+// Handles the case where the page is already open and the hash changes
+// without a full reload (e.g. clicking a category link while gmpify.com
+// is already loaded in that tab).
+window.addEventListener('hashchange', function(){
+  applyCategoryFromHash(true);
+});
 function toggleMobileNav(){
   const menu = document.getElementById('navMobile');
   const btn = document.getElementById('navHamburger');
