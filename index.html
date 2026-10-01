@@ -831,12 +831,30 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
 
 
 <script>
-function showCategory(id){
+function showCategory(id, skipHash){
   document.querySelectorAll('.cat-panel').forEach(function(p){ p.classList.remove('active'); });
   document.querySelectorAll('.cat-tab').forEach(function(t){ t.classList.remove('active'); });
-  document.getElementById(id).classList.add('active');
-  document.getElementById('tab-' + id).classList.add('active');
+  var panel = document.getElementById(id);
+  var tab = document.getElementById('tab-' + id);
+  if(!panel || !tab){ return; }
+  panel.classList.add('active');
+  tab.classList.add('active');
+  if(!skipHash && history.replaceState){
+    history.replaceState(null, '', '#courses?cat=' + id);
+  }
 }
+// Deep link support: a URL like gmpify.com/#courses?cat=cannabis opens
+// straight onto that category tab instead of always defaulting to Procedural Maps.
+(function(){
+  var match = window.location.hash.match(/^#courses\?cat=([a-z]+)/i);
+  if(match){
+    showCategory(match[1], true);
+    document.addEventListener('DOMContentLoaded', function(){
+      var section = document.getElementById('courses');
+      if(section){ section.scrollIntoView(); }
+    });
+  }
+})();
 function toggleMobileNav(){
   const menu = document.getElementById('navMobile');
   const btn = document.getElementById('navHamburger');
