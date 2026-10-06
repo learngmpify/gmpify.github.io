@@ -17,6 +17,10 @@ const ALLOWED_ORIGINS = [
   'https://www.gmpify.com',
 ];
 
+// Stop waiting a little before Netlify cuts the function off, so the visitor
+// gets a readable message instead of an HTML error page.
+const UPSTREAM_TIMEOUT_MS = 25000;
+
 exports.handler = async function (event) {
   const origin = event.headers.origin || event.headers.Origin || '';
   const corsOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
@@ -39,6 +43,7 @@ exports.handler = async function (event) {
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
+    console.log('claude-proxy: ANTHROPIC_API_KEY is not set');
     return {
       statusCode: 500,
       headers,
@@ -59,16 +64,22 @@ exports.handler = async function (event) {
     return { statusCode: 400, headers, body: JSON.stringify({ error: 'Missing "messages" in request body.' }) };
   }
 
+  const useModel = model || 'claude-sonnet-4-6';
+  const started = Date.now();
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
+
   try {
     const upstream = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
+      signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: model || 'claude-sonnet-4-6',
+        model: useModel,
         max_tokens: max_tokens || 2000,
         ...(system ? { system } : {}),
         messages,
@@ -76,6 +87,14 @@ exports.handler = async function (event) {
     });
 
     const data = await upstream.json();
+    clearTimeout(timer);
+
+    console.log(
+      'claude-proxy: model=' + useModel +
+      ' status=' + upstream.status +
+      ' ms=' + (Date.now() - started) +
+      (upstream.ok ? '' : ' error=' + JSON.stringify(data.error || data).slice(0, 300))
+    );
 
     return {
       statusCode: upstream.status,
@@ -83,10 +102,21 @@ exports.handler = async function (event) {
       body: JSON.stringify(data),
     };
   } catch (err) {
+    clearTimeout(timer);
+    const timedOut = err && err.name === 'AbortError';
+    console.log(
+      'claude-proxy: FAILED model=' + useModel +
+      ' ms=' + (Date.now() - started) +
+      ' reason=' + (timedOut ? 'timeout after ' + UPSTREAM_TIMEOUT_MS + 'ms' : err.message)
+    );
     return {
-      statusCode: 502,
+      statusCode: timedOut ? 504 : 502,
       headers,
-      body: JSON.stringify({ error: 'Upstream request to Anthropic failed: ' + err.message }),
+      body: JSON.stringify({
+        error: timedOut
+          ? 'The request took too long to complete. Please try again.'
+          : 'Upstream request to Anthropic failed: ' + err.message,
+      }),
     };
   }
 };
