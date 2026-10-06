@@ -356,10 +356,14 @@ footer{padding:24px;border-top:1px solid rgba(255,255,255,0.07);max-width:960px;
     </div>
 
     <!-- Email capture -->
-    <div class="summary-card" style="background:rgba(245,166,35,0.06);border-color:rgba(245,166,35,0.25)">
-      <div class="summary-label" style="color:var(--gold)">Want a copy of this report, and future free tools as they launch?</div>
-      <div style="font-size:0.88rem;color:var(--light);line-height:1.6;margin-bottom:14px">Enter your email below. We will not spam you, and you can unsubscribe at any time.</div>
-      <script async data-uid="6f5dc8b6ee" src="https://gmpify.kit.com/6f5dc8b6ee/index.js"></script>
+    <div class="summary-card" id="capCard" style="background:rgba(245,166,35,0.06);border-color:rgba(245,166,35,0.25)">
+      <div class="summary-label" style="color:var(--gold)">Get new free tools by email</div>
+      <div style="font-size:0.88rem;color:var(--light);line-height:1.6;margin-bottom:14px">Enter your email and we will let you know when each new free GMP tool launches. No spam, and you can unsubscribe at any time.</div>
+      <form id="capForm" style="display:flex;gap:10px;flex-wrap:wrap" novalidate>
+        <input type="email" id="capEmail" placeholder="you@company.com" autocomplete="email" required aria-label="Email address" style="flex:1;min-width:220px;padding:10px 14px;border-radius:8px;border:1px solid rgba(202,216,232,0.25);background:rgba(0,0,0,0.2);color:#fff;font-size:0.9rem">
+        <button type="submit" id="capBtn" style="background:var(--gold);color:var(--navy);border:none;padding:10px 22px;border-radius:8px;font-weight:700;font-size:0.9rem;cursor:pointer">Notify me</button>
+      </form>
+      <div id="capMsg" role="status" style="font-size:0.85rem;margin-top:10px;display:none"></div>
     </div>
 
     <!-- Summary -->
@@ -692,6 +696,44 @@ function restart(){
   clearAll();
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
+// Email capture (sends to Kit via a private Netlify function)
+(function(){
+  var form=document.getElementById('capForm');
+  if(!form) return;
+  var msg=document.getElementById('capMsg');
+  var btn=document.getElementById('capBtn');
+  function show(text,ok){
+    msg.style.display='block';
+    msg.style.color=ok?'var(--teal)':'#f87171';
+    msg.textContent=text;
+  }
+  form.addEventListener('submit',async function(e){
+    e.preventDefault();
+    var email=document.getElementById('capEmail').value.trim();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){ show('Please enter a valid email address.',false); return; }
+    btn.disabled=true; btn.textContent='Sending...';
+    try{
+      var res=await fetch('/.netlify/functions/kit-subscribe',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email:email,source:'em-reviewer'})
+      });
+      var data={};
+      try{ data=await res.json(); }catch(_){}
+      if(res.ok){
+        show('Thank you. You are on the list.',true);
+        form.style.display='none';
+      } else {
+        show(data.error||'Something went wrong. Please try again.',false);
+        btn.disabled=false; btn.textContent='Notify me';
+      }
+    }catch(err){
+      show('Something went wrong. Please try again.',false);
+      btn.disabled=false; btn.textContent='Notify me';
+    }
+  });
+})();
 </script>
 </body>
 </html>
