@@ -243,23 +243,63 @@ footer{padding:24px;border-top:1px solid rgba(255,255,255,0.07);max-width:900px;
 </div></footer>
 
 <script>
-const SYSTEM = `You are a senior pharmaceutical GMP regulatory expert and former FDA compliance officer with 27 years of experience. You work for GMPify - a pharmaceutical GMP training platform.
+const SYSTEM_INTRO = `You are a senior pharmaceutical GMP regulatory expert and former FDA compliance officer with 27 years of experience. You work for GMPify - a pharmaceutical GMP training platform.
 
-A pharmaceutical manufacturer needs help drafting a response to an FDA Form 483 observation. Generate a complete structured draft response following FDA's March 2026 draft guidance (Docket FDA-2025-D-1504).
+A pharmaceutical manufacturer needs help drafting a response to an FDA Form 483 observation. You are writing part of a complete structured draft response following FDA's March 2026 draft guidance (Docket FDA-2025-D-1504). Write only the fields listed below.
 
 Respond ONLY with a JSON object in this exact format:
 
-{
+`;
+
+const SYSTEM_OUTRO = `
+
+Be precise, formal and regulatory-accurate. Use language FDA reviewers will recognise as competent and thorough. Never use em dashes. Address the specific observation provided. Include specific CFR citations where relevant.`;
+
+const FIELDS_A = `{
   "executiveSummary": "A 3-4 sentence executive summary table narrative covering: (1) the observation cited, (2) immediate actions taken, (3) commitment to full corrective action, (4) patient risk assessment status. Written in formal regulatory language appropriate for an executive signatory.",
   "patientRiskAssessment": "3-4 sentences assessing the risk to patients from products potentially affected by this observation. Cover: distributed drugs still within expiry, potential effects on safety/identity/strength/quality/purity, and the conclusion on patient risk. Be specific to the product type and observation provided.",
+  "adminElements": "2-3 sentences listing the administrative elements to include: establishment name, FEI number, copy of 483, response preparer identification, executive signatory. Format as a brief checklist narrative.",
+}`;
+
+const FIELDS_B = `{
   "investigationReport": "4-5 sentences describing the investigation scope, methodology, root cause analysis approach and findings. If root cause is provided use it. If not, describe the investigation framework that will determine it. Reference 21 CFR 211.192 or relevant CFR section. Include scope justification and reference to any systemic assessment across other lines or products.",
   "capaplan": "4-5 sentences describing the corrective action, preventive action, implementation timeline and responsible party. Be specific. Reference the target timeframe provided. Include what the CAPA addresses at root cause level, not just the observed symptom.",
   "effectivenessCheck": "2-3 sentences describing how effectiveness will be verified. Must go beyond routine sampling and testing per March 2026 guidance. Specify the metric, monitoring period and the criteria that will confirm the root cause has been eliminated.",
-  "adminElements": "2-3 sentences listing the administrative elements to include: establishment name, FEI number, copy of 483, response preparer identification, executive signatory. Format as a brief checklist narrative.",
   "placeholders": ["List of specific items the user must fill in before submitting - site-specific data, batch numbers, dates, responsible persons, evidence attachments etc."]
-}
+}`;
 
-Be precise, formal and regulatory-accurate. Use language FDA reviewers will recognise as competent and thorough. Never use em dashes. Address the specific observation provided. Include specific CFR citations where relevant.`;
+const SYSTEM_A = SYSTEM_INTRO + FIELDS_A + SYSTEM_OUTRO;
+const SYSTEM_B = SYSTEM_INTRO + FIELDS_B + SYSTEM_OUTRO;
+
+// One request to Claude via the private proxy. Retries once on a timeout,
+// gateway error or unreadable reply.
+async function askClaude(system, prompt, maxTokens) {
+  let lastErr;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await fetch('/.netlify/functions/claude-proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: maxTokens,
+          system: system,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+      let data;
+      try { data = await res.json(); } catch (e) { throw new Error('API error ' + res.status); }
+      if (!res.ok) throw new Error((data.error && data.error.message) || data.error || 'API error ' + res.status);
+      const raw = (data.content || []).map(b => b.type === 'text' ? b.text : '').join('').trim();
+      const match = raw.match(/\{[\s\S]*\}/);
+      if (!match) throw new Error('Could not parse response');
+      return JSON.parse(match[0]);
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr;
+}
 
 function updateCount(el, countId, max) {
   const len = el.value.length;
@@ -335,27 +375,12 @@ CAPA completion target: ${timeline || '60 days'}`;
   }, 2800);
 
   try {
-    const res = await fetch('/.netlify/functions/claude-proxy', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 2000,
-        system: SYSTEM,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-
-    const data = await res.json();
+    const [partA, partB] = await Promise.all([
+      askClaude(SYSTEM_A, prompt, 1000),
+      askClaude(SYSTEM_B, prompt, 1300)
+    ]);
     clearInterval(mt);
-
-    if (!res.ok) throw new Error(data.error?.message || data.error || 'API error ' + res.status);
-
-    const raw = data.content?.map(b => b.type === 'text' ? b.text : '').join('').trim();
-    const match = raw.match(/\{[\s\S]*\}/);
-    if (!match) throw new Error('Could not parse response');
-    const parsed = JSON.parse(match[0]);
-
+    const parsed = Object.assign({}, partA, partB);
     loading.classList.remove('show');
     showResult(parsed, site, fei, sig);
 
