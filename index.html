@@ -283,6 +283,16 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
 .catalog-stat-lbl{font-size:0.76rem;color:var(--mid)}
 .reg-list-2col{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:768px){.reg-list-2col{grid-template-columns:1fr}}
+
+/* COURSES DROPDOWN */
+.nav-dd{position:relative}
+.nav-dd>a::after{content:"\25BE";margin-left:5px;font-size:0.75em;opacity:.7}
+.nav-dd-menu{display:none;position:absolute;top:100%;left:-12px;min-width:190px;background:rgba(13,43,62,0.98);border:1px solid rgba(0,194,168,0.2);border-radius:10px;padding:8px 0;list-style:none;box-shadow:0 12px 32px rgba(0,0,0,0.35);z-index:200;flex-direction:column;gap:0}
+.nav-dd:hover .nav-dd-menu,.nav-dd:focus-within .nav-dd-menu{display:flex}
+.nav-dd-menu li{list-style:none}
+.nav-dd-menu a{display:block;padding:9px 18px;white-space:nowrap}
+.nav-dd-menu a:hover{background:rgba(0,194,168,0.08)}
+.nav-mobile a.nav-sub{padding-left:18px;font-size:0.92rem;color:var(--mid)}
 </style>
 <!-- Google Analytics GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S5X9XQYNPG"></script>
@@ -301,7 +311,13 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
     <div class="nav-inner">
       <a href="/" class="logo"><span>GMP</span><span>ify</span></a>
       <ul class="nav-links">
-        <li><a href="#courses">Courses</a></li>
+        <li class="nav-dd"><a href="#courses" aria-haspopup="true">Courses</a>
+          <ul class="nav-dd-menu">
+            <li><a href="#courses">Pharmaceutical</a></li>
+            <li><a href="/cannabis.html">Cannabis</a></li>
+            <li><a href="/food.html">Food</a></li>
+          </ul>
+        </li>
         <li><a href="#why">Why GMPify</a></li>
         <li><a href="#pricing">Pricing</a></li>
         <li><a href="blog.html">Blog</a></li>
@@ -319,6 +335,8 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
 </nav>
 <div class="nav-mobile" id="navMobile">
   <a href="#courses">Courses</a>
+  <a href="/cannabis.html" class="nav-sub">Cannabis courses</a>
+  <a href="/food.html" class="nav-sub">Food courses</a>
   <a href="#why">Why GMPify</a>
   <a href="#pricing">Pricing</a>
   <a href="blog.html">Blog</a>
@@ -326,7 +344,6 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
   <a href="/about.html">About</a>
   <a href="/tools.html">Tools</a>
   <a href="/food-gmp-maps.html">Food Maps</a>
-  <a href="/cannabis.html" style="color:#4ade80">Cannabis</a>
   <a href="https://learn.gmpify.com" class="nav-cta">Start learning</a>
 </div>
 
@@ -463,11 +480,11 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
   <div class="container">
     <div class="section-label">Course catalog</div>
     <h2 class="section-heading">A comprehensive GMP training library</h2>
-    <p class="section-sub">From GMP Fundamentals for new operators through advanced coverage of EU GMP Annex 1, Contamination Control Strategy, Computer Software Assurance and ten interactive procedural maps.</p>
+    <p class="section-sub">From GMP Fundamentals for new operators through advanced coverage of EU GMP Annex 1, Contamination Control Strategy, Computer Software Assurance and ten interactive procedural maps, plus a growing set of food manufacturing courses.</p>
 
     <div class="catalog-stats">
-      <div><div class="catalog-stat-val">69</div><div class="catalog-stat-lbl">Courses and interactive maps</div></div>
-      <div><div class="catalog-stat-val">9</div><div class="catalog-stat-lbl">Categories</div></div>
+      <div><div class="catalog-stat-val">78</div><div class="catalog-stat-lbl">Courses and interactive maps</div></div>
+      <div><div class="catalog-stat-val">10</div><div class="catalog-stat-lbl">Categories</div></div>
       <div><div class="catalog-stat-val">Always growing</div><div class="catalog-stat-lbl">New courses added regularly</div></div>
     </div>
 
@@ -485,6 +502,7 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
       <button class="cat-tab" id="tab-specialty" onclick="showCategory('specialty')">Specialty &amp; Emerging <span class="cat-count">5</span></button>
       <button class="cat-tab" id="tab-essentials" onclick="showCategory('essentials')">Essentials Series <span class="cat-count">6</span></button>
       <button class="cat-tab" id="tab-cannabis" onclick="showCategory('cannabis')">Cannabis <span class="cat-count">2</span></button>
+      <button class="cat-tab" id="tab-food" onclick="showCategory('food')">Food <span class="cat-count">9</span></button>
       <button class="cat-tab" id="tab-free" onclick="showCategory('free')">Free Preview <span class="cat-count">1</span></button>
     </div>
 
@@ -609,6 +627,22 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
         <li class="reg-item"><div class="reg-dot"></div><div class="reg-name"><a href="/courses/cannabis-good-production-practice-cgmp.html" style="color:inherit">Cannabis Good Production Practice (cGMP)</a></div><div class="reg-tag" style="color:#4ade80;background:rgba(74,222,128,0.1)">Cannabis</div></li>
       </ul>
     </div>
+
+    <div class="cat-panel" id="food">
+      <ul class="reg-list reg-list-2col">
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name"><a href="/courses/food-gmp-essentials-production-employees.html" style="color:inherit">Food GMP Essentials for Production Employees</a></div><div class="reg-tag" style="color:#fb923c;background:rgba(251,146,60,0.1)">Food</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name"><a href="/courses/chemical-hazards-preventive-controls-food-manufacturing.html" style="color:inherit">Chemical Hazards and Preventive Controls in Food Manufacturing</a></div><div class="reg-tag" style="color:#fb923c;background:rgba(251,146,60,0.1)">Food</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name"><a href="/courses/allergen-control-labeling-compliance.html" style="color:inherit">Allergen Control and Labeling Compliance</a></div><div class="reg-tag" style="color:#fb923c;background:rgba(251,146,60,0.1)">Food</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name"><a href="/courses/food-facility-sanitation-hygiene.html" style="color:inherit">Food Facility Sanitation and Hygiene</a></div><div class="reg-tag" style="color:#fb923c;background:rgba(251,146,60,0.1)">Food</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name"><a href="/courses/environmental-monitoring-listeria-control-rte-facilities.html" style="color:inherit">Environmental Monitoring and Listeria Control for RTE Facilities</a></div><div class="reg-tag" style="color:#fb923c;background:rgba(251,146,60,0.1)">Food</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name"><a href="/courses/supplier-verification-programs-food-manufacturing.html" style="color:inherit">Supplier Verification Programs</a></div><div class="reg-tag" style="color:#fb923c;background:rgba(251,146,60,0.1)">Food</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name"><a href="/courses/fsvp-foreign-supplier-verification-food-importers.html" style="color:inherit">Foreign Supplier Verification Programs (FSVP) for Food Importers</a></div><div class="reg-tag" style="color:#fb923c;background:rgba(251,146,60,0.1)">Food</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name"><a href="/courses/food-defense-intentional-adulteration.html" style="color:inherit">Food Defense and Intentional Adulteration</a></div><div class="reg-tag" style="color:#fb923c;background:rgba(251,146,60,0.1)">Food</div></li>
+        <li class="reg-item"><div class="reg-dot"></div><div class="reg-name"><a href="/courses/recall-management-traceability-food.html" style="color:inherit">Recall Management and Traceability</a></div><div class="reg-tag" style="color:#fb923c;background:rgba(251,146,60,0.1)">Food</div></li>
+      </ul>
+      <p style="margin-top:16px;font-size:0.88rem"><a href="/food.html">About the food courses</a> &middot; <a href="/food-gmp-maps.html">Free Food GMP Maps</a></p>
+    </div>
+
 
     <!-- FREE PREVIEW -->
     <div class="cat-panel" id="free">

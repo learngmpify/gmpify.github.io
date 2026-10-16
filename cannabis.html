@@ -334,6 +334,16 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
   .cannabis-stats{gap:20px}
   .cannabis-stat-val{font-size:1.4rem}
 }
+
+/* COURSES DROPDOWN */
+.nav-dd{position:relative}
+.nav-dd>a::after{content:"\25BE";margin-left:5px;font-size:0.75em;opacity:.7}
+.nav-dd-menu{display:none;position:absolute;top:100%;left:-12px;min-width:190px;background:rgba(13,43,62,0.98);border:1px solid rgba(0,194,168,0.2);border-radius:10px;padding:8px 0;list-style:none;box-shadow:0 12px 32px rgba(0,0,0,0.35);z-index:200;flex-direction:column;gap:0}
+.nav-dd:hover .nav-dd-menu,.nav-dd:focus-within .nav-dd-menu{display:flex}
+.nav-dd-menu li{list-style:none}
+.nav-dd-menu a{display:block;padding:9px 18px;white-space:nowrap}
+.nav-dd-menu a:hover{background:rgba(0,194,168,0.08)}
+.nav-mobile a.nav-sub{padding-left:18px;font-size:0.92rem;color:var(--mid)}
 </style>
 <!-- Google Analytics GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S5X9XQYNPG"></script>
@@ -351,7 +361,13 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
     <div class="nav-inner">
       <a href="/" class="logo"><span>GMP</span><span>ify</span></a>
       <ul class="nav-links">
-        <li><a href="/#courses">Courses</a></li>
+        <li class="nav-dd"><a href="/#courses" aria-haspopup="true">Courses</a>
+          <ul class="nav-dd-menu">
+            <li><a href="/#courses">Pharmaceutical</a></li>
+            <li><a href="/cannabis.html">Cannabis</a></li>
+            <li><a href="/food.html">Food</a></li>
+          </ul>
+        </li>
         <li><a href="/#why">Why GMPify</a></li>
         <li><a href="/#pricing">Pricing</a></li>
         <li><a href="blog.html">Blog</a></li>
@@ -368,6 +384,8 @@ footer{padding:48px 0 32px;border-top:1px solid rgba(255,255,255,0.07)}
 </nav>
 <div class="nav-mobile" id="navMobile">
   <a href="/#courses">Courses</a>
+  <a href="/cannabis.html" class="nav-sub">Cannabis courses</a>
+  <a href="/food.html" class="nav-sub">Food courses</a>
   <a href="/#why">Why GMPify</a>
   <a href="/#pricing">Pricing</a>
   <a href="blog.html">Blog</a>
