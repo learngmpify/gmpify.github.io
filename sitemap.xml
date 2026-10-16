@@ -5,6 +5,7 @@
   <url><loc>https://gmpify.com/about.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://gmpify.com/tools.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://gmpify.com/gmp-maps.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gmpify.com/food-gmp-maps.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://gmpify.com/cannabis.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/blog.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
