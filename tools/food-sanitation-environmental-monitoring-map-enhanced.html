@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanitation and Environmental Monitoring Workflow - Enhanced Edition | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* CONTROL TYPE BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* HAZARD CATEGORIES */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* HAZARD EVALUATION CRITERIA */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* KEY OUTPUTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* QUALITY ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+  /* ===== ENHANCED EDITION ADDITIONS ===== */
+  .enh-badge{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.35);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--gold);text-align:right}
+
+  /* REGULATORY TEXT PANEL */
+  .regtext-box{background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .regtext-box h3{font-size:0.74rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .regtext-items{display:flex;flex-direction:column;gap:9px}
+  .regtext-item{background:rgba(255,255,255,0.04);border-left:3px solid var(--c1acc);border-radius:5px;padding:9px 12px}
+  .regtext-item .src{font-size:0.63rem;font-family:var(--mono);color:var(--c1acc);margin-bottom:3px}
+  .regtext-item p{font-size:0.7rem;color:var(--light);line-height:1.55}
+
+  /* INSPECTION PATTERN PANEL */
+  .pattern-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .pattern-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .pattern-box .disclaimer{font-size:0.64rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px;font-style:italic}
+  .pattern-items{display:flex;flex-direction:column;gap:7px}
+  .pattern-item{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:8px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .pattern-item strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* BEST PRACTICE PANEL */
+  .practice-box{background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .practice-box h3{font-size:0.74rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .practice-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .practice-item{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.16);border-radius:5px;padding:9px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .practice-item strong{color:var(--green);display:block;font-size:0.67rem;margin-bottom:2px}
+
+  /* SELF-ASSESSMENT CHECKLIST */
+  .assess-box{background:rgba(56,189,248,0.05);border:1.5px solid rgba(56,189,248,0.22);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .assess-box summary{cursor:pointer;padding:12px 16px;font-size:0.78rem;font-weight:700;color:var(--white);list-style:none;display:flex;align-items:center;justify-content:space-between}
+  .assess-box summary::-webkit-details-marker{display:none}
+  .assess-box summary .arrow-icon{color:var(--c1acc);font-size:0.8rem;transition:transform 0.15s}
+  .assess-box[open] summary .arrow-icon{transform:rotate(90deg)}
+  .assess-body{padding:4px 16px 16px}
+  .assess-note{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px}
+  .assess-row{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .assess-row:last-child{border-bottom:none}
+  .assess-row input[type=checkbox]{margin-top:2px;width:15px;height:15px;accent-color:var(--c1acc);flex-shrink:0}
+  .assess-row label{font-size:0.71rem;color:var(--light);line-height:1.5}
+
+  /* SITE ANNOTATION FIELDS */
+  .annotate-box{background:rgba(0,0,0,0.2);border:1.5px dashed rgba(255,255,255,0.16);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .annotate-box h3{font-size:0.74rem;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .annotate-box .sub{font-size:0.65rem;color:var(--mid);margin-bottom:12px}
+  .annotate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotate-field{display:flex;flex-direction:column;gap:4px}
+  .annotate-field label{font-size:0.66rem;font-family:var(--mono);color:var(--c1acc)}
+  .annotate-field textarea, .annotate-field input[type=text]{
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:6px;
+    color:var(--white);font-family:var(--font);font-size:0.72rem;padding:8px 10px;resize:vertical;
+  }
+  .annotate-field textarea:focus, .annotate-field input[type=text]:focus{outline:none;border-color:var(--c1acc)}
+
+  /* PRINT OPTIMIZATION */
+  @media print {
+    body{background:#FFFFFF !important;color:#1A1A1A !important}
+    .header{background:#FFFFFF !important;border-bottom:2px solid #1A1A1A}
+    .logo span:first-child, .logo span:last-child, .header h1{color:#1A1A1A !important}
+    .header h1 em{color:#0A6E8C !important}
+    .header-sub, .stat-badge, .reg-badge, .enh-badge{color:#333 !important}
+    .legend{background:#F2F2F2 !important}
+    .map-wrap, .phase-body, .node-action, .node-decision, .limits-box, .exceed-box, .trend-box, .ccs-box,
+    .regtext-box, .pattern-box, .practice-box, .assess-box, .annotate-box, .rule-card{
+      background:#FAFAFA !important;color:#1A1A1A !important;border-color:#CCCCCC !important;
+    }
+    .node-title, .node-body, .limit-card p, .exceed-step, .trend-item, .ccs-item, .regtext-item p,
+    .pattern-item, .practice-item, .rule-card p, .assess-row label{color:#1A1A1A !important}
+    .assess-box summary{color:#1A1A1A !important}
+    .footer{color:#333 !important}
+    .assess-box summary .arrow-icon{display:none}
+    details.assess-box{display:block}
+    .assess-body{display:block !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Sanitation and Environmental Monitoring <em>Workflow</em></h1>
+    <div class="header-sub">21 CFR 117.135(c)(3) &nbsp;|&nbsp; 21 CFR 117.165(a)(3) &nbsp;|&nbsp; Listeria Control in Ready-to-Eat Foods</div>
+  </div>
+  <div class="header-right">
+    <div class="enh-badge">Enhanced Edition &#183; Subscriber Content</div>
+    <div class="reg-badge">
+      21 CFR 117.35 &nbsp;&middot;&nbsp; 117.135(c)(3) &nbsp;&middot;&nbsp; 117.145<br>
+      21 CFR 117.150 &nbsp;&middot;&nbsp; 117.165(a)(3) &nbsp;&middot;&nbsp; 117.170
+    </div>
+    <div class="stat-badge">
+      Environmental monitoring tests whether<br>
+      sanitation controls actually work
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Sanitation Program Design</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Environmental Monitoring Program</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Response and Corrective Action</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Verification and Reanalysis</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <div class="trigger-box">
+    <div class="trigger-icon">&#129532;</div>
+    <div class="trigger-text">
+      <h3>Sanitation and Environmental Monitoring - Keeping the Plant Environment Under Control</h3>
+      <p>Sanitation controls keep the facility in a condition that prevents contamination of food from the environment, and they are one of the four preventive control types under FSMA. Where ready-to-eat food is exposed to the environment after a kill step, environmental monitoring is the verification that those controls work, and Listeria monocytogenes is the main target. This map follows the pathway from sanitation program design through zone-based sampling, response to positive results, and verification.</p>
+      <div class="reg">21 CFR 117.35 &nbsp;&middot;&nbsp; 117.135(c)(3) &nbsp;&middot;&nbsp; 117.165(a)(3) &nbsp;&middot;&nbsp; FDA Listeria Guidance</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-fda">21 CFR 117.135(c)(3)</div>
+      <div class="ref-chip chip-fda">21 CFR 117.165(a)(3)</div>
+      <div class="ref-chip chip-usp">Listeria Control</div>
+    </div>
+  </div>
+
+  <div class="grades-bar">
+    <div class="grade-card grade-a">
+      <h4>Listeria monocytogenes</h4>
+      <p>A hardy environmental pathogen that can persist in harborage sites and grow at refrigeration temperatures in ready-to-eat foods.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Primary EMP target</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Hygienic Zones</h4>
+      <p>Zones 1 to 4, from food-contact surfaces to areas outside the processing room, set the risk and the response to each positive.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Zone-based sampling</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-c">
+      <h4>Sanitation Controls</h4>
+      <p>Written cleaning and sanitizing procedures, schedules, and checks that keep surfaces and the environment in sanitary condition.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Procedures and records</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Environmental Monitoring</h4>
+      <p>Collecting and testing environmental samples for a pathogen or indicator organism to verify that controls are effective.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Verification activity</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <div class="design-col">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Sanitation Program Design
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Define hygienic zones and traffic flow</div>
+              <div class="node-body">Zones 1 to 4 mapped, with people, product, and equipment movement planned to keep dirty areas separate from clean ones.</div>
+              <div class="node-reg">21 CFR 117.20 &middot; 117.35</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Identify environmental pathogen risks</div>
+              <div class="node-body">Ready-to-eat foods exposed to the environment after a kill step assessed for Listeria and other environmental pathogens.</div>
+              <div class="node-reg">21 CFR 117.130</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Write sanitation procedures and the master schedule</div>
+              <div class="node-body">Cleaning and sanitizing methods, chemicals, concentrations, frequency, and responsibilities documented for each area and piece of equipment.</div>
+              <div class="node-reg">21 CFR 117.135(c)(3)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Train sanitation personnel</div>
+              <div class="node-body">Staff qualified in cleaning methods, chemical use, disassembly, and the reasons behind each step.</div>
+              <div class="node-reg">21 CFR 117.4</div>
+            </div>
+          </div>
+        </div>
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Environmental Monitoring Program
+          </div>
+          <div class="phase-body">
+            <div class="node node-decision">
+              <div class="decision-q">Is ready-to-eat food exposed to the environment after a kill step?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Environmental monitoring required</span>
+                <span class="opt-n">NO &#8594; Document the rationale</span>
+              </div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Establish a zone-based sampling plan</div>
+              <div class="node-body">Sites, number of samples, frequency, and target organisms defined for each zone, with a site map.</div>
+              <div class="node-reg">21 CFR 117.165(a)(3)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Collect samples under real operating conditions</div>
+              <div class="node-body">Samples taken during production as well as after cleaning, rotated across sites and shifts.</div>
+              <div class="node-reg">21 CFR 117.165(a)(3)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Test, record, and trend results</div>
+              <div class="node-body">Samples tested by a reliable method and results recorded so patterns by site, zone, and time are visible.</div>
+              <div class="node-reg">21 CFR 117.165</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Response and Corrective Action
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Investigate every positive result</div>
+              <div class="node-body">Zone and organism determine the response, with Zone 1 positives treated as the most serious.</div>
+              <div class="node-reg">21 CFR 117.150</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Hold and evaluate affected product</div>
+              <div class="node-body">Product made after a Zone 1 positive held and assessed for safety before release, with a documented decision.</div>
+              <div class="node-reg">21 CFR 117.150(a)(2)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Find and fix the root cause</div>
+              <div class="node-body">Intensified cleaning, vector sampling around the positive site, and removal of harborage until the source is eliminated.</div>
+              <div class="node-reg">21 CFR 117.150</div>
+            </div>
+          </div>
+        </div>
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Verification and Reanalysis
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Verify sanitation effectiveness</div>
+              <div class="node-body">Visual inspection, ATP or similar tests, and microbiological results confirm cleaning removes soil and microorganisms.</div>
+              <div class="node-reg">21 CFR 117.165</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Review records on time</div>
+              <div class="node-body">Sanitation monitoring, corrective action, and environmental testing records reviewed within 7 working days.</div>
+              <div class="node-reg">21 CFR 117.165(a)(4)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Reanalyze the program</div>
+              <div class="node-body">Program reviewed after a positive trend, a process or equipment change, or construction, and in any case at least every 3 years.</div>
+              <div class="node-reg">21 CFR 117.170</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="response-col">
+
+      <div class="limits-box">
+        <div class="limits-header">Hygienic Zones (Overview)</div>
+        <div class="limits-body">
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Zone 1 - Food-Contact Surfaces</h4>
+            <p>Slicers, conveyors, fillers, and utensils that touch exposed food. A positive here requires immediate action and a product assessment.</p>
+            <div class="stat">FDA Listeria Guidance</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Zone 2 - Adjacent Non-Food-Contact</h4>
+            <p>Equipment housings, framework, control panels, and surfaces close to food-contact areas that can transfer contamination to Zone 1.</p>
+            <div class="stat">FDA Listeria Guidance</div>
+          </div>
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Zones 3 and 4 - Further Away</h4>
+            <p>Floors, drains, walls, forklifts, and hallways in the processing room (Zone 3), and areas outside it (Zone 4).</p>
+            <div class="stat">FDA Listeria Guidance</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exceed-box">
+        <h3>Positive Result Response (Overview)</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Contain</strong>
+            Affected area is isolated or controlled, and product from Zone 1 positives is held until an assessment is complete.
+          </div>
+          <div class="exceed-step">
+            <strong>Investigate</strong>
+            Source is traced through vector sampling around the positive site, review of cleaning, traffic, and maintenance activity.
+          </div>
+          <div class="exceed-step">
+            <strong>Correct</strong>
+            Cleaning is intensified, harborage is repaired or removed, and the cause is addressed rather than only the symptom.
+          </div>
+          <div class="exceed-step">
+            <strong>Verify</strong>
+            Follow-up sampling confirms the problem is resolved, and the event is reviewed for trends before the area is returned to routine.
+          </div>
+        </div>
+      </div>
+
+      <div class="trend-box">
+        <h3>Key Sanitation and Monitoring Outputs (Overview)</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Master sanitation schedule</strong>
+            What is cleaned, how, with what, how often, and by whom, for every area and piece of equipment.
+          </div>
+          <div class="trend-item">
+            <strong>Sampling plan and site map</strong>
+            Zone-based sites, frequency, and organisms, showing where and when samples are taken.
+          </div>
+          <div class="trend-item">
+            <strong>Trend report</strong>
+            Results organized by site, zone, and time so recurring or persistent positives stand out.
+          </div>
+          <div class="trend-item">
+            <strong>Corrective action and verification records</strong>
+            Evidence of how each positive and deviation was investigated, corrected, and confirmed resolved.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Sanitation and Monitoring Quality Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Hygienic Design Awareness</strong>
+        Equipment and building features that trap soil or moisture are identified and managed or removed.
+      </div>
+      <div class="ccs-item">
+        <strong>Defined Zoning</strong>
+        Zones documented and understood, so sampling and response match the risk of each area.
+      </div>
+      <div class="ccs-item">
+        <strong>Documented Cleaning Methods</strong>
+        Every cleaning task has a written method that a trained person can follow the same way every time.
+      </div>
+      <div class="ccs-item">
+        <strong>Chemical and Concentration Control</strong>
+        Sanitizers used at the correct concentration and contact time, and checked, not assumed.
+      </div>
+      <div class="ccs-item">
+        <strong>Representative Sampling</strong>
+        Sites chosen from risk, rotated over time, and sampled under real operating conditions.
+      </div>
+      <div class="ccs-item">
+        <strong>Trend Analysis</strong>
+        Results reviewed together over time so recurring problems are caught before they become outbreaks.
+      </div>
+      <div class="ccs-item">
+        <strong>Response Discipline</strong>
+        Every positive triggers a defined, documented response proportionate to the zone and organism.
+      </div>
+      <div class="ccs-item">
+        <strong>Verification and Review</strong>
+        Cleaning effectiveness is confirmed and records are reviewed by someone who did not generate them.
+      </div>
+    </div>
+  </div>
+
+  <!-- REGULATORY TEXT PANEL -->
+  <div class="regtext-box">
+    <h3>Regulatory Text - Source Provisions</h3>
+    <div class="regtext-items">
+      <div class="regtext-item">
+        <div class="src">21 CFR 117.135(c)(3) (paraphrased - refer to the official regulation for exact wording)</div>
+        <p>Sanitation controls are procedures, practices, and processes to ensure that the facility is maintained in a sanitary condition adequate to significantly minimize or prevent hazards such as environmental pathogens, biological hazards due to employee handling, and food allergen hazards, including procedures for the cleanliness of food-contact surfaces and the prevention of cross-contamination.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">21 CFR 117.165(a)(3) (paraphrased - refer to the official regulation for exact wording)</div>
+        <p>Where contamination of a ready-to-eat food with an environmental pathogen is a hazard requiring a preventive control, the facility must verify its controls by environmental monitoring, collecting and testing environmental samples for the pathogen or for an appropriate indicator organism.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">21 CFR 117.145(a) (paraphrased - refer to the official regulation for exact wording)</div>
+        <p>A facility must establish and implement written procedures, including the frequency, for monitoring each preventive control, so that monitoring gives assurance that the control is operating as intended.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSPECTION PATTERN PANEL -->
+  <div class="pattern-box">
+    <h3>Common Inspection Findings - Sanitation and Environmental Monitoring</h3>
+    <div class="disclaimer">Illustrative of recurring themes seen across published FDA Form 483s and warning letters. Not tied to a single specific citation.</div>
+    <div class="pattern-items">
+      <div class="pattern-item">
+        <strong>Positive results without documented investigation or follow-up</strong>
+        A Listeria positive is recorded and the area is cleaned, but there is no root cause, no vector sampling, and no confirmation it is resolved.
+      </div>
+      <div class="pattern-item">
+        <strong>Sampling plan skips high-risk sites</strong>
+        Samples are taken from easy, low-risk locations and only after sanitation, so harborage sites near food-contact surfaces are never tested.
+      </div>
+      <div class="pattern-item">
+        <strong>Harborage and wet conditions left unaddressed</strong>
+        Cracked floors, damaged equipment, pooling water, and condensation persist in a ready-to-eat area, with no corrective action.
+      </div>
+      <div class="pattern-item">
+        <strong>Cleaning records with no verification of effectiveness</strong>
+        Sanitation is recorded as done, but there is no visual check, ATP result, or microbiological evidence it works.
+      </div>
+    </div>
+  </div>
+
+  <!-- BEST PRACTICE PANEL -->
+  <div class="practice-box">
+    <h3>Best Practice Guidance</h3>
+    <div class="practice-items">
+      <div class="practice-item">
+        <strong>Sample when the line is running, not only after cleaning</strong>
+        Include samples during production and later in the run, since contamination often appears once equipment is in use.
+      </div>
+      <div class="practice-item">
+        <strong>Map sites and rotate them</strong>
+        Keep a site map and rotate locations across zones and shifts so the program covers the room over time, not the same easy spots.
+      </div>
+      <div class="practice-item">
+        <strong>Use vector sampling to find the source</strong>
+        After a positive, sample outward from the site in a defined pattern to find where the organism is coming from.
+      </div>
+      <div class="practice-item">
+        <strong>Control water and aerosols</strong>
+        Limit high-pressure hoses and drain splash near open product, and dry the area after cleaning to deny moisture to the organism.
+      </div>
+    </div>
+  </div>
+
+  <!-- SELF-ASSESSMENT CHECKLIST -->
+  <details class="assess-box">
+    <summary>Self-Assessment Checklist - Is Your Sanitation and Monitoring Program Inspection Ready? <span class="arrow-icon">&#9654;</span></summary>
+    <div class="assess-body">
+      <div class="assess-note">For personal or team use during training. Responses are not saved or submitted.</div>
+      <div class="assess-row"><input type="checkbox" id="a1"><label for="a1">Hygienic zones are defined and documented, with traffic flow that keeps dirty and clean areas separate.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a2"><label for="a2">A master sanitation schedule specifies methods, chemicals, concentrations, and frequency.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a3"><label for="a3">Sanitation personnel are trained and qualified for their tasks.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a4"><label for="a4">The environmental monitoring plan names sites by zone, frequency, and target organisms.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a5"><label for="a5">A positive result procedure by zone includes product hold and root cause investigation.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a6"><label for="a6">Results are trended and reviewed, and records are reviewed within 7 working days.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a7"><label for="a7">The program is reanalyzed after positive trends, changes, and at least every 3 years.</label></div>
+    </div>
+  </details>
+
+  <!-- SITE ANNOTATION FIELDS -->
+  <div class="annotate-box">
+    <h3>Site Annotation</h3>
+    <div class="sub">Add your site-specific references while reviewing this map. Not saved between sessions - copy notes into your own records before closing.</div>
+    <div class="annotate-grid">
+      <div class="annotate-field">
+        <label>ZONE OR AREA</label>
+        <input type="text" placeholder="e.g. Zone 2, slicer housing, Line 4">
+      </div>
+      <div class="annotate-field">
+        <label>LOCAL SOP REFERENCE</label>
+        <input type="text" placeholder="e.g. SOP-SAN-001 Rev 3">
+      </div>
+      <div class="annotate-field" style="grid-column: 1 / -1">
+        <label>NOTES</label>
+        <textarea rows="3" placeholder="Site-specific observations, open questions, or follow-up items for the sanitation and quality team."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Sample only right after cleaning. Dismiss a Zone 2 or Zone 3 positive as unimportant. Retest until a negative appears without investigating. Blast drains and floors with high-pressure water near open product. Close a positive without a documented cause and follow-up.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Cleaning vs sanitizing</h4>
+      <p>Cleaning removes soil, residue, and organic matter. Sanitizing reduces microorganisms on a surface that has already been cleaned. A sanitizer applied to a dirty surface does not work as intended, so the sequence and the contact time both matter.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Sanitation controls vs environmental monitoring</h4>
+      <p>Sanitation controls prevent contamination from the environment. Environmental monitoring tests whether they are working. A clean result does not prove the controls are good, and a positive is information about where the controls failed.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR 117.35 - sanitary operations. 21 CFR 117.135(c)(3) - sanitation controls. 21 CFR 117.145 and 117.150 - monitoring and corrective actions. 21 CFR 117.165(a)(3) - environmental monitoring. 21 CFR 117.160(c) - validation not required for sanitation controls. FDA draft guidance on Listeria in ready-to-eat foods.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Sanitation and Environmental Monitoring Workflow &nbsp;&#183;&nbsp;
+    Built from 21 CFR 117.135(c)(3), 21 CFR 117.165(a)(3), and FDA Listeria guidance &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Food Safety Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
