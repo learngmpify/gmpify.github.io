@@ -1,0 +1,34 @@
+/* GMPify shared site navigation. One file controls the top menu on every page. */
+nav.gx-nav{position:sticky;top:0;z-index:1000;background:rgba(13,43,62,0.97);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,194,168,0.15);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.6;margin:0;padding:0;display:block}
+nav.gx-nav *,nav.gx-nav *::before,nav.gx-nav *::after{box-sizing:border-box}
+nav.gx-nav .gx-inner{display:flex;align-items:center;justify-content:space-between;height:60px;max-width:1100px;margin:0 auto;padding:0 24px}
+nav.gx-nav .gx-logo{font-size:1.4rem;font-weight:800;letter-spacing:-0.5px;color:#fff;text-decoration:none}
+nav.gx-nav .gx-logo span:first-child{color:#00C2A8}
+nav.gx-nav .gx-logo span:last-child{color:#fff}
+nav.gx-nav ul{list-style:none;margin:0;padding:0}
+nav.gx-nav .gx-links{display:flex;align-items:center;gap:24px}
+nav.gx-nav .gx-links li{margin:0;padding:0;list-style:none}
+nav.gx-nav .gx-links a{font-size:0.88rem;font-weight:500;color:#CAD8E8;text-decoration:none;transition:color .2s}
+nav.gx-nav .gx-links a:hover{color:#00C2A8}
+nav.gx-nav .gx-links a.gx-gold{color:#F5A623;font-weight:600}
+nav.gx-nav .gx-links a.gx-cta{background:#00C2A8;color:#0D2B3E;padding:7px 18px;border-radius:6px;font-weight:700}
+nav.gx-nav .gx-links a.gx-cta:hover{color:#0D2B3E;background:#00a892}
+nav.gx-nav .gx-dd{position:relative}
+nav.gx-nav .gx-dd>a::after{content:"\25BE";margin-left:5px;font-size:0.75em;opacity:.7}
+nav.gx-nav .gx-menu{display:none;position:absolute;top:100%;left:-12px;min-width:190px;background:rgba(13,43,62,0.98);border:1px solid rgba(0,194,168,0.2);border-radius:10px;padding:8px 0;box-shadow:0 12px 32px rgba(0,0,0,0.35);z-index:1001;flex-direction:column;gap:0}
+nav.gx-nav .gx-dd:hover .gx-menu,nav.gx-nav .gx-dd:focus-within .gx-menu{display:flex}
+nav.gx-nav .gx-menu li{display:block}
+nav.gx-nav .gx-menu a{display:block;padding:9px 18px;white-space:nowrap}
+nav.gx-nav .gx-menu a:hover{background:rgba(0,194,168,0.08)}
+nav.gx-nav .gx-burger{display:none;background:none;border:0;cursor:pointer;padding:8px;flex-direction:column;gap:5px}
+nav.gx-nav .gx-burger span{display:block;width:22px;height:2px;background:#CAD8E8;border-radius:2px}
+nav.gx-nav .gx-mobile{display:none;position:absolute;top:60px;left:0;right:0;background:#0D2B3E;padding:12px 24px 20px;border-bottom:1px solid rgba(0,194,168,0.15);flex-direction:column}
+nav.gx-nav .gx-mobile.gx-open{display:flex}
+nav.gx-nav .gx-mobile a{display:block;padding:13px 0;border-bottom:1px solid rgba(255,255,255,0.06);color:#CAD8E8;font-size:1rem;font-weight:500;text-decoration:none}
+nav.gx-nav .gx-mobile a.gx-sub{padding-left:18px;font-size:0.92rem;color:#6E90A0}
+nav.gx-nav .gx-mobile a.gx-gold{color:#F5A623}
+nav.gx-nav .gx-mobile a.gx-cta{background:#00C2A8;color:#0D2B3E;padding:12px 20px;border-radius:8px;text-align:center;font-weight:700;margin-top:12px;border-bottom:0}
+@media(max-width:900px){
+  nav.gx-nav .gx-links{display:none}
+  nav.gx-nav .gx-burger{display:flex}
+}
