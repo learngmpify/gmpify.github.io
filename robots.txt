@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://gmpify.com/sitemap.xml
+Sitemap: https://gmpify.com/sitemap-regulations.xml
