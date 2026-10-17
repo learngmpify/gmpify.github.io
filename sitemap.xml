@@ -22,6 +22,121 @@
   <url><loc>https://gmpify.com/tools/supplier-qualification-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/tools/stability-study-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 
+  <!-- Additional free maps -->
+  <url><loc>https://gmpify.com/tools/food-allergen-control-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/food-defense-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/food-haccp-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/food-safety-plan-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/food-sanitary-transportation-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/food-sanitation-environmental-monitoring-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/food-supply-chain-program-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/apr-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/batch-record-review-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/bioburden-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/ccs-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/change-notification-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/cleanroom-classification-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/clinical-trial-workflow-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/complaints-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/cross-contamination-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/data-integrity-investigation-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/equipment-qualification-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/eu-inspection-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/fda-inspection-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/gowning-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/health-canada-inspection-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/internal-audits-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/investigations-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/isolate-identification-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/line-clearance-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/material-flow-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/media-fills-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/method-validation-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/monitoring-visits-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/oot-investigation-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/personnel-flow-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/process-validation-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/protocol-deviations-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/recall-process-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/risk-management-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/sae-reporting-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/sterility-testing-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/tech-transfer-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/tmf-management-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/trending-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/warning-letter-response-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/water-system-monitoring-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Courses -->
+  <url><loc>https://gmpify.com/courses/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/21-cfr-part-11-electronic-records-signatures.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/21-cfr-part-210-cgmp-foundations.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/21-cfr-part-211-module-2-buildings-equipment.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/21-cfr-part-211-module-3-components-containers.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/21-cfr-part-211-module-4-production-packaging.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/21-cfr-part-211-module-5-holding-distribution.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/21-cfr-part-211-module-6-records-reports.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/21-cfr-part-211-scope-definitions-personnel.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/ai-machine-learning-gmp-manufacturing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/allergen-control-labeling-compliance.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/annual-product-quality-review.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/artificial-intelligence-gmp-manufacturing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/bacterial-endotoxins-testing-usp-85-161.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/bioburden-monitoring-control.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/biopharmaceutical-essentials.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/cannabis-data-integrity-alcoa-ctls.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/cannabis-good-production-practice-cgmp.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/capa-systems-fda-requirements-best-practice.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/change-control-pharmaceutical-manufacturing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/chemical-hazards-preventive-controls-food-manufacturing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/computer-software-assurance-csa-gamp-5.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/container-closure-systems-ccit.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/contamination-control-strategies-atmp-cleanrooms.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/contamination-control-strategy-ccs.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/contract-manufacturing-oversight.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/deviation-management-root-cause-analysis.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/digital-manufacturing-pharma-4-0.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/disinfectant-validation-efficacy-testing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/environmental-monitoring-listeria-control-rte-facilities.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/environmental-monitoring-program-design.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/eu-gmp-annex-1-2022-sterile-medicinal-products.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/eu-gmp-chapter-1-2-quality-management-personnel.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/fda-data-integrity-cgmp-compliance.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/fda-process-validation-general-principles.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/fda-qmsr-21-cfr-part-820.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/fda-quality-management-maturity-qmm.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/food-defense-intentional-adulteration.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/food-facility-sanitation-hygiene.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/food-gmp-essentials-production-employees.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/fsvp-foreign-supplier-verification-food-importers.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/gmp-fundamentals-manufacturing-operators.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/human-error-reduction-gmp-manufacturing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/ich-q10-pharmaceutical-quality-system.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/ich-q12-post-approval-change-management.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/ich-q1a-r2-stability-testing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/ich-q9-r1-quality-risk-management.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/inspection-readiness-fda-observations.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/microbiology-pharmaceutical-water-systems.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/new-ich-q1-2025-draft-stability-testing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/nitrosamine-impurities-risk-assessment-control.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/oos-investigations-fda-requirements.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/pharmaceutical-cleaning-validation.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/pharmaceutical-microbiology-fundamentals.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/pharmaceutical-quality-essentials.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/pharmaceutical-shipping-transportation-documentation.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/pharmaceutical-water-systems-essentials.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/qc-lab-testing-fundamentals.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/quality-culture-quality-management-maturity.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/rapid-microbiological-methods-rmm.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/recall-management-traceability-food.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/regulatory-affairs-essentials.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/regulatory-cmc-essentials.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/responding-to-fda-form-483-observations.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/supplier-verification-programs-food-manufacturing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/usp-60-burkholderia-cepacia-complex-testing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/usp-61-62-microbial-enumeration-tests.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/what-is-gmp-plain-language-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
   <!-- Blog posts -->
   <url><loc>https://gmpify.com/blog/fda-enforcement-2026-what-every-pharmaceutical-professional-needs-to-know.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
   <url><loc>https://gmpify.com/blog/fda-precheck-pilot-program-domestic-manufacturing.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
@@ -31,7 +146,6 @@
   <url><loc>https://gmpify.com/blog/contract-manufacturing-oversight-quality-agreements-cgmp.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
   <url><loc>https://gmpify.com/blog/oos-investigations-fda-requirements-best-practice.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
   <url><loc>https://gmpify.com/blog/fda-ai-warning-letter-2026.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://gmpify.com/blog/fda-483-top-observations-2025.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
   <url><loc>https://gmpify.com/blog/fda-483-top-observations-2025.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
   <url><loc>https://gmpify.com/blog/annex1-ccs-inspection-findings-2024-2025.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
   <url><loc>https://gmpify.com/blog/fda-csa-guidance-final-2025.html</loc><changefreq>yearly</changefreq><priority>0.6</priority></url>
