@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food Traceability Workflow - Enhanced Edition | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* CONTROL TYPE BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* HAZARD CATEGORIES */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* HAZARD EVALUATION CRITERIA */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* KEY OUTPUTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* QUALITY ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+  /* ===== ENHANCED EDITION ADDITIONS ===== */
+  .enh-badge{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.35);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--gold);text-align:right}
+
+  /* REGULATORY TEXT PANEL */
+  .regtext-box{background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .regtext-box h3{font-size:0.74rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .regtext-items{display:flex;flex-direction:column;gap:9px}
+  .regtext-item{background:rgba(255,255,255,0.04);border-left:3px solid var(--c1acc);border-radius:5px;padding:9px 12px}
+  .regtext-item .src{font-size:0.63rem;font-family:var(--mono);color:var(--c1acc);margin-bottom:3px}
+  .regtext-item p{font-size:0.7rem;color:var(--light);line-height:1.55}
+
+  /* INSPECTION PATTERN PANEL */
+  .pattern-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .pattern-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .pattern-box .disclaimer{font-size:0.64rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px;font-style:italic}
+  .pattern-items{display:flex;flex-direction:column;gap:7px}
+  .pattern-item{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:8px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .pattern-item strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* BEST PRACTICE PANEL */
+  .practice-box{background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .practice-box h3{font-size:0.74rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .practice-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .practice-item{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.16);border-radius:5px;padding:9px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .practice-item strong{color:var(--green);display:block;font-size:0.67rem;margin-bottom:2px}
+
+  /* SELF-ASSESSMENT CHECKLIST */
+  .assess-box{background:rgba(56,189,248,0.05);border:1.5px solid rgba(56,189,248,0.22);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .assess-box summary{cursor:pointer;padding:12px 16px;font-size:0.78rem;font-weight:700;color:var(--white);list-style:none;display:flex;align-items:center;justify-content:space-between}
+  .assess-box summary::-webkit-details-marker{display:none}
+  .assess-box summary .arrow-icon{color:var(--c1acc);font-size:0.8rem;transition:transform 0.15s}
+  .assess-box[open] summary .arrow-icon{transform:rotate(90deg)}
+  .assess-body{padding:4px 16px 16px}
+  .assess-note{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px}
+  .assess-row{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .assess-row:last-child{border-bottom:none}
+  .assess-row input[type=checkbox]{margin-top:2px;width:15px;height:15px;accent-color:var(--c1acc);flex-shrink:0}
+  .assess-row label{font-size:0.71rem;color:var(--light);line-height:1.5}
+
+  /* SITE ANNOTATION FIELDS */
+  .annotate-box{background:rgba(0,0,0,0.2);border:1.5px dashed rgba(255,255,255,0.16);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .annotate-box h3{font-size:0.74rem;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .annotate-box .sub{font-size:0.65rem;color:var(--mid);margin-bottom:12px}
+  .annotate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotate-field{display:flex;flex-direction:column;gap:4px}
+  .annotate-field label{font-size:0.66rem;font-family:var(--mono);color:var(--c1acc)}
+  .annotate-field textarea, .annotate-field input[type=text]{
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:6px;
+    color:var(--white);font-family:var(--font);font-size:0.72rem;padding:8px 10px;resize:vertical;
+  }
+  .annotate-field textarea:focus, .annotate-field input[type=text]:focus{outline:none;border-color:var(--c1acc)}
+
+  /* PRINT OPTIMIZATION */
+  @media print {
+    body{background:#FFFFFF !important;color:#1A1A1A !important}
+    .header{background:#FFFFFF !important;border-bottom:2px solid #1A1A1A}
+    .logo span:first-child, .logo span:last-child, .header h1{color:#1A1A1A !important}
+    .header h1 em{color:#0A6E8C !important}
+    .header-sub, .stat-badge, .reg-badge, .enh-badge{color:#333 !important}
+    .legend{background:#F2F2F2 !important}
+    .map-wrap, .phase-body, .node-action, .node-decision, .limits-box, .exceed-box, .trend-box, .ccs-box,
+    .regtext-box, .pattern-box, .practice-box, .assess-box, .annotate-box, .rule-card{
+      background:#FAFAFA !important;color:#1A1A1A !important;border-color:#CCCCCC !important;
+    }
+    .node-title, .node-body, .limit-card p, .exceed-step, .trend-item, .ccs-item, .regtext-item p,
+    .pattern-item, .practice-item, .rule-card p, .assess-row label{color:#1A1A1A !important}
+    .assess-box summary{color:#1A1A1A !important}
+    .footer{color:#333 !important}
+    .assess-box summary .arrow-icon{display:none}
+    details.assess-box{display:block}
+    .assess-body{display:block !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Food Traceability <em>Workflow</em></h1>
+    <div class="header-sub">21 CFR Part 1 Subpart S &nbsp;|&nbsp; FSMA Section 204 &nbsp;|&nbsp; Additional Traceability Records for Certain Foods</div>
+  </div>
+  <div class="header-right">
+    <div class="enh-badge">Enhanced Edition &#183; Subscriber Content</div>
+    <div class="reg-badge">
+      21 CFR 1.1300 &nbsp;&middot;&nbsp; 1.1315 &nbsp;&middot;&nbsp; 1.1320<br>
+      21 CFR 1.1325 to 1.1350 &nbsp;&middot;&nbsp; 1.1455
+    </div>
+    <div class="stat-badge">
+      Records must reach FDA within 24 hours<br>
+      during an outbreak or recall
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Scope and Plan</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Lot Codes and Record Capture</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Sharing and Maintaining Records</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Readiness and Review</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128230;</div>
+    <div class="trigger-text">
+      <h3>Food Traceability - Tracking Listed Foods One Step Back and One Step Forward</h3>
+      <p>The Food Traceability Rule requires anyone who manufactures, processes, packs, or holds foods on the FDA Food Traceability List to keep additional records at defined critical tracking events and to pass key data elements to the next party in the supply chain. A traceability lot code links the records, and the facility must be able to give FDA an electronic sortable spreadsheet within 24 hours during an outbreak or recall. This map follows the pathway from scoping and planning through lot code assignment, record capture, sharing, and readiness.</p>
+      <div class="reg">21 CFR Part 1 Subpart S &nbsp;&middot;&nbsp; FSMA Section 204 &nbsp;&middot;&nbsp; Food Traceability List</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-fda">21 CFR 1 Subpart S</div>
+      <div class="ref-chip chip-fda">FSMA Section 204</div>
+      <div class="ref-chip chip-usp">Traceability Lot Code</div>
+    </div>
+  </div>
+
+  <div class="grades-bar">
+    <div class="grade-card grade-a">
+      <h4>Food Traceability List</h4>
+      <p>The foods for which additional traceability records are required, including foods that contain a listed food in its listed form.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Scope of the rule</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Critical Tracking Event</h4>
+      <p>A supply-chain event, such as harvesting, cooling, initial packing, first land-based receiving, shipping, receiving, or transformation.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Where records are made</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-c">
+      <h4>Key Data Element</h4>
+      <p>Information tied to a critical tracking event that must be maintained and, in some cases, provided to the next party.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>What is recorded</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Traceability Lot Code</h4>
+      <p>A descriptor, often alphanumeric, that uniquely identifies a traceability lot and links the records.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Assigned at set events</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <div class="design-col">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Scope and Plan
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Determine whether you handle listed foods</div>
+              <div class="node-body">Foods you make, process, pack, or hold compared to the Food Traceability List, including listed foods used as ingredients in listed form.</div>
+              <div class="node-reg">21 CFR 1.1300 &middot; 1.1310</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Check exemptions and partial exemptions</div>
+              <div class="node-body">Size, kill step, USDA jurisdiction, and other exemptions assessed and the basis documented, with any required records kept.</div>
+              <div class="node-reg">21 CFR 1.1305</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Write the traceability plan</div>
+              <div class="node-body">Record procedures and location, how listed foods are identified, TLC assignment, a point of contact, and a farm map where applicable.</div>
+              <div class="node-reg">21 CFR 1.1315</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Map your critical tracking events</div>
+              <div class="node-body">Which events apply to your role, so each knows which key data elements it must capture and pass on.</div>
+              <div class="node-reg">21 CFR 1.1325 to 1.1350</div>
+            </div>
+          </div>
+        </div>
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Lot Codes and Record Capture
+          </div>
+          <div class="phase-body">
+            <div class="node node-decision">
+              <div class="decision-q">Does this event require a new traceability lot code?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Assign a new TLC</span>
+                <span class="opt-n">NO &#8594; Carry the existing TLC forward</span>
+              </div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Assign lot codes at the required events</div>
+              <div class="node-body">A TLC is assigned at initial packing of a raw agricultural commodity, first land-based receiving of fish, and transformation.</div>
+              <div class="node-reg">21 CFR 1.1320</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Record the key data elements</div>
+              <div class="node-body">For each applicable critical tracking event, the required elements are captured and tied to the TLC.</div>
+              <div class="node-reg">21 CFR 1.1325 to 1.1350</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Link inputs and outputs at transformation</div>
+              <div class="node-body">Input TLCs and quantities recorded alongside the new output TLC, so lots can be traced through the process.</div>
+              <div class="node-reg">21 CFR 1.1350</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Sharing and Maintaining Records
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Provide key data elements when shipping</div>
+              <div class="node-body">Required information sent to the immediate subsequent recipient with the shipment, with a reference document.</div>
+              <div class="node-reg">21 CFR 1.1340</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Record the receipt of food</div>
+              <div class="node-body">TLC, quantity, product description, immediate previous source, receiving location, and date captured when food arrives.</div>
+              <div class="node-reg">21 CFR 1.1345</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Maintain records</div>
+              <div class="node-body">Records legible, protected from loss, and kept for 2 years from creation or receipt.</div>
+              <div class="node-reg">21 CFR 1.1455(a) &middot; (d)</div>
+            </div>
+          </div>
+        </div>
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Readiness and Review
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Test 24-hour retrieval</div>
+              <div class="node-body">Records, with the information needed to understand them, can be provided to FDA within 24 hours of a request.</div>
+              <div class="node-reg">21 CFR 1.1455(c)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Prepare the electronic sortable spreadsheet</div>
+              <div class="node-body">A process to produce a sortable spreadsheet for outbreak or recall requests, unless an exception applies.</div>
+              <div class="node-reg">21 CFR 1.1455(c)(3)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Update the plan as things change</div>
+              <div class="node-body">Plan revised as operations, partners, or the Food Traceability List change, with the prior plan kept for 2 years.</div>
+              <div class="node-reg">21 CFR 1.1315 &middot; 1.1465</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="response-col">
+
+      <div class="limits-box">
+        <div class="limits-header">Critical Tracking Events (Overview)</div>
+        <div class="limits-body">
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Origin Events</h4>
+            <p>Harvesting, cooling, initial packing, and first land-based receiving of fish, where lots are created and the first records are made.</p>
+            <div class="stat">21 CFR 1.1325 to 1.1335</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Movement Events</h4>
+            <p>Shipping, where key data elements go to the next recipient, and receiving, where the previous source and lot are recorded.</p>
+            <div class="stat">21 CFR 1.1340 &middot; 1.1345</div>
+          </div>
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Transformation</h4>
+            <p>A new lot is created when food is changed, with the input lots and the new output lot linked in the records.</p>
+            <div class="stat">21 CFR 1.1350</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exceed-box">
+        <h3>Outbreak or Recall Record Request (Overview)</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Receive and scope</strong>
+            The request identifies the foods and date ranges, or specific lot codes, and the time FDA expects the records.
+          </div>
+          <div class="exceed-step">
+            <strong>Locate the records</strong>
+            Records are found, wherever stored, including those held by another entity that keeps them for you.
+          </div>
+          <div class="exceed-step">
+            <strong>Produce within 24 hours</strong>
+            Records and the information needed to understand them reach FDA within 24 hours, or a reasonable time FDA agrees to.
+          </div>
+          <div class="exceed-step">
+            <strong>Provide the spreadsheet</strong>
+            An electronic sortable spreadsheet of the relevant records is supplied, unless the entity qualifies for an exception.
+          </div>
+        </div>
+      </div>
+
+      <div class="trend-box">
+        <h3>Key Traceability Outputs (Overview)</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Traceability plan</strong>
+            Written plan covering procedures, listed foods, lot code assignment, a point of contact, and a farm map where needed.
+          </div>
+          <div class="trend-item">
+            <strong>Key data element records</strong>
+            Records for each critical tracking event, tied to a traceability lot code.
+          </div>
+          <div class="trend-item">
+            <strong>Lot code assignment records</strong>
+            Evidence of when and where each traceability lot code was assigned.
+          </div>
+          <div class="trend-item">
+            <strong>Electronic sortable spreadsheet</strong>
+            A ready method to provide relevant records to FDA in a sortable format within 24 hours.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Traceability Quality Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Clear Scope</strong>
+        Listed foods, exemptions, and the basis for each decision are documented and reviewed.
+      </div>
+      <div class="ccs-item">
+        <strong>Documented Plan</strong>
+        A written plan that meets the required contents and is kept current.
+      </div>
+      <div class="ccs-item">
+        <strong>Consistent Lot Codes</strong>
+        Lot codes assigned at the right events, in a consistent format, and never at events that should not create a lot.
+      </div>
+      <div class="ccs-item">
+        <strong>Complete Key Data Elements</strong>
+        Every required element captured for each event, not just the ones that are convenient.
+      </div>
+      <div class="ccs-item">
+        <strong>Partner Data Exchange</strong>
+        Reliable, timely exchange of key data elements with suppliers and customers.
+      </div>
+      <div class="ccs-item">
+        <strong>Record Integrity</strong>
+        Records legible, protected from loss, and linked by lot so the chain does not break.
+      </div>
+      <div class="ccs-item">
+        <strong>24-Hour Retrieval</strong>
+        Practiced ability to locate and produce records and a sortable spreadsheet within 24 hours.
+      </div>
+      <div class="ccs-item">
+        <strong>Change Management</strong>
+        Plan and records updated when operations, partners, or the Food Traceability List change.
+      </div>
+    </div>
+  </div>
+
+  <!-- REGULATORY TEXT PANEL -->
+  <div class="regtext-box">
+    <h3>Regulatory Text - Source Provisions</h3>
+    <div class="regtext-items">
+      <div class="regtext-item">
+        <div class="src">21 CFR 1.1320 (paraphrased - refer to the official regulation for exact wording)</div>
+        <p>A traceability lot code must be assigned when initially packing a raw agricultural commodity, when performing the first land-based receiving of food obtained from a fishing vessel, and when transforming a food on the Food Traceability List. A new traceability lot code should not be created for other activities, such as shipping.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">21 CFR 1.1340 (paraphrased - refer to the official regulation for exact wording)</div>
+        <p>When shipping a food on the Food Traceability List, the shipper must maintain records containing the traceability lot code, the quantity and unit of measure, the product description, the recipient location, the shipping location, the ship date, the traceability lot code source, and a reference document, and must provide the required information to the immediate subsequent recipient.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">21 CFR 1.1455(c) (paraphrased - refer to the official regulation for exact wording)</div>
+        <p>Records and the information needed to understand them must be provided to FDA within 24 hours of a request, or within a reasonable time FDA agrees to, and for outbreaks, recalls, and other public health threats the information must be provided in an electronic sortable spreadsheet, unless an exception applies.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSPECTION PATTERN PANEL -->
+  <div class="pattern-box">
+    <h3>Anticipated Implementation Gaps - Food Traceability</h3>
+    <div class="disclaimer">Illustrative gaps to anticipate, based on the requirements of the rule. FDA enforcement of this rule has not yet begun, so these are not drawn from FDA citations.</div>
+    <div class="pattern-items">
+      <div class="pattern-item">
+        <strong>No written traceability plan, or a plan missing required contents</strong>
+        The plan is absent, or it lacks a point of contact, identification of listed foods, or a farm map where one is required.
+      </div>
+      <div class="pattern-item">
+        <strong>Lot codes assigned at the wrong events</strong>
+        A new code is created at shipping, or no new code is assigned at transformation, so the chain of lots is broken.
+      </div>
+      <div class="pattern-item">
+        <strong>Key data elements missing from shipping or receiving records</strong>
+        Records lack the traceability lot code source, the reference document, or the immediate previous source.
+      </div>
+      <div class="pattern-item">
+        <strong>Records that cannot be produced in 24 hours or sorted</strong>
+        Records are scattered across systems or held in formats that cannot be turned quickly into a sortable spreadsheet.
+      </div>
+    </div>
+  </div>
+
+  <!-- BEST PRACTICE PANEL -->
+  <div class="practice-box">
+    <h3>Best Practice Guidance</h3>
+    <div class="practice-items">
+      <div class="practice-item">
+        <strong>Standardize your lot code format</strong>
+        One consistent format across lines and sites makes lots easier to link and records easier to search.
+      </div>
+      <div class="practice-item">
+        <strong>Exchange data with partners in a common format</strong>
+        Agree with suppliers and customers on which elements move, in what format, and by when.
+      </div>
+      <div class="practice-item">
+        <strong>Run a mock 24-hour request</strong>
+        Pick a finished lot, trace it back and forward, and time how long it takes to assemble the records.
+      </div>
+      <div class="practice-item">
+        <strong>Train receiving and shipping staff on the elements</strong>
+        The people who handle the paperwork need to know exactly which elements each event requires.
+      </div>
+    </div>
+  </div>
+
+  <!-- SELF-ASSESSMENT CHECKLIST -->
+  <details class="assess-box">
+    <summary>Self-Assessment Checklist - Is Your Traceability Program Ready? <span class="arrow-icon">&#9654;</span></summary>
+    <div class="assess-body">
+      <div class="assess-note">For personal or team use during training. Responses are not saved or submitted.</div>
+      <div class="assess-row"><input type="checkbox" id="a1"><label for="a1">Listed foods and applicable exemptions are determined, with the basis documented.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a2"><label for="a2">A written traceability plan includes all required contents, including a farm map where applicable.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a3"><label for="a3">Lot codes are assigned at initial packing, first land-based receiving, and transformation only.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a4"><label for="a4">Key data elements are captured for every critical tracking event that applies.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a5"><label for="a5">Shipping records include the required elements and are provided to the next recipient.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a6"><label for="a6">Records are retained for 2 years and can be retrieved within 24 hours.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a7"><label for="a7">A process to produce an electronic sortable spreadsheet has been tested.</label></div>
+    </div>
+  </details>
+
+  <!-- SITE ANNOTATION FIELDS -->
+  <div class="annotate-box">
+    <h3>Site Annotation</h3>
+    <div class="sub">Add your site-specific references while reviewing this map. Not saved between sessions - copy notes into your own records before closing.</div>
+    <div class="annotate-grid">
+      <div class="annotate-field">
+        <label>FTL FOOD OR PRODUCT LINE</label>
+        <input type="text" placeholder="e.g. Fresh-cut leafy greens, Plant 1">
+      </div>
+      <div class="annotate-field">
+        <label>LOCAL SOP REFERENCE</label>
+        <input type="text" placeholder="e.g. SOP-TRC-001 Rev 3">
+      </div>
+      <div class="annotate-field" style="grid-column: 1 / -1">
+        <label>NOTES</label>
+        <textarea rows="3" placeholder="Site-specific observations, open questions, or follow-up items for the traceability team."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Create a new lot code when you only ship food. Combine lots without recording the link at transformation. Assume a partner has your records without confirming you can get them within 24 hours. Treat an exemption as permanent without documenting the basis. Hold records in formats that cannot be sorted or searched.</p>
+    </div>
+    <div class="rule-card">
+      <h4>KDEs, CTEs, and TLCs</h4>
+      <p>Critical tracking events are the moments in the supply chain that create records. Key data elements are the specific information recorded at each event. The traceability lot code is the identifier that ties the records together from one event to the next.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Exemptions and timing</h4>
+      <p>Examples include produce farms at or below $25,000 in average annual sales, small retail and restaurants at or below $250,000, and foods receiving a kill step with records. FDA originally set a January 2026 compliance date, and Congress has directed FDA not to enforce before 20 July 2028, so check FDA for current status.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR Part 1 Subpart S, 1.1300 to 1.1465. FSMA Section 204. 21 CFR 1.1315 - traceability plan. 21 CFR 1.1320 - lot code assignment. 21 CFR 1.1325 to 1.1350 - critical tracking events and key data elements. 21 CFR 1.1455 - records maintenance and availability.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Food Traceability Workflow &nbsp;&#183;&nbsp;
+    Built from 21 CFR Part 1 Subpart S and FSMA Section 204 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Food Safety Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
