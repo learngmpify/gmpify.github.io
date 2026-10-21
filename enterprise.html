@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise GMP Training | SCORM Courses and Site Licenses | GMPify</title>
+<meta name="description" content="GMP training for regulated manufacturers. Courses built from 21 CFR, EU GMP and ICH sources, delivered as SCORM packages for your LMS or hosted for you, with licensing for teams, sites and organizations.">
+<link rel="canonical" href="https://gmpify.com/enterprise.html">
+<meta property="og:title" content="Enterprise GMP Training | GMPify">
+<meta property="og:description" content="Courses built from primary regulatory sources, deployable in your own LMS, with licensing for teams, sites and organizations.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://gmpify.com/enterprise.html">
+<meta property="og:image" content="https://gmpify.com/gmpify_social_banner.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Enterprise GMP Training",
+  "url": "https://gmpify.com/enterprise.html",
+  "description": "GMP training for regulated manufacturers, delivered as SCORM packages or hosted, with team, site and enterprise licensing.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "GMPify Training",
+    "url": "https://gmpify.com",
+    "email": "training@gmpify.com"
+  }
+}
+</script>
+<style>
+  :root {
+    --navy: #0a1e3d;
+    --navy-2: #0f2847;
+    --teal: #14b8a6;
+    --teal-dark: #0f8f82;
+    --gold: #d4af37;
+    --ink: #1c2733;
+    --muted: #55667a;
+    --line: #dfe6ee;
+    --soft: #f4f7fa;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--white);
+    line-height: 1.65;
+    font-size: 17px;
+  }
+  a { color: var(--teal-dark); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  header.site {
+    background: var(--navy);
+    border-bottom: 3px solid var(--gold);
+    position: sticky; top: 0; z-index: 20;
+  }
+  header.site .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; flex-wrap: wrap; }
+  .logo { color: #fff; font-weight: 800; font-size: 22px; text-decoration: none; letter-spacing: .2px; }
+  .logo span { color: var(--teal); }
+  nav.main { display: flex; align-items: center; gap: 4px 18px; flex-wrap: wrap; }
+  nav.main a, nav.main .has-sub > a { color: #cfe0f1; text-decoration: none; font-size: 14.5px; padding: 8px 0; }
+  nav.main a:hover { color: #fff; }
+  .has-sub { position: relative; }
+  .sub {
+    display: none; position: absolute; top: 100%; left: -12px; min-width: 170px;
+    background: var(--navy-2); border: 1px solid #22406a; border-radius: 8px; padding: 8px 0; box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  }
+  .sub a { display: block; padding: 8px 16px; white-space: nowrap; }
+  .has-sub:hover .sub, .has-sub:focus-within .sub { display: block; }
+  .nav-cta { background: var(--teal); color: #05201d !important; font-weight: 700; padding: 8px 16px !important; border-radius: 8px; }
+  .nav-cta:hover { background: #2dd4bf; }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: #fff; padding: 84px 0 76px; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(45,212,191,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(45,212,191,.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .hero .wrap { position: relative; }
+  .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #2dd4bf; margin-bottom: 18px; }
+  .hero h1 { font-size: clamp(30px, 5vw, 48px); line-height: 1.15; font-weight: 800; max-width: 820px; }
+  .hero p.lead { margin-top: 22px; font-size: 19px; color: #b8cbe0; max-width: 720px; }
+  .btn-row { margin-top: 34px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn { display: inline-block; padding: 14px 26px; border-radius: 9px; font-weight: 700; text-decoration: none; font-size: 16px; }
+  .btn-primary { background: var(--teal); color: #05201d; }
+  .btn-primary:hover { background: #2dd4bf; }
+  .btn-ghost { border: 1.5px solid #3b5f8c; color: #e4eef8; }
+  .btn-ghost:hover { border-color: #7fa6d3; }
+
+  /* Proof strip */
+  .strip { background: var(--soft); border-bottom: 1px solid var(--line); }
+  .strip .wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+  .strip .item { padding: 24px 18px; text-align: center; border-right: 1px solid var(--line); }
+  .strip .item:last-child { border-right: none; }
+  .strip .num { font-size: 26px; font-weight: 800; color: var(--navy); line-height: 1.2; }
+  .strip .lbl { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+  /* Sections */
+  section.block { padding: 72px 0; }
+  section.alt { background: var(--soft); }
+  .eyebrow { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--teal-dark); margin-bottom: 10px; }
+  h2 { font-size: clamp(25px, 3.4vw, 34px); line-height: 1.25; color: var(--navy); font-weight: 800; max-width: 760px; }
+  .intro { margin-top: 16px; color: var(--muted); max-width: 720px; }
+  .grid-3 { margin-top: 38px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .grid-2 { margin-top: 38px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 28px; }
+  .card h3 { font-size: 19px; color: var(--navy); margin-bottom: 10px; line-height: 1.3; }
+  .card p { color: var(--muted); font-size: 16px; }
+  .card .tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; color: var(--teal-dark); background: #e3f7f4; padding: 4px 10px; border-radius: 99px; margin-bottom: 14px; }
+  .accent { border-top: 4px solid var(--gold); }
+
+  .steps { margin-top: 38px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; counter-reset: s; }
+  .step { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 24px 22px; position: relative; }
+  .step::before { counter-increment: s; content: counter(s); display: inline-flex; width: 34px; height: 34px; align-items: center; justify-content: center; border-radius: 50%; background: var(--navy); color: #fff; font-weight: 800; margin-bottom: 14px; }
+  .step h3 { font-size: 17px; color: var(--navy); margin-bottom: 6px; }
+  .step p { font-size: 15px; color: var(--muted); }
+
+  .topics { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .topics span { background: #fff; border: 1px solid var(--line); border-radius: 99px; padding: 8px 16px; font-size: 15px; color: var(--navy); }
+
+  /* FAQ */
+  details { border-bottom: 1px solid var(--line); padding: 18px 0; }
+  details:first-of-type { border-top: 1px solid var(--line); }
+  summary { cursor: pointer; font-weight: 700; color: var(--navy); font-size: 17.5px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; font-size: 22px; color: var(--teal-dark); line-height: 1; }
+  details[open] summary::after { content: "\2212"; }
+  details p { margin-top: 12px; color: var(--muted); max-width: 800px; }
+  .faq { margin-top: 34px; }
+
+  /* CTA */
+  .cta { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%); color: #fff; text-align: center; padding: 76px 0; border-top: 4px solid var(--gold); }
+  .cta h2 { color: #fff; margin: 0 auto; }
+  .cta p { margin: 16px auto 0; color: #b8cbe0; max-width: 620px; }
+  .cta .btn-row { justify-content: center; }
+
+  footer.site { background: #071529; color: #8fa5bd; padding: 44px 0 28px; font-size: 14.5px; }
+  footer.site .cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 28px; }
+  footer.site h4 { color: #fff; font-size: 14px; margin-bottom: 12px; letter-spacing: .5px; text-transform: uppercase; }
+  footer.site a { display: block; color: #8fa5bd; text-decoration: none; padding: 3px 0; }
+  footer.site a:hover { color: #fff; }
+  footer.site .brand { color: #fff; font-weight: 800; font-size: 20px; margin-bottom: 10px; }
+  footer.site .bottom { margin-top: 30px; padding-top: 18px; border-top: 1px solid #1a3050; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  footer.site .bottom a { display: inline; margin-left: 14px; }
+
+  @media (max-width: 880px) {
+    .grid-3, .grid-2, .steps { grid-template-columns: 1fr; }
+    .strip .wrap { grid-template-columns: repeat(2, 1fr); }
+    .strip .item:nth-child(2) { border-right: none; }
+    .strip .item:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    footer.site .cols { grid-template-columns: 1fr 1fr; }
+    header.site { position: static; }
+    .hero { padding: 60px 0 56px; }
+    section.block { padding: 54px 0; }
+  }
+  @media (max-width: 560px) {
+    body { font-size: 16px; }
+    footer.site .cols { grid-template-columns: 1fr; }
+    nav.main { gap: 2px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <a class="logo" href="https://gmpify.com/">GMP<span>ify</span></a>
+    <nav class="main" aria-label="Main">
+      <div class="has-sub">
+        <a href="https://gmpify.com/#courses">Courses</a>
+        <div class="sub">
+          <a href="https://gmpify.com/#courses">Pharmaceutical</a>
+          <a href="https://gmpify.com/cannabis.html">Cannabis</a>
+          <a href="https://gmpify.com/food.html">Food</a>
+        </div>
+      </div>
+      <a href="https://gmpify.com/#why">Why GMPify</a>
+      <a href="https://gmpify.com/#pricing">Pricing</a>
+      <a href="https://gmpify.com/blog.html">Blog</a>
+      <a href="https://gmpify.com/regulations/">Regulations</a>
+      <a href="https://gmpify.com/about.html">About</a>
+      <a href="https://gmpify.com/tools.html">Tools</a>
+      <div class="has-sub">
+        <a href="https://gmpify.com/gmp-maps.html">Process Maps</a>
+        <div class="sub">
+          <a href="https://gmpify.com/gmp-maps.html">Pharmaceutical</a>
+          <a href="https://gmpify.com/food-gmp-maps.html">Food</a>
+        </div>
+      </div>
+      <a class="nav-cta" href="https://learn.gmpify.com">Start learning</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="kicker">For quality and training teams</div>
+    <h1>GMP training your team can deploy in your own LMS and defend in an inspection.</h1>
+    <p class="lead">Courses built directly from 21 CFR, EU GMP and ICH sources, delivered as SCORM packages or hosted for you, with licensing for departments, sites and whole organizations.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="mailto:training@gmpify.com?subject=GMPify%20Enterprise%20Quote%20Request">Request an enterprise quote</a>
+      <a class="btn btn-ghost" href="https://learn.gmpify.com">Browse the catalog</a>
+    </div>
+  </div>
+</section>
+
+<div class="strip">
+  <div class="wrap">
+    <div class="item"><div class="num">65+</div><div class="lbl">Courses across pharma, cannabis and food</div></div>
+    <div class="item"><div class="num">SCORM</div><div class="lbl">Packages for your existing LMS</div></div>
+    <div class="item"><div class="num">21 CFR</div><div class="lbl">Parts 111, 117, 210 and 211 and more</div></div>
+    <div class="item"><div class="num">EU GMP</div><div class="lbl">Annexes and ICH guidelines</div></div>
+  </div>
+</div>
+
+<section class="block" id="sources">
+  <div class="wrap">
+    <div class="eyebrow">Content you can trace</div>
+    <h2>Built from the regulations themselves, not a summary of them.</h2>
+    <p class="intro">Every course traces to the CFR section, ICH guideline or EU GMP Annex it teaches. Your team learns the requirement, and your auditors can follow it back to its source. Content is reviewed and updated as regulations and FDA enforcement priorities change.</p>
+    <div class="grid-3">
+      <div class="card accent">
+        <h3>Primary regulatory sources</h3>
+        <p>FDA and EU GMP requirements, ICH guidelines, and the enforcement record, including real FDA warning letter findings that show how requirements are applied in practice.</p>
+      </div>
+      <div class="card accent">
+        <h3>Written for roles, not just regulations</h3>
+        <p>From operator fundamentals and human error reduction to quality culture and management maturity, so each role gets training pitched at what it actually does.</p>
+      </div>
+      <div class="card accent">
+        <h3>Practical by design</h3>
+        <p>Interactive process maps and self-assessment tools turn requirements into the steps people follow on the floor and in the quality unit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="deploy">
+  <div class="wrap">
+    <div class="eyebrow">Deployment</div>
+    <h2>Deploys where you already work.</h2>
+    <p class="intro">Take the courses you select as SCORM packages and run them in your existing LMS, or let your team learn on our hosted platform.</p>
+    <div class="grid-2">
+      <div class="card">
+        <span class="tag">Your LMS</span>
+        <h3>SCORM packages</h3>
+        <p>Selected courses are delivered as SCORM packages that you upload to your own learning management system, so training sits alongside the rest of your records and assignments.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Hosted</span>
+        <h3>Learn on GMPify</h3>
+        <p>No LMS to configure? Your team learns on our hosted platform, with progress tracking, graded assessments and completion certificates ready from day one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="records">
+  <div class="wrap">
+    <div class="eyebrow">Audit readiness</div>
+    <h2>Training records that stand up to scrutiny.</h2>
+    <p class="intro">Under 21 CFR 211.25, personnel must have the education, training and experience to perform their assigned functions. Inspectors ask to see that training happened and that it worked.</p>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Graded assessments</h3>
+        <p>Each course includes an assessment, so you can show that learners were checked on the content and not just shown it.</p>
+      </div>
+      <div class="card">
+        <h3>Completion certificates</h3>
+        <p>Learners on the hosted platform receive a completion certificate suitable for training qualification files.</p>
+      </div>
+      <div class="card">
+        <h3>Referenceable content</h3>
+        <p>Because courses cite their regulatory sources, your quality unit can point to exactly what each course covers when documenting training curricula.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="coverage">
+  <div class="wrap">
+    <div class="eyebrow">Coverage</div>
+    <h2>One library across the regulated manufacturing spectrum.</h2>
+    <p class="intro">Pharmaceutical GMP, cannabis, and a growing food and dietary supplement curriculum, so a multi-product company can train every site from one source.</p>
+    <div class="topics">
+      <span>FDA and EU GMP fundamentals</span>
+      <span>CAPA</span>
+      <span>Deviation management</span>
+      <span>Change control</span>
+      <span>Environmental monitoring</span>
+      <span>Cleaning validation</span>
+      <span>Supplier qualification</span>
+      <span>OOS investigations</span>
+      <span>Batch release</span>
+      <span>Stability studies</span>
+      <span>Human error reduction</span>
+      <span>Quality culture and maturity</span>
+      <span>Cannabis GMP</span>
+      <span>Food GMP and Part 117</span>
+      <span>Dietary supplement GMP, 21 CFR 111 (rolling out through early 2027)</span>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="licensing">
+  <div class="wrap">
+    <div class="eyebrow">Licensing</div>
+    <h2>Pick the model that fits how you buy.</h2>
+    <p class="intro">Licenses are scoped to the courses you choose and the number of learners you need to reach. Pricing is quoted to your requirements.</p>
+    <div class="grid-3">
+      <div class="card">
+        <span class="tag">Departments</span>
+        <h3>Team seats</h3>
+        <p>Training for a quality or manufacturing department, with seats managed centrally and added as your team grows.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Facilities</span>
+        <h3>Site license</h3>
+        <p>Coverage for everyone at a facility, so new hires and refresher training do not depend on counting seats.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Organizations</span>
+        <h3>Enterprise license</h3>
+        <p>Organization-wide rollout as a one-time license for selected courses, or an annual subscription.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="process">
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2>From first conversation to first learners.</h2>
+    <div class="steps">
+      <div class="step"><h3>Tell us what you need</h3><p>Share your roles, headcount and the topics you want covered.</p></div>
+      <div class="step"><h3>Choose your courses</h3><p>Select from the catalog. We confirm fit and answer your quality team's questions.</p></div>
+      <div class="step"><h3>Receive your quote</h3><p>A clear license for the courses and learner count you chose.</p></div>
+      <div class="step"><h3>Deploy</h3><p>Receive SCORM packages for your LMS, or get your team set up on the hosted platform.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="faq">
+  <div class="wrap">
+    <div class="eyebrow">Questions buyers ask</div>
+    <h2>Frequently asked questions</h2>
+    <div class="faq">
+      <details>
+        <summary>Which LMS platforms do your SCORM packages work with?</summary>
+        <p>Our packages are intended for SCORM-compliant learning management systems. If you tell us which LMS you use and the SCORM version it requires, we will confirm compatibility before you commit.</p>
+      </details>
+      <details>
+        <summary>Can we license only some of the courses?</summary>
+        <p>Yes. Licenses are built around the courses your roles need, whether that is a handful of operator-level courses or a full curriculum.</p>
+      </details>
+      <details>
+        <summary>How do you keep courses current when regulations change?</summary>
+        <p>Content is built from primary regulatory sources and reviewed as regulations, guidance and FDA enforcement priorities change.</p>
+      </details>
+      <details>
+        <summary>Can you support our supplier or vendor qualification process?</summary>
+        <p>Yes. We can provide a vendor information sheet describing our content development and review approach, how updates are handled and how training records are issued. Contact us and we will send it.</p>
+      </details>
+      <details>
+        <summary>Do you cover food and dietary supplement GMP, not only pharma?</summary>
+        <p>Yes. Food GMP courses are available now, and the dietary supplement curriculum under 21 CFR 111 is rolling out through early 2027, alongside our pharmaceutical and cannabis catalog.</p>
+      </details>
+      <details>
+        <summary>Can our people try the content before we buy?</summary>
+        <p>Yes. A free preview module and free procedural GMP maps are available so your team can judge quality first.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>Tell us what your team needs to be trained on.</h2>
+    <p>Send your roles, headcount and LMS, and we will come back with a recommended course set and a quote.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="mailto:training@gmpify.com?subject=GMPify%20Enterprise%20Quote%20Request">Request an enterprise quote</a>
+      <a class="btn btn-ghost" href="https://gmpify.talentlms.com/plus/courses/shared/start/LSSIDNHR">Try a free preview</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="brand">GMPify</div>
+        <div>GMP training and compliance tools for regulated manufacturers.</div>
+        <div style="margin-top:10px">1648 Amsterdam Avenue, Unit #115<br>New York, NY 10031</div>
+      </div>
+      <div>
+        <h4>Training</h4>
+        <a href="https://learn.gmpify.com">Course catalog</a>
+        <a href="https://gmpify.talentlms.com/plus/courses/shared/start/LSSIDNHR">Free preview module</a>
+        <a href="https://gmpify.com/food-gmp-maps.html">Food GMP Maps</a>
+        <a href="https://gmpify.com/cannabis.html">Cannabis training</a>
+        <a href="https://gmpify.com/#pricing">Pricing</a>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <a href="https://gmpify.com/#why">Why GMPify</a>
+        <a href="https://gmpify.com/blog.html">Blog</a>
+        <a href="https://gmpify.com/about.html">About</a>
+        <a href="mailto:training@gmpify.com?subject=GMPify%20Enquiry">Contact us</a>
+        <a href="https://learn.gmpify.com">Sign in</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:training@gmpify.com">training@gmpify.com</a>
+        <a href="https://learn.gmpify.com">learn.gmpify.com</a>
+        <a href="https://gmpify.com/#unsubscribe">Unsubscribe</a>
+      </div>
+    </div>
+    <div class="bottom">
+      <div>&copy; 2026 GMPify</div>
+      <div><a href="https://gmpify.com/privacy.html">Privacy Policy</a><a href="https://gmpify.com/terms.html">Terms of Service</a></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
