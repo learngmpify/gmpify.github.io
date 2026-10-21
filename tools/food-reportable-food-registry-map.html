@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reportable Food Registry Workflow | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* CONTROL TYPE BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* HAZARD CATEGORIES */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* HAZARD EVALUATION CRITERIA */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* KEY OUTPUTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* QUALITY ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Reportable Food Registry <em>Workflow</em></h1>
+    <div class="header-sub">FD&amp;C Act Section 417 &nbsp;|&nbsp; FDAAA 2007 Section 1005 &nbsp;|&nbsp; Safety Reporting Portal</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      FD&amp;C Act 417 &nbsp;&middot;&nbsp; 21 U.S.C. 350f<br>
+      FDAAA 2007 Section 1005 &nbsp;&middot;&nbsp; 24-Hour Report
+    </div>
+    <div class="stat-badge">
+      A reportable food must be reported<br>
+      within 24 hours of the determination
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Identify and Evaluate</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Decision and Report</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Notification and Follow-Up</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Records and Review</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128680;</div>
+    <div class="trigger-text">
+      <h3>Reportable Food Registry - Reporting Food That Could Cause Serious Harm</h3>
+      <p>The Reportable Food Registry requires the responsible party for a registered food facility to submit a report to FDA, through the Safety Reporting Portal, as soon as practicable and no later than 24 hours after determining that a food is reportable. A reportable food is one where there is a reasonable probability that use of or exposure to it will cause serious adverse health consequences or death. The responsible party must also investigate, notify others in the supply chain as FDA directs, and keep records. This map follows the pathway from identification and evaluation through reporting, notification, and review.</p>
+      <div class="reg">FD&amp;C Act Section 417 &nbsp;&middot;&nbsp; 21 U.S.C. 350f &nbsp;&middot;&nbsp; FDAAA 2007 Section 1005</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-fda">FD&amp;C Act 417</div>
+      <div class="ref-chip chip-fda">21 U.S.C. 350f</div>
+      <div class="ref-chip chip-usp">24-Hour Report</div>
+    </div>
+  </div>
+
+  <div class="grades-bar">
+    <div class="grade-card grade-a">
+      <h4>Responsible Party</h4>
+      <p>The person who submitted the food facility registration for the registered facility where the food is made, processed, packed, or held.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Registration submitter</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Reportable Food</h4>
+      <p>Food, other than infant formula, with a reasonable probability that use of or exposure to it will cause serious adverse health consequences or death.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Humans or animals</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-c">
+      <h4>Safety Reporting Portal</h4>
+      <p>The FDA electronic portal through which reports are submitted, with a telephone alternative if the portal is unavailable.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Electronic submission</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Report Number</h4>
+      <p>A unique number FDA issues on submission, used to link related reports and identify the supply chain.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Issued by FDA</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <div class="design-col">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Identify and Evaluate
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Identify a potential problem</div>
+              <div class="node-body">A complaint, test result, supplier notice, internal finding, or inspection observation suggests a food may be a hazard.</div>
+              <div class="node-reg">FD&amp;C Act 417</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Contain the food</div>
+              <div class="node-body">Affected food is held and distribution stopped while the evaluation is completed.</div>
+              <div class="node-reg">21 CFR 117.150</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Evaluate whether the food is reportable</div>
+              <div class="node-body">Whether there is a reasonable probability of serious adverse health consequences or death from use of or exposure to it.</div>
+              <div class="node-reg">21 U.S.C. 350f(a)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Confirm the responsible party and the time of determination</div>
+              <div class="node-body">The responsible party identified, and the time recorded at which the food was determined to be reportable.</div>
+              <div class="node-reg">21 U.S.C. 350f(a) &middot; (d)(1)</div>
+            </div>
+          </div>
+        </div>
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Decision and Report
+          </div>
+          <div class="phase-body">
+            <div class="node node-decision">
+              <div class="decision-q">Is there a reasonable probability of serious adverse health consequences or death?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Report within 24 hours</span>
+                <span class="opt-n">NO &#8594; Document the evaluation and monitor</span>
+              </div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Check the exemption</div>
+              <div class="node-body">No report is needed only if the adulteration originated with you, was detected before transfer to anyone else, and was corrected or destroyed.</div>
+              <div class="node-reg">21 U.S.C. 350f(d)(2)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Submit the report in the Safety Reporting Portal</div>
+              <div class="node-body">Submitted as soon as practicable, no later than 24 hours after the determination, without waiting for the investigation to finish.</div>
+              <div class="node-reg">21 U.S.C. 350f(d)(1)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Investigate the cause</div>
+              <div class="node-body">If the adulteration may have originated with the responsible party, the cause is investigated.</div>
+              <div class="node-reg">21 U.S.C. 350f(d)(1)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Notification and Follow-Up
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Notify supply-chain contacts as directed</div>
+              <div class="node-body">The immediate previous source and the immediate subsequent recipients notified as FDA requires after consultation.</div>
+              <div class="node-reg">21 U.S.C. 350f(d)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Amend the report as information develops</div>
+              <div class="node-body">Investigation results, disposition, and other data added as they become known.</div>
+              <div class="node-reg">21 U.S.C. 350f(d) &middot; (e)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Coordinate recall and corrective action</div>
+              <div class="node-body">Recall under the recall plan and corrective action under the food safety plan run alongside the report.</div>
+              <div class="node-reg">21 CFR 117.139 &middot; 117.150</div>
+            </div>
+          </div>
+        </div>
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Records and Review
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Keep the required records</div>
+              <div class="node-body">Records of each report received, notification made, and report submitted kept for 2 years and available to FDA.</div>
+              <div class="node-reg">21 U.S.C. 350f(j)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Review root cause and corrective action</div>
+              <div class="node-body">What allowed the food to become reportable examined, and corrective action confirmed effective.</div>
+              <div class="node-reg">21 CFR 117.150 &middot; 117.155</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Reanalyze the plan and the reporting procedure</div>
+              <div class="node-body">Food safety plan reanalyzed and the reportability decision process updated based on what was learned.</div>
+              <div class="node-reg">21 CFR 117.170</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="response-col">
+
+      <div class="limits-box">
+        <div class="limits-header">Reportable Food Registry Timing and Scope (Overview)</div>
+        <div class="limits-body">
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">The 24-Hour Clock</h4>
+            <p>The report is due as soon as practicable and no later than 24 hours after the responsible party determines the food is reportable.</p>
+            <div class="stat">21 U.S.C. 350f(d)(1)</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">The Exemption</h4>
+            <p>No report is required only when all three conditions are met: the problem originated with you, it was detected before transfer, and it was corrected or destroyed.</p>
+            <div class="stat">21 U.S.C. 350f(d)(2)</div>
+          </div>
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Scope</h4>
+            <p>Applies to FDA-regulated food and feed from registered facilities. Dietary supplements and infant formula are outside the Registry.</p>
+            <div class="stat">FDA RFR guidance</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exceed-box">
+        <h3>Report Contents (Overview)</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Identification</strong>
+            Registration numbers and the date the food was determined to be reportable.
+          </div>
+          <div class="exceed-step">
+            <strong>Product description</strong>
+            A description of the food, the quantity, and packaging-level information.
+          </div>
+          <div class="exceed-step">
+            <strong>Problem and disposition</strong>
+            The nature and extent of the adulteration, with investigation results and disposition when known.
+          </div>
+          <div class="exceed-step">
+            <strong>Contacts</strong>
+            Responsible party contact details and the supply-chain contacts notified.
+          </div>
+        </div>
+      </div>
+
+      <div class="trend-box">
+        <h3>Key Reportable Food Registry Outputs (Overview)</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Reportability determination record</strong>
+            Who decided, when, and on what evidence the food was or was not treated as reportable.
+          </div>
+          <div class="trend-item">
+            <strong>Portal report and report number</strong>
+            The submitted report and the unique number FDA issued.
+          </div>
+          <div class="trend-item">
+            <strong>Notification records</strong>
+            Which supply-chain parties were notified, when, and what they were told.
+          </div>
+          <div class="trend-item">
+            <strong>Investigation and disposition records</strong>
+            The cause, the corrective action, and what happened to the affected food.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Reportable Food Registry Quality Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Awareness of the Obligation</strong>
+        Quality, regulatory, and operations staff know a reporting duty exists and what triggers it.
+      </div>
+      <div class="ccs-item">
+        <strong>Defined Decision Path</strong>
+        A short, written way to decide whether food is reportable and who can decide.
+      </div>
+      <div class="ccs-item">
+        <strong>Speed</strong>
+        A process that can complete a report inside 24 hours, including nights and weekends.
+      </div>
+      <div class="ccs-item">
+        <strong>Accurate Reports</strong>
+        Reports with correct registration numbers, product data, and a clear description of the problem.
+      </div>
+      <div class="ccs-item">
+        <strong>Investigation Discipline</strong>
+        The cause is investigated and the result is added to the report as it becomes known.
+      </div>
+      <div class="ccs-item">
+        <strong>Supply-Chain Communication</strong>
+        Prior sources and recipients notified as directed, with a record of each notice.
+      </div>
+      <div class="ccs-item">
+        <strong>Record Retention</strong>
+        Reports, notifications, and receipts kept for 2 years and ready for FDA.
+      </div>
+      <div class="ccs-item">
+        <strong>Integration With Recall and Corrective Action</strong>
+        One trigger starts the report, the recall assessment, and the corrective action together.
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Wait for a full investigation before reporting. Treat a recall as a substitute for the report. Assume a customer or supplier report covers you. Let the 24-hour clock run while the decision waits for the one person who can approve it. Fail to keep records of reports and notifications.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Report vs recall vs complaint</h4>
+      <p>The report goes to FDA through the Safety Reporting Portal when food is reportable. A recall removes the food from the market. A complaint is information about a possible problem. One event can involve all three, and each has its own process and timing.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Who is the responsible party</h4>
+      <p>The statute defines the responsible party as the person who submits the food facility registration for the facility where the food is made, processed, packed, or held. Confirm who that is for each facility, since the duty and the 24-hour clock rest with that person.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>FD&amp;C Act Section 417, codified at 21 U.S.C. 350f. Section 1005 of the FDA Amendments Act of 2007. 21 U.S.C. 350f(d) - reporting, investigation, and exemption. 21 U.S.C. 350f(e) - report contents. 21 U.S.C. 350f(j) - records.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Reportable Food Registry Workflow &nbsp;&#183;&nbsp;
+    Built from FD&amp;C Act Section 417 and FDAAA 2007 Section 1005 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Food Safety Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
