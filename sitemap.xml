@@ -30,6 +30,12 @@
   <url><loc>https://gmpify.com/tools/food-sanitary-transportation-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/tools/food-sanitation-environmental-monitoring-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/tools/food-supply-chain-program-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/food-corrective-actions-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/food-fsvp-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/food-recall-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/food-reportable-food-registry-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/food-traceability-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/food-fda-inspection-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/tools/apr-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/tools/batch-record-review-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/tools/bioburden-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
