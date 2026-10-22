@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="/gmpify_favicon.png">
+<meta name="description" content="Free plain-language lookup library of key FDA food safety and EU food law regulations, including 21 CFR Part 117, FSMA and EU hygiene rules, with inspection context and common violation patterns.">
+<meta property="og:title" content="Food Regulation Lookup - Free Reference Library | GMPify">
+<meta property="og:description" content="Free plain-language lookup library of key FDA food safety and EU food law regulations, including 21 CFR Part 117, FSMA and EU hygiene rules, with inspection context and common violation patterns.">
+<meta property="og:url" content="https://gmpify.com/regulations/food.html">
+<meta property="og:type" content="article">
+<title>Food Regulation Lookup - Free Reference Library | GMPify</title>
+<link rel="canonical" href="https://gmpify.com/regulations/food.html">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D2B3E;--navy-card:#112d41;--teal:#00C2A8;--gold:#F5A623;
+  --light:#CAD8E8;--mid:#6E90A0;--white:#fff;--orange:#B84A00;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif
+}
+body{font-family:var(--font);background:var(--navy);color:var(--light);line-height:1.6}
+a{color:var(--teal);text-decoration:none}
+.container{max-width:900px;margin:0 auto;padding:0 24px}
+nav{background:rgba(13,43,62,0.97);backdrop-filter:blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(0,194,168,0.15)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:60px;max-width:1100px;margin:0 auto;padding:0 24px}
+.logo{font-size:1.4rem;font-weight:800;letter-spacing:-0.5px;color:var(--white)}
+.logo span:first-child{color:var(--teal)}
+.logo span:last-child{color:var(--white)}
+.nav-links{display:flex;gap:24px;list-style:none;align-items:center}
+.nav-links li{margin-right:24px}
+.nav-links li:last-child{margin-right:0}
+.nav-links a{font-size:0.88rem;font-weight:500;color:var(--light)}
+.nav-links a:hover{color:var(--teal)}
+.nav-cta{background:var(--teal);color:var(--navy)!important;padding:7px 18px;border-radius:6px;font-weight:700!important}
+.breadcrumb{font-size:0.82rem;color:var(--mid);margin:28px 0 16px}
+.breadcrumb a{color:var(--mid)}
+.breadcrumb a:hover{color:var(--teal)}
+.reg-hero{padding:8px 0 32px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.reg-tag{font-size:0.75rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
+.reg-hero h1{font-size:clamp(1.5rem,3.2vw,2.1rem);font-weight:800;color:var(--white);line-height:1.3;margin-bottom:12px}
+.reg-hero .reg-sub{font-size:1rem;color:var(--mid)}
+.reg-section{padding:28px 0;border-bottom:1px solid rgba(255,255,255,0.07)}
+.reg-section:last-of-type{border-bottom:none}
+.reg-section h2{font-size:1.05rem;font-weight:800;color:var(--white);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.reg-section p{font-size:0.96rem;color:var(--light);line-height:1.75;margin-bottom:12px}
+.reg-section ul{margin:0 0 12px 20px;font-size:0.94rem;color:var(--light);line-height:1.8}
+.violation-box{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.25);border-radius:8px;padding:16px 20px}
+.violation-box h2{color:#FC8181}
+.related-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.related-tags a{background:rgba(0,194,168,0.08);border:1px solid rgba(0,194,168,0.2);border-radius:16px;padding:5px 14px;font-size:0.82rem;color:var(--teal)}
+.related-tags a:hover{background:rgba(0,194,168,0.15)}
+.disclaimer{font-size:0.78rem;color:var(--mid);font-style:italic;margin-top:8px}
+.ai-cta{background:linear-gradient(135deg,rgba(0,194,168,0.1),rgba(0,194,168,0.03));border:1px solid rgba(0,194,168,0.2);border-radius:12px;padding:24px 28px;margin:32px 0}
+.ai-cta h3{font-size:1rem;font-weight:800;color:var(--white);margin-bottom:8px}
+.ai-cta p{font-size:0.88rem;color:var(--mid);margin-bottom:14px}
+.btn-primary{display:inline-block;background:var(--teal);color:var(--navy);font-weight:700;padding:10px 22px;border-radius:8px;font-size:0.88rem}
+.btn-primary:hover{background:#00a892;color:var(--navy)}
+.index-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0 40px}
+.index-card{background:var(--navy-card);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:16px 20px}
+.index-card a{font-weight:700;color:var(--white);font-size:0.95rem}
+.index-card a:hover{color:var(--teal)}
+.index-card p{font-size:0.82rem;color:var(--mid);margin-top:6px}
+.index-cat{font-size:0.7rem;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:24px;margin-top:8px}
+footer{padding:40px 0 28px;border-top:1px solid rgba(255,255,255,0.07);margin-top:48px}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:0.8rem;color:var(--mid);max-width:1100px;margin:0 auto;padding:0 24px}
+@media(max-width:768px){.nav-links{display:none}.index-grid{grid-template-columns:1fr}}
+
+.rc-search{margin:24px 0 8px}
+.rc-search input{width:100%;padding:13px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.12);background:var(--navy-card);color:var(--white);font-size:0.95rem;font-family:var(--font)}
+.rc-search input:focus{outline:2px solid var(--teal);outline-offset:1px}
+.rc-chips{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 8px}
+.rc-chip{display:inline-flex;gap:8px;align-items:center;background:rgba(0,194,168,0.08);border:1px solid rgba(0,194,168,0.25);border-radius:20px;padding:7px 16px;font-size:0.88rem;font-weight:600;color:var(--teal)}
+.rc-chip span{background:rgba(0,194,168,0.18);border-radius:10px;padding:1px 8px;font-size:0.76rem;color:var(--white)}
+.rc-chip:hover{background:rgba(0,194,168,0.18)}
+.rc-cat{padding-top:36px;scroll-margin-top:80px}
+.rc-cat h2{font-size:1.5rem;font-weight:800;color:var(--white);display:flex;gap:10px;align-items:center}
+.rc-cat h2 span,.rc-group h3 span{font-size:0.78rem;font-weight:700;color:var(--mid);background:rgba(255,255,255,0.06);border-radius:10px;padding:2px 10px}
+.rc-desc{font-size:0.92rem;color:var(--mid);margin:6px 0 4px}
+.rc-group h3{font-size:1rem;font-weight:700;color:var(--teal);margin-top:22px;display:flex;gap:10px;align-items:center}
+.rc-group .index-grid{margin:12px 0 8px}
+.rc-top{display:inline-block;font-size:0.8rem;color:var(--mid);margin-bottom:8px}
+.rc-empty{display:none;margin:32px 0;color:var(--mid)}
+.rc-hide{display:none!important}
+.rc-switch{display:flex;gap:8px;margin:24px 0 4px;flex-wrap:wrap}
+.rc-switch a{display:inline-flex;gap:8px;align-items:center;padding:9px 20px;border-radius:24px;border:1px solid rgba(255,255,255,0.15);font-size:0.92rem;font-weight:700;color:var(--light)}
+.rc-switch a span{font-size:0.76rem;background:rgba(255,255,255,0.1);border-radius:10px;padding:1px 8px}
+.rc-switch a.rc-on{background:var(--teal);border-color:var(--teal);color:var(--navy)}
+.rc-switch a.rc-on span{background:rgba(13,43,62,0.18);color:var(--navy)}
+.rc-switch a:not(.rc-on):hover{border-color:var(--teal);color:var(--white)}
+</style>
+<link rel="stylesheet" href="/nav.css">
+</head>
+<body>
+<nav class="gx-nav" aria-label="Main">
+  <div class="gx-inner">
+    <a href="/" class="gx-logo"><span>GMP</span><span>ify</span></a>
+    <ul class="gx-links">
+      <li class="gx-dd"><a href="/#courses" aria-haspopup="true">Courses</a>
+        <ul class="gx-menu">
+          <li><a href="/#courses">Pharmaceutical</a></li>
+          <li><a href="/cannabis.html">Cannabis</a></li>
+          <li><a href="/food.html">Food</a></li>
+        </ul>
+      </li>
+      <li><a href="/#why">Why GMPify</a></li>
+      <li><a href="/#pricing">Pricing</a></li>
+      <li><a href="/blog.html">Blog</a></li>
+      <li><a href="/regulations/">Regulations</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/tools.html" class="gx-gold">Tools</a></li>
+      <li class="gx-dd"><a href="/gmp-maps.html" aria-haspopup="true">Process Maps</a>
+        <ul class="gx-menu">
+          <li><a href="/gmp-maps.html">Pharmaceutical</a></li>
+          <li><a href="/food-gmp-maps.html">Food</a></li>
+        </ul>
+      </li>
+      <li><a href="https://learn.gmpify.com" class="gx-cta">Start learning</a></li>
+    </ul>
+    <button class="gx-burger" type="button" aria-label="Open menu" aria-expanded="false" onclick="var m=document.getElementById('gxMobile');var o=m.classList.toggle('gx-open');this.setAttribute('aria-expanded',o)"><span></span><span></span><span></span></button>
+  </div>
+  <div class="gx-mobile" id="gxMobile">
+    <a href="/#courses">Courses</a>
+    <a href="/#courses" class="gx-sub">Pharmaceutical courses</a>
+    <a href="/cannabis.html" class="gx-sub">Cannabis courses</a>
+    <a href="/food.html" class="gx-sub">Food courses</a>
+    <a href="/#why">Why GMPify</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/blog.html">Blog</a>
+    <a href="/regulations/">Regulations</a>
+    <a href="/about.html">About</a>
+    <a href="/tools.html" class="gx-gold">Tools</a>
+    <a href="/gmp-maps.html">Process Maps</a>
+    <a href="/gmp-maps.html" class="gx-sub">Pharmaceutical maps</a>
+    <a href="/food-gmp-maps.html" class="gx-sub">Food maps</a>
+    <a href="https://learn.gmpify.com" class="gx-cta">Start learning</a>
+  </div>
+</nav>
+
+<div class="container" id="top">
+  <div class="breadcrumb">Regulations / Food</div>
+  <div class="reg-hero">
+    <div class="reg-tag">Food Regulation Library</div>
+    <h1>Food Regulation Lookup</h1>
+    <p class="reg-sub">Plain-language explanations of 63 key food safety regulations, from 21 CFR Part 117 to EU food law, with inspection context and common violation patterns. Browse by category or search. Free and always growing.</p>
+  </div>
+  <div class="rc-switch"><a href="/regulations/">Pharmaceutical<span>279</span></a><a href="/regulations/food.html" class="rc-on">Food<span>63</span></a></div>
+  <div class="rc-search"><input type="search" id="rcSearch" placeholder="Search, e.g. 117.130 or FSVP" aria-label="Search regulations"></div>
+  <div class="rc-chips"><a class="rc-chip" href="#food">US Food Safety<span>55</span></a><a class="rc-chip" href="#euf">EU Food Safety<span>8</span></a></div>
+  <p class="rc-empty" id="rcEmpty">No regulations match your search.</p>
+  <section class="rc-cat" id="food"><h2>US Food Safety <span>55</span></h2><p class="rc-desc">FDA food rules, organized by subpart of 21 CFR Part 117, followed by other FDA food regulations and the FD&C Act food provisions.</p><div class="rc-group"><h3>Part 117 Overview <span>1</span></h3><div class="index-grid"><div class="index-card"><a href="/regulations/21-cfr-part-117.html">21 CFR Part 117</a><p>CGMP, Hazard Analysis and Risk-Based Preventive Controls for Human Food</p></div></div></div><div class="rc-group"><h3>Subpart A: General Provisions <span>4</span></h3><div class="index-grid"><div class="index-card"><a href="/regulations/21-cfr-117-subpart-a.html">21 CFR 117 Subpart A</a><p>General Provisions</p></div><div class="index-card"><a href="/regulations/21-cfr-117-3.html">21 CFR 117.3</a><p>Definitions</p></div><div class="index-card"><a href="/regulations/21-cfr-117-4.html">21 CFR 117.4</a><p>Qualifications of Individuals Who Manufacture, Process, Pack or Hold Food</p></div><div class="index-card"><a href="/regulations/21-cfr-117-5.html">21 CFR 117.5</a><p>Exemptions</p></div></div></div><div class="rc-group"><h3>Subpart B: Current Good Manufacturing Practice <span>9</span></h3><div class="index-grid"><div class="index-card"><a href="/regulations/21-cfr-117-subpart-b.html">21 CFR 117 Subpart B</a><p>Current Good Manufacturing Practice for Human Food</p></div><div class="index-card"><a href="/regulations/21-cfr-117-10.html">21 CFR 117.10</a><p>Personnel</p></div><div class="index-card"><a href="/regulations/21-cfr-117-20.html">21 CFR 117.20</a><p>Plant and Grounds</p></div><div class="index-card"><a href="/regulations/21-cfr-117-35.html">21 CFR 117.35</a><p>Sanitary Operations</p></div><div class="index-card"><a href="/regulations/21-cfr-117-37.html">21 CFR 117.37</a><p>Sanitary Facilities and Controls</p></div><div class="index-card"><a href="/regulations/21-cfr-117-40.html">21 CFR 117.40</a><p>Equipment and Utensils</p></div><div class="index-card"><a href="/regulations/21-cfr-117-80.html">21 CFR 117.80</a><p>Processes and Controls</p></div><div class="index-card"><a href="/regulations/21-cfr-117-93.html">21 CFR 117.93</a><p>Warehousing and Distribution</p></div><div class="index-card"><a href="/regulations/21-cfr-117-110.html">21 CFR 117.110</a><p>Defect Action Levels</p></div></div></div><div class="rc-group"><h3>Subpart C: Hazard Analysis and Risk-Based Preventive Controls <span>16</span></h3><div class="index-grid"><div class="index-card"><a href="/regulations/21-cfr-117-subpart-c.html">21 CFR 117 Subpart C</a><p>Hazard Analysis and Risk-Based Preventive Controls</p></div><div class="index-card"><a href="/regulations/21-cfr-117-126.html">21 CFR 117.126</a><p>Food Safety Plan</p></div><div class="index-card"><a href="/regulations/21-cfr-117-130.html">21 CFR 117.130</a><p>Hazard Analysis</p></div><div class="index-card"><a href="/regulations/21-cfr-117-135.html">21 CFR 117.135</a><p>Preventive Controls</p></div><div class="index-card"><a href="/regulations/21-cfr-117-136.html">21 CFR 117.136</a><p>Circumstances in Which a Preventive Control Is Not Required</p></div><div class="index-card"><a href="/regulations/21-cfr-117-139.html">21 CFR 117.139</a><p>Recall Plan</p></div><div class="index-card"><a href="/regulations/21-cfr-117-140.html">21 CFR 117.140</a><p>Preventive Control Management Components</p></div><div class="index-card"><a href="/regulations/21-cfr-117-145.html">21 CFR 117.145</a><p>Monitoring</p></div><div class="index-card"><a href="/regulations/21-cfr-117-150.html">21 CFR 117.150</a><p>Corrective Actions and Corrections</p></div><div class="index-card"><a href="/regulations/21-cfr-117-155.html">21 CFR 117.155</a><p>Verification</p></div><div class="index-card"><a href="/regulations/21-cfr-117-160.html">21 CFR 117.160</a><p>Validation of Preventive Controls</p></div><div class="index-card"><a href="/regulations/21-cfr-117-165.html">21 CFR 117.165</a><p>Verification of Implementation and Effectiveness</p></div><div class="index-card"><a href="/regulations/21-cfr-117-170.html">21 CFR 117.170</a><p>Reanalysis</p></div><div class="index-card"><a href="/regulations/21-cfr-117-175.html">21 CFR 117.175</a><p>Records Required for Subpart C</p></div><div class="index-card"><a href="/regulations/21-cfr-117-180.html">21 CFR 117.180</a><p>Requirements Applicable to a Preventive Controls Qualified Individual</p></div><div class="index-card"><a href="/regulations/21-cfr-117-190.html">21 CFR 117.190</a><p>Implementation Records Required for Subpart C</p></div></div></div><div class="rc-group"><h3>Subparts D and E: Qualified Facilities <span>2</span></h3><div class="index-grid"><div class="index-card"><a href="/regulations/21-cfr-117-subpart-d.html">21 CFR 117 Subpart D</a><p>Modified Requirements</p></div><div class="index-card"><a href="/regulations/21-cfr-117-subpart-e.html">21 CFR 117 Subpart E</a><p>Withdrawal of a Qualified Facility Exemption</p></div></div></div><div class="rc-group"><h3>Subpart F: Records <span>3</span></h3><div class="index-grid"><div class="index-card"><a href="/regulations/21-cfr-117-subpart-f.html">21 CFR 117 Subpart F</a><p>Requirements Applying to Records That Must Be Established and Maintained</p></div><div class="index-card"><a href="/regulations/21-cfr-117-305.html">21 CFR 117.305</a><p>General Requirements Applying to Records</p></div><div class="index-card"><a href="/regulations/21-cfr-117-315.html">21 CFR 117.315</a><p>Requirements for Record Retention</p></div></div></div><div class="rc-group"><h3>Subpart G: Supply-Chain Program <span>1</span></h3><div class="index-grid"><div class="index-card"><a href="/regulations/21-cfr-117-subpart-g.html">21 CFR 117 Subpart G</a><p>Supply-Chain Program</p></div></div></div><div class="rc-group"><h3>Other FDA Food Regulations <span>17</span></h3><div class="index-grid"><div class="index-card"><a href="/regulations/21-cfr-part-1-subpart-h.html">21 CFR Part 1 Subpart H</a><p>Registration of Food Facilities</p></div><div class="index-card"><a href="/regulations/21-cfr-part-1-subpart-i.html">21 CFR Part 1 Subpart I</a><p>Prior Notice of Imported Food</p></div><div class="index-card"><a href="/regulations/21-cfr-part-1-subpart-j.html">21 CFR Part 1 Subpart J</a><p>Establishment and Maintenance of Records</p></div><div class="index-card"><a href="/regulations/21-cfr-part-1-subpart-l.html">21 CFR Part 1 Subpart L</a><p>Foreign Supplier Verification Programs for Importers</p></div><div class="index-card"><a href="/regulations/21-cfr-part-1-subpart-o.html">21 CFR Part 1 Subpart O</a><p>Sanitary Transportation of Human and Animal Food</p></div><div class="index-card"><a href="/regulations/21-cfr-part-1-subpart-s.html">21 CFR Part 1 Subpart S</a><p>Additional Traceability Records for Certain Foods</p></div><div class="index-card"><a href="/regulations/21-cfr-part-101.html">21 CFR Part 101</a><p>Food Labeling</p></div><div class="index-card"><a href="/regulations/21-cfr-part-106.html">21 CFR Part 106</a><p>Infant Formula Requirements: CGMP, Quality Control, Records and Reports</p></div><div class="index-card"><a href="/regulations/21-cfr-part-111.html">21 CFR Part 111</a><p>CGMP for Dietary Supplements</p></div><div class="index-card"><a href="/regulations/21-cfr-part-112.html">21 CFR Part 112</a><p>Standards for the Growing, Harvesting, Packing and Holding of Produce</p></div><div class="index-card"><a href="/regulations/21-cfr-part-113.html">21 CFR Part 113</a><p>Thermally Processed Low-Acid Foods Packaged in Hermetically Sealed Containers</p></div><div class="index-card"><a href="/regulations/21-cfr-part-114.html">21 CFR Part 114</a><p>Acidified Foods</p></div><div class="index-card"><a href="/regulations/21-cfr-part-120.html">21 CFR Part 120</a><p>Hazard Analysis and Critical Control Point Systems for Juice</p></div><div class="index-card"><a href="/regulations/21-cfr-part-121.html">21 CFR Part 121</a><p>Mitigation Strategies to Protect Food Against Intentional Adulteration</p></div><div class="index-card"><a href="/regulations/21-cfr-part-123.html">21 CFR Part 123</a><p>Fish and Fishery Products (Seafood HACCP)</p></div><div class="index-card"><a href="/regulations/21-cfr-part-129.html">21 CFR Part 129</a><p>Processing and Bottling of Bottled Drinking Water</p></div><div class="index-card"><a href="/regulations/21-cfr-part-507.html">21 CFR Part 507</a><p>CGMP, Hazard Analysis and Risk-Based Preventive Controls for Food for Animals</p></div></div></div><div class="rc-group"><h3>FD&amp;C Act Food Provisions <span>2</span></h3><div class="index-grid"><div class="index-card"><a href="/regulations/fdca-section-402.html">FD&C Act Section 402</a><p>Adulterated Food</p></div><div class="index-card"><a href="/regulations/fdca-section-403.html">FD&C Act Section 403</a><p>Misbranded Food</p></div></div></div><a class="rc-top" href="#top">Back to top</a></section><section class="rc-cat" id="euf"><h2>EU Food Safety <span>8</span></h2><p class="rc-desc">EU food law, hygiene, labeling and official controls.</p><div class="rc-group"><div class="index-grid"><div class="index-card"><a href="/regulations/eu-regulation-178-2002.html">EU Regulation (EC) No 178/2002</a><p>General Food Law</p></div><div class="index-card"><a href="/regulations/eu-regulation-852-2004.html">EU Regulation (EC) No 852/2004</a><p>Hygiene of Foodstuffs</p></div><div class="index-card"><a href="/regulations/eu-regulation-853-2004.html">EU Regulation (EC) No 853/2004</a><p>Specific Hygiene Rules for Food of Animal Origin</p></div><div class="index-card"><a href="/regulations/eu-regulation-1935-2004.html">EU Regulation (EC) No 1935/2004</a><p>Materials and Articles Intended to Come into Contact with Food</p></div><div class="index-card"><a href="/regulations/eu-regulation-2023-2006.html">EU Regulation (EC) No 2023/2006</a><p>GMP for Materials and Articles Intended to Come into Contact with Food</p></div><div class="index-card"><a href="/regulations/eu-regulation-2073-2005.html">EU Regulation (EC) No 2073/2005</a><p>Microbiological Criteria for Foodstuffs</p></div><div class="index-card"><a href="/regulations/eu-regulation-2017-625.html">EU Regulation (EU) 2017/625</a><p>Official Controls Regulation</p></div><div class="index-card"><a href="/regulations/eu-regulation-1169-2011.html">EU Regulation (EU) No 1169/2011</a><p>Food Information to Consumers</p></div></div></div><a class="rc-top" href="#top">Back to top</a></section>
+<div class="ai-cta">
+    <h3>Want a deeper, interactive breakdown?</h3>
+    <p>GMPify's Regulation Explainer tool gives subscribers an AI-powered analysis of any 21 CFR, EU GMP, USP or ICH reference, with live inspection context.</p>
+    <a href="https://gmpify-tools.netlify.app/" class="btn-primary">Try the Regulation Explainer &rarr;</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <span>&copy; 2026 GMPify. All rights reserved. &nbsp;&middot;&nbsp; <a href="/privacy.html" style="color:var(--mid);">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="/terms.html" style="color:var(--mid);">Terms of Service</a></span>
+    <span><a href="/" style="color:var(--mid);">gmpify.com</a> &middot; <a href="https://learn.gmpify.com" style="color:var(--mid);">learn.gmpify.com</a></span>
+  </div>
+</footer>
+<script>
+(function(){var i=document.getElementById('rcSearch'),e=document.getElementById('rcEmpty');
+if(!i)return;
+i.addEventListener('input',function(){var q=i.value.trim().toLowerCase(),any=false;
+document.querySelectorAll('.index-card').forEach(function(c){var m=!q||c.textContent.toLowerCase().indexOf(q)>-1;c.classList.toggle('rc-hide',!m);});
+document.querySelectorAll('.rc-group').forEach(function(g){g.classList.toggle('rc-hide',!!q&&!g.querySelector('.index-card:not(.rc-hide)'));});
+document.querySelectorAll('.rc-cat').forEach(function(s){var h=!!q&&!s.querySelector('.index-card:not(.rc-hide)');s.classList.toggle('rc-hide',h);if(!h)any=true;});
+e.style.display=(q&&!any)?'block':'none';});})();
+</script>
+</body>
+</html>
