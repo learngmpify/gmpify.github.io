@@ -166,36 +166,57 @@
     nav.main { gap: 2px 14px; }
   }
 </style>
+<link rel="stylesheet" href="/nav.css">
 </head>
 <body>
 
 <header class="site">
   <div class="wrap">
     <a class="logo" href="https://gmpify.com/">GMP<span>ify</span></a>
-    <nav class="main" aria-label="Main">
-      <div class="has-sub">
-        <a href="https://gmpify.com/#courses">Courses</a>
-        <div class="sub">
-          <a href="https://gmpify.com/#courses">Pharmaceutical</a>
-          <a href="https://gmpify.com/cannabis.html">Cannabis</a>
-          <a href="https://gmpify.com/food.html">Food</a>
-        </div>
-      </div>
-      <a href="https://gmpify.com/#why">Why GMPify</a>
-      <a href="https://gmpify.com/#pricing">Pricing</a>
-      <a href="https://gmpify.com/blog.html">Blog</a>
-      <a href="https://gmpify.com/regulations/">Regulations</a>
-      <a href="https://gmpify.com/about.html">About</a>
-      <a href="https://gmpify.com/tools.html">Tools</a>
-      <div class="has-sub">
-        <a href="https://gmpify.com/gmp-maps.html">Process Maps</a>
-        <div class="sub">
-          <a href="https://gmpify.com/gmp-maps.html">Pharmaceutical</a>
-          <a href="https://gmpify.com/food-gmp-maps.html">Food</a>
-        </div>
-      </div>
-      <a class="nav-cta" href="https://learn.gmpify.com">Start learning</a>
-    </nav>
+    <nav class="gx-nav" aria-label="Main">
+  <div class="gx-inner">
+    <a href="/" class="gx-logo"><span>GMP</span><span>ify</span></a>
+    <ul class="gx-links">
+      <li class="gx-dd"><a href="/#courses" aria-haspopup="true">Courses</a>
+        <ul class="gx-menu">
+          <li><a href="/#courses">Pharmaceutical</a></li>
+          <li><a href="/cannabis.html">Cannabis</a></li>
+          <li><a href="/food.html">Food</a></li>
+        </ul>
+      </li>
+      <li><a href="/#why">Why GMPify</a></li>
+      <li><a href="/#pricing">Pricing</a></li>
+      <li><a href="/blog.html">Blog</a></li>
+      <li><a href="/regulations/">Regulations</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/tools.html" class="gx-gold">Tools</a></li>
+      <li class="gx-dd"><a href="/gmp-maps.html" aria-haspopup="true">Process Maps</a>
+        <ul class="gx-menu">
+          <li><a href="/gmp-maps.html">Pharmaceutical</a></li>
+          <li><a href="/food-gmp-maps.html">Food</a></li>
+        </ul>
+      </li>
+      <li><a href="https://learn.gmpify.com" class="gx-cta">Start learning</a></li>
+    </ul>
+    <button class="gx-burger" type="button" aria-label="Open menu" aria-expanded="false" onclick="var m=document.getElementById('gxMobile');var o=m.classList.toggle('gx-open');this.setAttribute('aria-expanded',o)"><span></span><span></span><span></span></button>
+  </div>
+  <div class="gx-mobile" id="gxMobile">
+    <a href="/#courses">Courses</a>
+    <a href="/#courses" class="gx-sub">Pharmaceutical courses</a>
+    <a href="/cannabis.html" class="gx-sub">Cannabis courses</a>
+    <a href="/food.html" class="gx-sub">Food courses</a>
+    <a href="/#why">Why GMPify</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/blog.html">Blog</a>
+    <a href="/regulations/">Regulations</a>
+    <a href="/about.html">About</a>
+    <a href="/tools.html" class="gx-gold">Tools</a>
+    <a href="/gmp-maps.html">Process Maps</a>
+    <a href="/gmp-maps.html" class="gx-sub">Pharmaceutical maps</a>
+    <a href="/food-gmp-maps.html" class="gx-sub">Food maps</a>
+    <a href="https://learn.gmpify.com" class="gx-cta">Start learning</a>
+  </div>
+</nav>
   </div>
 </header>
 
