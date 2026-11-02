@@ -8,6 +8,7 @@
   <url><loc>https://gmpify.com/food-gmp-maps.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://gmpify.com/cannabis.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/food.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gmpify.com/vet.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://gmpify.com/blog.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
   <!-- GMP Maps (free tier) -->
@@ -135,6 +136,11 @@
   <url><loc>https://gmpify.com/courses/quality-culture-quality-management-maturity.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/courses/rapid-microbiological-methods-rmm.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/courses/recall-management-traceability-food.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/type-a-medicated-articles-cgmp-21-cfr-part-226.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/veterinary-feed-directive-feed-mills-distributors.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/compounding-animal-drugs-gfi-256.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/medicated-feed-drug-control-cleanout-carryover.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/animal-food-recalls-traceability-reportable-food-registry.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/courses/regulatory-affairs-essentials.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/courses/regulatory-cmc-essentials.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/courses/responding-to-fda-form-483-observations.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
