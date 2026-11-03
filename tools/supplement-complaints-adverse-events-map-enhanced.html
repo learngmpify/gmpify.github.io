@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complaints and Serious Adverse Event Reporting Workflow - Enhanced Edition | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* CONTROL TYPE BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* HAZARD CATEGORIES */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* HAZARD EVALUATION CRITERIA */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* KEY OUTPUTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* QUALITY ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+  /* ===== ENHANCED EDITION ADDITIONS ===== */
+  .enh-badge{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.35);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--gold);text-align:right}
+
+  /* REGULATORY TEXT PANEL */
+  .regtext-box{background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .regtext-box h3{font-size:0.74rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .regtext-items{display:flex;flex-direction:column;gap:9px}
+  .regtext-item{background:rgba(255,255,255,0.04);border-left:3px solid var(--c1acc);border-radius:5px;padding:9px 12px}
+  .regtext-item .src{font-size:0.63rem;font-family:var(--mono);color:var(--c1acc);margin-bottom:3px}
+  .regtext-item p{font-size:0.7rem;color:var(--light);line-height:1.55}
+
+  /* INSPECTION PATTERN PANEL */
+  .pattern-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .pattern-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .pattern-box .disclaimer{font-size:0.64rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px;font-style:italic}
+  .pattern-items{display:flex;flex-direction:column;gap:7px}
+  .pattern-item{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:8px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .pattern-item strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* BEST PRACTICE PANEL */
+  .practice-box{background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .practice-box h3{font-size:0.74rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .practice-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .practice-item{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.16);border-radius:5px;padding:9px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .practice-item strong{color:var(--green);display:block;font-size:0.67rem;margin-bottom:2px}
+
+  /* SELF-ASSESSMENT CHECKLIST */
+  .assess-box{background:rgba(56,189,248,0.05);border:1.5px solid rgba(56,189,248,0.22);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .assess-box summary{cursor:pointer;padding:12px 16px;font-size:0.78rem;font-weight:700;color:var(--white);list-style:none;display:flex;align-items:center;justify-content:space-between}
+  .assess-box summary::-webkit-details-marker{display:none}
+  .assess-box summary .arrow-icon{color:var(--c1acc);font-size:0.8rem;transition:transform 0.15s}
+  .assess-box[open] summary .arrow-icon{transform:rotate(90deg)}
+  .assess-body{padding:4px 16px 16px}
+  .assess-note{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px}
+  .assess-row{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .assess-row:last-child{border-bottom:none}
+  .assess-row input[type=checkbox]{margin-top:2px;width:15px;height:15px;accent-color:var(--c1acc);flex-shrink:0}
+  .assess-row label{font-size:0.71rem;color:var(--light);line-height:1.5}
+
+  /* SITE ANNOTATION FIELDS */
+  .annotate-box{background:rgba(0,0,0,0.2);border:1.5px dashed rgba(255,255,255,0.16);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .annotate-box h3{font-size:0.74rem;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .annotate-box .sub{font-size:0.65rem;color:var(--mid);margin-bottom:12px}
+  .annotate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotate-field{display:flex;flex-direction:column;gap:4px}
+  .annotate-field label{font-size:0.66rem;font-family:var(--mono);color:var(--c1acc)}
+  .annotate-field textarea, .annotate-field input[type=text]{
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:6px;
+    color:var(--white);font-family:var(--font);font-size:0.72rem;padding:8px 10px;resize:vertical;
+  }
+  .annotate-field textarea:focus, .annotate-field input[type=text]:focus{outline:none;border-color:var(--c1acc)}
+
+  /* PRINT OPTIMIZATION */
+  @media print {
+    body{background:#FFFFFF !important;color:#1A1A1A !important}
+    .header{background:#FFFFFF !important;border-bottom:2px solid #1A1A1A}
+    .logo span:first-child, .logo span:last-child, .header h1{color:#1A1A1A !important}
+    .header h1 em{color:#0A6E8C !important}
+    .header-sub, .stat-badge, .reg-badge, .enh-badge{color:#333 !important}
+    .legend{background:#F2F2F2 !important}
+    .map-wrap, .phase-body, .node-action, .node-decision, .limits-box, .exceed-box, .trend-box, .ccs-box,
+    .regtext-box, .pattern-box, .practice-box, .assess-box, .annotate-box, .rule-card{
+      background:#FAFAFA !important;color:#1A1A1A !important;border-color:#CCCCCC !important;
+    }
+    .node-title, .node-body, .limit-card p, .exceed-step, .trend-item, .ccs-item, .regtext-item p,
+    .pattern-item, .practice-item, .rule-card p, .assess-row label{color:#1A1A1A !important}
+    .assess-box summary{color:#1A1A1A !important}
+    .footer{color:#333 !important}
+    .assess-box summary .arrow-icon{display:none}
+    details.assess-box{display:block}
+    .assess-body{display:block !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Complaints and Serious Adverse Event Reporting <em>Workflow</em></h1>
+    <div class="header-sub">21 CFR Part 111 Subpart O &nbsp;|&nbsp; 21 CFR 111.560, 111.570 &nbsp;|&nbsp; FD&amp;C Act Section 761</div>
+  </div>
+  <div class="header-right">
+    <div class="enh-badge">Enhanced Edition &#183; Subscriber Content</div>
+    <div class="reg-badge">
+      21 CFR 111.553 &nbsp;·&nbsp; 111.560 &nbsp;·&nbsp; 111.570<br>
+      FD&amp;C Act Section 761 &nbsp;·&nbsp; 21 USC 379aa-1
+    </div>
+    <div class="stat-badge">
+      Serious adverse events must be reported to FDA<br>
+      within 15 business days of receipt
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Receive and Record</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Review and Investigate</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Report Serious Adverse Events</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Respond, Record, and Improve</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128222;</div>
+    <div class="trigger-text">
+      <h3>Complaints and Serious Adverse Event Reporting - Receiving, Investigating, and Reporting What Comes Back From the Market</h3>
+      <p>Dietary supplement manufacturers must follow written procedures to review every product complaint, investigate those that suggest a specification failure or other Part 111 problem, and keep a record of each complaint. Separately, the responsible person named on the label must report serious adverse events to FDA on the MedWatch form within 15 business days, with a copy of the label, and must send new medical information within the same time. This map details the pathway from receipt through review, investigation, reporting, response, and record keeping.</p>
+      <div class="reg">21 CFR Part 111 Subpart O &nbsp;·&nbsp; 111.560 &nbsp;·&nbsp; 111.570 &nbsp;·&nbsp; FD&amp;C Act Section 761</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-fda">21 CFR 111.553 to 111.570</div>
+      <div class="ref-chip chip-fda">FD&amp;C Act Section 761</div>
+      <div class="ref-chip chip-usp">MedWatch Report</div>
+    </div>
+  </div>
+
+  <div class="grades-bar">
+    <div class="grade-card grade-a">
+      <h4>Product Complaint</h4>
+      <p>Any complaint received about a dietary supplement. Each is reviewed, and those suggesting a possible failure are investigated.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Subpart O</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Serious Adverse Event</h4>
+      <p>An adverse event with death, a life-threatening experience, hospitalization, lasting disability, birth defect, or need for medical or surgical intervention.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>FD&amp;C Act Section 761</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-c">
+      <h4>Responsible Person</h4>
+      <p>The manufacturer, packer, or distributor whose name is on the label. This person submits the serious adverse event report to FDA.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>Named on the label</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Quality Control</h4>
+      <p>Quality control decides whether to investigate a complaint and approves the findings and follow-up actions.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>111.560(b)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <div class="design-col">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Receive and Record
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Provide a contact for adverse event reports on the label</div>
+              <div class="node-body">The label carries the address or phone number through which the responsible person receives adverse event reports.</div>
+              <div class="node-reg">FD&amp;C Act Section 761</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Follow written procedures for complaints</div>
+              <div class="node-body">Written procedures established and followed for the review, investigation, and recording of product complaints.</div>
+              <div class="node-reg">21 CFR 111.553</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Receive and record each complaint at the time</div>
+              <div class="node-body">Product name and description, batch or lot number if known, date received, complainant details if available, and the nature of the complaint.</div>
+              <div class="node-reg">21 CFR 111.570(b)(2)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>A qualified person reviews every complaint</div>
+              <div class="node-body">Each complaint reviewed to decide whether it suggests a possible specification failure or other Part 111 problem.</div>
+              <div class="node-reg">21 CFR 111.560(a)</div>
+            </div>
+          </div>
+        </div>
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Review and Investigate
+          </div>
+          <div class="phase-body">
+            <div class="node node-decision">
+              <div class="decision-q">Is it a possible serious adverse event?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Start the 15 business day clock</span>
+                <span class="opt-n">NO &#8594; Continue the complaint review</span>
+              </div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Quality control decides whether to investigate</div>
+              <div class="node-body">QC decides whether an investigation is needed and approves that decision.</div>
+              <div class="node-reg">21 CFR 111.560(b)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Investigate a possible specification failure</div>
+              <div class="node-body">Investigate complaints suggesting the supplement may not meet specifications or other Part 111 requirements, including those that could lead to illness or injury.</div>
+              <div class="node-reg">21 CFR 111.560(a)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Extend the review to all relevant batches and records</div>
+              <div class="node-body">Review, investigation, and decisions cover every relevant batch and its records, not only the complained-of unit.</div>
+              <div class="node-reg">21 CFR 111.560(c)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Report Serious Adverse Events
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Confirm the event is serious</div>
+              <div class="node-body">Check the event against the statutory definition of a serious adverse event, using reasonable medical judgment for the intervention criterion.</div>
+              <div class="node-reg">FD&amp;C Act Section 761</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Submit the MedWatch report within 15 business days</div>
+              <div class="node-body">Report sent to FDA on the MedWatch form with a copy of the product label, within 15 business days of receipt.</div>
+              <div class="node-reg">FD&amp;C Act Section 761</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Send new medical information within 15 business days</div>
+              <div class="node-body">New medical information received within one year of the initial report is submitted within 15 business days of receipt.</div>
+              <div class="node-reg">FD&amp;C Act Section 761</div>
+            </div>
+          </div>
+        </div>
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Respond, Record, and Improve
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Quality control approves findings and follow-up</div>
+              <div class="node-body">QC reviews and approves the investigation findings and the follow-up actions taken.</div>
+              <div class="node-reg">21 CFR 111.560(b)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Reply to the complainant and record the reply</div>
+              <div class="node-body">Any reply sent to the complainant is recorded with the complaint, along with the findings and follow-up actions.</div>
+              <div class="node-reg">21 CFR 111.570(b)(2)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Retain records and use complaint trends to improve</div>
+              <div class="node-body">Complaint records kept under Subpart P, adverse event records kept for 6 years, and trends used to drive corrective action.</div>
+              <div class="node-reg">21 CFR 111.570; Section 761</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="response-col">
+
+      <div class="limits-box">
+        <div class="limits-header">Report Types (Overview)</div>
+        <div class="limits-body">
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Product Complaint</h4>
+            <p>Reviewed by a qualified person. Investigated when it suggests a possible specification failure or other Part 111 problem.</p>
+            <div class="stat">21 CFR 111.560</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Serious Adverse Event</h4>
+            <p>Reported to FDA with the label copy within 15 business days of receipt.</p>
+            <div class="stat">FD&amp;C Act Section 761</div>
+          </div>
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Other Adverse Events</h4>
+            <p>Not submitted under Section 761, but records of adverse event reports received are retained for 6 years.</p>
+            <div class="stat">FD&amp;C Act Section 761</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exceed-box">
+        <h3>Serious Adverse Event Criteria (Overview)</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Death or life-threatening event</strong>
+            The event results in death or a life-threatening experience.
+          </div>
+          <div class="exceed-step">
+            <strong>Hospitalization</strong>
+            The event results in inpatient hospitalization.
+          </div>
+          <div class="exceed-step">
+            <strong>Lasting harm</strong>
+            The event results in a persistent or significant disability or incapacity, or a congenital anomaly or birth defect.
+          </div>
+          <div class="exceed-step">
+            <strong>Intervention needed</strong>
+            Based on reasonable medical judgment, the event requires medical or surgical intervention to prevent one of the outcomes above.
+          </div>
+        </div>
+      </div>
+
+      <div class="trend-box">
+        <h3>Key Outputs (Overview)</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Complaint record</strong>
+            A written record of each complaint with the required details, made at the time.
+          </div>
+          <div class="trend-item">
+            <strong>Investigation record</strong>
+            Findings and follow-up actions, approved by quality control, covering all relevant batches.
+          </div>
+          <div class="trend-item">
+            <strong>MedWatch submission</strong>
+            Report with label copy, plus any follow-up medical information, sent on time.
+          </div>
+          <div class="trend-item">
+            <strong>Retained records</strong>
+            Complaint records under Subpart P and adverse event records kept for 6 years.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Complaint and Adverse Event Quality Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Label Contact Information</strong>
+        Consumers can reach the responsible person through the address or phone number on the label.
+      </div>
+      <div class="ccs-item">
+        <strong>Single Intake Process</strong>
+        Every channel, including calls, email, and social media, feeds the same log.
+      </div>
+      <div class="ccs-item">
+        <strong>Qualified Reviewer</strong>
+        A qualified person reviews each complaint and recognizes possible failures and adverse events.
+      </div>
+      <div class="ccs-item">
+        <strong>QC Investigation Authority</strong>
+        Quality control decides on investigation and approves findings and follow-up.
+      </div>
+      <div class="ccs-item">
+        <strong>Batch Linkage</strong>
+        Complaints are linked to the batch, so all relevant batches and records can be reviewed.
+      </div>
+      <div class="ccs-item">
+        <strong>Deadline Tracking</strong>
+        The 15 business day clock is tracked from receipt, with a named owner.
+      </div>
+      <div class="ccs-item">
+        <strong>Contemporaneous Documentation</strong>
+        Each task is documented at the time it is performed, with the required complaint details.
+      </div>
+      <div class="ccs-item">
+        <strong>Trend Review</strong>
+        Complaint and adverse event trends are reviewed and drive corrective action.
+      </div>
+    </div>
+  </div>
+
+  <!-- REGULATORY TEXT PANEL -->
+  <div class="regtext-box">
+    <h3>Regulatory Text - Source Provisions</h3>
+    <div class="regtext-items">
+      <div class="regtext-item">
+        <div class="src">21 CFR 111.560 (paraphrased - refer to the official regulation for exact wording)</div>
+        <p>A qualified person must review all product complaints and investigate any that suggest a possible failure to meet specifications or other Part 111 requirements. Quality control personnel decide whether to investigate and approve the findings and follow-up actions, and the review extends to all relevant batches and records.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">21 CFR 111.570(b)(2) (paraphrased - refer to the official regulation for exact wording)</div>
+        <p>A written record of every product complaint related to good manufacturing practice must be made and kept, documented at the time the task is performed, and must include the product name and description, the batch or lot number if available, the date received and complainant details if available, the nature of the complaint, any reply sent, and any investigation findings and follow-up.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">FD&amp;C Act Section 761 (paraphrased - refer to the official regulation for exact wording)</div>
+        <p>The responsible person must submit each serious adverse event report to FDA within 15 business days of receipt, on the MedWatch form with a copy of the label, must submit new medical information received within one year within 15 business days, and must keep records of each adverse event report received for 6 years.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSPECTION PATTERN PANEL -->
+  <div class="pattern-box">
+    <h3>Common Inspection Findings - Complaints and Adverse Events</h3>
+    <div class="disclaimer">Illustrative of recurring themes seen across published FDA Form 483s and warning letters. Not tied to a single specific citation.</div>
+    <div class="pattern-items">
+      <div class="pattern-item">
+        <strong>No written procedures for product complaints</strong>
+        The firm has no procedure for reviewing, investigating, and recording complaints.
+      </div>
+      <div class="pattern-item">
+        <strong>Complaints not reviewed or investigated</strong>
+        Complaints are logged but no qualified person reviews them, or those suggesting a failure are closed without investigation.
+      </div>
+      <div class="pattern-item">
+        <strong>Incomplete complaint records</strong>
+        Records lack required items such as the lot number, the date received, the nature of the complaint, the reply, or the findings.
+      </div>
+      <div class="pattern-item">
+        <strong>Adverse event handling gaps</strong>
+        No contact information on the label, no process for recognizing serious adverse events, or late MedWatch submissions.
+      </div>
+    </div>
+  </div>
+
+  <!-- BEST PRACTICE PANEL -->
+  <div class="practice-box">
+    <h3>Best Practice Guidance</h3>
+    <div class="practice-items">
+      <div class="practice-item">
+        <strong>Train every customer-facing role to spot an adverse event</strong>
+        Anyone who answers a phone or inbox should know the trigger words and the hand-off to the responsible person.
+      </div>
+      <div class="practice-item">
+        <strong>Start the clock on a shared tracker</strong>
+        Log receipt date and the due date in one place so the 15 business day deadline is visible to quality and regulatory.
+      </div>
+      <div class="practice-item">
+        <strong>Pull the batch records the same day</strong>
+        Link the complaint to the lot and review the batch record, deviations, and retained samples right away.
+      </div>
+      <div class="practice-item">
+        <strong>Review trends monthly</strong>
+        Group complaints by product, lot, symptom, and channel to find patterns before they become recalls.
+      </div>
+    </div>
+  </div>
+
+  <!-- SELF-ASSESSMENT CHECKLIST -->
+  <details class="assess-box">
+    <summary>Self-Assessment Checklist - Is Your Complaint and Adverse Event Process Inspection Ready? <span class="arrow-icon">&#9654;</span></summary>
+    <div class="assess-body">
+      <div class="assess-note">For personal or team use during training. Responses are not saved or submitted.</div>
+      <div class="assess-row"><input type="checkbox" id="a1"><label for="a1">Written procedures exist for the review, investigation, and recording of product complaints.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a2"><label for="a2">The label carries an address or phone number for adverse event reports.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a3"><label for="a3">A qualified person reviews every complaint, and quality control approves investigation decisions and findings.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a4"><label for="a4">Investigations cover all relevant batches and records.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a5"><label for="a5">Complaint records contain every required item and are made at the time.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a6"><label for="a6">Serious adverse events are reported with the label within 15 business days, with follow-up information when received.</label></div>
+      <div class="assess-row"><input type="checkbox" id="a7"><label for="a7">Adverse event records are kept for 6 years and complaint trends are reviewed.</label></div>
+    </div>
+  </details>
+
+  <!-- SITE ANNOTATION FIELDS -->
+  <div class="annotate-box">
+    <h3>Site Annotation</h3>
+    <div class="sub">Add your site-specific references while reviewing this map. Not saved between sessions - copy notes into your own records before closing.</div>
+    <div class="annotate-grid">
+      <div class="annotate-field">
+        <label>PRODUCT OR BRAND</label>
+        <input type="text" placeholder="e.g. Joint support capsules">
+      </div>
+      <div class="annotate-field">
+        <label>LOCAL SOP REFERENCE</label>
+        <input type="text" placeholder="e.g. SOP-QA-031 Rev 2">
+      </div>
+      <div class="annotate-field" style="grid-column: 1 / -1">
+        <label>NOTES</label>
+        <textarea rows="3" placeholder="Site-specific observations, open questions, or follow-up items for the quality and regulatory team."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Treat a complaint as a customer service matter only. Wait for confirmation of cause before reporting a possible serious adverse event. Investigate only the complained-of unit and ignore other batches. Leave a complaint without a written record of the reply and follow-up.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Complaint vs adverse event</h4>
+      <p>A product complaint is any complaint about the product and is handled under Part 111 Subpart O. A serious adverse event is a health outcome meeting the statutory definition and is reported to FDA under Section 761. One report can be both, and then both processes apply.</p>
+    </div>
+    <div class="rule-card">
+      <h4>When the 15 days start</h4>
+      <p>The 15 business day deadline runs from receipt of the report through the address or phone number on the label. The report does not wait for the investigation or for proof the product caused the event, and sending it is not an admission of causation.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR 111.553 - written procedures. 111.560 - review and investigation of complaints. 111.570 - complaint records. FD&amp;C Act Section 761 (21 USC 379aa-1) - serious adverse event reporting and records.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Complaints and Serious Adverse Event Reporting Workflow &nbsp;&#183;&nbsp;
+    Built from 21 CFR Part 111 Subpart O and FD&amp;C Act Section 761 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Dietary Supplement Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
