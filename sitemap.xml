@@ -9,6 +9,8 @@
   <url><loc>https://gmpify.com/cannabis.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/food.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://gmpify.com/vet.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gmpify.com/supplements.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://gmpify.com/supplement-gmp-maps.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://gmpify.com/blog.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
   <!-- GMP Maps (free tier) -->
@@ -37,6 +39,9 @@
   <url><loc>https://gmpify.com/tools/food-reportable-food-registry-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/tools/food-traceability-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/tools/food-fda-inspection-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/supplement-component-specifications-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/supplement-master-batch-records-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/tools/supplement-complaints-adverse-events-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/tools/apr-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/tools/batch-record-review-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/tools/bioburden-map.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
@@ -135,6 +140,11 @@
   <url><loc>https://gmpify.com/courses/qc-lab-testing-fundamentals.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/courses/quality-culture-quality-management-maturity.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/courses/rapid-microbiological-methods-rmm.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/dietary-supplement-cgmp-21-cfr-part-111-overview.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/part-111-personnel-plant-equipment-requirements.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/part-111-specifications-testing-oos-handling.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/part-111-production-records-product-complaints.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://gmpify.com/courses/dietary-supplement-labeling-claims-adverse-event-reporting.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/courses/recall-management-traceability-food.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/courses/type-a-medicated-articles-cgmp-21-cfr-part-226.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://gmpify.com/courses/veterinary-feed-directive-feed-mills-distributors.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
