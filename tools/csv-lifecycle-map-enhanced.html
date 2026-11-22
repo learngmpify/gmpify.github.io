@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer System Validation (CSV) Lifecycle Workflow - Enhanced Edition | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* GAMP CATEGORY BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* GAMP CATEGORY REQUIREMENTS */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* CSV FAILURE RESPONSE */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* DATA INTEGRITY AND CSA REQUIREMENTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* CSV LIFECYCLE ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+
+  /* ===== ENHANCED EDITION ADDITIONS ===== */
+  .enh-badge{background:rgba(245,166,35,0.12);border:1px solid rgba(245,166,35,0.35);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--gold);text-align:right}
+
+  .regtext-box{background:rgba(0,0,0,0.25);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .regtext-box h3{font-size:0.74rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .regtext-items{display:flex;flex-direction:column;gap:9px}
+  .regtext-item{background:rgba(255,255,255,0.04);border-left:3px solid var(--c1acc);border-radius:5px;padding:9px 12px}
+  .regtext-item .src{font-size:0.63rem;font-family:var(--mono);color:var(--c1acc);margin-bottom:3px}
+  .regtext-item p{font-size:0.7rem;color:var(--light);line-height:1.55}
+
+  .pattern-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .pattern-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+  .pattern-box .disclaimer{font-size:0.64rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px;font-style:italic}
+  .pattern-items{display:flex;flex-direction:column;gap:7px}
+  .pattern-item{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:8px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .pattern-item strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  .practice-box{background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.22);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .practice-box h3{font-size:0.74rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .practice-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .practice-item{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.16);border-radius:5px;padding:9px 11px;font-size:0.69rem;color:var(--light);line-height:1.5}
+  .practice-item strong{color:var(--green);display:block;font-size:0.67rem;margin-bottom:2px}
+
+  .assess-box{background:rgba(56,189,248,0.05);border:1.5px solid rgba(56,189,248,0.22);border-radius:10px;margin-bottom:16px;overflow:hidden}
+  .assess-box summary{cursor:pointer;padding:12px 16px;font-size:0.78rem;font-weight:700;color:var(--white);list-style:none;display:flex;align-items:center;justify-content:space-between}
+  .assess-box summary::-webkit-details-marker{display:none}
+  .assess-box summary .arrow-icon{color:var(--c1acc);font-size:0.8rem;transition:transform 0.15s}
+  .assess-box[open] summary .arrow-icon{transform:rotate(90deg)}
+  .assess-body{padding:4px 16px 16px}
+  .assess-note{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-bottom:10px}
+  .assess-row{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .assess-row:last-child{border-bottom:none}
+  .assess-row input[type=checkbox]{margin-top:2px;width:15px;height:15px;accent-color:var(--c1acc);flex-shrink:0}
+  .assess-row label{font-size:0.71rem;color:var(--light);line-height:1.5}
+
+  .annotate-box{background:rgba(0,0,0,0.2);border:1.5px dashed rgba(255,255,255,0.16);border-radius:10px;padding:14px 16px;margin-bottom:16px}
+  .annotate-box h3{font-size:0.74rem;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+  .annotate-box .sub{font-size:0.65rem;color:var(--mid);margin-bottom:12px}
+  .annotate-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .annotate-field{display:flex;flex-direction:column;gap:4px}
+  .annotate-field label{font-size:0.66rem;font-family:var(--mono);color:var(--c1acc)}
+  .annotate-field textarea, .annotate-field input[type=text]{
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.14);border-radius:6px;
+    color:var(--white);font-family:var(--font);font-size:0.72rem;padding:8px 10px;resize:vertical;
+  }
+  .annotate-field textarea:focus, .annotate-field input[type=text]:focus{outline:none;border-color:var(--c1acc)}
+
+  @media print {
+    body{background:#FFFFFF !important;color:#1A1A1A !important}
+    .header{background:#FFFFFF !important;border-bottom:2px solid #1A1A1A}
+    .logo span:first-child, .logo span:last-child, .header h1{color:#1A1A1A !important}
+    .header h1 em{color:#0A6E8C !important}
+    .header-sub, .stat-badge, .reg-badge, .enh-badge{color:#333 !important}
+    .legend{background:#F2F2F2 !important}
+    .map-wrap, .phase-body, .node-action, .node-decision, .limits-box, .exceed-box, .trend-box, .ccs-box,
+    .regtext-box, .pattern-box, .practice-box, .assess-box, .annotate-box, .rule-card{
+      background:#FAFAFA !important;color:#1A1A1A !important;border-color:#CCCCCC !important;
+    }
+    .node-title, .node-body, .limit-card p, .exceed-step, .trend-item, .ccs-item, .regtext-item p,
+    .pattern-item, .practice-item, .rule-card p, .assess-row label{color:#1A1A1A !important}
+    .assess-box summary{color:#1A1A1A !important}
+    .footer{color:#333 !important}
+    .assess-box summary .arrow-icon{display:none}
+    details.assess-box{display:block}
+    .assess-body{display:block !important}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Computer System Validation <em>(CSV) Lifecycle Workflow</em></h1>
+    <div class="header-sub">21 CFR Part 11 &nbsp;|&nbsp; EU GMP Annex 11 &nbsp;|&nbsp; GAMP 5 (2nd Edition) &nbsp;|&nbsp; FDA CSA Guidance 2022</div>
+  </div>
+  <div class="header-right">
+    <div class="enh-badge">Enhanced Edition &#183; Subscriber Content</div>
+    <div class="reg-badge">
+      21 CFR Part 11 &nbsp;·&nbsp; EU GMP Annex 11<br>
+      GAMP 5 (2nd Ed.) &nbsp;·&nbsp; FDA CSA Guidance 2022
+    </div>
+    <div class="stat-badge">
+      Effort should scale to system risk,<br>
+      not apply uniformly to every application
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Planning and Risk Assessment</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Specification and Configuration</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Testing and Verification</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Release and Operational Lifecycle</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <!-- TRIGGER -->
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128187;</div>
+    <div class="trigger-text">
+      <h3>Computer System Validation - Risk-Based Assurance, Not Uniform Documentation Volume</h3>
+      <p>Computer system validation establishes documented evidence that a computerized system used in a GMP process reliably does what it is intended to do, consistently and with appropriate control over electronic records and signatures. GAMP 5's second edition and FDA's 2022 Computer Software Assurance guidance both pushed the field toward critical thinking and risk-based effort allocation, moving away from the earlier assumption that more test scripts and paper automatically meant better assurance. A high-risk system genuinely affecting product quality or patient safety warrants rigorous testing; a low-risk administrative system does not need the same treatment.</p>
+      <div class="reg">21 CFR Part 11 &nbsp;·&nbsp; EU GMP Annex 11 &nbsp;·&nbsp; GAMP 5 (2nd Edition) &nbsp;·&nbsp; FDA CSA Guidance 2022</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-fda">21 CFR Part 11</div>
+      <div class="ref-chip chip-eu">EU GMP Annex 11</div>
+      <div class="ref-chip chip-usp">GAMP 5 (2nd Ed.)</div>
+      <div class="ref-chip chip-fda">FDA CSA 2022</div>
+    </div>
+  </div>
+
+  <!-- GAMP CATEGORY BAR -->
+  <div class="grades-bar">
+    <div class="grade-card grade-c">
+      <h4>Category 1 - Infrastructure Software</h4>
+      <p>Operating systems, database engines, and other infrastructure software, typically qualified rather than fully validated as a standalone application.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Effort: <span>Infrastructure qualification</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Category 3 - Non-Configured Products</h4>
+      <p>Commercial off-the-shelf software used as supplied, without configuration to the business process, verified largely through supplier assessment.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Effort: <span>Supplier assessment, basic testing</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-a">
+      <h4>Category 4 - Configured Products</h4>
+      <p>Commercial software configured to meet specific business process needs, requiring testing focused on the configuration rather than the base code.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Effort: <span>Configuration-focused testing</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Category 5 - Custom Applications</h4>
+      <p>Bespoke software developed specifically for the site, warranting the most rigorous lifecycle testing given the absence of prior commercial verification.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Effort: <span>Full lifecycle testing</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- LEFT: PHASE WORKFLOW -->
+    <div class="design-col">
+
+      <!-- PHASES 1 AND 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 1 -->
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Planning and Risk Assessment
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Define the User Requirements Specification</div>
+              <div class="node-body">URS drafted defining the intended use, functional requirements, and GMP-relevant data the system will manage.</div>
+              <div class="node-reg">GAMP 5 (2nd Ed.)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Classify the system by GAMP category</div>
+              <div class="node-body">System classified into its appropriate GAMP category, establishing the baseline scope and rigor of validation effort required.</div>
+              <div class="node-reg">GAMP 5 (2nd Ed.)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Conduct a risk-based critical thinking assessment</div>
+              <div class="node-body">Risk assessment applied to identify which functions are GMP-critical, directing testing effort toward genuine patient and product risk.</div>
+              <div class="node-reg">FDA CSA Guidance 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Assess supplier and vendor documentation</div>
+              <div class="node-body">Supplier quality documentation and development history assessed to determine how much can be leveraged rather than independently re-verified.</div>
+              <div class="node-reg">GAMP 5 (2nd Ed.)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 2 -->
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Specification and Configuration
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Develop functional and configuration specifications</div>
+              <div class="node-body">Functional specification and configuration specification developed, documenting exactly how the system will be set up to meet the URS.</div>
+              <div class="node-reg">GAMP 5 (2nd Ed.)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Configure the system per specification</div>
+              <div class="node-body">System configured according to the approved configuration specification, with configuration settings documented as built.</div>
+              <div class="node-reg">EU GMP Annex 11</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Configure electronic records and audit trail controls</div>
+              <div class="node-body">Electronic record retention, electronic signature, and audit trail controls configured to meet 21 CFR Part 11 requirements.</div>
+              <div class="node-reg">21 CFR Part 11</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Prepare traceability matrix linking requirements to tests</div>
+              <div class="node-body">Traceability matrix prepared connecting each URS requirement forward to the specific test that will verify it.</div>
+              <div class="node-reg">GAMP 5 (2nd Ed.)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PHASES 3 AND 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+        <!-- PHASE 3 -->
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Testing and Verification
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Execute risk-based testing scoped to criticality</div>
+              <div class="node-body">Testing scoped and depth-adjusted according to the risk assessment, applying scripted testing to high-risk functions and unscripted, ad hoc testing to lower-risk areas.</div>
+              <div class="node-reg">FDA CSA Guidance 2022</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Verify data integrity and audit trail functionality</div>
+              <div class="node-body">Audit trail tested to confirm it accurately captures create, modify, and delete actions on GMP-relevant electronic records.</div>
+              <div class="node-reg">21 CFR Part 11</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-decision">
+              <div class="decision-q">Do test results meet all pre-defined acceptance criteria?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Proceed to release</span>
+                <span class="opt-n">NO &#8594; Investigate and remediate</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PHASE 4 -->
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Release and Operational Lifecycle
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Compile and approve the validation summary report</div>
+              <div class="node-body">Validation summary report compiled referencing all specification, configuration, and testing documentation, formally approved before go-live.</div>
+              <div class="node-reg">GAMP 5 (2nd Ed.)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Establish change control for the validated system</div>
+              <div class="node-body">System entered into change control, with any future configuration or code change assessed for revalidation impact before implementation.</div>
+              <div class="node-reg">EU GMP Annex 11</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Maintain periodic review and retirement planning</div>
+              <div class="node-body">Periodic review scheduled confirming the system remains in its validated state, with a defined retirement and data migration plan for eventual decommissioning.</div>
+              <div class="node-reg">EU GMP Annex 11</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT: SUPPORTING PANELS -->
+    <div class="response-col">
+
+      <!-- GAMP CATEGORY REQUIREMENTS -->
+      <div class="limits-box">
+        <div class="limits-header">Risk-Based Effort Scaling</div>
+        <div class="limits-body">
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">High GMP Impact, High Complexity</h4>
+            <p>Custom or highly configured systems directly controlling product quality warrant the most rigorous scripted testing and full documentation.</p>
+            <div class="stat">GAMP 5 (2nd Ed.)</div>
+          </div>
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">Moderate GMP Impact</h4>
+            <p>Configured systems with indirect quality impact warrant testing focused specifically on the configured, business-critical functions.</p>
+            <div class="stat">FDA CSA Guidance 2022</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">Low GMP Impact</h4>
+            <p>Administrative or non-critical systems warrant lighter-touch verification, often unscripted testing with simple documented evidence.</p>
+            <div class="stat">FDA CSA Guidance 2022</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CSV FAILURE RESPONSE -->
+      <div class="exceed-box">
+        <h3>Validation Test Failure Response Steps</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Step 1 - Document the specific failure</strong>
+            Record precisely which test step failed, the expected versus actual result, and the system state at the time.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 2 - Determine root cause</strong>
+            Investigate whether the failure stems from a configuration error, a genuine software defect, or an incorrect test script.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 3 - Assess impact on other completed testing</strong>
+            Evaluate whether the failure calls into question the validity of other tests already executed and passed.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 4 - Remediate and re-test</strong>
+            Implement the correction and re-execute the failed test, along with any other test affected by the same root cause.
+          </div>
+          <div class="exceed-step">
+            <strong>Step 5 - Document resolution in the traceability record</strong>
+            Update the traceability matrix and validation documentation to reflect the failure, root cause, and successful re-test outcome.
+          </div>
+        </div>
+      </div>
+
+      <!-- DATA INTEGRITY AND CSA REQUIREMENTS -->
+      <div class="trend-box">
+        <h3>Data Integrity and CSA Principles</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Audit trail review is routine, not exceptional</strong>
+            Audit trail data reviewed as part of routine batch or record release, not only investigated when a problem is already suspected.
+          </div>
+          <div class="trend-item">
+            <strong>Critical thinking drives test depth</strong>
+            Testing rigor determined by genuine assessment of patient and product risk, rather than defaulting to maximal documentation for every system.
+          </div>
+          <div class="trend-item">
+            <strong>Unscripted testing is acceptable evidence</strong>
+            Ad hoc, exploratory testing accepted as valid evidence for lower-risk functions, provided it is appropriately documented.
+          </div>
+          <div class="trend-item">
+            <strong>Leverage supplier testing where justified</strong>
+            Vendor testing and quality documentation leveraged with a documented rationale, avoiding duplicative re-verification of unchanged commercial code.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CSV LIFECYCLE ELEMENTS -->
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>CSV Lifecycle Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>System Inventory and Classification</strong>
+        Complete inventory of GMP-relevant computerized systems, each classified by GAMP category and criticality.
+      </div>
+      <div class="ccs-item">
+        <strong>Validation Plan and Summary Report</strong>
+        Validation plan defining scope and approach at project outset, closed by a summary report referencing the complete evidence package.
+      </div>
+      <div class="ccs-item">
+        <strong>Traceability Matrix</strong>
+        Document tracing every requirement through specification and into the specific test that verifies it.
+      </div>
+      <div class="ccs-item">
+        <strong>Electronic Signature and Audit Trail Configuration</strong>
+        Part 11 compliant electronic signature and audit trail settings configured, tested, and documented.
+      </div>
+      <div class="ccs-item">
+        <strong>Change Control Integration</strong>
+        Validated system changes routed through formal change control, with revalidation scope determined by risk assessment of the change.
+      </div>
+      <div class="ccs-item">
+        <strong>Periodic Review Schedule</strong>
+        Defined interval for reviewing the system's continued validated state, incorporating incident history and any accumulated configuration drift.
+      </div>
+      <div class="ccs-item">
+        <strong>Backup and Disaster Recovery Verification</strong>
+        Backup and recovery procedures tested and documented, confirming GMP data can be reliably restored if needed.
+      </div>
+      <div class="ccs-item">
+        <strong>Retirement and Data Migration Planning</strong>
+        Defined plan for system retirement, including data archival or migration, preserving record accessibility beyond decommissioning.
+      </div>
+    </div>
+  </div>
+
+  <!-- REGULATORY TEXT PANEL -->
+  <div class="regtext-box">
+    <h3>Regulatory Text - Source Provisions</h3>
+    <div class="regtext-items">
+      <div class="regtext-item">
+        <div class="src">21 CFR 11.10(e)</div>
+        <p>Persons using closed systems to create, modify, maintain, or transmit electronic records shall employ procedures and controls including use of secure, computer-generated, time-stamped audit trails to independently record the date and time of operator entries and actions that create, modify, or delete electronic records.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">EU GMP Annex 11, Section 4.2 (paraphrased - refer to the official Annex 11 text for exact wording)</div>
+        <p>Validation documentation should include change control records and results of any periodic evaluation, demonstrating the system remains in a validated state throughout its use, with a risk assessment approach used to determine the scope of validation.</p>
+      </div>
+      <div class="regtext-item">
+        <div class="src">FDA Computer Software Assurance Guidance, 2022 (paraphrased - refer to the official guidance for exact wording)</div>
+        <p>A risk-based approach that applies critical thinking to determine the appropriate level of assurance activities, including the use of unscripted testing methods where justified by the risk to patient safety, product quality, and data integrity.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSPECTION PATTERN PANEL -->
+  <div class="pattern-box">
+    <h3>Common Inspection Findings - Computer System Validation</h3>
+    <div class="disclaimer">Illustrative of recurring themes seen across published FDA 483s and warning letters. Not tied to a single specific citation.</div>
+    <div class="pattern-items">
+      <div class="pattern-item">
+        <strong>Audit trail not reviewed as part of routine release</strong>
+        Electronic batch or record release performed without evidence that the associated audit trail was reviewed as part of the routine release decision.
+      </div>
+      <div class="pattern-item">
+        <strong>GAMP category not documented with rationale</strong>
+        System validation records lacking a clear, documented rationale for the GAMP category assigned, making the resulting test scope difficult to justify.
+      </div>
+      <div class="pattern-item">
+        <strong>Configuration changes made outside change control</strong>
+        System configuration settings found to differ from the documented, validated configuration, with no corresponding change control record explaining the difference.
+      </div>
+      <div class="pattern-item">
+        <strong>Periodic review not performed or overdue</strong>
+        No evidence of periodic review confirming the system's continued validated state, despite significant time elapsed since initial validation.
+      </div>
+    </div>
+  </div>
+
+  <!-- BEST PRACTICE PANEL -->
+  <div class="practice-box">
+    <h3>Best Practice Guidance</h3>
+    <div class="practice-items">
+      <div class="practice-item">
+        <strong>Build audit trail review into the standard release checklist</strong>
+        Add audit trail review as an explicit, named step in the routine batch or record release checklist rather than treating it as a separate, optional activity.
+      </div>
+      <div class="practice-item">
+        <strong>Document GAMP categorization rationale in the validation plan</strong>
+        Require a written justification for the assigned GAMP category as a mandatory section of every system's validation plan.
+      </div>
+      <div class="practice-item">
+        <strong>Use configuration comparison tools where available</strong>
+        Where the system supports it, use automated configuration comparison or baseline tools to detect drift from the validated configuration.
+      </div>
+      <div class="practice-item">
+        <strong>Maintain a master periodic review calendar across all validated systems</strong>
+        Track every validated system's periodic review due date in a single, actively monitored calendar rather than relying on individual system owners to self-track.
+      </div>
+    </div>
+  </div>
+
+  <!-- SELF-ASSESSMENT CHECKLIST -->
+  <details class="assess-box">
+    <summary>Self-Assessment Checklist - Is Your CSV Programme Inspection Ready? <span class="arrow-icon">&#9654;</span></summary>
+    <div class="assess-body">
+      <div class="assess-note">For personal or team use during training. Responses are not saved or submitted.</div>
+      <div class="assess-row"><input type="checkbox" id="csv1"><label for="csv1">Every GMP-relevant system has a documented GAMP category with clear rationale.</label></div>
+      <div class="assess-row"><input type="checkbox" id="csv2"><label for="csv2">Audit trail review is a named step in routine batch or record release.</label></div>
+      <div class="assess-row"><input type="checkbox" id="csv3"><label for="csv3">Testing depth is explicitly scoped to risk rather than applied uniformly across all systems.</label></div>
+      <div class="assess-row"><input type="checkbox" id="csv4"><label for="csv4">System configuration changes are routed through change control without exception.</label></div>
+      <div class="assess-row"><input type="checkbox" id="csv5"><label for="csv5">Periodic review is tracked centrally and not overdue for any validated system.</label></div>
+      <div class="assess-row"><input type="checkbox" id="csv6"><label for="csv6">Traceability matrices connect every requirement to a specific executed test.</label></div>
+      <div class="assess-row"><input type="checkbox" id="csv7"><label for="csv7">A retirement and data migration plan exists for systems nearing end of life.</label></div>
+    </div>
+  </details>
+
+  <!-- SITE ANNOTATION FIELDS -->
+  <div class="annotate-box">
+    <h3>Site Annotation</h3>
+    <div class="sub">Add your facility-specific references while reviewing this map. Not saved between sessions - copy notes into your own records before closing.</div>
+    <div class="annotate-grid">
+      <div class="annotate-field">
+        <label>SYSTEM NAME / GAMP CATEGORY</label>
+        <input type="text" placeholder="e.g. LIMS, Category 4">
+      </div>
+      <div class="annotate-field">
+        <label>LOCAL SOP REFERENCE</label>
+        <input type="text" placeholder="e.g. SOP-IT-011 Rev 5">
+      </div>
+      <div class="annotate-field" style="grid-column: 1 / -1">
+        <label>NOTES</label>
+        <textarea rows="3" placeholder="Facility-specific observations, open questions, or follow-up items for QA."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Apply the same maximal scripted testing depth to every system regardless of GMP risk. Configure a system without documenting the configuration as built. Allow a system change to bypass change control because it seems minor. Treat audit trail review as optional unless a problem is already suspected.</p>
+    </div>
+    <div class="rule-card">
+      <h4>CSV vs Computer Software Assurance</h4>
+      <p>Traditional CSV historically emphasized comprehensive scripted testing and heavy documentation volume for every system. FDA's Computer Software Assurance approach retains the same underlying assurance goal but directs effort using critical thinking and genuine risk assessment, accepting unscripted testing where the risk profile supports it.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Validation vs qualification for computer systems</h4>
+      <p>Qualification, in the equipment sense, establishes hardware functions correctly. Computer system validation is the broader activity confirming the complete system, software, configuration, and data controls together, reliably supports its intended GMP use.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key regulations</h4>
+      <p>21 CFR Part 11 - electronic records and electronic signatures. EU GMP Annex 11 - computerized systems requirements. GAMP 5, 2nd Edition - risk-based validation lifecycle framework. FDA Computer Software Assurance Guidance, 2022 - critical thinking approach to test rigor.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Computer System Validation (CSV) Lifecycle Workflow &nbsp;&#183;&nbsp;
+    Built from 21 CFR Part 11, EU GMP Annex 11, GAMP 5 (2nd Edition), FDA CSA Guidance 2022 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMP Maps - Enhanced Editions</div>
+    <div class="footer-badge">Validation Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
