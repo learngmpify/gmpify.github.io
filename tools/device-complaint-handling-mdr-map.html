@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medical Device Complaint Handling and MDR Workflow | GMPify Training</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --navy:    #0A1520;
+    --navy2:   #0E1C2C;
+    --teal:    #00C2A8;
+    --gold:    #F5A623;
+    --amber:   #F97316;
+    --red:     #E53E3E;
+    --green:   #22C55E;
+    --light:   #CAD8E8;
+    --mid:     #6E90A0;
+    --white:   #FFFFFF;
+    --c1:      #081828;
+    --c2:      #181008;
+    --c3:      #082018;
+    --c4:      #180820;
+    --c1acc:   #38BDF8;
+    --c2acc:   #FB923C;
+    --c3acc:   #34D399;
+    --c4acc:   #E879F9;
+    --font: 'Inter', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--navy);color:var(--light);min-height:100vh}
+
+  .header{
+    background:linear-gradient(135deg,#050E18 0%,#0A1520 60%,#081020 100%);
+    border-bottom:2px solid var(--c1acc);
+    padding:28px 40px 24px;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  }
+  .header-left{flex:1}
+  .logo{font-size:1.05rem;font-weight:800;letter-spacing:-0.3px;margin-bottom:10px}
+  .logo span:first-child{color:var(--teal)}
+  .logo span:last-child{color:var(--white)}
+  .header h1{font-size:1.75rem;font-weight:800;color:var(--white);line-height:1.15;letter-spacing:-0.5px;margin-bottom:6px}
+  .header h1 em{color:var(--c1acc);font-style:normal}
+  .header-sub{font-size:0.82rem;color:var(--mid);font-family:var(--mono);letter-spacing:0.5px}
+  .header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0}
+  .reg-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);border-radius:6px;padding:6px 12px;font-size:0.72rem;font-family:var(--mono);color:var(--c1acc);letter-spacing:0.5px;text-align:right;line-height:1.6}
+  .stat-badge{background:rgba(229,62,62,0.1);border:1px solid rgba(229,62,62,0.3);border-radius:6px;padding:5px 12px;font-size:0.72rem;font-family:var(--mono);color:#FC8181;text-align:right}
+
+  .legend{display:flex;gap:18px;padding:12px 40px;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;align-items:center}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:0.74rem;color:var(--mid)}
+  .ls{width:13px;height:13px;border-radius:3px;flex-shrink:0}
+
+  .map-wrap{padding:26px 40px 40px;max-width:1400px;margin:0 auto}
+
+  /* TRIGGER */
+  .trigger-box{
+    background:linear-gradient(135deg,rgba(56,189,248,0.07),rgba(56,189,248,0.02));
+    border:1.5px solid rgba(56,189,248,0.22);
+    border-radius:12px;padding:16px 22px;
+    display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;margin-bottom:18px;
+  }
+  .trigger-icon{font-size:2rem}
+  .trigger-text h3{font-size:0.93rem;font-weight:800;color:var(--white);margin-bottom:4px}
+  .trigger-text p{font-size:0.77rem;color:var(--light);line-height:1.5}
+  .trigger-text .reg{font-size:0.69rem;font-family:var(--mono);color:var(--c1acc);margin-top:4px}
+  .trigger-refs{display:flex;flex-direction:column;gap:4px;align-items:flex-end}
+  .ref-chip{border-radius:10px;padding:2px 9px;font-size:0.67rem;font-family:var(--mono);white-space:nowrap}
+  .chip-eu{background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);color:var(--c1acc)}
+  .chip-fda{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.28);color:var(--c2acc)}
+  .chip-usp{background:rgba(52,211,153,0.12);border:1px solid rgba(52,211,153,0.28);color:var(--c3acc)}
+  .chip-iso{background:rgba(232,121,249,0.12);border:1px solid rgba(232,121,249,0.28);color:var(--c4acc)}
+
+  /* CONTROL TYPE BAR */
+  .grades-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  .grade-card{border-radius:8px;padding:10px 13px;border:1px solid}
+  .grade-a{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.3)}
+  .grade-b{background:rgba(245,166,35,0.07);border-color:rgba(245,166,35,0.3)}
+  .grade-c{background:rgba(56,189,248,0.07);border-color:rgba(56,189,248,0.25)}
+  .grade-d{background:rgba(52,211,153,0.06);border-color:rgba(52,211,153,0.22)}
+  .grade-card h4{font-size:0.73rem;font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .grade-a h4{color:#FC8181}
+  .grade-b h4{color:var(--gold)}
+  .grade-c h4{color:var(--c1acc)}
+  .grade-d h4{color:var(--c3acc)}
+  .grade-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .grade-limits{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+  .limit-row{font-size:0.64rem;font-family:var(--mono);color:var(--mid)}
+  .limit-row span{color:var(--white)}
+
+  /* MAIN GRID */
+  .main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+
+  .design-col{display:flex;flex-direction:column;gap:12px}
+
+  /* PHASES */
+  .phase-col{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.07)}
+  .phase-header{padding:10px 14px;font-size:0.7rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;display:flex;flex-direction:column;gap:1px}
+  .phase-header .phase-num{font-size:0.62rem;opacity:0.7;font-family:var(--mono)}
+  .ph1 .phase-header{background:#041220;color:var(--c1acc);border-bottom:2px solid var(--c1acc)}
+  .ph2 .phase-header{background:#140C04;color:var(--c2acc);border-bottom:2px solid var(--c2acc)}
+  .ph3 .phase-header{background:#041A10;color:var(--c3acc);border-bottom:2px solid var(--c3acc)}
+  .ph4 .phase-header{background:#140618;color:var(--c4acc);border-bottom:2px solid var(--c4acc)}
+  .ph1 .phase-body{background:var(--c1)}
+  .ph2 .phase-body{background:var(--c2)}
+  .ph3 .phase-body{background:var(--c3)}
+  .ph4 .phase-body{background:var(--c4)}
+  .phase-body{padding:13px;display:flex;flex-direction:column;gap:0}
+
+  .node{border-radius:6px;padding:8px 10px}
+  .node-action{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09)}
+  .ph1 .node-action{border-left:3px solid var(--c1acc)}
+  .ph2 .node-action{border-left:3px solid var(--c2acc)}
+  .ph3 .node-action{border-left:3px solid var(--c3acc)}
+  .ph4 .node-action{border-left:3px solid var(--c4acc)}
+  .node-decision{background:rgba(245,166,35,0.07);border:1.5px solid var(--gold);border-radius:6px;text-align:center}
+  .node-critical{background:rgba(229,62,62,0.08);border:1.5px solid rgba(229,62,62,0.32);border-radius:6px}
+  .node-title{font-size:0.72rem;font-weight:700;color:var(--white);margin-bottom:2px;display:flex;align-items:center;gap:4px}
+  .step-num{border-radius:50%;width:15px;height:15px;font-size:0.59rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--mono)}
+  .ph1 .step-num{background:rgba(56,189,248,0.2);color:var(--c1acc)}
+  .ph2 .step-num{background:rgba(251,146,60,0.2);color:var(--c2acc)}
+  .ph3 .step-num{background:rgba(52,211,153,0.2);color:var(--c3acc)}
+  .ph4 .step-num{background:rgba(232,121,249,0.2);color:var(--c4acc)}
+  .node-body{font-size:0.69rem;color:var(--light);line-height:1.45}
+  .node-reg{font-size:0.62rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+  .arrow{text-align:center;font-size:0.8rem;padding:2px 0;line-height:1}
+  .ph1 .arrow{color:var(--c1acc)}
+  .ph2 .arrow{color:var(--c2acc)}
+  .ph3 .arrow{color:var(--c3acc)}
+  .ph4 .arrow{color:var(--c4acc)}
+  .decision-q{font-size:0.72rem;font-weight:700;color:var(--gold);margin-bottom:3px}
+  .d-opts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:3px}
+  .opt-y{color:var(--green);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+  .opt-n{color:var(--red);font-size:0.65rem;font-weight:700;font-family:var(--mono)}
+
+  .response-col{display:flex;flex-direction:column;gap:12px}
+
+  /* HAZARD CATEGORIES */
+  .limits-box{background:rgba(0,0,0,0.2);border:1.5px solid rgba(255,255,255,0.1);border-radius:10px;overflow:hidden}
+  .limits-header{background:rgba(255,255,255,0.05);padding:10px 16px;font-size:0.72rem;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .limits-body{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+  .limit-card{border-radius:7px;padding:10px 13px;border:1px solid}
+  .lc-alert{background:rgba(245,166,35,0.08);border-color:rgba(245,166,35,0.28)}
+  .lc-action{background:rgba(229,62,62,0.08);border-color:rgba(229,62,62,0.28)}
+  .lc-spec{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.2)}
+  .lc-al h4{color:var(--gold)}
+  .lc-ac h4{color:#FC8181}
+  .lc-sp h4{color:var(--c1acc)}
+  .limit-card h4{font-size:0.72rem;font-weight:800;margin-bottom:4px}
+  .limit-card p{font-size:0.68rem;color:var(--light);line-height:1.45}
+  .limit-card .stat{font-size:0.65rem;font-family:var(--mono);color:var(--mid);margin-top:3px}
+
+  /* HAZARD EVALUATION CRITERIA */
+  .exceed-box{background:rgba(229,62,62,0.05);border:1.5px solid rgba(229,62,62,0.22);border-radius:10px;padding:14px 16px}
+  .exceed-box h3{font-size:0.74rem;font-weight:700;color:#FC8181;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .exceed-steps{display:flex;flex-direction:column;gap:7px}
+  .exceed-step{background:rgba(229,62,62,0.07);border:1px solid rgba(229,62,62,0.15);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .exceed-step strong{color:#FC8181;display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* KEY OUTPUTS */
+  .trend-box{background:rgba(52,211,153,0.05);border:1.5px solid rgba(52,211,153,0.2);border-radius:10px;padding:14px 16px}
+  .trend-box h3{font-size:0.74rem;font-weight:700;color:var(--c3acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .trend-items{display:flex;flex-direction:column;gap:7px}
+  .trend-item{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.14);border-radius:5px;padding:7px 10px;font-size:0.69rem;color:var(--light);line-height:1.45}
+  .trend-item strong{color:var(--c3acc);display:block;font-size:0.67rem;margin-bottom:1px}
+
+  /* QUALITY ELEMENTS */
+  .ccs-box{background:rgba(232,121,249,0.05);border:1.5px solid rgba(232,121,249,0.2);border-radius:10px;padding:14px 16px}
+  .ccs-box h3{font-size:0.74rem;font-weight:700;color:var(--c4acc);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+  .ccs-items{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .ccs-item{background:rgba(232,121,249,0.06);border:1px solid rgba(232,121,249,0.14);border-radius:5px;padding:7px 10px;font-size:0.68rem;color:var(--light);line-height:1.45}
+  .ccs-item strong{color:var(--c4acc);display:block;font-size:0.66rem;margin-bottom:1px}
+
+  /* BOTTOM */
+  .bottom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+  .rule-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-top:2px solid var(--c1acc);border-radius:7px;padding:11px 12px}
+  .rule-card h4{font-size:0.68rem;font-weight:700;color:var(--c1acc);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.8px}
+  .rule-card p{font-size:0.67rem;color:var(--light);line-height:1.47}
+  .rule-card.red-card{border-top-color:var(--red)}
+  .rule-card.red-card h4{color:#FC8181}
+
+  .footer{border-top:1px solid rgba(255,255,255,0.08);padding:12px 40px;margin-top:18px;display:flex;align-items:center;justify-content:space-between;font-size:0.68rem;color:var(--mid);flex-wrap:wrap;gap:8px}
+  .footer a{color:var(--teal);text-decoration:none}
+  .footer-badge{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.2);border-radius:4px;padding:2px 7px;font-family:var(--mono);font-size:0.64rem;color:var(--c1acc)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo"><span>GMP</span><span>ify</span></div>
+    <h1>Medical Device Complaint Handling and Reporting <em>Workflow</em></h1>
+    <div class="header-sub">ISO 13485:2016 Clauses 8.2.1 to 8.2.3 &nbsp;|&nbsp; 21 CFR 820.35(a) (QMSR) &nbsp;|&nbsp; 21 CFR Part 803</div>
+  </div>
+  <div class="header-right">
+    <div class="reg-badge">
+      ISO 13485:2016 Clause 8.2.2 &nbsp;·&nbsp; 8.2.3<br>
+      21 CFR 820.35(a) &nbsp;·&nbsp; 21 CFR Part 803
+    </div>
+    <div class="stat-badge">
+      Every complaint is evaluated for reporting;<br>
+      the decision is always documented
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="ls" style="background:#38BDF8"></div>Phase 1 - Receive and Triage</div>
+  <div class="legend-item"><div class="ls" style="background:#FB923C"></div>Phase 2 - Evaluate and Investigate</div>
+  <div class="legend-item"><div class="ls" style="background:#34D399"></div>Phase 3 - Report</div>
+  <div class="legend-item"><div class="ls" style="background:#E879F9"></div>Phase 4 - Close and Improve</div>
+  <div class="legend-item"><div class="ls" style="background:transparent;border:2px solid #F5A623;transform:rotate(45deg);width:11px;height:11px"></div>Decision point</div>
+  <div class="legend-item" style="margin-left:auto;font-family:var(--mono);font-size:0.68rem;color:var(--c1acc)">GMPify Procedural Map Series</div>
+</div>
+
+<div class="map-wrap">
+
+  <div class="trigger-box">
+    <div class="trigger-icon">&#128236;</div>
+    <div class="trigger-text">
+      <h3>Complaints - Every One Evaluated, Every Decision Recorded</h3>
+      <p>A complaint may be the first sign that a device caused harm. Manufacturers need a documented process to receive, evaluate, and investigate complaints, and to decide whether each one is reportable to FDA under the Medical Device Reporting regulation, 21 CFR Part 803. The 30-day reporting clock starts when the manufacturer becomes aware of information that reasonably suggests a reportable event, from any source. This map follows the pathway from receipt and triage through evaluation, reporting, and closure.</p>
+      <div class="reg">ISO 13485:2016 Clauses 8.2.1 to 8.2.3 &nbsp;·&nbsp; 21 CFR 820.35(a) &nbsp;·&nbsp; 21 CFR Part 803</div>
+    </div>
+    <div class="trigger-refs">
+      <div class="ref-chip chip-iso">ISO 13485:2016 8.2.2</div>
+      <div class="ref-chip chip-fda">21 CFR 820.35(a)</div>
+      <div class="ref-chip chip-fda">21 CFR Part 803</div>
+    </div>
+  </div>
+
+  <div class="grades-bar">
+    <div class="grade-card grade-a">
+      <h4>Complaint Handling</h4>
+      <p>A documented procedure to receive, review, and evaluate complaints, determine whether to investigate, and decide whether the information is reportable.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>ISO 13485:2016 Clause 8.2.2</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-b">
+      <h4>Reportability Decision</h4>
+      <p>Each complaint is evaluated for MDR reportability, and the decision, including a decision not to report, is documented with its rationale.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>21 CFR Part 803</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-c">
+      <h4>Reporting Clock</h4>
+      <p>An initial report is due within 30 calendar days of becoming aware. Events needing remedial action, or requested in writing by FDA, are due within 5 work days.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>21 CFR 803.10, 803.50</span></div>
+      </div>
+    </div>
+    <div class="grade-card grade-d">
+      <h4>Complaint Records</h4>
+      <p>Records show the device, the dates, the complainant, the nature of the complaint, any investigation, and any action or reply.</p>
+      <div class="grade-limits">
+        <div class="limit-row">Basis: <span>21 CFR 820.35(a)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <div class="design-col">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="phase-col ph1">
+          <div class="phase-header">
+            <div class="phase-num">Phase 1</div>
+            Receive and Triage
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">1</span>Receive the complaint through a controlled channel</div>
+              <div class="node-body">Capture feedback from every source, including customers, users, service staff, distributors, and literature, in one controlled record.</div>
+              <div class="node-reg">ISO 13485:2016 8.2.2; 21 CFR 820.35(a)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">2</span>Log the essential details</div>
+              <div class="node-body">Record the device, date received, identifiers, complainant details, and the nature of the complaint.</div>
+              <div class="node-reg">21 CFR 820.35(a)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">3</span>Screen for possible death, serious injury, or malfunction</div>
+              <div class="node-body">Start the reporting evaluation at intake. The clock starts when the manufacturer becomes aware of information that reasonably suggests a reportable event.</div>
+              <div class="node-reg">21 CFR 803.50(a)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">4</span>Assign an owner and risk-based urgency</div>
+              <div class="node-body">Route urgent safety signals to immediate review, with dates that allow the reporting deadlines to be met.</div>
+              <div class="node-reg">ISO 13485:2016 8.2.2</div>
+            </div>
+          </div>
+        </div>
+        <div class="phase-col ph2">
+          <div class="phase-header">
+            <div class="phase-num">Phase 2</div>
+            Evaluate and Investigate
+          </div>
+          <div class="phase-body">
+            <div class="node node-decision">
+              <div class="decision-q">Does the information reasonably suggest the device may have caused or contributed to a death or serious injury, or malfunctioned in a way that could?</div>
+              <div class="d-opts">
+                <span class="opt-y">YES &#8594; Yes or unclear: follow the MDR reporting pathway</span>
+                <span class="opt-n">NO &#8594; No: document the rationale and continue the complaint review</span>
+              </div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">5</span>Determine whether an investigation is needed</div>
+              <div class="node-body">Investigate unless the reason for not investigating is documented, and escalate anything that may be a reportable event.</div>
+              <div class="node-reg">ISO 13485:2016 8.2.2; 21 CFR 820.35(a)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">6</span>Gather the information reasonably known</div>
+              <div class="node-body">Seek the facts needed for a complete report, including information from the complainant, device history, and any returned device.</div>
+              <div class="node-reg">21 CFR 803.50(b)</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">7</span>Document the reportability determination</div>
+              <div class="node-body">Record the decision and its basis. A decision not to report is documented too, with its rationale.</div>
+              <div class="node-reg">21 CFR 803.17; 803.18</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="phase-col ph3">
+          <div class="phase-header">
+            <div class="phase-num">Phase 3</div>
+            Report
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">8</span>Submit the initial MDR within the deadline</div>
+              <div class="node-body">Submit Form FDA 3500A, or its electronic equivalent, within 30 calendar days of becoming aware of a reportable event.</div>
+              <div class="node-reg">21 CFR 803.10(c); 803.50</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">9</span>Use the 5 work day pathway where it applies</div>
+              <div class="node-body">Events that need remedial action to prevent an unreasonable risk of substantial harm, or that FDA requests in writing, are reported within 5 work days.</div>
+              <div class="node-reg">21 CFR 803.10(c); 803.53</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">10</span>Send supplemental reports as new information arrives</div>
+              <div class="node-body">Submit a supplemental report when information not previously reported is obtained or becomes available.</div>
+              <div class="node-reg">21 CFR 803.56</div>
+            </div>
+          </div>
+        </div>
+        <div class="phase-col ph4">
+          <div class="phase-header">
+            <div class="phase-num">Phase 4</div>
+            Close and Improve
+          </div>
+          <div class="phase-body">
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">11</span>Complete the complaint record and reply</div>
+              <div class="node-body">Record any correction, corrective action, and reply to the complainant, and keep the record complete and retrievable.</div>
+              <div class="node-reg">21 CFR 820.35(a); ISO 13485:2016 4.2.5</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-action">
+              <div class="node-title"><span class="step-num">12</span>Route causes into CAPA and risk management</div>
+              <div class="node-body">Send confirmed problems to the corrective action process and update the risk management file where complaints show new or changed risk.</div>
+              <div class="node-reg">ISO 13485:2016 8.5.2, 7.1</div>
+            </div>
+            <div class="arrow">&#8595;</div>
+            <div class="node node-critical">
+              <div class="node-title"><span class="step-num">13</span>Trend complaints and maintain the MDR event files</div>
+              <div class="node-body">Analyze complaint data for trends, feed the results into management review, and keep MDR event files clearly identified and accessible.</div>
+              <div class="node-reg">ISO 13485:2016 8.4, 5.6; 21 CFR 803.18</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="response-col">
+
+      <div class="limits-box">
+        <div class="limits-header">Reporting Deadlines (Overview)</div>
+        <div class="limits-body">
+          <div class="limit-card lc-alert">
+            <h4 class="lc-al">5 Work Days</h4>
+            <p>Events requiring remedial action to prevent an unreasonable risk of substantial harm to public health, or events FDA requests in writing.</p>
+            <div class="stat">21 CFR 803.10(c)(2)</div>
+          </div>
+          <div class="limit-card lc-action">
+            <h4 class="lc-ac">30 Calendar Days</h4>
+            <p>Initial report of a death, serious injury, or reportable malfunction, counted from when the manufacturer becomes aware.</p>
+            <div class="stat">21 CFR 803.10(c)(1); 803.50</div>
+          </div>
+          <div class="limit-card lc-spec">
+            <h4 class="lc-sp">Supplemental Reports</h4>
+            <p>Submitted when new information is obtained or becomes available after the initial report.</p>
+            <div class="stat">21 CFR 803.56</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exceed-box">
+        <h3>When Facts Are Missing (Overview)</h3>
+        <div class="exceed-steps">
+          <div class="exceed-step">
+            <strong>Do not wait for certainty</strong>
+            The decision to report rests on information that reasonably suggests a reportable event, not on proof of cause.
+          </div>
+          <div class="exceed-step">
+            <strong>Make follow-up attempts</strong>
+            Seek the missing information from the complainant and other sources, and document each attempt.
+          </div>
+          <div class="exceed-step">
+            <strong>Report what is known</strong>
+            Submit the initial report with the information available and describe what could not be obtained.
+          </div>
+          <div class="exceed-step">
+            <strong>Supplement later</strong>
+            File a supplemental report when the missing information is obtained.
+          </div>
+        </div>
+      </div>
+
+      <div class="trend-box">
+        <h3>Complaint and MDR Records (Overview)</h3>
+        <div class="trend-items">
+          <div class="trend-item">
+            <strong>Complaint record</strong>
+            The device, dates, complainant, and the nature of the complaint.
+          </div>
+          <div class="trend-item">
+            <strong>Evaluation</strong>
+            Whether an investigation was made, its results, and the reason if none was made.
+          </div>
+          <div class="trend-item">
+            <strong>Reportability decision</strong>
+            The decision, its rationale, and any report submitted.
+          </div>
+          <div class="trend-item">
+            <strong>Action and reply</strong>
+            Corrections, corrective actions, and the reply to the complainant.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ccs-box" style="margin-bottom:16px">
+    <h3>Complaint and MDR Quality Elements</h3>
+    <div class="ccs-items">
+      <div class="ccs-item">
+        <strong>Single Intake Channel</strong>
+        All sources feed one controlled complaint record.
+      </div>
+      <div class="ccs-item">
+        <strong>Intake Screening</strong>
+        Every complaint is screened for reportability at receipt.
+      </div>
+      <div class="ccs-item">
+        <strong>Awareness Date Defined</strong>
+        The date the reporting clock starts is recorded.
+      </div>
+      <div class="ccs-item">
+        <strong>Documented Decisions</strong>
+        Reportable and not reportable decisions both carry a rationale.
+      </div>
+      <div class="ccs-item">
+        <strong>Deadline Tracking</strong>
+        The 5 work day and 30 day clocks are tracked to submission.
+      </div>
+      <div class="ccs-item">
+        <strong>Complete Information Efforts</strong>
+        Follow-up for missing information is attempted and recorded.
+      </div>
+      <div class="ccs-item">
+        <strong>CAPA and Risk Linkage</strong>
+        Confirmed problems feed corrective action and the risk management file.
+      </div>
+      <div class="ccs-item">
+        <strong>Trending and Management Visibility</strong>
+        Complaint data is trended and reviewed by management.
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES -->
+  <div class="bottom-grid">
+    <div class="rule-card red-card">
+      <h4>Never do this</h4>
+      <p>Hold a complaint until the investigation is finished before deciding on reportability. Treat distributor or service reports as outside the clock. Close a not reportable decision with no rationale. Wait for proof of cause before reporting. Send complaints to CAPA only when a customer complains twice.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Awareness and the clock</h4>
+      <p>The reporting clock runs from when the manufacturer becomes aware of information that reasonably suggests a reportable event. Build intake so that awareness is recorded at the moment a complaint arrives, not when the investigation ends.</p>
+    </div>
+    <div class="rule-card">
+      <h4>What changed under the QMSR</h4>
+      <p>Complaint handling now rests on ISO 13485 clause 8.2.2, with record content set by 21 CFR 820.35(a). The Medical Device Reporting regulation, 21 CFR Part 803, is separate and continues to apply.</p>
+    </div>
+    <div class="rule-card">
+      <h4>Key standards</h4>
+      <p>ISO 13485:2016 Clauses 8.2.1 to 8.2.3 - feedback, complaint handling, and reporting to regulatory authorities. 21 CFR 820.35(a) - complaint record content. 21 CFR Part 803 - Medical Device Reporting.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div>
+    <strong style="color:var(--white)">GMPify Training</strong> &nbsp;&#183;&nbsp;
+    Medical Device Complaint Handling and MDR Workflow &nbsp;&#183;&nbsp;
+    Built from ISO 13485:2016 Clause 8.2, 21 CFR 820.35 (QMSR) and 21 CFR Part 803 &nbsp;&#183;&nbsp;
+    <a href="https://gmpify.com">gmpify.com</a>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <div class="footer-badge">GMPify Procedural Map Series</div>
+    <div class="footer-badge">Medical Device Series</div>
+    <div class="footer-badge">&#169; 2026 GMPify Training</div>
+  </div>
+</div>
+
+</body>
+</html>
